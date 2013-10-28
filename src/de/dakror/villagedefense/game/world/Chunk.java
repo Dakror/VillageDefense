@@ -1,9 +1,11 @@
 package de.dakror.villagedefense.game.world;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.tile.Tile;
 
 /**
  * @author Dakror
@@ -29,14 +31,20 @@ public class Chunk
 			for (int j = 0; j < SIZE; j++)
 				data[i][j] = Tile.grass.getId();
 		
-		render();
+		for (int i = 0; i < 5; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				if ((i == 0 && (j == 0 || j == 4)) || (i == 4 && (j == 0 || j == 4))) continue;
+				data[i][j] = Tile.road.getId();
+			}
+		}
 	}
 	
-	public void render()
+	public void render(World w)
 	{
 		image.flush();
 		Graphics2D g = (Graphics2D) image.getGraphics();
-		BufferedImage texture = Game.getImage("tileset.png");
 		
 		for (int i = 0; i < SIZE; i++)
 		{
@@ -46,12 +54,33 @@ public class Chunk
 				int y = j * Tile.SIZE;
 				
 				Tile tile = Tile.getTileForId(data[i][j]);
-				int tx = tile.getTexturePos().x * Tile.SIZE;
-				int ty = tile.getTexturePos().y * Tile.SIZE;
 				
-				g.drawImage(texture, x, y, x + Tile.SIZE, y + Tile.SIZE, tx, ty, tx + Tile.SIZE, ty + Tile.SIZE, null);
+				if (tile.equals(Tile.emtpy)) continue;
+				
+				Point tp = tile.getTexturePos(this.x * Chunk.SIZE + i, this.y * Chunk.SIZE + j, w);
+				if (tp.x < 3) // convex
+				{
+					g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + Tile.SIZE, y + Tile.SIZE, tp.x * Tile.SIZE, tp.y * Tile.SIZE, tp.x * Tile.SIZE + Tile.SIZE, tp.y * Tile.SIZE + Tile.SIZE, null);
+				}
+				else
+				{
+					// absolute sizes, not Tile.SIZE, better readable.
+					g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + Tile.SIZE, y + Tile.SIZE, 32, 64, 64, 96, null);
+					
+					if (tp.y == 0) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + 16, y + 16, 64, 0, 80, 16, null);
+					if (tp.y == 1) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x + 16, y, x + 32, y + 16, 80, 0, 96, 16, null);
+					if (tp.y == 2) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y + 16, x + 16, y + 32, 64, 16, 80, 32, null);
+					if (tp.y == 3) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x + 16, y + 16, x + 32, y + 32, 80, 16, 96, 32, null);
+				}
 			}
 		}
+	}
+	
+	public byte getTileId(int x, int y)
+	{
+		if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) return Tile.emtpy.getId();
+		
+		return data[x][y];
 	}
 	
 	public void draw(Graphics2D g)

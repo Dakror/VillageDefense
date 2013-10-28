@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.game.tile.Tile;
 
 /**
  * @author Dakror
