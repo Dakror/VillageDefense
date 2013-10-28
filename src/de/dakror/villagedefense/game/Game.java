@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
@@ -42,6 +43,7 @@ public class Game extends EventListener
 		w.addMouseListener(this);
 		w.addMouseMotionListener(this);
 		w.addMouseWheelListener(this);
+		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
 		
 		w.setBackground(Color.black);
 		w.setForeground(Color.white);
