@@ -76,4 +76,10 @@ public abstract class Entity implements Drawable
 	{
 		this.bumpHeight = bumpHeight;
 	}
+	
+	public void translate(int x, int y)
+	{
+		this.x += x;
+		this.y += y;
+	}
 }

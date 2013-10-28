@@ -1,7 +1,6 @@
 package de.dakror.villagedefense.game.entity;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.world.Tile;
@@ -11,19 +10,18 @@ import de.dakror.villagedefense.game.world.Tile;
  */
 public class Struct extends Entity
 {
-	Point texturePoint;
+	Structs type;
 	
-	public Struct(int x, int y, int width, int height, Point texturePoint)
+	public Struct(int x, int y, Structs type)
 	{
-		super(x * Tile.SIZE, y * Tile.SIZE, width * Tile.SIZE, height * Tile.SIZE);
-		this.texturePoint = texturePoint;
+		super(x * Tile.SIZE, y * Tile.SIZE, type.getWidth() * Tile.SIZE, type.getHeight() * Tile.SIZE);
+		this.type = type;
 	}
 	
 	@Override
 	public void draw(Graphics2D g)
 	{
-		CFG.p("hi");
-		g.drawImage(Game.getImage("structs.png"), x, y, x + width, y + height, texturePoint.x, texturePoint.y, texturePoint.x + width, texturePoint.y + height, Game.w);
+		g.drawImage(Game.getImage("structs.png"), x, y, x + width, y + height, type.getX() * Tile.SIZE, type.getY() * Tile.SIZE, type.getX() * Tile.SIZE + width, type.getY() * Tile.SIZE + height, Game.w);
 	}
 	
 	@Override
