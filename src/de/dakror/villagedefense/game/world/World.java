@@ -1,11 +1,14 @@
 package de.dakror.villagedefense.game.world;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.block.Tile;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.util.Drawable;
 
 /**
@@ -19,7 +22,7 @@ public class World implements Drawable
 	
 	Chunk[][] chunks;
 	
-	ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Entity> entities = new ArrayList<>();
 	
 	public World()
 	{
@@ -31,6 +34,8 @@ public class World implements Drawable
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j] = new Chunk(i, j);
+		
+		generate();
 	}
 	
 	@Override
@@ -40,6 +45,27 @@ public class World implements Drawable
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j].draw(g);
+		
+		ArrayList<Entity> sorted = (ArrayList<Entity>) entities.clone();
+		Collections.sort(sorted, new Comparator<Entity>()
+		{
+			@Override
+			public int compare(Entity o1, Entity o2)
+			{
+				return o1.getY() - o2.getY();
+			}
+		});
+		
+		for (Entity e : sorted)
+			e.draw(g);
+	}
+	
+	public void generate()
+	{
+		int x = (int) Math.floor(width / 2f) - 1;
+		int y = (int) Math.floor(height / 2f) - 3;
+		
+		entities.add(new Struct(x, y, 3, 4, new Point(0, 4)));
 	}
 	
 	@Override

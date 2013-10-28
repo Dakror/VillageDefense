@@ -1,4 +1,4 @@
-package de.dakror.villagedefense.game.block;
+package de.dakror.villagedefense.game.world;
 
 import java.awt.Point;
 
