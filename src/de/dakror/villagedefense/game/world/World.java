@@ -1,6 +1,7 @@
 package de.dakror.villagedefense.game.world;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,13 +11,14 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.entity.Structs;
 import de.dakror.villagedefense.util.Drawable;
+import de.dakror.villagedefense.util.EventListener;
 
 /**
  * @author Dakror
  */
-public class World implements Drawable
+public class World extends EventListener implements Drawable
 {
-	public int x, y, width, height;
+	public int width, height;
 	
 	Chunk[][] chunks;
 	
@@ -24,7 +26,6 @@ public class World implements Drawable
 	
 	public World()
 	{
-		x = y = 0;
 		width = Game.w.getWidth();
 		height = Game.w.getHeight();
 		
@@ -39,7 +40,6 @@ public class World implements Drawable
 	@Override
 	public void draw(Graphics2D g)
 	{
-		g.translate(x, y);
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j].draw(g);
@@ -70,4 +70,20 @@ public class World implements Drawable
 	@Override
 	public void update()
 	{}
+	
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		for (Entity entity : entities)
+			entity.mouseMoved(e);
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		for (Entity entity : entities)
+			entity.setClicked(false);
+		for (Entity entity : entities)
+			entity.mousePressed(e);
+	}
 }

@@ -3,6 +3,7 @@ package de.dakror.villagedefense.game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -94,5 +95,17 @@ public class Game extends EventListener
 				return null;
 			}
 		}
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		world.mouseMoved(e);
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		world.mousePressed(e);
 	}
 }
