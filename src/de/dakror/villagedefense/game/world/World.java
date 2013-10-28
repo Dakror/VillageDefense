@@ -65,6 +65,7 @@ public class World extends EventListener implements Drawable
 		int y = (int) Math.floor(height / 2f / Tile.SIZE) - 3;
 		
 		entities.add(new Struct(x, y, Structs.CORE_HOUSE));
+		entities.add(new Struct(x, y + 4, Structs.TREE));
 	}
 	
 	@Override
@@ -75,7 +76,9 @@ public class World extends EventListener implements Drawable
 	public void mouseMoved(MouseEvent e)
 	{
 		for (Entity entity : entities)
-			entity.mouseMoved(e);
+			entity.setHovered(false);
+		for (Entity entity : entities)
+			if (entity.mouseMoved(e)) break;
 	}
 	
 	@Override
@@ -84,6 +87,6 @@ public class World extends EventListener implements Drawable
 		for (Entity entity : entities)
 			entity.setClicked(false);
 		for (Entity entity : entities)
-			entity.mousePressed(e);
+			if (entity.mousePressed(e)) break;
 	}
 }

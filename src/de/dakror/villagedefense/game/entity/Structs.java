@@ -1,20 +1,21 @@
 package de.dakror.villagedefense.game.entity;
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Dakror
  */
 public enum Structs
 {
-	CORE_HOUSE(4, 0, 3, 5, new Rectangle(0, 3, 3, 2)),
+	CORE_HOUSE(4, 0, 3, 5, new Rectangle2D.Float(0, 3, 3, 2)),
+	TREE(0, 0, 4, 5, new Rectangle2D.Float(1.4f, 4.3f, 1, 0.6f)),
 	
 	;
 	
 	private int x, y, width, height;
-	private Rectangle bump;
+	private Rectangle2D bump;
 	
-	private Structs(int x, int y, int width, int height, Rectangle bump)
+	private Structs(int x, int y, int width, int height, Rectangle2D bump)
 	{
 		this.x = x;
 		this.y = y;
@@ -43,7 +44,7 @@ public enum Structs
 		return height;
 	}
 	
-	public Rectangle getBump()
+	public Rectangle2D getBump()
 	{
 		return bump;
 	}

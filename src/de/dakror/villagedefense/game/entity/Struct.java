@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.world.Tile;
@@ -34,9 +35,8 @@ public class Struct extends Entity
 	public void update()
 	{}
 	
-	@Override
-	public void setBump(Rectangle r)
+	public void setBump(Rectangle2D r)
 	{
-		super.setBump(new Rectangle(r.x * Tile.SIZE, r.y * Tile.SIZE, r.width * Tile.SIZE, r.height * Tile.SIZE));
+		super.setBump(new Rectangle((int) Math.round(r.getX() * Tile.SIZE), (int) Math.round(r.getY() * Tile.SIZE), (int) Math.round(r.getWidth() * Tile.SIZE), (int) Math.round(r.getHeight() * Tile.SIZE)));
 	}
 }

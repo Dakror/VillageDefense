@@ -6,12 +6,11 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import de.dakror.villagedefense.util.Drawable;
-import de.dakror.villagedefense.util.EventListener;
 
 /**
  * @author Dakror
  */
-public abstract class Entity extends EventListener implements Drawable
+public abstract class Entity implements Drawable
 {
 	protected int x, y, width, height;
 	protected boolean hovered, clicked;
@@ -113,20 +112,23 @@ public abstract class Entity extends EventListener implements Drawable
 		return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
 	}
 	
-	@Override
-	public void mouseMoved(MouseEvent e)
+	public boolean mouseMoved(MouseEvent e)
 	{
-		hovered = contains(e.getXOnScreen(), e.getYOnScreen());
+		return hovered = contains(e.getXOnScreen(), e.getYOnScreen());
 	}
 	
-	@Override
-	public void mousePressed(MouseEvent e)
+	public boolean mousePressed(MouseEvent e)
 	{
-		clicked = contains(e.getXOnScreen(), e.getYOnScreen()) && e.getButton() == MouseEvent.BUTTON1;
+		return clicked = contains(e.getXOnScreen(), e.getYOnScreen()) && e.getButton() == MouseEvent.BUTTON1;
 	}
 	
 	public void setClicked(boolean b)
 	{
 		clicked = b;
+	}
+	
+	public void setHovered(boolean b)
+	{
+		hovered = b;
 	}
 }
