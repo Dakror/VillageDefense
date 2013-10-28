@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.game.world.World;
 
 /**
  * @author Dakror
@@ -38,5 +39,23 @@ public class Struct extends Entity
 	public void setBump(Rectangle2D r)
 	{
 		super.setBump(new Rectangle((int) Math.round(r.getX() * Tile.SIZE), (int) Math.round(r.getY() * Tile.SIZE), (int) Math.round(r.getWidth() * Tile.SIZE), (int) Math.round(r.getHeight() * Tile.SIZE)));
+	}
+	
+	public void placeGround(World w)
+	{
+		if (!type.isPlaceGround()) return;
+		
+		int x = (int) Math.round(bump.getX() / Tile.SIZE) - 1;
+		int y = (int) Math.round(bump.getY() / Tile.SIZE) - 1;
+		int width = (int) Math.round(bump.getWidth() / Tile.SIZE) + 2;
+		int height = (int) Math.round(bump.getHeight() / Tile.SIZE) + 2;
+		
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++)
+			{
+				w.setTileId(this.x / Tile.SIZE + x + i, this.y / Tile.SIZE + y + j, Tile.ground.getId());
+			}
+		}
 	}
 }

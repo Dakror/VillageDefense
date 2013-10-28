@@ -16,7 +16,8 @@ public class Tile
 	// -- Tile List -- //
 	public static Tile emtpy = new Tile(0, "Leer", "emtpy.png");
 	public static Tile grass = new Tile(1, "Gras", "grass.png");
-	public static Tile road = new Tile(2, "Straße", "road.png");
+	public static Tile ground = new Tile(2, "Boden", "ground.png");
+	// public static Tile road = new Tile(3, "Straße", "road.png");
 	
 	// -- Class def -- //
 	private String name = "Unnamed";
@@ -67,9 +68,9 @@ public class Tile
 		
 		byte[][] n = w.getNeighbors(x, y);
 		if (n[1][0] != id) p.y--;
-		if (n[1][2] != id) p.y++;
+		else if (n[1][2] != id) p.y++;
 		if (n[0][1] != id) p.x--;
-		if (n[2][1] != id) p.x++;
+		else if (n[2][1] != id) p.x++;
 		
 		if (n[0][0] != id && n[1][0] == id && n[0][1] == id && n[2][1] == id && n[1][2] == id) return new Point(3, 0);
 		if (n[2][0] != id && n[1][0] == id && n[0][1] == id && n[2][1] == id && n[1][2] == id) return new Point(3, 1);

@@ -31,7 +31,7 @@ public class World extends EventListener implements Drawable
 		width = Game.w.getWidth();
 		height = Game.w.getHeight();
 		
-		chunks = new Chunk[(int) Math.floor(width / (float) (Chunk.SIZE * Tile.SIZE))][(int) Math.floor(height / (float) (Chunk.SIZE * Tile.SIZE))];
+		chunks = new Chunk[(int) Math.ceil(width / (float) (Chunk.SIZE * Tile.SIZE))][(int) Math.ceil(height / (float) (Chunk.SIZE * Tile.SIZE))];
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j] = new Chunk(i, j);
@@ -43,14 +43,20 @@ public class World extends EventListener implements Drawable
 		generate();
 	}
 	
+	public void setTileId(int x, int y, byte d)
+	{
+		Point index = getChunk(x, y);
+		
+		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length) return;
+		
+		chunks[index.x][index.y].setTileId(x - index.x * Chunk.SIZE, y - index.y * Chunk.SIZE, d, this);
+	}
+	
 	public byte getTileId(int x, int y)
 	{
 		Point index = getChunk(x, y);
 		
-		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length)
-		{
-			return Tile.emtpy.getId();
-		}
+		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length) return Tile.emtpy.getId();
 		
 		return chunks[index.x][index.y].getTileId(x - index.x * Chunk.SIZE, y - index.y * Chunk.SIZE);
 	}
@@ -119,13 +125,18 @@ public class World extends EventListener implements Drawable
 		int x = (int) Math.floor(width / 2f / Tile.SIZE) - 2;
 		int y = (int) Math.floor(height / 2f / Tile.SIZE) - 3;
 		
-		entities.add(new Struct(x, y, Structs.CORE_HOUSE));
-		entities.add(new Struct(x, y + 4, Structs.TREE));
+		addEntity(new Struct(x, y, Structs.CORE_HOUSE));
 	}
 	
 	@Override
 	public void update()
 	{}
+	
+	public void addEntity(Entity e)
+	{
+		if (e instanceof Struct) ((Struct) e).placeGround(this);
+		entities.add(e);
+	}
 	
 	@Override
 	public void mouseMoved(MouseEvent e)

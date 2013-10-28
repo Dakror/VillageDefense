@@ -30,15 +30,6 @@ public class Chunk
 		for (int i = 0; i < SIZE; i++)
 			for (int j = 0; j < SIZE; j++)
 				data[i][j] = Tile.grass.getId();
-		
-		for (int i = 0; i < 5; i++)
-		{
-			for (int j = 0; j < 5; j++)
-			{
-				if ((i == 0 && (j == 0 || j == 4)) || (i == 4 && (j == 0 || j == 4))) continue;
-				data[i][j] = Tile.road.getId();
-			}
-		}
 	}
 	
 	public void render(World w)
@@ -86,5 +77,12 @@ public class Chunk
 	public void draw(Graphics2D g)
 	{
 		g.drawImage(image, x * SIZE * Tile.SIZE, y * SIZE * Tile.SIZE, Game.w);
+	}
+	
+	public void setTileId(int x, int y, byte d, World w)
+	{
+		data[x][y] = d;
+		
+		render(w);
 	}
 }
