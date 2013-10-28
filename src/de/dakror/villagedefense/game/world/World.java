@@ -36,9 +36,7 @@ public class World extends EventListener implements Drawable
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j] = new Chunk(i, j);
 		
-		for (int i = 0; i < chunks.length; i++)
-			for (int j = 0; j < chunks[0].length; j++)
-				chunks[i][j].render(this);
+		render();
 		
 		generate();
 	}
@@ -125,12 +123,29 @@ public class World extends EventListener implements Drawable
 		int x = (int) Math.floor(width / 2f / Tile.SIZE) - 2;
 		int y = (int) Math.floor(height / 2f / Tile.SIZE) - 3;
 		
+		for (int i = x + 2; i < width / Tile.SIZE; i++)
+		{
+			setTileId(i, y + 3, Tile.ground.getId());
+			setTileId(i, y + 4, Tile.ground.getId());
+			setTileId(i - x - 2, y + 3, Tile.ground.getId());
+			setTileId(i - x - 2, y + 4, Tile.ground.getId());
+		}
+		
+		render();
+		
 		addEntity(new Struct(x, y, Structs.CORE_HOUSE));
 	}
 	
 	@Override
 	public void update()
 	{}
+	
+	public void render()
+	{
+		for (int i = 0; i < chunks.length; i++)
+			for (int j = 0; j < chunks[0].length; j++)
+				chunks[i][j].render(this);
+	}
 	
 	public void addEntity(Entity e)
 	{

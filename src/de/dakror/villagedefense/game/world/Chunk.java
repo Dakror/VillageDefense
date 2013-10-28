@@ -55,7 +55,7 @@ public class Chunk
 				}
 				else
 				{
-					// absolute sizes, not Tile.SIZE, better readable.
+					// absolute sizes, not Tile.SIZE, easier to read.
 					g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + Tile.SIZE, y + Tile.SIZE, 32, 64, 64, 96, null);
 					
 					if (tp.y == 0) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + 16, y + 16, 64, 0, 80, 16, null);

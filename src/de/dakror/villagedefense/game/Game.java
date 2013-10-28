@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import de.dakror.villagedefense.game.world.World;
+import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.util.EventListener;
 
 /**
@@ -55,7 +56,17 @@ public class Game extends EventListener
 		world = new World();
 		
 		w.setVisible(true);
-		w.createBufferStrategy(2);
+		
+		
+		try
+		{
+			Thread.sleep(1);
+			w.createBufferStrategy(2);
+		}
+		catch (Exception e)
+		{
+			CFG.p("hhhhhhhhh");
+		}
 		
 		new UpdateThread();
 	}
