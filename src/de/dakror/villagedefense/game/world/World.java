@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.entity.Structs;
@@ -110,7 +111,10 @@ public class World extends EventListener implements Drawable
 			@Override
 			public int compare(Entity o1, Entity o2)
 			{
-				return (o1.getY() + o1.getHeight()) - (o2.getY() + o2.getHeight());
+				float dif = (o1.getY() + o1.getHeight()) - (o2.getY() + o2.getHeight());
+				if (dif < 0) return -1;
+				else if (dif > 0) return 1;
+				return 0;
 			}
 		});
 		
@@ -133,11 +137,20 @@ public class World extends EventListener implements Drawable
 		
 		addEntity(new Struct(x, y, Structs.CORE_HOUSE));
 		addEntity(new Struct(x - 5, y - 5, Structs.HOUSE));
+		
+		Creature c = new Creature(0, 0, "villager0");
+		c.setTarget(x * Tile.SIZE, y * Tile.SIZE);
+		c.setSpeed(1);
+		
+		addEntity(c);
 	}
 	
 	@Override
 	public void update()
-	{}
+	{
+		for (Entity entity : entities)
+			if (entity instanceof Creature) entity.update();
+	}
 	
 	public void render()
 	{

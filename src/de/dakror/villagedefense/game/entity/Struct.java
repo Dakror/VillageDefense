@@ -27,7 +27,7 @@ public class Struct extends Entity
 	{
 		drawBump(g, false);
 		
-		g.drawImage(Game.getImage("structs.png"), x, y, x + width, y + height, type.getX() * Tile.SIZE, type.getY() * Tile.SIZE, type.getX() * Tile.SIZE + width, type.getY() * Tile.SIZE + height, Game.w);
+		g.drawImage(Game.getImage("structs.png"), (int) x, (int) y, (int) x + width, (int) y + height, type.getX() * Tile.SIZE, type.getY() * Tile.SIZE, type.getX() * Tile.SIZE + width, type.getY() * Tile.SIZE + height, Game.w);
 		
 		drawBump(g, true);
 	}
@@ -54,7 +54,7 @@ public class Struct extends Entity
 		{
 			for (int j = 0; j < height; j++)
 			{
-				w.setTileId(this.x / Tile.SIZE + x + i, this.y / Tile.SIZE + y + j, Tile.ground.getId());
+				w.setTileId((int) this.x / Tile.SIZE + x + i, (int) this.y / Tile.SIZE + y + j, Tile.ground.getId());
 			}
 		}
 	}

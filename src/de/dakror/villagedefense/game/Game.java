@@ -39,6 +39,11 @@ public class Game extends EventListener
 	{
 		currentGame = this;
 		
+		init();
+	}
+	
+	public void init()
+	{
 		w = new JFrame("Village Defense");
 		w.addKeyListener(this);
 		w.addMouseListener(this);
@@ -65,7 +70,10 @@ public class Game extends EventListener
 		}
 		catch (Exception e)
 		{
-			CFG.p("hhhhhhhhh");
+			CFG.p("retry");
+			w.dispose();
+			init();
+			return;
 		}
 		
 		new UpdateThread();
