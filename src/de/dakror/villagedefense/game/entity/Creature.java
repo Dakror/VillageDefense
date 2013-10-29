@@ -16,6 +16,7 @@ public class Creature extends Entity
 	Vector target;
 	float speed;
 	boolean frozen;
+	boolean hostile;
 	
 	public Creature(int x, int y, String img)
 	{
@@ -85,5 +86,15 @@ public class Creature extends Entity
 	public boolean isFrozen()
 	{
 		return frozen;
+	}
+	
+	public boolean isHostile()
+	{
+		return hostile;
+	}
+	
+	public void setHostile(boolean hostile)
+	{
+		this.hostile = hostile;
 	}
 }

@@ -124,25 +124,17 @@ public class World extends EventListener implements Drawable
 	
 	public void generate()
 	{
-		int x = (int) Math.floor(width / 2f / Tile.SIZE) - 2;
-		int y = (int) Math.floor(height / 2f / Tile.SIZE) - 3;
+		int x = (int) Math.floor(width / 2f / Tile.SIZE);
+		int y = (int) Math.floor(height / 2f / Tile.SIZE);
 		
-		for (int i = x + 2; i < width / Tile.SIZE; i++)
+		for (int i = 0; i < width / Tile.SIZE; i++)
 		{
-			setTileId(i, y + 3, Tile.ground.getId());
-			setTileId(i, y + 4, Tile.ground.getId());
-			setTileId(i - x - 2, y + 3, Tile.ground.getId());
-			setTileId(i - x - 2, y + 4, Tile.ground.getId());
+			setTileId(i, y, Tile.ground.getId());
+			setTileId(i, y + 1, Tile.ground.getId());
 		}
 		
-		addEntity(new Struct(x, y, Structs.CORE_HOUSE));
-		addEntity(new Struct(x - 5, y - 5, Structs.HOUSE));
-		
-		Creature c = new Creature(0, 0, "villager0");
-		c.setTarget(x * Tile.SIZE, y * Tile.SIZE);
-		c.setSpeed(1);
-		
-		addEntity(c);
+		addEntity(new Struct(x - 2, y - 3, Structs.CORE_HOUSE));
+		addEntity(new Struct(x - 7, y - 8, Structs.HOUSE));
 	}
 	
 	@Override

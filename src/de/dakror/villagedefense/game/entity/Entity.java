@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -17,6 +18,7 @@ public abstract class Entity implements Drawable
 	protected int width, height;
 	protected boolean hovered, clicked;
 	protected Rectangle bump;
+	protected Attributes attributes;
 	
 	public Entity(int x, int y, int width, int height)
 	{
@@ -143,5 +145,10 @@ public abstract class Entity implements Drawable
 	{
 		x = v.x;
 		y = v.y;
+	}
+	
+	public Attributes getAttributes()
+	{
+		return attributes;
 	}
 }
