@@ -6,12 +6,14 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
-import de.dakror.villagedefense.game.entity.Structs;
+import de.dakror.villagedefense.game.entity.struct.CoreHouse;
+import de.dakror.villagedefense.game.entity.struct.House;
+import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.settings.Attributes.Types;
 import de.dakror.villagedefense.util.Drawable;
@@ -26,6 +28,8 @@ public class World extends EventListener implements Drawable
 	
 	Chunk[][] chunks;
 	
+	public Struct core;
+	
 	public ArrayList<Entity> entities = new ArrayList<>();
 	
 	public World()
@@ -39,8 +43,6 @@ public class World extends EventListener implements Drawable
 				chunks[i][j] = new Chunk(i, j);
 		
 		render();
-		
-		generate();
 	}
 	
 	public void setTileId(int x, int y, byte d)
@@ -134,23 +136,28 @@ public class World extends EventListener implements Drawable
 			setTileId(i, y + 1, Tile.ground.getId());
 		}
 		
-		Struct core = new Struct(x - 2, y - 3, Structs.CORE_HOUSE);
-		
+		core = new CoreHouse(x - 2, y - 3);
+		core.getAttributes().set(Types.HEALTH_MAX, 1);
+		core.getAttributes().set(Types.HEALTH, 1);
 		addEntity(core);
-		addEntity(new Struct(x - 7, y - 8, Structs.HOUSE));
 		
-		Creature c = new Creature(0, y * Tile.SIZE, "zombie");
-		c.setHostile(true);
-		c.getAttributes().set(Types.SPEED, 3f);
-		c.setTarget(core);
-		addEntity(c);
+		addEntity(new House(x - 7, y - 8));
+		addEntity(new Tree(x + 7, y - 8));
 	}
 	
 	@Override
-	public void update()
+	public void update(int tick)
 	{
-		for (Entity entity : entities)
-			if (entity instanceof Creature) entity.update();
+		try
+		{
+			for (Entity entity : entities)
+			{
+				entity.update(tick);
+				if (entity.isDead()) entities.remove(entity);
+			}
+		}
+		catch (ConcurrentModificationException e)
+		{}
 	}
 	
 	public void render()

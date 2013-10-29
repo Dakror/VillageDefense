@@ -7,19 +7,22 @@ import java.awt.geom.Rectangle2D;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.game.world.World;
+import de.dakror.villagedefense.settings.StructPoints;
 
 /**
  * @author Dakror
  */
-public class Struct extends Entity
+public abstract class Struct extends Entity
 {
-	Structs type;
+	protected int tx, ty;
+	protected boolean placeGround;
+	protected StructPoints structPoints;
 	
-	public Struct(int x, int y, Structs type)
+	public Struct(int x, int y, int width, int height)
 	{
-		super(x * Tile.SIZE, y * Tile.SIZE, type.getWidth() * Tile.SIZE, type.getHeight() * Tile.SIZE);
-		this.type = type;
-		setBump(type.getBump());
+		super(x * Tile.SIZE, y * Tile.SIZE, width * Tile.SIZE, height * Tile.SIZE);
+		
+		structPoints = new StructPoints();
 	}
 	
 	@Override
@@ -27,14 +30,10 @@ public class Struct extends Entity
 	{
 		drawBump(g, false);
 		
-		g.drawImage(Game.getImage("structs.png"), (int) x, (int) y, (int) x + width, (int) y + height, type.getX() * Tile.SIZE, type.getY() * Tile.SIZE, type.getX() * Tile.SIZE + width, type.getY() * Tile.SIZE + height, Game.w);
+		g.drawImage(Game.getImage("structs.png"), (int) x, (int) y, (int) x + width, (int) y + height, tx * Tile.SIZE, ty * Tile.SIZE, tx * Tile.SIZE + width, ty * Tile.SIZE + height, Game.w);
 		
 		drawBump(g, true);
 	}
-	
-	@Override
-	public void update()
-	{}
 	
 	public void setBump(Rectangle2D r)
 	{
@@ -43,7 +42,7 @@ public class Struct extends Entity
 	
 	public void placeGround(World w)
 	{
-		if (!type.isPlaceGround()) return;
+		if (!placeGround) return;
 		
 		int x = (int) Math.round(bump.getX() / Tile.SIZE) - 1;
 		int y = (int) Math.round(bump.getY() / Tile.SIZE) - 1;
@@ -59,8 +58,13 @@ public class Struct extends Entity
 		}
 	}
 	
-	public Structs getType()
+	public boolean isPlaceGround()
 	{
-		return type;
+		return placeGround;
+	}
+	
+	public StructPoints getStructPoints()
+	{
+		return structPoints;
 	}
 }

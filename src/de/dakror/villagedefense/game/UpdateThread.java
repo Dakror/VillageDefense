@@ -3,12 +3,13 @@ package de.dakror.villagedefense.game;
 
 
 
+
 /**
  * @author Dakror
  */
 public class UpdateThread extends Thread
 {
-	int frames;
+	int tick;
 	long time;
 	
 	public UpdateThread()
@@ -19,17 +20,17 @@ public class UpdateThread extends Thread
 	@Override
 	public void run()
 	{
-		frames = 0;
+		tick = 0;
 		time = System.currentTimeMillis();
 		while (Game.w.isVisible())
 		{
-			// update content
+			if (tick == Integer.MAX_VALUE) tick = 0;
 			
-			if (Game.currentGame.world != null) Game.currentGame.world.update();
+			if (Game.currentGame.world != null && Game.currentGame.state == 0) Game.currentGame.world.update(tick);
 			
 			try
 			{
-				frames++;
+				tick++;
 				Thread.sleep(20);
 			}
 			catch (InterruptedException e)

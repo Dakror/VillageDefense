@@ -54,9 +54,11 @@ public class Vector
 		return new Vector(x, y);
 	}
 	
-	public void normalize()
+	public Vector normalize()
 	{
 		setLength(1);
+		
+		return this;
 	}
 	
 	public float getDistance(Vector o)
@@ -76,5 +78,10 @@ public class Vector
 		y *= size;
 		
 		return this;
+	}
+	
+	public float getAngleOnXAxis()
+	{
+		return (float) Math.toDegrees(Math.atan2(y, x));
 	}
 }

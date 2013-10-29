@@ -5,7 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.settings.Attributes;
+import de.dakror.villagedefense.settings.Attributes.Types;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -16,7 +18,7 @@ public abstract class Entity implements Drawable
 {
 	protected float x, y;
 	protected int width, height;
-	protected boolean hovered, clicked;
+	protected boolean hovered, clicked, dead;
 	protected Rectangle bump;
 	protected Attributes attributes;
 	
@@ -70,6 +72,19 @@ public abstract class Entity implements Drawable
 		this.y = y;
 	}
 	
+	@Override
+	public void update(int tick)
+	{
+		if (attributes.get(Types.HEALTH) < 1)
+		{
+			onDeath();
+		}
+		
+		tick(tick);
+	}
+	
+	protected abstract void tick(int tick);
+	
 	public int getWidth()
 	{
 		return width;
@@ -119,7 +134,10 @@ public abstract class Entity implements Drawable
 	
 	public boolean mouseMoved(MouseEvent e)
 	{
-		return hovered = contains(e.getXOnScreen(), e.getYOnScreen());
+		hovered = contains(e.getXOnScreen(), e.getYOnScreen());
+		if (this instanceof Tree && hovered) onDeath();
+		
+		return hovered;
 	}
 	
 	public boolean mousePressed(MouseEvent e)
@@ -152,4 +170,17 @@ public abstract class Entity implements Drawable
 	{
 		return attributes;
 	}
+	
+	public void dealDamage(int amount)
+	{
+		attributes.add(Types.HEALTH, -amount);
+	}
+	
+	public boolean isDead()
+	{
+		return dead;
+	}
+	
+	// -- abstract event methods -- //
+	protected abstract void onDeath();
 }

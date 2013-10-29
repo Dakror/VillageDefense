@@ -14,20 +14,32 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class Creature extends Entity
+public abstract class Creature extends Entity
 {
-	Image image;
-	Vector target;
-	boolean frozen;
-	boolean hostile;
+	protected Image image;
+	protected Vector target;
+	protected Entity targetEnemy;
+	protected boolean frozen;
+	private boolean hostile;
+	/**
+	 * 0 = down<br>
+	 * 1 = left<br>
+	 * 2 = right<br>
+	 * 3 = up
+	 */
+	protected int dir;
+	protected int frame;
 	
 	public Creature(int x, int y, String img)
 	{
-		super(x, y, Game.getImage("char/" + img + ".png").getWidth() / 4, Game.getImage("char/" + img + ".png").getHeight() / 4);
-		image = Game.getImage("char/" + img + ".png");
+		super(x, y, Game.getImage("creature/" + img + ".png").getWidth() / 4, Game.getImage("creature/" + img + ".png").getHeight() / 4);
+		image = Game.getImage("creature/" + img + ".png");
 		
 		setBump(new Rectangle((int) (width * 0.25f), (int) (height * 0.75f), (int) (width * 0.5f), (int) (height * 0.25f)));
 		frozen = false;
+		
+		dir = 0;
+		frame = 0;
 	}
 	
 	@Override
@@ -35,22 +47,58 @@ public class Creature extends Entity
 	{
 		drawBump(g, false);
 		
-		g.drawImage(image, (int) x, (int) y, (int) x + width, (int) y + height, 0, 0, width, height, Game.w);
+		g.drawImage(image, (int) x, (int) y, (int) x + width, (int) y + height, frame * width, dir * height, frame * width + width, dir * height + height, Game.w);
 		
 		drawBump(g, true);
 	}
 	
 	@Override
-	public void update()
+	public void tick(int tick)
+	{
+		if (targetEnemy != null && !Game.currentGame.world.entities.contains(targetEnemy)) targetEnemy = null;
+		
+		move(tick);
+		
+		// -- attacks -- //
+		if (targetEnemy != null && //
+		target == null // not moving = at destination or standing still
+		)
+		{
+			if (tick % attributes.get(Types.ATTACK_SPEED) == 0)
+			{
+				targetEnemy.dealDamage((int) (targetEnemy instanceof Struct ? attributes.get(Types.DAMAGE_STRUCT) : attributes.get(Types.DAMAGE_CREATURE)));
+				frame++;
+			}
+		}
+		
+		if (targetEnemy == null) frame = 0;
+		
+		frame = frame % 4;
+	}
+	
+	public void move(int tick)
 	{
 		if (!frozen && attributes.get(Types.SPEED) > 0 && target != null)
 		{
 			Vector pos = getPos();
 			Vector dif = target.clone().sub(pos);
 			
-			if (dif.getLength() < attributes.get(Types.SPEED)) target = null;
+			if (dif.getLength() < attributes.get(Types.SPEED))
+			{
+				target = null;
+				frame = 0;
+			}
 			
 			dif.setLength(attributes.get(Types.SPEED));
+			
+			float angle = dif.getAngleOnXAxis();
+			if (angle <= 135 && angle >= 45) dir = 0;
+			else if (angle <= 45 && angle >= -45) dir = 2;
+			else if (angle <= -45 && angle >= -135) dir = 3;
+			else dir = 1;
+			
+			if (tick % 10 == 0) frame++;
+			
 			
 			setPos(pos.add(dif));
 		}
@@ -68,6 +116,10 @@ public class Creature extends Entity
 	
 	public void setTarget(Entity entity)
 	{
+		if (hostile) targetEnemy = entity;
+		
+		if (frozen || attributes.get(Types.SPEED) == 0) return;
+		
 		if (entity instanceof Creature)
 		{
 			// TODO: target on creatures
@@ -83,7 +135,7 @@ public class Creature extends Entity
 			
 			Vector nearestPoint = null;
 			
-			ArrayList<Vector> points = hostile ? s.getType().getStructPoints().attacks : s.getType().getStructPoints().entries;
+			ArrayList<Vector> points = hostile ? s.getStructPoints().attacks : s.getStructPoints().entries;
 			
 			if (points.size() == 0)
 			{
@@ -99,8 +151,9 @@ public class Creature extends Entity
 				v.add(s.getPos());
 				if (nearestPoint == null || v.getDistance(pos) < nearestPoint.getDistance(pos)) nearestPoint = v;
 			}
+			nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Types.ATTACK_RANGE));
 			
-			nearestPoint.y -= height * 0.75f;
+			nearestPoint.y -= height * 0.6f;
 			
 			setTarget(nearestPoint);
 		}
@@ -129,5 +182,12 @@ public class Creature extends Entity
 	public void setHostile(boolean hostile)
 	{
 		this.hostile = hostile;
+		if (hostile) setTarget(Game.currentGame.world.core);
+	}
+	
+	@Override
+	public void onDeath()
+	{
+		dead = true;
 	}
 }

@@ -9,11 +9,27 @@ public class Attributes
 {
 	public static enum Types
 	{
-		DAMAGE_CREATURE,
-		DAMAGE_STRUCT,
-		HEALTH,
-		HEALTH_MAX,
-		SPEED,
+		ATTACK_RANGE(0),
+		ATTACK_SPEED(25), // in ticks
+		DAMAGE_CREATURE(0),
+		DAMAGE_STRUCT(0),
+		HEALTH(1),
+		HEALTH_MAX(1),
+		SPEED(1),
+		
+		;
+		
+		private float defaultValue;
+		
+		private Types(float defaultValue)
+		{
+			this.defaultValue = defaultValue;
+		}
+		
+		public float getDefaultValue()
+		{
+			return defaultValue;
+		}
 	}
 	
 	HashMap<Types, Float> attr = new HashMap<>();
@@ -21,7 +37,7 @@ public class Attributes
 	public Attributes()
 	{
 		for (Types t : Types.values())
-			attr.put(t, 0f);
+			attr.put(t, t.getDefaultValue());
 	}
 	
 	public float get(Types t)
@@ -32,6 +48,13 @@ public class Attributes
 	public Attributes set(Types t, float value)
 	{
 		attr.put(t, value);
+		
+		return this;
+	}
+	
+	public Attributes add(Types t, float value)
+	{
+		attr.put(t, get(t) + value);
 		
 		return this;
 	}
