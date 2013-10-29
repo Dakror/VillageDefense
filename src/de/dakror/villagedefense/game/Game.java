@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 
 import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.settings.CFG;
+import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.EventListener;
 
@@ -45,6 +46,7 @@ public class Game extends EventListener
 	public int state;
 	
 	public World world;
+	public Resources resources;
 	
 	public Game()
 	{
@@ -60,10 +62,11 @@ public class Game extends EventListener
 		w.addMouseListener(this);
 		w.addMouseMotionListener(this);
 		w.addMouseWheelListener(this);
-		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
-		
 		w.setBackground(Color.black);
 		w.setForeground(Color.white);
+		w.getContentPane().setBackground(Color.black);
+		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
+		
 		w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		w.setUndecorated(true);
 		w.setResizable(false);
@@ -72,9 +75,7 @@ public class Game extends EventListener
 		world = new World();
 		world.generate();
 		state = 0;
-		
 		w.setVisible(true);
-		w.toFront();
 		
 		try
 		{
@@ -111,6 +112,9 @@ public class Game extends EventListener
 		world.draw(g);
 		
 		drawState(g);
+		
+		Assistant.drawShadow(8, 14, w.getWidth(), 110,/* false, */g);
+		Assistant.drawContainer(8, 8, w.getWidth() - 16, 100, false, g);
 		
 		g.dispose();
 		

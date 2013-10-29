@@ -13,6 +13,7 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.entity.struct.CoreHouse;
 import de.dakror.villagedefense.game.entity.struct.House;
+import de.dakror.villagedefense.game.entity.struct.Rock;
 import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.settings.Attributes.Types;
@@ -141,6 +142,7 @@ public class World extends EventListener implements Drawable
 		core.getAttributes().set(Types.HEALTH, 1);
 		addEntity(core);
 		
+		addEntity(new Rock(x + 7, y + 8));
 		addEntity(new House(x - 7, y - 8));
 		addEntity(new Tree(x + 7, y - 8));
 	}
