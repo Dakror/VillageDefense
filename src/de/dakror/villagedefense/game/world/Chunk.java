@@ -65,11 +65,17 @@ public class Chunk
 				}
 			}
 		}
+		
+		// g.setColor(Color.red);
+		// g.drawRect(0, 0, SIZE * Tile.SIZE, SIZE * Tile.SIZE);
 	}
 	
 	public byte getTileId(int x, int y)
 	{
-		if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) return Tile.emtpy.getId();
+		if (x < 0 || y < 0) return Tile.emtpy.getId();
+		
+		if (x >= SIZE) x -= this.x * SIZE;
+		if (y >= SIZE) y -= this.y * SIZE;
 		
 		return data[x][y];
 	}
@@ -82,7 +88,5 @@ public class Chunk
 	public void setTileId(int x, int y, byte d, World w)
 	{
 		data[x][y] = d;
-		
-		render(w);
 	}
 }

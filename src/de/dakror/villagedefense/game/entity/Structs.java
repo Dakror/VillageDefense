@@ -7,8 +7,9 @@ import java.awt.geom.Rectangle2D;
  */
 public enum Structs
 {
-	CORE_HOUSE(4, 0, 3, 5, new Rectangle2D.Float(0, 3, 3, 2), true),
+	CORE_HOUSE(4, 0, 3, 5, new Rectangle2D.Float(0.1f, 3, 2.8f, 2), true),
 	TREE(0, 0, 4, 5, new Rectangle2D.Float(1.4f, 4.3f, 1, 0.6f), false),
+	HOUSE(0, 5, 5, 5, new Rectangle2D.Float(0.25f, 2f, 4.5f, 3f), true),
 	
 	;
 	

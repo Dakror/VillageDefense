@@ -110,7 +110,7 @@ public class World extends EventListener implements Drawable
 			@Override
 			public int compare(Entity o1, Entity o2)
 			{
-				return o1.getY() - o2.getY();
+				return (o1.getY() + o1.getHeight()) - (o2.getY() + o2.getHeight());
 			}
 		});
 		
@@ -131,9 +131,8 @@ public class World extends EventListener implements Drawable
 			setTileId(i - x - 2, y + 4, Tile.ground.getId());
 		}
 		
-		render();
-		
 		addEntity(new Struct(x, y, Structs.CORE_HOUSE));
+		addEntity(new Struct(x - 5, y - 5, Structs.HOUSE));
 	}
 	
 	@Override
@@ -151,6 +150,8 @@ public class World extends EventListener implements Drawable
 	{
 		if (e instanceof Struct) ((Struct) e).placeGround(this);
 		entities.add(e);
+		
+		render();
 	}
 	
 	@Override
