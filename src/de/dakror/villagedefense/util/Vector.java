@@ -1,5 +1,7 @@
 package de.dakror.villagedefense.util;
 
+import java.awt.Point;
+
 
 public class Vector
 {
@@ -10,6 +12,12 @@ public class Vector
 	{
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Vector(Point p)
+	{
+		x = p.x;
+		y = p.y;
 	}
 	
 	public Vector add(Vector o)
@@ -51,9 +59,22 @@ public class Vector
 		setLength(1);
 	}
 	
+	public float getDistance(Vector o)
+	{
+		return clone().sub(o).getLength();
+	}
+	
 	@Override
 	public String toString()
 	{
 		return "[x=" + x + ", y=" + y + "]";
+	}
+	
+	public Vector mul(float size)
+	{
+		x *= size;
+		y *= size;
+		
+		return this;
 	}
 }

@@ -13,6 +13,7 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.entity.Structs;
 import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.settings.Attributes.Types;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.EventListener;
 
@@ -133,8 +134,16 @@ public class World extends EventListener implements Drawable
 			setTileId(i, y + 1, Tile.ground.getId());
 		}
 		
-		addEntity(new Struct(x - 2, y - 3, Structs.CORE_HOUSE));
+		Struct core = new Struct(x - 2, y - 3, Structs.CORE_HOUSE);
+		
+		addEntity(core);
 		addEntity(new Struct(x - 7, y - 8, Structs.HOUSE));
+		
+		Creature c = new Creature(0, y * Tile.SIZE, "zombie");
+		c.setHostile(true);
+		c.getAttributes().set(Types.SPEED, 3f);
+		c.setTarget(core);
+		addEntity(c);
 	}
 	
 	@Override

@@ -58,4 +58,9 @@ public class Struct extends Entity
 			}
 		}
 	}
+	
+	public Structs getType()
+	{
+		return type;
+	}
 }

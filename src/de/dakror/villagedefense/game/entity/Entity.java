@@ -28,6 +28,7 @@ public abstract class Entity implements Drawable
 		this.height = height;
 		
 		bump = new Rectangle();
+		attributes = new Attributes();
 	}
 	
 	public void drawBump(Graphics2D g, boolean above)
