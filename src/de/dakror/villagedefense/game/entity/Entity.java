@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
-import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.Attributes.Types;
 import de.dakror.villagedefense.util.Drawable;
@@ -134,10 +133,7 @@ public abstract class Entity implements Drawable
 	
 	public boolean mouseMoved(MouseEvent e)
 	{
-		hovered = contains(e.getXOnScreen(), e.getYOnScreen());
-		if (this instanceof Tree && hovered) onDeath();
-		
-		return hovered;
+		return hovered = contains(e.getXOnScreen(), e.getYOnScreen());
 	}
 	
 	public boolean mousePressed(MouseEvent e)
