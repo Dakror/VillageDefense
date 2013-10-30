@@ -17,7 +17,7 @@ public abstract class Creature extends Entity
 {
 	protected Image image;
 	protected Vector target;
-	protected Entity targetEnemy;
+	protected Entity targetEntity;
 	protected boolean frozen;
 	private boolean hostile;
 	/**
@@ -54,19 +54,30 @@ public abstract class Creature extends Entity
 	@Override
 	public void tick(int tick)
 	{
-		if (targetEnemy != null && !Game.world.entities.contains(targetEnemy)) targetEnemy = null;
+		if (targetEntity != null && !Game.world.entities.contains(targetEntity)) targetEntity = null;
 		
 		move(tick);
 		
 		// -- attacks -- //
-		if (targetEnemy != null && //
+		if (targetEntity != null && //
 		target == null // not moving = at destination or standing still
 		)
 		{
-			if (tick % attributes.get(Attribute.ATTACK_SPEED) == 0)
+			if (hostile)
 			{
-				targetEnemy.dealDamage((int) (targetEnemy instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)));
-				frame++;
+				if (tick % attributes.get(Attribute.ATTACK_SPEED) == 0)
+				{
+					targetEntity.dealDamage((int) (targetEntity instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)));
+					frame++;
+				}
+			}
+			else if (targetEntity instanceof Struct && targetEntity.getResources().size() > 0)
+			{
+				if (tick % attributes.get(Attribute.MINE_SPEED) == 0)
+				{
+					((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT));
+					frame++;
+				}
 			}
 			else frame = 0;
 		}
@@ -113,7 +124,7 @@ public abstract class Creature extends Entity
 	
 	public void setTarget(Entity entity)
 	{
-		if (hostile) targetEnemy = entity;
+		if (hostile) targetEntity = entity;
 		
 		if (frozen || attributes.get(Attribute.SPEED) == 0) return;
 		
@@ -129,6 +140,8 @@ public abstract class Creature extends Entity
 		else if (entity instanceof Struct)
 		{
 			Struct s = (Struct) entity;
+			
+			if (s.getResources().size() > 0) targetEntity = entity;
 			
 			Vector nearestPoint = null;
 			

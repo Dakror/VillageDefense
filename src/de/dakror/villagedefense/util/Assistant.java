@@ -131,4 +131,26 @@ public class Assistant
 		g.drawString(resources.get(r) + "", x + space, y + fm.getAscent() + 2);
 		g.setFont(old);
 	}
+	
+	/**
+	 * @param percent 0 - 1
+	 */
+	public static void drawProgressBar(int x, int y, int width, float percent, String color, Graphics2D g)
+	{
+		Image filling = Game.getImage("gui/bar/Bar-" + color + ".png");
+		Image base = Game.getImage("gui/bar/BarBase.png");
+		
+		drawImage(base, x, y, 6, 23, 0, 0, 6, 23, g);
+		drawImage(base, x + width - 6, y, 6, 23, 7, 0, 6, 23, g);
+		for (int i = x + 6; i < x + width - 6; i++)
+			drawImage(base, i, y, 1, 23, 6, 0, 1, 23, g);
+		
+		int fillWidth = (int) ((width - 12) * percent);
+		
+		
+		if (percent > 0) drawImage(filling, x, y, 6, 23, 0, 0, 6, 23, g);
+		if (percent == 1) drawImage(filling, x + width - 6, y, 6, 23, 7, 0, 6, 23, g);
+		for (int i = x + 6; i < x + 6 + fillWidth; i++)
+			drawImage(filling, i, y, 1, 23, 6, 0, 1, 23, g);
+	}
 }

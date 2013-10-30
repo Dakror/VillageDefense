@@ -30,4 +30,10 @@ public class Rock extends Struct
 	{
 		dead = true;
 	}
+	
+	@Override
+	protected void onMinedUp()
+	{
+		onDeath();
+	}
 }

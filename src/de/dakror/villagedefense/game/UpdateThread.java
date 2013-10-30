@@ -1,10 +1,5 @@
 package de.dakror.villagedefense.game;
 
-
-
-
-
-
 /**
  * @author Dakror
  */

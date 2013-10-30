@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
 import de.dakror.villagedefense.util.Vector;
 
@@ -91,6 +92,22 @@ public abstract class Struct extends Entity
 		placeGround();
 	}
 	
+	public void mineAllResources(int amount)
+	{
+		if (resources.size() == 0) return;
+		
+		ArrayList<Resource> filled = resources.getFilled();
+		for (Resource r : filled)
+		{
+			int get = resources.get(r);
+			int newVal = get - amount > -1 ? get - amount : 0;
+			Game.currentGame.resources.add(r, get - newVal);
+			resources.set(r, newVal);
+		}
+		
+		if (resources.size() == 0) onMinedUp();
+	}
+	
 	public ArrayList<Vector> getSurroundingTiles()
 	{
 		ArrayList<Vector> tiles = new ArrayList<>();
@@ -114,4 +131,6 @@ public abstract class Struct extends Entity
 		
 		return tiles;
 	}
+	
+	protected abstract void onMinedUp();
 }

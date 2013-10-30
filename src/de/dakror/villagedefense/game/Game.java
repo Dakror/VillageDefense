@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import de.dakror.villagedefense.game.world.World;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.util.Assistant;
@@ -55,6 +56,7 @@ public class Game extends EventListener
 	public UpdateThread updateThread;
 	
 	public long nextWave; // UNIX timestamp
+	long gameOver; // UNIX timestamp
 	
 	public Game()
 	{
@@ -157,8 +159,12 @@ public class Game extends EventListener
 		Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
 		if (world.selectedEntity != null)
 		{
-			Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 115, g, 40);
-			
+			Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
+			Assistant.drawProgressBar(getWidth() / 2 - 179, 111, 358, world.selectedEntity.getAttributes().get(Attribute.HEALTH) / world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
+			Color oldColor = g.getColor();
+			g.setColor(Color.white);
+			Assistant.drawHorizontallyCenteredString((int) world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), getWidth(), 126, g, 15);
+			g.setColor(oldColor);
 			if (world.selectedEntity.getResources().size() > 0)
 			{
 				ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
@@ -182,7 +188,8 @@ public class Game extends EventListener
 		
 		// -- time panel -- //
 		Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
-		Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
+		if (state == 0) Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
+		else Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= gameOver) ? nextWave - gameOver : 0)), getWidth(), 60, g, 70);
 	}
 	
 	public void drawState(Graphics2D g)
@@ -226,6 +233,12 @@ public class Game extends EventListener
 	public static int getWidth()
 	{
 		return w.getWidth() - (w.getInsets().left + w.getInsets().right);
+	}
+	
+	public void setState(int state)
+	{
+		this.state = state;
+		if (state == 2) gameOver = System.currentTimeMillis();
 	}
 	
 	public static int getHeight()

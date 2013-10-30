@@ -15,6 +15,8 @@ public class Attributes
 		DAMAGE_STRUCT(0),
 		HEALTH(1),
 		HEALTH_MAX(1),
+		MINE_SPEED(25),
+		MINE_AMOUNT(1),
 		SPEED(1),
 		
 		;
@@ -48,7 +50,6 @@ public class Attributes
 	public Attributes set(Attribute t, float value)
 	{
 		attr.put(t, value);
-		
 		return this;
 	}
 	
@@ -67,5 +68,11 @@ public class Attributes
 			if (attr.get(r) != 0) s++;
 		
 		return s;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return attr.toString();
 	}
 }

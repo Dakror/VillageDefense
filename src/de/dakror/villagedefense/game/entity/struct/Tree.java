@@ -40,4 +40,10 @@ public class Tree extends Struct
 		y += 4 * Tile.SIZE;
 		name = "Baumstumpf";
 	}
+	
+	@Override
+	protected void onMinedUp()
+	{
+		onDeath();
+	}
 }

@@ -12,12 +12,13 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
+import de.dakror.villagedefense.game.entity.creature.Villager;
+import de.dakror.villagedefense.game.entity.creature.Zombie;
 import de.dakror.villagedefense.game.entity.struct.CoreHouse;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Rock;
 import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.tile.Tile;
-import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.EventListener;
 
@@ -145,13 +146,13 @@ public class World extends EventListener implements Drawable
 		}
 		
 		core = new CoreHouse(x - 2, y - 3);
-		core.getAttributes().set(Attribute.HEALTH_MAX, 1);
-		core.getAttributes().set(Attribute.HEALTH, 1);
 		addEntity(core);
 		
 		addEntity(new Rock(x + 7, y + 8));
 		addEntity(new House(x - 7, y - 8));
 		addEntity(new Tree(x + 7, y - 8));
+		
+		addEntity(new Zombie(0, 500));
 	}
 	
 	@Override
@@ -210,7 +211,7 @@ public class World extends EventListener implements Drawable
 				}
 			}
 		}
-		else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Creature)
+		else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Villager)
 		{
 			Entity target = null;
 			for (Entity entity : entities)

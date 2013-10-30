@@ -38,4 +38,8 @@ public class House extends Struct
 	{
 		Game.world.addEntity(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE));
 	}
+	
+	@Override
+	protected void onMinedUp()
+	{}
 }
