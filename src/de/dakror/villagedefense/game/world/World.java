@@ -67,7 +67,7 @@ public class World extends EventListener implements Drawable
 	{
 		Point index = getChunk(x, y);
 		
-		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length) return Tile.emtpy.getId();
+		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length) return Tile.empty.getId();
 		
 		return chunks[index.x][index.y].getTileId(x - index.x * Chunk.SIZE, y - index.y * Chunk.SIZE);
 	}

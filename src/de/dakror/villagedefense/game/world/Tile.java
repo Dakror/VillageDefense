@@ -14,7 +14,7 @@ public class Tile
 	private static Tile[] tileList = new Tile[TILES];
 	
 	// -- Tile List -- //
-	public static Tile emtpy = new Tile(0, "Leer", "emtpy.png");
+	public static Tile empty = new Tile(0, "Leer", "empty.png");
 	public static Tile grass = new Tile(1, "Gras", "grass.png");
 	public static Tile ground = new Tile(2, "Boden", "ground.png");
 	

@@ -45,7 +45,7 @@ public class Chunk
 				
 				Tile tile = Tile.getTileForId(data[i][j]);
 				
-				if (tile.equals(Tile.emtpy)) continue;
+				if (tile.equals(Tile.empty)) continue;
 				
 				Point tp = tile.getTexturePos(this.x * Chunk.SIZE + i, this.y * Chunk.SIZE + j);
 				if (tp.x < 3) // convex
@@ -71,7 +71,7 @@ public class Chunk
 	
 	public byte getTileId(int x, int y)
 	{
-		if (x < 0 || y < 0) return Tile.emtpy.getId();
+		if (x < 0 || y < 0) return Tile.empty.getId();
 		
 		if (x >= SIZE) x -= this.x * SIZE;
 		if (y >= SIZE) y -= this.y * SIZE;
