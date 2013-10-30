@@ -7,15 +7,20 @@ import java.util.HashMap;
  */
 public class Attributes
 {
-	public static enum Attribute
+	/**
+	 * Attributes about speed are expressed as ticks
+	 * 
+	 * @author Dakror
+	 */
+	public enum Attribute
 	{
 		ATTACK_RANGE(0),
-		ATTACK_SPEED(25), // in ticks
+		ATTACK_SPEED(25),
 		DAMAGE_CREATURE(0),
 		DAMAGE_STRUCT(0),
 		HEALTH(1),
 		HEALTH_MAX(1),
-		MINE_SPEED(5),
+		MINE_SPEED(25),
 		MINE_AMOUNT(1),
 		SPEED(1),
 		

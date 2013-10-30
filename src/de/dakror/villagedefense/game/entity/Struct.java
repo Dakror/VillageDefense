@@ -9,6 +9,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
+import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -32,7 +33,7 @@ public abstract class Struct extends Entity
 	{
 		drawBump(g, false);
 		
-		g.drawImage(Game.getImage("structs.png"), (int) x, (int) y, (int) x + width, (int) y + height, tx * Tile.SIZE, ty * Tile.SIZE, tx * Tile.SIZE + width, ty * Tile.SIZE + height, Game.w);
+		Assistant.drawImage(Game.getImage("structs.png"), (int) x, (int) y, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
 		
 		drawBump(g, true);
 		
@@ -99,6 +100,8 @@ public abstract class Struct extends Entity
 		ArrayList<Resource> filled = resources.getFilled();
 		for (Resource r : filled)
 		{
+			if (!r.isUsable()) continue;
+			
 			int get = resources.get(r);
 			int newVal = get - amount > -1 ? get - amount : 0;
 			Game.currentGame.resources.add(r, get - newVal);

@@ -67,7 +67,7 @@ public abstract class Creature extends Entity
 			{
 				if (tick % attributes.get(Attribute.ATTACK_SPEED) == 0)
 				{
-					targetEntity.dealDamage((int) (targetEntity instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)));
+					if (frame % 2 == 0) targetEntity.dealDamage((int) (targetEntity instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)));
 					frame++;
 				}
 			}
@@ -75,7 +75,7 @@ public abstract class Creature extends Entity
 			{
 				if (tick % attributes.get(Attribute.MINE_SPEED) == 0)
 				{
-					((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT));
+					if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT));
 					frame++;
 				}
 			}
@@ -168,6 +168,11 @@ public abstract class Creature extends Entity
 	public Vector getTarget()
 	{
 		return target;
+	}
+	
+	public Vector getTarget2()
+	{
+		return target == null ? getPos() : target;
 	}
 	
 	public void setFrozen(boolean frozen)

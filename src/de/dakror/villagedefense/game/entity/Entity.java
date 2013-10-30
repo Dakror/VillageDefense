@@ -160,6 +160,13 @@ public abstract class Entity implements Drawable
 		return new Vector(x, y);
 	}
 	
+	public Vector getCenter()
+	{
+		Vector v = getPos();
+		v.add(new Vector((float) bump.getCenterX(), (float) bump.getCenterY()));
+		return v;
+	}
+	
 	public void setPos(Vector v)
 	{
 		x = v.x;
