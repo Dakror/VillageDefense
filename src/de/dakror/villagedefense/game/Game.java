@@ -98,7 +98,9 @@ public class Game extends EventListener
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			w.dispose();
+			init();
+			return;
 		}
 		
 		updateThread = new UpdateThread();
@@ -156,40 +158,50 @@ public class Game extends EventListener
 	
 	public void drawGUI(Graphics2D g)
 	{
-		Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
-		if (world.selectedEntity != null)
+		try
 		{
-			Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
-			Assistant.drawProgressBar(getWidth() / 2 - 179, 111, 358, world.selectedEntity.getAttributes().get(Attribute.HEALTH) / world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
-			Color oldColor = g.getColor();
-			g.setColor(Color.white);
-			Assistant.drawHorizontallyCenteredString((int) world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), getWidth(), 126, g, 15);
-			g.setColor(oldColor);
-			if (world.selectedEntity.getResources().size() > 0)
+			Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
+			if (world.selectedEntity != null)
 			{
-				ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
-				Assistant.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
-				for (int i = 0; i < resources.size(); i++)
+				Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
+				
+				if (world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue())
 				{
-					Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
+					Assistant.drawProgressBar(getWidth() / 2 - 179, 111, 358, world.selectedEntity.getAttributes().get(Attribute.HEALTH) / world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
+					Color oldColor = g.getColor();
+					g.setColor(Color.white);
+					Assistant.drawHorizontallyCenteredString((int) world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), getWidth(), 126, g, 15);
+					g.setColor(oldColor);
+				}
+				
+				if (world.selectedEntity.getResources().size() > 0)
+				{
+					ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
+					Assistant.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
+					for (int i = 0; i < resources.size(); i++)
+					{
+						Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
+					}
 				}
 			}
-		}
-		
-		Assistant.drawContainer(0, 0, getWidth(), 80, false, false, g);
-		Assistant.drawContainer(0, getHeight() - 100, getWidth(), 100, false, false, g);
-		
-		for (int i = 0; i < Resource.values().length; i++)
-		{
-			int w = (getWidth() / 2 - 100) / 4;
 			
-			Assistant.drawResource(resources, Resource.values()[i], 25 + i * w, 30, 30, 25, g);
+			Assistant.drawContainer(0, 0, getWidth(), 80, false, false, g);
+			Assistant.drawContainer(0, getHeight() - 100, getWidth(), 100, false, false, g);
+			
+			for (int i = 0; i < Resource.values().length; i++)
+			{
+				int w = (getWidth() / 2 - 100) / 4;
+				
+				Assistant.drawResource(resources, Resource.values()[i], 25 + i * w, 30, 30, 25, g);
+			}
+			
+			// -- time panel -- //
+			Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
+			if (state == 0) Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
+			else Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= gameOver) ? nextWave - gameOver : 0)), getWidth(), 60, g, 70);
 		}
-		
-		// -- time panel -- //
-		Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
-		if (state == 0) Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
-		else Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= gameOver) ? nextWave - gameOver : 0)), getWidth(), 60, g, 70);
+		catch (NullPointerException e)
+		{}
 	}
 	
 	public void drawState(Graphics2D g)
@@ -221,12 +233,14 @@ public class Game extends EventListener
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
+		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		if (state == 0) world.mouseMoved(e);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
+		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		if (state == 0) world.mousePressed(e);
 	}
 	

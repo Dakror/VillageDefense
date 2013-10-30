@@ -19,8 +19,8 @@ public class CoreHouse extends Struct
 		ty = 0;
 		setBump(new Rectangle2D.Float(0.1f, 3, 2.8f, 2));
 		structPoints.addAttacks(new Vector(-1, 3.75f), new Vector(3, 3.75f));
-		attributes.set(Attribute.HEALTH, 50);
-		attributes.set(Attribute.HEALTH_MAX, 50);
+		attributes.set(Attribute.HEALTH, 100);
+		attributes.set(Attribute.HEALTH_MAX, 100);
 		placeGround = true;
 		name = "Basis-Gebäude";
 	}

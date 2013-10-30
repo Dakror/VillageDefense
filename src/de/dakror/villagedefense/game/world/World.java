@@ -13,7 +13,6 @@ import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.entity.creature.Villager;
-import de.dakror.villagedefense.game.entity.creature.Zombie;
 import de.dakror.villagedefense.game.entity.struct.CoreHouse;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Rock;
@@ -152,7 +151,7 @@ public class World extends EventListener implements Drawable
 		addEntity(new House(x - 7, y - 8));
 		addEntity(new Tree(x + 7, y - 8));
 		
-		addEntity(new Zombie(0, 500));
+		// addEntity(new Zombie(0, 500));
 	}
 	
 	@Override

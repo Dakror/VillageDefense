@@ -137,12 +137,12 @@ public abstract class Entity implements Drawable
 	
 	public boolean mouseMoved(MouseEvent e)
 	{
-		return hovered = contains(e.getXOnScreen(), e.getYOnScreen());
+		return hovered = contains(e.getX(), e.getY());
 	}
 	
 	public boolean mousePressed(MouseEvent e)
 	{
-		return clicked = contains(e.getXOnScreen(), e.getYOnScreen());
+		return clicked = contains(e.getX(), e.getY());
 	}
 	
 	public void setClicked(boolean b)

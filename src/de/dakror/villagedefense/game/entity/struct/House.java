@@ -6,13 +6,13 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
 
 /**
  * @author Dakror
  */
 public class House extends Struct
 {
-	
 	public House(int x, int y)
 	{
 		super(x, y, 5, 5);
@@ -21,6 +21,8 @@ public class House extends Struct
 		setBump(new Rectangle2D.Float(0.25f, 2f, 4.5f, 3f));
 		placeGround = true;
 		name = "Haus";
+		attributes.set(Attribute.HEALTH, 35);
+		attributes.set(Attribute.HEALTH_MAX, 35);
 	}
 	
 	@Override

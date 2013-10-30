@@ -15,7 +15,8 @@ public class Zombie extends Creature
 		setHostile(true);
 		attributes.set(Attribute.SPEED, 2f);
 		attributes.set(Attribute.DAMAGE_STRUCT, 5);
-		
+		attributes.set(Attribute.HEALTH, 20);
+		attributes.set(Attribute.HEALTH_MAX, 20);
 		name = "Zombie";
 	}
 }
