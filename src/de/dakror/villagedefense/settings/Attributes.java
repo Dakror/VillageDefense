@@ -58,4 +58,14 @@ public class Attributes
 		
 		return this;
 	}
+	
+	public int size()
+	{
+		int s = 0;
+		
+		for (Attribute r : attr.keySet())
+			if (attr.get(r) != 0) s++;
+		
+		return s;
+	}
 }

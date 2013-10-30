@@ -4,6 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
  * @author Dakror
@@ -17,6 +18,8 @@ public class Tree extends Struct
 		ty = 0;
 		setBump(new Rectangle2D.Float(2, 4.3f, 1, 0.6f));
 		placeGround = false;
+		resources.set(Resource.WOOD, 100);
+		name = "Baum";
 	}
 	
 	@Override
@@ -35,5 +38,6 @@ public class Tree extends Struct
 		ty = 5;
 		x += 2 * Tile.SIZE;
 		y += 4 * Tile.SIZE;
+		name = "Baumstumpf";
 	}
 }

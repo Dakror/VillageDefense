@@ -31,6 +31,8 @@ public class World extends EventListener implements Drawable
 	
 	public Struct core;
 	
+	public Entity selectedEntity;
+	
 	public ArrayList<Entity> entities = new ArrayList<>();
 	
 	public World()
@@ -193,9 +195,14 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
+		selectedEntity = null;
 		for (Entity entity : entities)
 			entity.setClicked(false);
 		for (Entity entity : entities)
-			if (entity.mousePressed(e)) break;
+			if (entity.mousePressed(e))
+			{
+				selectedEntity = entity;
+				break;
+			}
 	}
 }

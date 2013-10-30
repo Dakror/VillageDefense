@@ -11,7 +11,6 @@ import de.dakror.villagedefense.util.Vector;
  */
 public class CoreHouse extends Struct
 {
-	
 	public CoreHouse(int x, int y)
 	{
 		super(x, y, 3, 5);
@@ -20,6 +19,7 @@ public class CoreHouse extends Struct
 		setBump(new Rectangle2D.Float(0.1f, 3, 2.8f, 2));
 		structPoints.addAttacks(new Vector(-1, 3.75f), new Vector(3, 3.75f));
 		placeGround = true;
+		name = "Basis-Gebäude";
 	}
 	
 	@Override

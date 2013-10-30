@@ -20,6 +20,7 @@ public class House extends Struct
 		ty = 5;
 		setBump(new Rectangle2D.Float(0.25f, 2f, 4.5f, 3f));
 		placeGround = true;
+		name = "Haus";
 	}
 	
 	@Override

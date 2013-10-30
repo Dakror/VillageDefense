@@ -19,6 +19,7 @@ public abstract class Entity implements Drawable
 	protected float x, y;
 	protected int width, height;
 	protected boolean hovered, clicked, dead;
+	protected String name;
 	protected Rectangle bump;
 	protected Attributes attributes;
 	protected Resources resources;
@@ -183,6 +184,11 @@ public abstract class Entity implements Drawable
 	public boolean isDead()
 	{
 		return dead;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 	
 	// -- abstract event methods -- //

@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -21,7 +22,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import de.dakror.villagedefense.game.world.World;
-import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.util.Assistant;
@@ -33,7 +33,6 @@ import de.dakror.villagedefense.util.EventListener;
 public class Game extends EventListener
 {
 	public static Game currentGame;
-	
 	public static JFrame w;
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
@@ -52,6 +51,8 @@ public class Game extends EventListener
 	
 	public static World world;
 	public Resources resources;
+	
+	public UpdateThread updateThread;
 	
 	public long nextWave; // UNIX timestamp
 	
@@ -75,7 +76,7 @@ public class Game extends EventListener
 		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
 		
 		w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-		w.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		// w.setExtendedState(JFrame.MAXIMIZED_BOTH); makes game superlaggy somehow
 		w.setMinimumSize(new Dimension(1280, 720));
 		w.setUndecorated(true);
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,7 +88,7 @@ public class Game extends EventListener
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
 		w.setVisible(true);
-		
+		w.getContentPane().setIgnoreRepaint(true);
 		try
 		{
 			w.setFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/MorrisRomanBlack.ttf")));
@@ -95,13 +96,10 @@ public class Game extends EventListener
 		}
 		catch (Exception e)
 		{
-			CFG.p("retry");
-			w.dispose();
-			init();
-			return;
+			e.printStackTrace();
 		}
 		
-		new UpdateThread();
+		updateThread = new UpdateThread();
 	}
 	
 	public void draw()
@@ -110,7 +108,6 @@ public class Game extends EventListener
 		if (frames == Integer.MAX_VALUE) frames = 0;
 		
 		if (!w.isVisible()) return;
-		
 		
 		BufferStrategy s = w.getBufferStrategy();
 		Graphics2D g = null;
@@ -132,10 +129,18 @@ public class Game extends EventListener
 		
 		g.clearRect(0, 0, getWidth(), getHeight());
 		
-		// draw content
 		world.draw(g);
 		
 		drawGUI(g);
+		
+		// Color oldColor = g.getColor();
+		// Font oldFont = g.getFont();
+		// g.setColor(Color.green);
+		// g.setFont(oldFont.deriveFont(25f));
+		// g.drawString(Math.round(frames / ((System.currentTimeMillis() - start) / 1000f)) + " FPS", 0, 20);
+		// g.drawString(Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f)) + " UPS", 0, 40);
+		// g.setColor(oldColor);
+		// g.setFont(oldFont);
 		
 		drawState(g);
 		
@@ -148,19 +153,35 @@ public class Game extends EventListener
 	
 	public void drawGUI(Graphics2D g)
 	{
+		Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
+		if (world.selectedEntity != null)
+		{
+			Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 115, g, 40);
+			
+			if (world.selectedEntity.getResources().size() > 0)
+			{
+				ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
+				Assistant.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
+				for (int i = 0; i < resources.size(); i++)
+				{
+					Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
+				}
+			}
+		}
+		
 		Assistant.drawContainer(0, 0, getWidth(), 80, false, false, g);
 		Assistant.drawContainer(0, getHeight() - 100, getWidth(), 100, false, false, g);
-		
-		// -- time panel -- //
-		Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
-		Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
 		
 		for (int i = 0; i < Resource.values().length; i++)
 		{
 			int w = (getWidth() / 2 - 100) / 4;
 			
-			Assistant.drawResource(resources, Resource.values()[i], 25 + i * w, 30, 30, g);
+			Assistant.drawResource(resources, Resource.values()[i], 25 + i * w, 30, 30, 25, g);
 		}
+		
+		// -- time panel -- //
+		Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
+		Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
 	}
 	
 	public void drawState(Graphics2D g)

@@ -4,9 +4,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.TexturePaint;
+import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
 import de.dakror.villagedefense.game.Game;
@@ -71,12 +69,21 @@ public class Assistant
 	public static void drawContainer(int x, int y, int width, int height, boolean doubled, boolean wood, Graphics2D g)
 	{
 		drawShadow(x - 10, y - 10, width + 20, height + 20, g);
+		Image image = Game.getImage(wood ? "gui/wood.png" : "gui/paper.png");
 		
-		Paint oldPaint = g.getPaint();
-		g.setPaint(new TexturePaint(Game.getImage(wood ? "gui/wood.png" : "gui/paper.png"), new Rectangle(0, 0, 512, 512)));
-		g.fillRect(x, y, width, height);
 		
-		g.setPaint(oldPaint);
+		Shape oldClip = g.getClip();
+		g.setClip(x, y, width, height);
+		
+		for (int i = x; i < x + width; i += 512)
+		{
+			for (int j = y; j < y + height; j += 512)
+			{
+				g.drawImage(image, i, j, Game.w);
+			}
+		}
+		
+		g.setClip(oldClip);
 		drawOutline(x, y, width, height, doubled, g);
 	}
 	
@@ -115,13 +122,13 @@ public class Assistant
 		g.drawImage(img, x, y, x + width, y + height, sx, sy, sx + swidth, sy + sheight, Game.w);
 	}
 	
-	public static void drawResource(Resources resources, Resource r, int x, int y, int size, Graphics2D g)
+	public static void drawResource(Resources resources, Resource r, int x, int y, int size, int space, Graphics2D g)
 	{
 		drawImage(Game.getImage("icons.png"), x, y, 24, 24, r.getIconX() * 24, r.getIconY() * 24, 24, 24, g);
 		Font old = g.getFont();
 		g.setFont(g.getFont().deriveFont((float) size));
 		FontMetrics fm = g.getFontMetrics();
-		g.drawString(resources.get(r) + "", x + 25, y + fm.getHeight() - 7);
+		g.drawString(resources.get(r) + "", x + space, y + fm.getAscent() + 2);
 		g.setFont(old);
 	}
 }
