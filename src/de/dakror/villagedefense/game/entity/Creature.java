@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
-import de.dakror.villagedefense.settings.Attributes.Types;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.util.Vector;
 
@@ -64,9 +64,9 @@ public abstract class Creature extends Entity
 		target == null // not moving = at destination or standing still
 		)
 		{
-			if (tick % attributes.get(Types.ATTACK_SPEED) == 0)
+			if (tick % attributes.get(Attribute.ATTACK_SPEED) == 0)
 			{
-				targetEnemy.dealDamage((int) (targetEnemy instanceof Struct ? attributes.get(Types.DAMAGE_STRUCT) : attributes.get(Types.DAMAGE_CREATURE)));
+				targetEnemy.dealDamage((int) (targetEnemy instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)));
 				frame++;
 			}
 		}
@@ -78,18 +78,18 @@ public abstract class Creature extends Entity
 	
 	public void move(int tick)
 	{
-		if (!frozen && attributes.get(Types.SPEED) > 0 && target != null)
+		if (!frozen && attributes.get(Attribute.SPEED) > 0 && target != null)
 		{
 			Vector pos = getPos();
 			Vector dif = target.clone().sub(pos);
 			
-			if (dif.getLength() < attributes.get(Types.SPEED))
+			if (dif.getLength() < attributes.get(Attribute.SPEED))
 			{
 				target = null;
 				frame = 0;
 			}
 			
-			dif.setLength(attributes.get(Types.SPEED));
+			dif.setLength(attributes.get(Attribute.SPEED));
 			
 			float angle = dif.getAngleOnXAxis();
 			if (angle <= 135 && angle >= 45) dir = 0;
@@ -118,7 +118,7 @@ public abstract class Creature extends Entity
 	{
 		if (hostile) targetEnemy = entity;
 		
-		if (frozen || attributes.get(Types.SPEED) == 0) return;
+		if (frozen || attributes.get(Attribute.SPEED) == 0) return;
 		
 		if (entity instanceof Creature)
 		{
@@ -151,7 +151,7 @@ public abstract class Creature extends Entity
 				v.add(s.getPos());
 				if (nearestPoint == null || v.getDistance(pos) < nearestPoint.getDistance(pos)) nearestPoint = v;
 			}
-			nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Types.ATTACK_RANGE));
+			nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Attribute.ATTACK_RANGE));
 			
 			nearestPoint.y -= height * 0.6f;
 			

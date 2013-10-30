@@ -10,6 +10,8 @@ import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.settings.Resources;
+import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
  * @author Dakror
@@ -111,5 +113,15 @@ public class Assistant
 	public static void drawImage(Image img, int x, int y, int width, int height, int sx, int sy, int swidth, int sheight, Graphics2D g)
 	{
 		g.drawImage(img, x, y, x + width, y + height, sx, sy, sx + swidth, sy + sheight, Game.w);
+	}
+	
+	public static void drawResource(Resources resources, Resource r, int x, int y, int size, Graphics2D g)
+	{
+		drawImage(Game.getImage("icons.png"), x, y, 24, 24, r.getIconX() * 24, r.getIconY() * 24, 24, 24, g);
+		Font old = g.getFont();
+		g.setFont(g.getFont().deriveFont((float) size));
+		FontMetrics fm = g.getFontMetrics();
+		g.drawString(resources.get(r) + "", x + 25, y + fm.getHeight() - 7);
+		g.setFont(old);
 	}
 }

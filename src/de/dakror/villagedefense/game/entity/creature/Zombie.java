@@ -1,7 +1,7 @@
 package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.entity.Creature;
-import de.dakror.villagedefense.settings.Attributes.Types;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
 
 /**
  * @author Dakror
@@ -13,7 +13,7 @@ public class Zombie extends Creature
 		super(x, y, "zombie");
 		
 		setHostile(true);
-		attributes.set(Types.SPEED, 2f);
-		attributes.set(Types.DAMAGE_STRUCT, 5);
+		attributes.set(Attribute.SPEED, 2f);
+		attributes.set(Attribute.DAMAGE_STRUCT, 5);
 	}
 }

@@ -1,7 +1,7 @@
 package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.entity.Creature;
-import de.dakror.villagedefense.settings.Attributes.Types;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
 
 /**
  * @author Dakror
@@ -12,6 +12,6 @@ public class Villager extends Creature
 	{
 		super(x, y, "villager" + (int) Math.round(Math.random()));
 		setHostile(false);
-		attributes.set(Types.SPEED, 2f);
+		attributes.set(Attribute.SPEED, 2f);
 	}
 }

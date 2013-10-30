@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class Attributes
 {
-	public static enum Types
+	public static enum Attribute
 	{
 		ATTACK_RANGE(0),
 		ATTACK_SPEED(25), // in ticks
@@ -21,7 +21,7 @@ public class Attributes
 		
 		private float defaultValue;
 		
-		private Types(float defaultValue)
+		private Attribute(float defaultValue)
 		{
 			this.defaultValue = defaultValue;
 		}
@@ -32,27 +32,27 @@ public class Attributes
 		}
 	}
 	
-	HashMap<Types, Float> attr = new HashMap<>();
+	HashMap<Attribute, Float> attr = new HashMap<>();
 	
 	public Attributes()
 	{
-		for (Types t : Types.values())
+		for (Attribute t : Attribute.values())
 			attr.put(t, t.getDefaultValue());
 	}
 	
-	public float get(Types t)
+	public float get(Attribute t)
 	{
 		return attr.get(t);
 	}
 	
-	public Attributes set(Types t, float value)
+	public Attributes set(Attribute t, float value)
 	{
 		attr.put(t, value);
 		
 		return this;
 	}
 	
-	public Attributes add(Types t, float value)
+	public Attributes add(Attribute t, float value)
 	{
 		attr.put(t, get(t) + value);
 		

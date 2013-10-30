@@ -6,7 +6,8 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import de.dakror.villagedefense.settings.Attributes;
-import de.dakror.villagedefense.settings.Attributes.Types;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -20,6 +21,7 @@ public abstract class Entity implements Drawable
 	protected boolean hovered, clicked, dead;
 	protected Rectangle bump;
 	protected Attributes attributes;
+	protected Resources resources;
 	
 	public Entity(int x, int y, int width, int height)
 	{
@@ -30,6 +32,7 @@ public abstract class Entity implements Drawable
 		
 		bump = new Rectangle();
 		attributes = new Attributes();
+		resources = new Resources();
 	}
 	
 	public void drawBump(Graphics2D g, boolean above)
@@ -74,7 +77,7 @@ public abstract class Entity implements Drawable
 	@Override
 	public void update(int tick)
 	{
-		if (attributes.get(Types.HEALTH) < 1)
+		if (attributes.get(Attribute.HEALTH) < 1)
 		{
 			onDeath();
 		}
@@ -167,9 +170,14 @@ public abstract class Entity implements Drawable
 		return attributes;
 	}
 	
+	public Resources getResources()
+	{
+		return resources;
+	}
+	
 	public void dealDamage(int amount)
 	{
-		attributes.add(Types.HEALTH, -amount);
+		attributes.add(Attribute.HEALTH, -amount);
 	}
 	
 	public boolean isDead()

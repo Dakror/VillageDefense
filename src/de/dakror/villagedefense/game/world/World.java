@@ -16,7 +16,7 @@ import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Rock;
 import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.tile.Tile;
-import de.dakror.villagedefense.settings.Attributes.Types;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.EventListener;
 
@@ -35,8 +35,8 @@ public class World extends EventListener implements Drawable
 	
 	public World()
 	{
-		width = Game.w.getWidth();
-		height = Game.w.getHeight();
+		width = Game.getWidth();
+		height = Game.getHeight();
 	}
 	
 	public void init()
@@ -142,8 +142,8 @@ public class World extends EventListener implements Drawable
 		}
 		
 		core = new CoreHouse(x - 2, y - 3);
-		core.getAttributes().set(Types.HEALTH_MAX, 1);
-		core.getAttributes().set(Types.HEALTH, 1);
+		core.getAttributes().set(Attribute.HEALTH_MAX, 1);
+		core.getAttributes().set(Attribute.HEALTH, 1);
 		addEntity(core);
 		
 		addEntity(new Rock(x + 7, y + 8));
