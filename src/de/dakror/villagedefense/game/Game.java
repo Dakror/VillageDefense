@@ -74,8 +74,7 @@ public class Game extends EventListener
 		w.getContentPane().setBackground(Color.black);
 		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
 		
-		w.setSize(1280, 720);
-		// w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		w.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		w.setMinimumSize(new Dimension(1280, 720));
 		w.setUndecorated(true);

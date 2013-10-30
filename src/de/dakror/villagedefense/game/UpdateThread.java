@@ -4,6 +4,7 @@ package de.dakror.villagedefense.game;
 
 
 
+
 /**
  * @author Dakror
  */
@@ -22,7 +23,7 @@ public class UpdateThread extends Thread
 	{
 		tick = 0;
 		time = System.currentTimeMillis();
-		while (Game.w.isVisible())
+		while (true)
 		{
 			if (tick == Integer.MAX_VALUE) tick = 0;
 			

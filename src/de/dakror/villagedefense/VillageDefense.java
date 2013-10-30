@@ -7,13 +7,11 @@ import de.dakror.villagedefense.game.Game;
  */
 public class VillageDefense
 {
-	public static boolean running = true;
-	
 	public static void main(String[] args)
 	{
 		new Game();
 		
-		while (running)
+		while (true)
 			Game.currentGame.draw();
 	}
 }
