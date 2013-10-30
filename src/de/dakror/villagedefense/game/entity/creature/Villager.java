@@ -1,6 +1,5 @@
 package de.dakror.villagedefense.game.entity.creature;
 
-import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 
 /**

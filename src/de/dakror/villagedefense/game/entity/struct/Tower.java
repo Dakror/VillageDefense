@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.game.entity.Entity;
-import de.dakror.villagedefense.game.entity.Struct;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Assistant;

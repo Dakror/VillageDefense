@@ -1,4 +1,4 @@
-package de.dakror.villagedefense.game.entity;
+package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;

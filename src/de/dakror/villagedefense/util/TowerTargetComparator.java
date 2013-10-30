@@ -2,7 +2,7 @@ package de.dakror.villagedefense.util;
 
 import java.util.Comparator;
 
-import de.dakror.villagedefense.game.entity.Creature;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 
 /**
  * @author Dakror

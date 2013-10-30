@@ -9,14 +9,14 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.game.entity.Entity;
-import de.dakror.villagedefense.game.entity.Struct;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.entity.creature.Zombie;
 import de.dakror.villagedefense.game.entity.struct.CoreHouse;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Rock;
+import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.tile.Tile;

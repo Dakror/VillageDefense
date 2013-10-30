@@ -3,7 +3,6 @@ package de.dakror.villagedefense.game.entity.struct;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Vector;
 
