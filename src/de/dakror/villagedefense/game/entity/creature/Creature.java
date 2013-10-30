@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Struct;
-import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Vector;
 
@@ -30,6 +30,8 @@ public abstract class Creature extends Entity
 	 */
 	protected int dir;
 	protected int frame;
+	
+	private int randomOffset = (int) (Math.random() * 100);
 	
 	public Creature(int x, int y, String img)
 	{
@@ -67,7 +69,7 @@ public abstract class Creature extends Entity
 		{
 			if (hostile)
 			{
-				if (tick % attributes.get(Attribute.ATTACK_SPEED) == 0)
+				if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
 				{
 					if (frame % 2 == 0) targetEntity.dealDamage((int) (targetEntity instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)));
 					frame++;
@@ -75,7 +77,7 @@ public abstract class Creature extends Entity
 			}
 			else if (targetEntity instanceof Struct && targetEntity.getResources().size() > 0)
 			{
-				if (tick % attributes.get(Attribute.MINE_SPEED) == 0)
+				if ((tick + randomOffset) % attributes.get(Attribute.MINE_SPEED) == 0)
 				{
 					if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT));
 					frame++;
@@ -108,7 +110,7 @@ public abstract class Creature extends Entity
 			else if (angle <= -45 && angle >= -135) dir = 3;
 			else dir = 1;
 			
-			if (tick % 10 == 0) frame++;
+			if ((tick + randomOffset) % 10 == 0) frame++;
 			
 			setPos(pos.add(dif));
 		}

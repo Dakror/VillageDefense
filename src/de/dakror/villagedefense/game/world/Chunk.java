@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.tile.Tile;
 
 /**
  * @author Dakror

@@ -9,7 +9,7 @@ import java.util.Collections;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
-import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.TowerTargetComparator;

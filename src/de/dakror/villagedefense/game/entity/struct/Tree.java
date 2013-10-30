@@ -2,7 +2,7 @@ package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.geom.Rectangle2D;
 
-import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**

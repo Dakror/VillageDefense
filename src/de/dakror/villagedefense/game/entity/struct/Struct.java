@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
-import de.dakror.villagedefense.game.tile.Tile;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
 import de.dakror.villagedefense.util.Assistant;
