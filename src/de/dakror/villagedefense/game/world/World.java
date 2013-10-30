@@ -12,7 +12,6 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Villager;
-import de.dakror.villagedefense.game.entity.creature.Zombie;
 import de.dakror.villagedefense.game.entity.struct.CoreHouse;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Rock;
@@ -22,6 +21,7 @@ import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.EventListener;
+import de.dakror.villagedefense.util.Vector;
 
 /**
  * @author Dakror
@@ -156,10 +156,8 @@ public class World extends EventListener implements Drawable
 		addEntity(new Rock(x + 7, y + 8));
 		addEntity(new House(x - 7, y - 8));
 		addEntity(new Tree(x + 7, y - 8));
-		addEntity(new ArrowTower(x - 7, y + 1));
 		
-		addEntity(new Zombie(0, 500));
-		// addEntity(new Zombie(-40, 500));
+		addEntity(new ArrowTower(x - 7, y + 1));
 	}
 	
 	@Override
@@ -245,6 +243,7 @@ public class World extends EventListener implements Drawable
 			}
 			
 			if (target != null) ((Creature) selectedEntity).setTarget(target);
+			else ((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
 		}
 	}
 }

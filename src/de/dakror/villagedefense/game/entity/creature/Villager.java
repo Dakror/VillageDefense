@@ -1,6 +1,8 @@
 package de.dakror.villagedefense.game.entity.creature;
 
+import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
  * @author Dakror
@@ -15,5 +17,18 @@ public class Villager extends Creature
 		name = "Einwohner";
 		attributes.set(Attribute.HEALTH, 15);
 		attributes.set(Attribute.HEALTH_MAX, 15);
+	}
+	
+	@Override
+	public void onSpawn()
+	{
+		Game.currentGame.resources.add(Resource.PEOPLE, 1);
+	}
+	
+	@Override
+	public void onDeath()
+	{
+		super.onDeath();
+		Game.currentGame.resources.add(Resource.PEOPLE, -1);
 	}
 }

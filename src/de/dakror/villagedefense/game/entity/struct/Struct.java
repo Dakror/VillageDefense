@@ -1,6 +1,7 @@
 package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -8,9 +9,9 @@ import java.util.ArrayList;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -21,38 +22,27 @@ public abstract class Struct extends Entity
 	protected int tx, ty;
 	protected boolean placeGround;
 	protected StructPoints structPoints;
+	protected Resources buildingCosts;
+	private Image image;
 	
 	public Struct(int x, int y, int width, int height)
 	{
 		super(x * Tile.SIZE, y * Tile.SIZE, width * Tile.SIZE, height * Tile.SIZE);
 		
 		structPoints = new StructPoints();
+		buildingCosts = new Resources();
 	}
 	
 	@Override
 	public void draw(Graphics2D g)
 	{
+		if (image == null) image = getImage();
+		
 		drawBump(g, false);
 		
-		Assistant.drawImage(Game.getImage("structs.png"), (int) x, (int) y, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
+		g.drawImage(image, (int) x, (int) y, Game.w);
 		
 		drawBump(g, true);
-		
-		// TODO: DEBUG
-		// if (clicked)
-		// {
-		// ArrayList<Vector> sur = getSurroundingTiles();
-		// for (Vector v : sur)
-		// {
-		// v.add(new Vector(0.5f, 0.5f));
-		// v.mul(Tile.SIZE);
-		// v.add(getPos());
-		// Color oc = g.getColor();
-		// g.setColor(Color.green);
-		// g.fillRect((int) v.x, (int) v.y, 5, 5);
-		// g.setColor(oc);
-		// }
-		// }
 	}
 	
 	public void setBump(Rectangle2D r)
@@ -134,6 +124,18 @@ public abstract class Struct extends Entity
 		}
 		
 		return tiles;
+	}
+	
+	public Resources getBuildingCosts()
+	{
+		return buildingCosts;
+	}
+	
+	public Image getImage()
+	{
+		if (image != null) return image;
+		
+		return Game.getImage("structs.png").getSubimage(tx * Tile.SIZE, ty * Tile.SIZE, width, height);
 	}
 	
 	protected abstract void onMinedUp();

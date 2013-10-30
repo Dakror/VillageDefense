@@ -11,9 +11,7 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
-import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.TowerTargetComparator;
 import de.dakror.villagedefense.util.Vector;
 
@@ -22,23 +20,17 @@ import de.dakror.villagedefense.util.Vector;
  */
 public abstract class Tower extends Struct
 {
-	int color;
-	
-	public Tower(int x, int y, int color)
+	public Tower(int x, int y)
 	{
-		super(x, y, 1, 2);
-		tx = 6;
-		ty = 5;
+		super(x, y, 1, 3);
 		placeGround = false;
-		this.color = color;
-		setBump(new Rectangle2D.Float(0, 1.5f, 1, 0.5f));
+		setBump(new Rectangle2D.Float(0, 2.5f, 1, 0.5f));
 	}
 	
 	@Override
 	public void draw(Graphics2D g)
 	{
 		super.draw(g);
-		Assistant.drawImage(Game.getImage("structs.png"), (int) x, (int) y - Tile.SIZE / 4, Tile.SIZE, Tile.SIZE, 5 * Tile.SIZE, (5 + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
 		
 		if (hovered || clicked)
 		{

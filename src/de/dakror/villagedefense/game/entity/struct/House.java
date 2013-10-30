@@ -6,6 +6,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
  * @author Dakror
@@ -22,6 +23,9 @@ public class House extends Struct
 		name = "Haus";
 		attributes.set(Attribute.HEALTH, 35);
 		attributes.set(Attribute.HEALTH_MAX, 35);
+		
+		buildingCosts.set(Resource.GOLD, 50);
+		buildingCosts.set(Resource.WOOD, 10);
 	}
 	
 	@Override

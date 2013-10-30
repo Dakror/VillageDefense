@@ -1,11 +1,16 @@
 package de.dakror.villagedefense.util;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.Resources;
@@ -16,6 +21,7 @@ import de.dakror.villagedefense.settings.Resources.Resource;
  */
 public class Assistant
 {
+	// -- draw helper methods -- //
 	public static int[] drawHorizontallyCenteredString(String s, int w, int h, Graphics2D g, int size)
 	{
 		Font old = g.getFont();
@@ -24,6 +30,17 @@ public class Assistant
 		int x = (w - fm.stringWidth(s)) / 2;
 		g.drawString(s, x, h);
 		g.setFont(old);
+		return new int[] { x, fm.stringWidth(s) };
+	}
+	
+	public static int[] drawHorizontallyCenteredString(String s, int x1, int w, int h, Graphics2D g, int size)
+	{
+		Font oldf = g.getFont();
+		g.setFont(g.getFont().deriveFont((float) size));
+		FontMetrics fm = g.getFontMetrics();
+		int x = x1 + (w - fm.stringWidth(s)) / 2;
+		g.drawString(s, x, h);
+		g.setFont(oldf);
 		return new int[] { x, fm.stringWidth(s) };
 	}
 	
@@ -124,11 +141,16 @@ public class Assistant
 	
 	public static void drawResource(Resources resources, Resource r, int x, int y, int size, int space, Graphics2D g)
 	{
-		drawImage(Game.getImage("icons.png"), x, y, 24, 24, r.getIconX() * 24, r.getIconY() * 24, 24, 24, g);
+		drawLabelWithIcon(x, y, size, new Point(r.getIconX(), r.getIconY()), resources.get(r) + "", space, g);
+	}
+	
+	public static void drawLabelWithIcon(int x, int y, int size, Point icon, String text, int space, Graphics2D g)
+	{
+		drawImage(Game.getImage("icons.png"), x, y, 24, 24, icon.x * 24, icon.y * 24, 24, 24, g);
 		Font old = g.getFont();
 		g.setFont(g.getFont().deriveFont((float) size));
 		FontMetrics fm = g.getFontMetrics();
-		g.drawString(resources.get(r) + "", x + space, y + fm.getAscent() + 2);
+		g.drawString(text, x + space, y + fm.getAscent() + 2);
 		g.setFont(old);
 	}
 	
@@ -152,5 +174,40 @@ public class Assistant
 		if (percent == 1) drawImage(filling, x + width - 6, y, 6, 23, 7, 0, 6, 23, g);
 		for (int i = x + 6; i < x + 6 + fillWidth; i++)
 			drawImage(filling, i, y, 1, 23, 6, 0, 1, 23, g);
+	}
+	
+	// -- file helper methods -- //
+	public static void setFileContent(File f, String s)
+	{
+		f.getParentFile().mkdirs();
+		try
+		{
+			OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(f));
+			osw.write(s);
+			osw.close();
+		}
+		catch (Exception e)
+		{}
+	}
+	
+	// -- math helper methods -- //
+	public static Dimension scaleTo(Dimension input, Dimension wanted)
+	{
+		float rw = 0;
+		float rh = 0;
+		float tr = wanted.width / (float) wanted.height;
+		float sr = input.width / (float) input.height;
+		if (sr >= tr)
+		{
+			rw = wanted.width;
+			rh = rw / sr;
+		}
+		else
+		{
+			rh = wanted.height;
+			rw = rh * sr;
+		}
+		
+		return new Dimension(Math.round(rw), Math.round(rh));
 	}
 }
