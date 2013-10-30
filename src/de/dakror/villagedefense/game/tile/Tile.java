@@ -2,7 +2,7 @@ package de.dakror.villagedefense.game.tile;
 
 import java.awt.Point;
 
-import de.dakror.villagedefense.game.world.World;
+import de.dakror.villagedefense.game.Game;
 
 /**
  * @author Dakror
@@ -61,11 +61,11 @@ public class Tile
 	 *         </li>
 	 *         </ul>
 	 */
-	public Point getTexturePos(int x, int y, World w)
+	public Point getTexturePos(int x, int y)
 	{
 		Point p = new Point(1, 2);
 		
-		byte[][] n = w.getNeighbors(x, y);
+		byte[][] n = Game.world.getNeighbors(x, y);
 		
 		if (n[1][0] != id) p.y--;
 		if (n[1][2] != id) p.y++;

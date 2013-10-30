@@ -6,7 +6,6 @@ import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
-import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.settings.StructPoints;
 
 /**
@@ -40,7 +39,7 @@ public abstract class Struct extends Entity
 		super.setBump(new Rectangle((int) Math.round(r.getX() * Tile.SIZE), (int) Math.round(r.getY() * Tile.SIZE), (int) Math.round(r.getWidth() * Tile.SIZE), (int) Math.round(r.getHeight() * Tile.SIZE)));
 	}
 	
-	public void placeGround(World w)
+	public void placeGround()
 	{
 		if (!placeGround) return;
 		
@@ -53,7 +52,7 @@ public abstract class Struct extends Entity
 		{
 			for (int j = 0; j < height; j++)
 			{
-				w.setTileId((int) this.x / Tile.SIZE + x + i, (int) this.y / Tile.SIZE + y + j, Tile.ground.getId());
+				Game.world.setTileId((int) this.x / Tile.SIZE + x + i, (int) this.y / Tile.SIZE + y + j, Tile.ground.getId());
 			}
 		}
 	}
@@ -66,5 +65,11 @@ public abstract class Struct extends Entity
 	public StructPoints getStructPoints()
 	{
 		return structPoints;
+	}
+	
+	@Override
+	public void onSpawn()
+	{
+		placeGround();
 	}
 }

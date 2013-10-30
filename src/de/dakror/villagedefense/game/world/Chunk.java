@@ -32,7 +32,7 @@ public class Chunk
 				data[i][j] = Tile.grass.getId();
 	}
 	
-	public void render(World w)
+	public void render()
 	{
 		image.flush();
 		Graphics2D g = (Graphics2D) image.getGraphics();
@@ -48,7 +48,7 @@ public class Chunk
 				
 				if (tile.equals(Tile.emtpy)) continue;
 				
-				Point tp = tile.getTexturePos(this.x * Chunk.SIZE + i, this.y * Chunk.SIZE + j, w);
+				Point tp = tile.getTexturePos(this.x * Chunk.SIZE + i, this.y * Chunk.SIZE + j);
 				if (tp.x < 3) // convex
 				{
 					g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + Tile.SIZE, y + Tile.SIZE, tp.x * Tile.SIZE, tp.y * Tile.SIZE, tp.x * Tile.SIZE + Tile.SIZE, tp.y * Tile.SIZE + Tile.SIZE, null);
@@ -85,7 +85,7 @@ public class Chunk
 		g.drawImage(image, x * SIZE * Tile.SIZE, y * SIZE * Tile.SIZE, Game.w);
 	}
 	
-	public void setTileId(int x, int y, byte d, World w)
+	public void setTileId(int x, int y, byte d)
 	{
 		data[x][y] = d;
 	}

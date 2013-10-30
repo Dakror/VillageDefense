@@ -178,5 +178,7 @@ public abstract class Entity implements Drawable
 	}
 	
 	// -- abstract event methods -- //
+	public abstract void onSpawn();
+	
 	protected abstract void onDeath();
 }

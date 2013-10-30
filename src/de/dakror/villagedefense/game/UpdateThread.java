@@ -26,7 +26,7 @@ public class UpdateThread extends Thread
 		{
 			if (tick == Integer.MAX_VALUE) tick = 0;
 			
-			if (Game.currentGame.world != null && Game.currentGame.state == 0) Game.currentGame.world.update(tick);
+			if (Game.world != null && Game.currentGame.state == 0) Game.world.update(tick);
 			
 			try
 			{

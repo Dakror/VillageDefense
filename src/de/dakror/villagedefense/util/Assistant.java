@@ -16,16 +16,15 @@ import de.dakror.villagedefense.game.Game;
  */
 public class Assistant
 {
-	public static int drawHorizontallyCenteredString(String s, int w, int h, Graphics2D g, int size)
+	public static int[] drawHorizontallyCenteredString(String s, int w, int h, Graphics2D g, int size)
 	{
 		Font old = g.getFont();
 		g.setFont(g.getFont().deriveFont((float) size));
 		FontMetrics fm = g.getFontMetrics();
 		int x = (w - fm.stringWidth(s)) / 2;
 		g.drawString(s, x, h);
-		int nx = x + fm.stringWidth(s);
 		g.setFont(old);
-		return nx;
+		return new int[] { x, fm.stringWidth(s) };
 	}
 	
 	public static void drawOutline(int x, int y, int width, int height, boolean doubled, Graphics2D g)
@@ -67,10 +66,12 @@ public class Assistant
 		
 	}
 	
-	public static void drawContainer(int x, int y, int width, int height, boolean doubled, Graphics2D g)
+	public static void drawContainer(int x, int y, int width, int height, boolean doubled, boolean wood, Graphics2D g)
 	{
+		drawShadow(x - 10, y - 10, width + 20, height + 20, g);
+		
 		Paint oldPaint = g.getPaint();
-		g.setPaint(new TexturePaint(Game.getImage("gui/paper.png"), new Rectangle(0, 0, 512, 512)));
+		g.setPaint(new TexturePaint(Game.getImage(wood ? "gui/wood.png" : "gui/paper.png"), new Rectangle(0, 0, 512, 512)));
 		g.fillRect(x, y, width, height);
 		
 		g.setPaint(oldPaint);

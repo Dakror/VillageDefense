@@ -2,7 +2,10 @@ package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.geom.Rectangle2D;
 
+import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Struct;
+import de.dakror.villagedefense.game.entity.creature.Villager;
+import de.dakror.villagedefense.game.tile.Tile;
 
 /**
  * @author Dakror
@@ -27,5 +30,11 @@ public class House extends Struct
 	protected void onDeath()
 	{
 		dead = true;
+	}
+	
+	@Override
+	public void onSpawn()
+	{
+		Game.world.addEntity(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE));
 	}
 }

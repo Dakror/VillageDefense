@@ -55,7 +55,7 @@ public abstract class Creature extends Entity
 	@Override
 	public void tick(int tick)
 	{
-		if (targetEnemy != null && !Game.currentGame.world.entities.contains(targetEnemy)) targetEnemy = null;
+		if (targetEnemy != null && !Game.world.entities.contains(targetEnemy)) targetEnemy = null;
 		
 		move(tick);
 		
@@ -182,7 +182,7 @@ public abstract class Creature extends Entity
 	public void setHostile(boolean hostile)
 	{
 		this.hostile = hostile;
-		if (hostile) setTarget(Game.currentGame.world.core);
+		if (hostile) setTarget(Game.world.core);
 	}
 	
 	@Override
@@ -190,4 +190,8 @@ public abstract class Creature extends Entity
 	{
 		dead = true;
 	}
+	
+	@Override
+	public void onSpawn()
+	{}
 }

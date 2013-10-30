@@ -3,6 +3,7 @@ package de.dakror.villagedefense.game;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -10,7 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -45,8 +47,10 @@ public class Game extends EventListener
 	 */
 	public int state;
 	
-	public World world;
+	public static World world;
 	public Resources resources;
+	
+	public long nextWave; // UNIX timestamp
 	
 	public Game()
 	{
@@ -73,13 +77,14 @@ public class Game extends EventListener
 		w.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		world = new World();
-		world.generate();
+		world.init();
 		state = 0;
+		nextWave = System.currentTimeMillis() + (1000 * 300); // nextwave in 5 minutes
 		w.setVisible(true);
 		
 		try
 		{
-			Thread.sleep(1);
+			w.setFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/MorrisRomanBlack.ttf")));
 			w.createBufferStrategy(2);
 		}
 		catch (Exception e)
@@ -111,16 +116,25 @@ public class Game extends EventListener
 		// draw content
 		world.draw(g);
 		
-		drawState(g);
+		drawGUI(g);
 		
-		Assistant.drawShadow(8, 14, w.getWidth(), 110,/* false, */g);
-		Assistant.drawContainer(8, 8, w.getWidth() - 16, 100, false, g);
+		drawState(g);
 		
 		g.dispose();
 		
 		if (!s.contentsLost()) s.show();
 		
 		frames++;
+	}
+	
+	public void drawGUI(Graphics2D g)
+	{
+		Assistant.drawContainer(0, 0, w.getWidth(), 80, false, false, g);
+		Assistant.drawContainer(0, w.getHeight() - 100, w.getWidth(), 100, false, false, g);
+		
+		// -- time panel -- //
+		Assistant.drawContainer(w.getWidth() / 2 - 150, 0, 300, 80, true, true, g);
+		Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), w.getWidth(), 60, g, 70);
 	}
 	
 	public void drawState(Graphics2D g)
@@ -161,9 +175,9 @@ public class Game extends EventListener
 				
 				return i;
 			}
-			catch (IOException e)
+			catch (Exception e)
 			{
-				e.printStackTrace();
+				System.err.println("Missing image: " + p);
 				return null;
 			}
 		}
