@@ -1,4 +1,4 @@
-package de.dakror.villagedefense.game.entity.struct;
+package de.dakror.villagedefense.game.entity.struct.tower;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,6 +9,8 @@ import java.util.Collections;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
+import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Assistant;
@@ -61,7 +63,7 @@ public abstract class Tower extends Struct
 		if (tick % attributes.get(Attribute.ATTACK_SPEED) == 0)
 		{
 			ArrayList<Creature> t = getTargetableCreatures();
-			if (t.size() > 0) t.get(0).dealDamage((int) attributes.get(Attribute.DAMAGE_CREATURE));
+			if (t.size() > 0) Game.world.projectiles.add(new Projectile(getCenter(), t.get(0), "arrow", 8f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
 		}
 	}
 	
@@ -75,7 +77,7 @@ public abstract class Tower extends Struct
 			Creature c = (Creature) e;
 			if (!c.isHostile()) continue;
 			
-			if (e.getCenter().getDistance(getCenter()) < attributes.get(Attribute.ATTACK_RANGE)) targetable.add(c);
+			if (e.getCenter().getDistance(getCenter()) <= attributes.get(Attribute.ATTACK_RANGE)) targetable.add(c);
 		}
 		
 		Collections.sort(targetable, new TowerTargetComparator());

@@ -19,6 +19,7 @@ import de.dakror.villagedefense.game.entity.struct.Rock;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
+import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.EventListener;
 
@@ -36,6 +37,7 @@ public class World extends EventListener implements Drawable
 	public Entity selectedEntity;
 	
 	public ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Projectile> projectiles = new ArrayList<>();
 	
 	public World()
 	{
@@ -132,6 +134,9 @@ public class World extends EventListener implements Drawable
 		
 		for (Entity e : sorted)
 			e.draw(g);
+		
+		for (Projectile p : projectiles)
+			p.draw(g);
 	}
 	
 	public void generate()
@@ -154,7 +159,7 @@ public class World extends EventListener implements Drawable
 		addEntity(new ArrowTower(x - 7, y + 1));
 		
 		addEntity(new Zombie(0, 500));
-		addEntity(new Zombie(-40, 500));
+		// addEntity(new Zombie(-40, 500));
 	}
 	
 	@Override
@@ -170,6 +175,16 @@ public class World extends EventListener implements Drawable
 					if (entity.equals(selectedEntity)) selectedEntity = null;
 					entities.remove(entity);
 				}
+			}
+		}
+		catch (ConcurrentModificationException e)
+		{}
+		try
+		{
+			for (Projectile p : projectiles)
+			{
+				p.update(tick);
+				if (p.isDead()) projectiles.remove(p);
 			}
 		}
 		catch (ConcurrentModificationException e)

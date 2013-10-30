@@ -1,5 +1,6 @@
 package de.dakror.villagedefense.game.entity.creature;
 
+import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 
 /**
@@ -17,5 +18,12 @@ public class Zombie extends Creature
 		attributes.set(Attribute.HEALTH, 20);
 		attributes.set(Attribute.HEALTH_MAX, 20);
 		name = "Zombie";
+	}
+	
+	@Override
+	public void onDeath()
+	{
+		super.onDeath();
+		Game.world.addEntity(new Zombie(0, 500));
 	}
 }

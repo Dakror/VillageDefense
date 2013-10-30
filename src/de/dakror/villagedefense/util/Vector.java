@@ -84,4 +84,15 @@ public class Vector
 	{
 		return (float) Math.toDegrees(Math.atan2(y, x));
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof Vector)
+		{
+			Vector v = (Vector) obj;
+			return x == v.x && y == v.y;
+		}
+		return false;
+	}
 }
