@@ -133,6 +133,7 @@ public class Game extends EventListener
 		
 		drawGUI(g);
 		
+		// TODO: DEBUG
 		// Color oldColor = g.getColor();
 		// Font oldFont = g.getFont();
 		// g.setColor(Color.green);

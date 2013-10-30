@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
-import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -69,9 +68,8 @@ public abstract class Creature extends Entity
 				targetEnemy.dealDamage((int) (targetEnemy instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)));
 				frame++;
 			}
+			else frame = 0;
 		}
-		
-		if (targetEnemy == null) frame = 0;
 		
 		frame = frame % 4;
 	}
@@ -98,7 +96,6 @@ public abstract class Creature extends Entity
 			else dir = 1;
 			
 			if (tick % 10 == 0) frame++;
-			
 			
 			setPos(pos.add(dif));
 		}
@@ -137,11 +134,7 @@ public abstract class Creature extends Entity
 			
 			ArrayList<Vector> points = hostile ? s.getStructPoints().attacks : s.getStructPoints().entries;
 			
-			if (points.size() == 0)
-			{
-				CFG.p("Target has no StructPoints!");
-				return;
-			}
+			if (points.size() == 0) points = s.getSurroundingTiles();
 			
 			Vector pos = getPos();
 			for (Vector p : points)

@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Creature;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.Struct;
 import de.dakror.villagedefense.game.entity.struct.CoreHouse;
@@ -195,14 +196,33 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		selectedEntity = null;
-		for (Entity entity : entities)
-			entity.setClicked(false);
-		for (Entity entity : entities)
-			if (entity.mousePressed(e))
+		if (e.getButton() == MouseEvent.BUTTON1) // LMB
+		{
+			selectedEntity = null;
+			for (Entity entity : entities)
+				entity.setClicked(false);
+			for (Entity entity : entities)
 			{
-				selectedEntity = entity;
-				break;
+				if (entity.mousePressed(e))
+				{
+					selectedEntity = entity;
+					break;
+				}
 			}
+		}
+		else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Creature)
+		{
+			Entity target = null;
+			for (Entity entity : entities)
+			{
+				if (entity.mousePressed(e))
+				{
+					target = entity;
+					break;
+				}
+			}
+			
+			if (target != null) ((Creature) selectedEntity).setTarget(target);
+		}
 	}
 }

@@ -3,10 +3,12 @@ package de.dakror.villagedefense.game.entity;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.tile.Tile;
 import de.dakror.villagedefense.settings.StructPoints;
+import de.dakror.villagedefense.util.Vector;
 
 /**
  * @author Dakror
@@ -32,6 +34,22 @@ public abstract class Struct extends Entity
 		g.drawImage(Game.getImage("structs.png"), (int) x, (int) y, (int) x + width, (int) y + height, tx * Tile.SIZE, ty * Tile.SIZE, tx * Tile.SIZE + width, ty * Tile.SIZE + height, Game.w);
 		
 		drawBump(g, true);
+		
+		// TODO: DEBUG
+		// if (clicked)
+		// {
+		// ArrayList<Vector> sur = getSurroundingTiles();
+		// for (Vector v : sur)
+		// {
+		// v.add(new Vector(0.5f, 0.5f));
+		// v.mul(Tile.SIZE);
+		// v.add(getPos());
+		// Color oc = g.getColor();
+		// g.setColor(Color.green);
+		// g.fillRect((int) v.x, (int) v.y, 5, 5);
+		// g.setColor(oc);
+		// }
+		// }
 	}
 	
 	public void setBump(Rectangle2D r)
@@ -71,5 +89,29 @@ public abstract class Struct extends Entity
 	public void onSpawn()
 	{
 		placeGround();
+	}
+	
+	public ArrayList<Vector> getSurroundingTiles()
+	{
+		ArrayList<Vector> tiles = new ArrayList<>();
+		
+		// -- bump rectangle -- //
+		int x = (int) Math.round(bump.getX() / Tile.SIZE);
+		int y = (int) Math.round(bump.getY() / Tile.SIZE);
+		int w = (int) Math.round(bump.getWidth() / Tile.SIZE);
+		int h = (int) Math.round(bump.getHeight() / Tile.SIZE);
+		
+		for (int i = 0; i < w + 2; i++)
+		{
+			for (int j = 0; j < h + 2; j++)
+			{
+				if ((i == 0 || i == w + 1) && (j == 0 || j == h + 1)) continue;
+				if (i > 0 && j > 0 && i < w + 1 && j < h + 1) continue;
+				
+				tiles.add(new Vector(x + i - 1, y + j - 1));
+			}
+		}
+		
+		return tiles;
 	}
 }
