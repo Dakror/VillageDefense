@@ -36,11 +36,9 @@ public abstract class Struct extends Entity
 	@Override
 	public void draw(Graphics2D g)
 	{
-		if (image == null) image = getImage();
-		
 		drawBump(g, false);
 		
-		g.drawImage(image, (int) x, (int) y, Game.w);
+		g.drawImage(getImage(), (int) x, (int) y, Game.w);
 		
 		drawBump(g, true);
 	}
@@ -134,8 +132,8 @@ public abstract class Struct extends Entity
 	public Image getImage()
 	{
 		if (image != null) return image;
-		
-		return Game.getImage("structs.png").getSubimage(tx * Tile.SIZE, ty * Tile.SIZE, width, height);
+		image = Game.getImage("structs.png").getSubimage(tx * Tile.SIZE, ty * Tile.SIZE, width, height);
+		return image;
 	}
 	
 	protected abstract void onMinedUp();

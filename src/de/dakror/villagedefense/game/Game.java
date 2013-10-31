@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -29,6 +28,8 @@ import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
+import de.dakror.villagedefense.ui.BuildButton;
+import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.EventListener;
 
@@ -63,6 +64,8 @@ public class Game extends EventListener
 	public long nextWave; // UNIX timestamp
 	long gameOver; // UNIX timestamp
 	
+	ArrayList<Component> components = new ArrayList<>();
+	
 	Point mouse;
 	
 	public Game()
@@ -96,6 +99,7 @@ public class Game extends EventListener
 		world.init();
 		state = 0;
 		nextWave = System.currentTimeMillis() + (1000 * 300); // nextwave in 5 minutes
+		initGUI();
 		w.setVisible(true);
 		w.getContentPane().setIgnoreRepaint(true);
 		try
@@ -111,6 +115,16 @@ public class Game extends EventListener
 		}
 		
 		updateThread = new UpdateThread();
+	}
+	
+	public void initGUI()
+	{
+		for (int i = 0; i < buildableStructs.length; i++)
+		{
+			int x = getWidth() / 2 + BuildButton.SIZE / 4 - (buildableStructs.length * (BuildButton.SIZE + 32)) / 2 + i * (BuildButton.SIZE + 32);
+			BuildButton bb = new BuildButton(x, getHeight() - 84, buildableStructs[i]);
+			components.add(bb);
+		}
 	}
 	
 	public void draw()
@@ -148,9 +162,9 @@ public class Game extends EventListener
 		Color oldColor = g.getColor();
 		Font oldFont = g.getFont();
 		g.setColor(Color.green);
-		g.setFont(oldFont.deriveFont(25f));
-		g.drawString(Math.round(frames / ((System.currentTimeMillis() - start) / 1000f)) + " FPS", 0, 20);
-		g.drawString(Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f)) + " UPS", 0, 40);
+		g.setFont(new Font("Arial", Font.PLAIN, 18));
+		g.drawString(Math.round(frames / ((System.currentTimeMillis() - start) / 1000f)) + " FPS", 0, 14);
+		g.drawString(Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f)) + " UPS", 0, 28);
 		g.setColor(oldColor);
 		g.setFont(oldFont);
 		
@@ -167,6 +181,7 @@ public class Game extends EventListener
 	{
 		try
 		{
+			
 			Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
 			if (world.selectedEntity != null)
 			{
@@ -201,6 +216,7 @@ public class Game extends EventListener
 				Assistant.drawResource(resources, Resource.values()[i], 25 + i * w, 30, 30, 25, g);
 			}
 			
+			
 			// -- time panel -- //
 			Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
 			if (state == 0) Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
@@ -209,50 +225,16 @@ public class Game extends EventListener
 			// -- build/bottom bar -- //
 			Assistant.drawContainer(0, getHeight() - 100, getWidth(), 100, false, false, g);
 			
-			Dimension size = new Dimension(68, 68);
-			
-			int width = size.width + 32;
-			
-			Struct hovered = null;
-			
-			for (int i = 0; i < buildableStructs.length; i++)
+			// -- UI components -- //
+			BuildButton hovered = null;
+			for (Component c : components)
 			{
-				Struct struct = buildableStructs[i];
-				Dimension scale = Assistant.scaleTo(new Dimension(struct.getWidth(), struct.getHeight()), size);
-				
-				int x = getWidth() / 2 + size.width / 4 - (buildableStructs.length * width) / 2 + i * width;
-				struct.setX(x);
-				struct.setY(getHeight() - 84);
-				if (new Rectangle(x - 10, getHeight() - 94, size.width + 20, size.height + 20).contains(mouse))
-				{
-					Assistant.drawContainer(x - 10, getHeight() - 100, size.width + 20, size.height + 32, false, true, g);
-					hovered = struct;
-				}
-				else Assistant.drawOutline(x - 10, getHeight() - 94, size.width + 20, size.height + 20, false, g);
-				
-				g.drawImage(struct.getImage(), x + (size.width - scale.width) / 2, getHeight() - 84, scale.width, scale.height, w);
+				c.draw(g);
+				if (c instanceof BuildButton && ((BuildButton) c).isHovered()) hovered = (BuildButton) c;
 			}
 			
 			// -- tooltip -- //
-			if (hovered != null)
-			{
-				int w = g.getFontMetrics(g.getFont().deriveFont(30f)).stringWidth(hovered.getName()) + 32;
-				w = w > 150 ? w : 150;
-				int height = 64 + (hovered.getBuildingCosts().size() + 2) * 26;
-				Assistant.drawShadow(mouse.x, mouse.y - height, w, height, g);
-				Assistant.drawOutline(mouse.x, mouse.y - height, w, height, false, g);
-				
-				Assistant.drawHorizontallyCenteredString(hovered.getName(), mouse.x, w, mouse.y - height + 40, g, 30);
-				
-				Assistant.drawLabelWithIcon(mouse.x + 16, mouse.y - height + 48, 24, new Point(11, 1), (int) hovered.getAttributes().get(Attribute.HEALTH_MAX) + "", 30, g);
-				
-				Assistant.drawHorizontallyCenteredString("Baukosten:", mouse.x + 60, 0, mouse.y - height + 96, g, 24);
-				ArrayList<Resource> filled = hovered.getBuildingCosts().getFilled();
-				for (int i = 0; i < hovered.getBuildingCosts().size(); i++)
-				{
-					Assistant.drawResource(hovered.getBuildingCosts(), filled.get(i), mouse.x + 16, mouse.y - height + 48 + (i + 2) * 26, 24, 30, g);
-				}
-			}
+			if (hovered != null) hovered.drawTooltip(mouse.x, mouse.y, g);
 		}
 		catch (Exception e)
 		{}
@@ -288,27 +270,36 @@ public class Game extends EventListener
 	public void mouseMoved(MouseEvent e)
 	{
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
-		if (state == 0) world.mouseMoved(e);
-		
-		mouse = e.getPoint();
+		if (state == 0)
+		{
+			mouse = e.getPoint();
+			world.mouseMoved(e);
+			for (Component c : components)
+				c.mouseMoved(e);
+		}
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
-		if (state == 0) world.mousePressed(e);
-	}
-	
-	public static int getWidth()
-	{
-		return w.getWidth() - (w.getInsets().left + w.getInsets().right);
+		if (state == 0)
+		{
+			world.mousePressed(e);
+			for (Component c : components)
+				c.mousePressed(e);
+		}
 	}
 	
 	public void setState(int state)
 	{
 		this.state = state;
 		if (state == 2) gameOver = System.currentTimeMillis();
+	}
+	
+	public static int getWidth()
+	{
+		return w.getWidth() - (w.getInsets().left + w.getInsets().right);
 	}
 	
 	public static int getHeight()
