@@ -74,6 +74,7 @@ public class Game extends EventListener
 	ArrayList<Component> components = new ArrayList<>();
 	
 	Point mouse;
+	Point mouseDragStart, mouseDrag;
 	
 	
 	public Game()
@@ -368,6 +369,13 @@ public class Game extends EventListener
 			for (Component c : components)
 				c.mousePressed(e);
 		}
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e)
+	{
+		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		if (mouseDragStart == null) mouseDragStart = e.getPoint();
 	}
 	
 	public void setState(int state)

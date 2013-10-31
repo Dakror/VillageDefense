@@ -157,6 +157,30 @@ public class World extends EventListener implements Drawable
 		addEntity(new House(x - 7, y - 8));
 		addEntity(new Tree(x + 7, y - 8));
 		
+		int heightMalus = 3;
+		
+		int trees = (int) (Math.random() * 15) + 10;
+		for (int i = 0; i < trees; i++)
+		{
+			int x1 = (int) (Math.random() * width / Tile.SIZE);
+			if ((width / Tile.SIZE) - x1 < 4) continue;
+			
+			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
+			if (Math.abs(y1 - y + 2) < 3) continue;
+			addEntity(new Tree(x1, y1));
+		}
+		
+		int rocks = (int) (Math.random() * 10) + 5;
+		for (int i = 0; i < rocks; i++)
+		{
+			int x1 = (int) (Math.random() * width / Tile.SIZE);
+			if ((width / Tile.SIZE) - x1 < 4) continue;
+			
+			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
+			if (Math.abs(y1 - y + 2) < 3) continue;
+			addEntity(new Rock(x1, y1));
+		}
+		
 		addEntity(new ArrowTower(x - 7, y + 1));
 	}
 	
@@ -196,12 +220,18 @@ public class World extends EventListener implements Drawable
 				chunks[i][j].render();
 	}
 	
-	public void addEntity(Entity e)
+	public boolean addEntity(Entity e)
 	{
+		for (Entity entity : entities)
+		{
+			if (e.getBump(true).intersects(entity.getBump(true))) return false;
+		}
 		e.onSpawn();
 		entities.add(e);
 		
 		render();
+		
+		return true;
 	}
 	
 	@Override
