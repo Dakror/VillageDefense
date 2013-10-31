@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -21,9 +22,11 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
@@ -40,6 +43,7 @@ public class Game extends EventListener
 {
 	public static Game currentGame;
 	public static JFrame w;
+	public static World world;
 	public static Struct[] buildableStructs = { new House(0, 0), new ArrowTower(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
@@ -56,10 +60,13 @@ public class Game extends EventListener
 	 */
 	public int state;
 	
-	public static World world;
-	public Resources resources;
 	
+	public Resources resources;
 	public UpdateThread updateThread;
+	
+	// -- building menu -- //
+	public Struct activeStruct;
+	public boolean canPlace;
 	
 	public long nextWave; // UNIX timestamp
 	long gameOver; // UNIX timestamp
@@ -67,6 +74,7 @@ public class Game extends EventListener
 	ArrayList<Component> components = new ArrayList<>();
 	
 	Point mouse;
+	
 	
 	public Game()
 	{
@@ -168,6 +176,8 @@ public class Game extends EventListener
 		g.setColor(oldColor);
 		g.setFont(oldFont);
 		
+		drawBuildStruct(g);
+		
 		drawState(g);
 		
 		g.dispose();
@@ -175,6 +185,49 @@ public class Game extends EventListener
 		if (!s.contentsLost()) s.show();
 		
 		frames++;
+	}
+	
+	public void drawBuildStruct(Graphics2D g)
+	{
+		try
+		{
+			if (activeStruct != null)
+			{
+				activeStruct.setX(Assistant.round(mouse.x - activeStruct.getBump(false).x, Tile.SIZE)/* - activeStruct.getBump(false).x - (activeStruct.getBump(true).width % Tile.SIZE) */);
+				activeStruct.setY(Assistant.round(mouse.y - activeStruct.getBump(false).y, Tile.SIZE)/* - activeStruct.getBump(false).y - (activeStruct.getBump(true).height % Tile.SIZE) */);
+				activeStruct.setClicked(true);
+				
+				Rectangle bump = activeStruct.getBump(true);
+				int malus = 5;
+				
+				canPlace = true;
+				
+				for (int i = bump.x; i < bump.x + bump.width; i += Tile.SIZE)
+				{
+					for (int j = bump.y; j < bump.y + bump.height; j += Tile.SIZE)
+					{
+						boolean blocked = false;
+						for (Entity e : world.entities)
+						{
+							if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
+							{
+								blocked = true;
+								canPlace = false;
+								break;
+							}
+						}
+						g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
+					}
+				}
+				
+				Composite oldComposite = g.getComposite();
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+				activeStruct.draw(g);
+				g.setComposite(oldComposite);
+			}
+		}
+		catch (NullPointerException e)
+		{}
 	}
 	
 	public void drawGUI(Graphics2D g)
@@ -257,12 +310,21 @@ public class Game extends EventListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_F11)
+		switch (e.getKeyCode())
 		{
-			w.dispose();
-			w.setUndecorated(!w.isUndecorated());
-			w.setVisible(true);
-			w.createBufferStrategy(2);
+			case KeyEvent.VK_ESCAPE:
+			{
+				if (activeStruct != null) activeStruct = null;
+				break;
+			}
+			case KeyEvent.VK_F11:
+			{
+				w.dispose();
+				w.setUndecorated(!w.isUndecorated());
+				w.setVisible(true);
+				w.createBufferStrategy(2);
+				break;
+			}
 		}
 	}
 	
@@ -285,6 +347,23 @@ public class Game extends EventListener
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		if (state == 0)
 		{
+			if (activeStruct != null)
+			{
+				if (canPlace)
+				{
+					activeStruct.setClicked(false);
+					ArrayList<Resource> filled = activeStruct.getBuildingCosts().getFilled();
+					for (Resource r : filled)
+					{
+						if (!r.isUsable()) continue;
+						resources.add(r, -activeStruct.getBuildingCosts().get(r));
+					}
+					world.addEntity(activeStruct);
+				}
+				else return;
+			}
+			
+			activeStruct = null;
 			world.mousePressed(e);
 			for (Component c : components)
 				c.mousePressed(e);

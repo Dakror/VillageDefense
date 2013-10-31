@@ -1,6 +1,7 @@
 package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 
 /**
@@ -25,5 +26,11 @@ public class Zombie extends Creature
 	{
 		super.onDeath();
 		Game.world.addEntity(new Zombie(0, 500));
+	}
+	
+	@Override
+	public Entity clone()
+	{
+		return new Zombie((int) x, (int) y);
 	}
 }

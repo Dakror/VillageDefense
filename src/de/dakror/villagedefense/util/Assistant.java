@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -209,5 +210,16 @@ public class Assistant
 		}
 		
 		return new Dimension(Math.round(rw), Math.round(rh));
+	}
+	
+	public static Rectangle round(Rectangle r, int gridSize)
+	{
+		return new Rectangle(round(r.x, gridSize), round(r.y, gridSize), round(r.width, gridSize), round(r.height, gridSize));
+	}
+	
+	public static int round(int i, int step)
+	{
+		if (i % step > step / 2.0f) return i + (step - (i % step));
+		else return i - (i % step);
 	}
 }

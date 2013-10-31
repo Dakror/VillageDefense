@@ -1,6 +1,7 @@
 package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -30,5 +31,11 @@ public class Villager extends Creature
 	{
 		super.onDeath();
 		Game.currentGame.resources.add(Resource.PEOPLE, -1);
+	}
+	
+	@Override
+	public Entity clone()
+	{
+		return new Villager((int) x, (int) y);
 	}
 }

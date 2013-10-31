@@ -151,4 +151,9 @@ public class BuildButton extends Component
 		hover = contains(e.getX(), e.getY());
 	}
 	
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		if (contains(e.getX(), e.getY()) && e.getButton() == MouseEvent.BUTTON1 && enabled) Game.currentGame.activeStruct = (Struct) struct.clone();
+	}
 }

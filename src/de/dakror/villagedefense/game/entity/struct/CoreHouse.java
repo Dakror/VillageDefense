@@ -3,6 +3,7 @@ package de.dakror.villagedefense.game.entity.struct;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Vector;
 
@@ -37,4 +38,10 @@ public class CoreHouse extends Struct
 	@Override
 	protected void onMinedUp()
 	{}
+	
+	@Override
+	public Entity clone()
+	{
+		return new CoreHouse((int) x, (int) y);
+	}
 }

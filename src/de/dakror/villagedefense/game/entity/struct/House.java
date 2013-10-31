@@ -3,6 +3,7 @@ package de.dakror.villagedefense.game.entity.struct;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
@@ -41,10 +42,17 @@ public class House extends Struct
 	@Override
 	public void onSpawn()
 	{
+		super.onSpawn();
 		Game.world.addEntity(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE));
 	}
 	
 	@Override
 	protected void onMinedUp()
 	{}
+	
+	@Override
+	public Entity clone()
+	{
+		return new House((int) x, (int) y);
+	}
 }

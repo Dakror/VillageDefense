@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.geom.Rectangle2D;
 
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -46,5 +47,12 @@ public class Tree extends Struct
 	protected void onMinedUp()
 	{
 		onDeath();
+	}
+	
+	
+	@Override
+	public Entity clone()
+	{
+		return new Tree((int) x, (int) y);
 	}
 }

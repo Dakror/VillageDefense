@@ -64,9 +64,6 @@ public class Chunk
 				}
 			}
 		}
-		
-		// g.setColor(Color.red);
-		// g.drawRect(0, 0, SIZE * Tile.SIZE, SIZE * Tile.SIZE);
 	}
 	
 	public byte getTileId(int x, int y)

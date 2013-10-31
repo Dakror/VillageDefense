@@ -88,6 +88,9 @@ public abstract class Entity implements Drawable
 	
 	protected abstract void tick(int tick);
 	
+	@Override
+	public abstract Entity clone();
+	
 	public int getWidth()
 	{
 		return width;
