@@ -194,6 +194,11 @@ public abstract class Creature extends Entity
 		return hostile;
 	}
 	
+	public void setTargetEntity(Entity target)
+	{
+		targetEntity = target;
+	}
+	
 	public void setHostile(boolean hostile)
 	{
 		this.hostile = hostile;

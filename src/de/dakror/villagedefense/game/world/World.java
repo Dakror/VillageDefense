@@ -243,7 +243,11 @@ public class World extends EventListener implements Drawable
 			}
 			
 			if (target != null) ((Creature) selectedEntity).setTarget(target);
-			else ((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
+			else
+			{
+				((Creature) selectedEntity).setTargetEntity(null);
+				((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
+			}
 		}
 	}
 }
