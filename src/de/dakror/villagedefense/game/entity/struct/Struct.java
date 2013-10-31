@@ -23,7 +23,7 @@ public abstract class Struct extends Entity
 	protected boolean placeGround;
 	protected StructPoints structPoints;
 	protected Resources buildingCosts;
-	private Image image;
+	protected Image image;
 	
 	public Struct(int x, int y, int width, int height)
 	{

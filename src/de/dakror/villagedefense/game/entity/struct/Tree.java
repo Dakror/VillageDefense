@@ -38,6 +38,7 @@ public class Tree extends Struct
 		x += 2 * Tile.SIZE;
 		y += 4 * Tile.SIZE;
 		name = "Baumstumpf";
+		image = null;
 		setBump(new Rectangle2D.Float(0, 0.3f, 1, 0.6f));
 	}
 	
