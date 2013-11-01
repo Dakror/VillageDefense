@@ -31,7 +31,7 @@ public abstract class Creature extends Entity
 	protected int dir;
 	protected int frame;
 	
-	private int randomOffset = (int) (Math.random() * 100);
+	protected int randomOffset = (int) (Math.random() * 100);
 	
 	public Creature(int x, int y, String img)
 	{
@@ -75,15 +75,7 @@ public abstract class Creature extends Entity
 					frame++;
 				}
 			}
-			else if (targetEntity instanceof Struct && targetEntity.getResources().size() > 0)
-			{
-				if ((tick + randomOffset) % attributes.get(Attribute.MINE_SPEED) == 0)
-				{
-					if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT));
-					frame++;
-				}
-			}
-			else frame = 0;
+			else if (!onArrivalAtEntity(tick)) frame = 0;
 		}
 		
 		frame = frame % 4;
@@ -128,6 +120,8 @@ public abstract class Creature extends Entity
 	
 	public void setTarget(Entity entity)
 	{
+		targetEntity = null;
+		
 		if (hostile) targetEntity = entity;
 		
 		if (frozen || attributes.get(Attribute.SPEED) == 0) return;
@@ -145,7 +139,7 @@ public abstract class Creature extends Entity
 		{
 			Struct s = (Struct) entity;
 			
-			if (s.getResources().size() > 0) targetEntity = entity;
+			targetEntity = entity;
 			
 			Vector nearestPoint = null;
 			
@@ -199,6 +193,11 @@ public abstract class Creature extends Entity
 		targetEntity = target;
 	}
 	
+	public Entity getTargetEntity()
+	{
+		return targetEntity;
+	}
+	
 	public void setHostile(boolean hostile)
 	{
 		this.hostile = hostile;
@@ -214,4 +213,6 @@ public abstract class Creature extends Entity
 	@Override
 	public void onSpawn()
 	{}
+	
+	protected abstract boolean onArrivalAtEntity(int tick);
 }

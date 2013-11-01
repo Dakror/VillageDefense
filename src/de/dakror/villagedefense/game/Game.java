@@ -16,6 +16,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -23,7 +24,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.entity.struct.House;
+import de.dakror.villagedefense.game.entity.struct.Mine;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.Tile;
@@ -31,10 +34,12 @@ import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
+import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.ui.BuildButton;
 import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.EventListener;
+import de.dakror.villagedefense.util.Vector;
 
 /**
  * @author Dakror
@@ -44,7 +49,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new ArrowTower(0, 0) };
+	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new ArrowTower(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -60,7 +65,6 @@ public class Game extends EventListener
 	 */
 	public int state;
 	
-	
 	public Resources resources;
 	public UpdateThread updateThread;
 	
@@ -68,14 +72,12 @@ public class Game extends EventListener
 	public Struct activeStruct;
 	public boolean canPlace;
 	
-	public long nextWave; // UNIX timestamp
 	long gameOver; // UNIX timestamp
 	
 	ArrayList<Component> components = new ArrayList<>();
 	
 	Point mouse;
-	Point mouseDragStart, mouseDrag;
-	
+	Point mouseDown, mouseDownWorld;
 	
 	public Game()
 	{
@@ -107,7 +109,6 @@ public class Game extends EventListener
 		world = new World();
 		world.init();
 		state = 0;
-		nextWave = System.currentTimeMillis() + (1000 * 300); // nextwave in 5 minutes
 		initGUI();
 		w.setVisible(true);
 		w.getContentPane().setIgnoreRepaint(true);
@@ -217,17 +218,24 @@ public class Game extends EventListener
 								break;
 							}
 						}
+						
+						if (Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) - Tile.SIZE)
+						{
+							blocked = true;
+							canPlace = false;
+						}
+						
 						g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 					}
 				}
 				
 				Composite oldComposite = g.getComposite();
-				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 				activeStruct.draw(g);
 				g.setComposite(oldComposite);
 			}
 		}
-		catch (NullPointerException e)
+		catch (NullPointerException | ConcurrentModificationException e)
 		{}
 	}
 	
@@ -270,11 +278,15 @@ public class Game extends EventListener
 				Assistant.drawResource(resources, Resource.values()[i], 25 + i * w, 30, 30, 25, g);
 			}
 			
+			// -- wave info -- //
+			Assistant.drawHorizontallyCenteredString("Welle: " + WaveManager.wave, getWidth() / 2 + 220, 0, 55, g, 45);
+			
+			Assistant.drawHorizontallyCenteredString("Punktestand: " + getPlayerScore(), getWidth() / 2, getWidth() / 2, 50, g, 25);
 			
 			// -- time panel -- //
 			Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
-			if (state == 0) Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= System.currentTimeMillis()) ? nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
-			else Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((nextWave >= gameOver) ? nextWave - gameOver : 0)), getWidth(), 60, g, 70);
+			if (state == 0) Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((WaveManager.nextWave >= System.currentTimeMillis()) ? WaveManager.nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
+			else Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((WaveManager.nextWave >= gameOver) ? WaveManager.nextWave - gameOver : 0)), getWidth(), 60, g, 70);
 			
 			// -- build/bottom bar -- //
 			Assistant.drawContainer(0, getHeight() - 100, getWidth(), 100, false, false, g);
@@ -305,6 +317,7 @@ public class Game extends EventListener
 			g.setColor(Color.white);
 			g.setComposite(composite);
 			Assistant.drawHorizontallyCenteredString(state == 1 ? "Gewonnen!" : "Niederlage!", getWidth(), getHeight() / 2, g, 100);
+			Assistant.drawHorizontallyCenteredString("Punktestand: " + getPlayerScore(), getWidth(), getHeight() / 2 + 100, g, 60);
 		}
 	}
 	
@@ -330,6 +343,19 @@ public class Game extends EventListener
 	}
 	
 	@Override
+	public void mouseDragged(MouseEvent e)
+	{
+		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		Vector p = new Vector(e.getPoint()).sub(new Vector(mouseDown));
+		
+		int x = (int) (mouseDownWorld.x + p.x);
+		int y = (int) (mouseDownWorld.y + p.y);
+		
+		if (world.width > getWidth() && x <= 0 && x + world.width >= getWidth()) world.x = x;
+		if (world.height > getHeight() && y <= 0 && y + world.height >= getHeight()) world.y = y;
+	}
+	
+	@Override
 	public void mouseMoved(MouseEvent e)
 	{
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
@@ -343,12 +369,23 @@ public class Game extends EventListener
 	}
 	
 	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+		mouseDown = null;
+		mouseDownWorld = null;
+	}
+	
+	@Override
 	public void mousePressed(MouseEvent e)
 	{
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		
+		mouseDown = e.getPoint();
+		mouseDownWorld = new Point(world.x, world.y);
+		
 		if (state == 0)
 		{
-			if (activeStruct != null)
+			if (activeStruct != null && e.getButton() == 1)
 			{
 				if (canPlace)
 				{
@@ -365,23 +402,58 @@ public class Game extends EventListener
 			}
 			
 			activeStruct = null;
-			world.mousePressed(e);
+			
+			if (e.getY() < getHeight() - 100) world.mousePressed(e);
 			for (Component c : components)
 				c.mousePressed(e);
 		}
-	}
-	
-	@Override
-	public void mouseDragged(MouseEvent e)
-	{
-		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
-		if (mouseDragStart == null) mouseDragStart = e.getPoint();
 	}
 	
 	public void setState(int state)
 	{
 		this.state = state;
 		if (state == 2) gameOver = System.currentTimeMillis();
+	}
+	
+	public int getPeople()
+	{
+		int people = 0;
+		
+		for (Entity e : world.entities)
+		{
+			if (e instanceof Villager && e.alpha > 0)
+			{
+				Villager v = (Villager) e;
+				if (v.getTargetEntity() != null && v.getTargetEntity() instanceof Struct)
+				{
+					Struct s = (Struct) v.getTargetEntity();
+					if (s.getBuildingCosts().get(Resource.PEOPLE) > 0) continue;
+				}
+				
+				people++;
+			}
+		}
+		
+		return people;
+	}
+	
+	public int getPlayerScore()
+	{
+		int score = 0;
+		
+		for (Resource r : resources.getFilled())
+			score += resources.get(r);
+		
+		for (Entity e : world.entities)
+		{
+			if (e instanceof Struct && e.getResources().size() == 0) score += 50;
+		}
+		
+		score += WaveManager.wave * 250;
+		
+		score -= (world.getCoreHouse().getAttributes().get(Attribute.HEALTH_MAX) - world.getCoreHouse().getAttributes().get(Attribute.HEALTH)) * 10;
+		
+		return score - 1551;
 	}
 	
 	public static int getWidth()

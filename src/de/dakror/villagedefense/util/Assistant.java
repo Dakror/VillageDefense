@@ -145,6 +145,11 @@ public class Assistant
 		drawLabelWithIcon(x, y, size, new Point(r.getIconX(), r.getIconY()), resources.get(r) + "", space, g);
 	}
 	
+	public static void drawResource(Resources resources, Resource r, int amount, int x, int y, int size, int space, Graphics2D g)
+	{
+		drawLabelWithIcon(x, y, size, new Point(r.getIconX(), r.getIconY()), amount + "", space, g);
+	}
+	
 	public static void drawLabelWithIcon(int x, int y, int size, Point icon, String text, int space, Graphics2D g)
 	{
 		drawImage(Game.getImage("icons.png"), x, y, 24, 24, icon.x * 24, icon.y * 24, 24, 24, g);

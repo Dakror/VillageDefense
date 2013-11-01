@@ -74,6 +74,12 @@ public class Resources
 		res.put(t, get(t) + value);
 	}
 	
+	public void add(Resources r)
+	{
+		for (Resource s : r.getFilled())
+			add(s, r.get(s));
+	}
+	
 	public int size()
 	{
 		int s = 0;

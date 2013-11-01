@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
@@ -80,6 +81,7 @@ public abstract class Struct extends Entity
 	public void onSpawn()
 	{
 		placeGround();
+		requestVillagersToCome(buildingCosts.get(Resource.PEOPLE));
 	}
 	
 	public void mineAllResources(int amount)
@@ -134,6 +136,26 @@ public abstract class Struct extends Entity
 		if (image != null) return image;
 		image = Game.getImage("structs.png").getSubimage(tx * Tile.SIZE, ty * Tile.SIZE, width, height);
 		return image;
+	}
+	
+	public boolean requestVillagersToCome(int amount)
+	{
+		if (Game.currentGame.resources.get(Resource.PEOPLE) < amount || amount == 0) return false;
+		
+		int count = 0;
+		for (Entity e : Game.world.entities)
+		{
+			if (count == amount) break;
+			
+			if (e instanceof Villager && e.alpha > 0)
+			{
+				Villager v = (Villager) e;
+				v.setTarget(this);
+				count++;
+			}
+		}
+		
+		return true;
 	}
 	
 	protected abstract void onMinedUp();

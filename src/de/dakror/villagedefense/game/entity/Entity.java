@@ -1,10 +1,12 @@
 package de.dakror.villagedefense.game.entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
@@ -24,6 +26,8 @@ public abstract class Entity implements Drawable
 	protected Attributes attributes;
 	protected Resources resources;
 	
+	public float alpha;
+	
 	public Entity(int x, int y, int width, int height)
 	{
 		this.x = x;
@@ -34,11 +38,18 @@ public abstract class Entity implements Drawable
 		bump = new Rectangle();
 		attributes = new Attributes();
 		resources = new Resources();
+		
+		alpha = 1;
 	}
 	
 	public void drawBump(Graphics2D g, boolean above)
 	{
+		if (!above && alpha == 0) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0));
+		if (above && alpha == 0) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		
 		if (bump == null || (!hovered && !clicked)) return;
+		
+		if (!above) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		
 		Color oldColor = g.getColor();
 		g.setColor(clicked ? Color.black : Color.darkGray);
@@ -53,6 +64,8 @@ public abstract class Entity implements Drawable
 			g.drawLine((int) x + bump.x, (int) y + bump.y, (int) x + bump.x + bump.width, (int) y + bump.y); // top
 		}
 		g.setColor(oldColor);
+		
+		if (above) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 	}
 	
 	public float getX()
@@ -78,10 +91,19 @@ public abstract class Entity implements Drawable
 	@Override
 	public void update(int tick)
 	{
-		if (attributes.get(Attribute.HEALTH) < 1)
+		alpha = 1;
+		for (Entity e : Game.world.getSortedEntities())
 		{
-			onDeath();
+			if (e.equals(this)) continue;
+			
+			if (intersects(e) && e.alpha == 1)
+			{
+				alpha = 0.6f;
+				break;
+			}
 		}
+		
+		if (attributes.get(Attribute.HEALTH) < 1) onDeath();
 		
 		tick(tick);
 	}
@@ -140,12 +162,28 @@ public abstract class Entity implements Drawable
 	
 	public boolean mouseMoved(MouseEvent e)
 	{
+		if (alpha == 0) return false;
+		
 		return hovered = contains(e.getX(), e.getY());
 	}
 	
 	public boolean mousePressed(MouseEvent e)
 	{
+		if (alpha == 0) return false;
+		
+		if (alpha != 1) return clicked = getBump(true).contains(e.getPoint());
+		
 		return clicked = contains(e.getX(), e.getY());
+	}
+	
+	public boolean intersects(Entity o)
+	{
+		return getArea().intersects(o.getArea());
+	}
+	
+	public Rectangle getArea()
+	{
+		return new Rectangle((int) x, (int) y, width, height);
 	}
 	
 	public void setClicked(boolean b)
@@ -195,7 +233,12 @@ public abstract class Entity implements Drawable
 	
 	public void dealDamage(int amount)
 	{
-		attributes.add(Attribute.HEALTH, -amount);
+		int newVal = (int) (attributes.get(Attribute.HEALTH) - amount);
+		
+		if (newVal < 0) newVal = 0;
+		if (newVal > attributes.get(Attribute.HEALTH_MAX)) newVal = (int) attributes.get(Attribute.HEALTH_MAX);
+		
+		attributes.set(Attribute.HEALTH, newVal);
 	}
 	
 	public boolean isDead()

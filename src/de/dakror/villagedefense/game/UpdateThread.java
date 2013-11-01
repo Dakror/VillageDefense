@@ -1,5 +1,7 @@
 package de.dakror.villagedefense.game;
 
+import de.dakror.villagedefense.settings.WaveManager;
+import de.dakror.villagedefense.ui.BuildButton;
 import de.dakror.villagedefense.ui.Component;
 
 /**
@@ -23,6 +25,15 @@ public class UpdateThread extends Thread
 		while (true)
 		{
 			if (tick == Integer.MAX_VALUE) tick = 0;
+			
+			WaveManager.update();
+			
+			for (int i = 0; i < Game.buildableStructs.length; i++)
+			{
+				int x = Game.getWidth() / 2 + BuildButton.SIZE / 4 - (Game.buildableStructs.length * (BuildButton.SIZE + 32)) / 2 + i * (BuildButton.SIZE + 32);
+				Game.currentGame.components.get(i).setX(x);
+				Game.currentGame.components.get(i).setY(Game.getHeight() - 84);
+			}
 			
 			if (Game.world != null && Game.currentGame.state == 0) Game.world.update(tick);
 			

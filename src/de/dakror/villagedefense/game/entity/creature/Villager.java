@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -37,5 +38,25 @@ public class Villager extends Creature
 	public Entity clone()
 	{
 		return new Villager((int) x, (int) y);
+	}
+	
+	@Override
+	protected boolean onArrivalAtEntity(int tick)
+	{
+		if (targetEntity instanceof Struct)
+		{
+			if (((Struct) targetEntity).getBuildingCosts().get(Resource.PEOPLE) > 0)
+			{
+				alpha = 0;
+			}
+			else if ((tick + randomOffset) % targetEntity.getAttributes().get(Attribute.MINE_SPEED) == 0 && targetEntity.getResources().size() > 0)
+			{
+				if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT));
+				frame++;
+			}
+			
+			return true;
+		}
+		return false;
 	}
 }

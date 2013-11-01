@@ -28,7 +28,7 @@ import de.dakror.villagedefense.util.Vector;
  */
 public class World extends EventListener implements Drawable
 {
-	public int width, height;
+	public int x, y, width, height;
 	
 	Chunk[][] chunks;
 	
@@ -41,8 +41,10 @@ public class World extends EventListener implements Drawable
 	
 	public World()
 	{
-		width = Game.getWidth();
-		height = Game.getHeight();
+		x = y = 0;
+		
+		width = (int) Math.ceil(Game.getWidth() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
+		height = (int) Math.ceil(Game.getHeight() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
 	}
 	
 	public void init()
@@ -114,29 +116,51 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void draw(Graphics2D g)
 	{
+		g.translate(x, y);
+		
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j].draw(g);
 		
-		@SuppressWarnings("unchecked")
-		ArrayList<Entity> sorted = (ArrayList<Entity>) entities.clone();
-		Collections.sort(sorted, new Comparator<Entity>()
-		{
-			@Override
-			public int compare(Entity o1, Entity o2)
-			{
-				float dif = (o1.getY() + o1.getHeight()) - (o2.getY() + o2.getHeight());
-				if (dif < 0) return -1;
-				else if (dif > 0) return 1;
-				return 0;
-			}
-		});
+		
+		ArrayList<Entity> sorted = getSortedEntities();
 		
 		for (Entity e : sorted)
 			e.draw(g);
 		
-		for (Projectile p : projectiles)
-			p.draw(g);
+		try
+		{
+			for (Projectile p : projectiles)
+				p.draw(g);
+		}
+		catch (Exception e)
+		{}
+		
+		g.translate(-x, -y);
+	}
+	
+	public ArrayList<Entity> getSortedEntities()
+	{
+		@SuppressWarnings("unchecked")
+		ArrayList<Entity> sorted = (ArrayList<Entity>) entities.clone();
+		try
+		{
+			Collections.sort(sorted, new Comparator<Entity>()
+			{
+				@Override
+				public int compare(Entity o1, Entity o2)
+				{
+					float dif = (o1.getY() + o1.getHeight()) - (o2.getY() + o2.getHeight());
+					if (dif < 0) return -1;
+					else if (dif > 0) return 1;
+					return 0;
+				}
+			});
+		}
+		catch (Exception e)
+		{}
+		
+		return sorted;
 	}
 	
 	public void generate()
@@ -153,22 +177,14 @@ public class World extends EventListener implements Drawable
 		core = new CoreHouse(x - 2, y - 3);
 		addEntity(core);
 		
-		addEntity(new Rock(x + 7, y + 8));
 		addEntity(new House(x - 7, y - 8));
-		addEntity(new Tree(x + 7, y - 8));
+		
+		addEntity(new ArrowTower(x - 3, y));
+		addEntity(new ArrowTower(x - 3, y - 3));
+		addEntity(new ArrowTower(x + 1, y));
+		addEntity(new ArrowTower(x + 1, y - 3));
 		
 		int heightMalus = 3;
-		
-		int trees = (int) (Math.random() * 15) + 10;
-		for (int i = 0; i < trees; i++)
-		{
-			int x1 = (int) (Math.random() * width / Tile.SIZE);
-			if ((width / Tile.SIZE) - x1 < 4) continue;
-			
-			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
-			if (Math.abs(y1 - y + 2) < 3) continue;
-			addEntity(new Tree(x1, y1));
-		}
 		
 		int rocks = (int) (Math.random() * 10) + 5;
 		for (int i = 0; i < rocks; i++)
@@ -180,8 +196,27 @@ public class World extends EventListener implements Drawable
 			if (Math.abs(y1 - y + 2) < 3) continue;
 			addEntity(new Rock(x1, y1));
 		}
+		int trees = (int) (Math.random() * 15) + 10;
+		for (int i = 0; i < trees; i++)
+		{
+			int x1 = (int) (Math.random() * width / Tile.SIZE);
+			if ((width / Tile.SIZE) - x1 < 4) continue;
+			
+			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
+			if (Math.abs(y1 - y + 2) < 3) continue;
+			addEntity(new Tree(x1, y1));
+		}
 		
-		addEntity(new ArrowTower(x - 7, y + 1));
+	}
+	
+	public CoreHouse getCoreHouse()
+	{
+		for (Entity e : entities)
+		{
+			if (e instanceof CoreHouse) return (CoreHouse) e;
+		}
+		
+		return null;
 	}
 	
 	@Override
@@ -189,7 +224,9 @@ public class World extends EventListener implements Drawable
 	{
 		try
 		{
-			for (Entity entity : entities)
+			ArrayList<Entity> sorted = getSortedEntities();
+			Collections.reverse(sorted);
+			for (Entity entity : sorted)
 			{
 				entity.update(tick);
 				if (entity.isDead())
@@ -237,47 +274,64 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
-		for (Entity entity : entities)
-			entity.setHovered(false);
-		for (Entity entity : entities)
-			if (entity.mouseMoved(e)) break;
+		e.translatePoint(-x, -y);
+		try
+		{
+			for (Entity entity : entities)
+				entity.setHovered(false);
+			for (Entity entity : entities)
+				if (entity.mouseMoved(e)) break;
+		}
+		catch (ConcurrentModificationException e2)
+		{}
+		
+		e.translatePoint(x, y);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if (e.getButton() == MouseEvent.BUTTON1) // LMB
+		e.translatePoint(-x, -y);
+		try
 		{
-			selectedEntity = null;
-			for (Entity entity : entities)
-				entity.setClicked(false);
-			for (Entity entity : entities)
+			if (e.getButton() == MouseEvent.BUTTON1) // LMB
 			{
-				if (entity.mousePressed(e))
+				selectedEntity = null;
+				for (Entity entity : entities)
+					entity.setClicked(false);
+				for (Entity entity : entities)
 				{
-					selectedEntity = entity;
-					break;
+					if (entity.mousePressed(e))
+					{
+						selectedEntity = entity;
+						break;
+					}
+				}
+			}
+			else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Villager)
+			{
+				Entity target = null;
+				for (Entity entity : entities)
+				{
+					if (entity.mousePressed(e))
+					{
+						target = entity;
+						break;
+					}
+				}
+				
+				if (target != null) ((Creature) selectedEntity).setTarget(target);
+				else
+				{
+					((Creature) selectedEntity).setTargetEntity(null);
+					((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
 				}
 			}
 		}
-		else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Villager)
-		{
-			Entity target = null;
-			for (Entity entity : entities)
-			{
-				if (entity.mousePressed(e))
-				{
-					target = entity;
-					break;
-				}
-			}
-			
-			if (target != null) ((Creature) selectedEntity).setTarget(target);
-			else
-			{
-				((Creature) selectedEntity).setTargetEntity(null);
-				((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
-			}
-		}
+		catch (ConcurrentModificationException e1)
+		{}
+		
+		
+		e.translatePoint(x, y);
 	}
 }

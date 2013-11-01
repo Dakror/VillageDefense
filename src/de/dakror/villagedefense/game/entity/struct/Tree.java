@@ -4,6 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
@@ -29,7 +30,11 @@ public class Tree extends Struct
 	@Override
 	protected void onDeath()
 	{
-		if (ty == 5) return;
+		if (ty == 5)
+		{
+			dead = true;
+			return;
+		}
 		
 		// transform into leftovers
 		width = Tile.SIZE;
@@ -41,6 +46,8 @@ public class Tree extends Struct
 		name = "Baumstumpf";
 		image = null;
 		setBump(new Rectangle2D.Float(0, 0.3f, 1, 0.6f));
+		attributes.set(Attribute.MINE_SPEED, 500);
+		resources.set(Resource.WOOD, 1);
 	}
 	
 	@Override
@@ -48,7 +55,6 @@ public class Tree extends Struct
 	{
 		onDeath();
 	}
-	
 	
 	@Override
 	public Entity clone()
