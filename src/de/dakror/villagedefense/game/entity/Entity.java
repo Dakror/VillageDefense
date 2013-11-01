@@ -146,6 +146,7 @@ public abstract class Entity implements Drawable
 		{
 			Rectangle rect = (Rectangle) bump.clone();
 			rect.translate((int) x, (int) y);
+			rect.translate(Game.world.x, Game.world.y);
 			return rect;
 		}
 	}

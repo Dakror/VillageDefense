@@ -42,9 +42,10 @@ public class World extends EventListener implements Drawable
 	public World()
 	{
 		x = y = 0;
-		
-		width = (int) Math.ceil(Game.getWidth() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
-		height = (int) Math.ceil(Game.getHeight() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
+		width = Game.getWidth();
+		height = Game.getHeight();
+		// width = (int) Math.ceil(Game.getWidth() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
+		// height = (int) Math.ceil(Game.getHeight() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
 	}
 	
 	public void init()

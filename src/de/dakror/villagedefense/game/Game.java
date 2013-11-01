@@ -204,9 +204,9 @@ public class Game extends EventListener
 				
 				canPlace = true;
 				
-				for (int i = bump.x; i < bump.x + bump.width; i += Tile.SIZE)
+				for (int i = bump.x + world.x; i < bump.x + bump.width + world.x; i += Tile.SIZE)
 				{
-					for (int j = bump.y; j < bump.y + bump.height; j += Tile.SIZE)
+					for (int j = bump.y + world.y; j < bump.y + bump.height + world.y; j += Tile.SIZE)
 					{
 						boolean blocked = false;
 						for (Entity e : world.entities)
