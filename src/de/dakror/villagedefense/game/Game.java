@@ -345,6 +345,8 @@ public class Game extends EventListener
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
+		if (e.getModifiers() == MouseEvent.BUTTON3_MASK) return;
+		
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		Vector p = new Vector(e.getPoint()).sub(new Vector(mouseDown));
 		
