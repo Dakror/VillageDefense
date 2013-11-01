@@ -5,8 +5,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
@@ -25,6 +27,10 @@ public abstract class Entity implements Drawable
 	protected Rectangle bump;
 	protected Attributes attributes;
 	protected Resources resources;
+	
+	protected int randomOffset = (int) (Math.random() * 100);
+	
+	public CopyOnWriteArrayList<Projectile> targetedProjectiles = new CopyOnWriteArrayList<>();
 	
 	public float alpha;
 	
@@ -101,6 +107,12 @@ public abstract class Entity implements Drawable
 				alpha = 0.6f;
 				break;
 			}
+		}
+		
+		if (new Double(x).isNaN()) // dead glitched
+		{
+			dead = true;
+			return;
 		}
 		
 		if (attributes.get(Attribute.HEALTH) < 1) onDeath();
@@ -250,6 +262,20 @@ public abstract class Entity implements Drawable
 	public String getName()
 	{
 		return name;
+	}
+	
+	public void addTargetedProjectile(Projectile p)
+	{
+		targetedProjectiles.add(p);
+	}
+	
+	public boolean willDieFromTargetedProjectiles()
+	{
+		int damage = 0;
+		for (Projectile p : targetedProjectiles)
+			damage += p.getDamage();
+		
+		return damage >= attributes.get(Attribute.HEALTH);
 	}
 	
 	// -- abstract event methods -- //

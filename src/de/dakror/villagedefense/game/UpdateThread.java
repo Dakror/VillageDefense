@@ -1,5 +1,6 @@
 package de.dakror.villagedefense.game;
 
+import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.ui.BuildButton;
 import de.dakror.villagedefense.ui.Component;
@@ -45,7 +46,7 @@ public class UpdateThread extends Thread
 			try
 			{
 				tick++;
-				Thread.sleep(20);
+				Thread.sleep(CFG.TICK_TIMEOUT);
 			}
 			catch (InterruptedException e)
 			{}

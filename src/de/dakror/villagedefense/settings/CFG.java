@@ -7,6 +7,7 @@ import java.util.Arrays;
  */
 public class CFG
 {
+	public static final int TICK_TIMEOUT = 20;
 	
 	static long time = 0;
 	

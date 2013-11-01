@@ -99,4 +99,13 @@ public class Resources
 		
 		return res;
 	}
+	
+	public static Resources mul(Resources res, int f)
+	{
+		Resources result = new Resources();
+		for (Resource r : res.getFilled())
+			result.set(r, res.get(r) * f);
+		
+		return result;
+	}
 }

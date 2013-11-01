@@ -66,17 +66,24 @@ public class BuildButton extends Component
 			}
 		}
 		
-		int height = 64 + (struct.getBuildingCosts().size() + (hasPreq ? 3 : 2)) * 26;
+		int height = 64 + (struct.getBuildingCosts().size() + (hasPreq ? 3 : 2) - (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue() ? 0 : 1)) * 26;
 		Assistant.drawShadow(x, y - height, w, height, g);
 		Assistant.drawOutline(x, y - height, w, height, false, g);
 		
 		Assistant.drawHorizontallyCenteredString(struct.getName(), x, w, y - height + 40, g, 30);
 		
-		Assistant.drawLabelWithIcon(x + 16, y - height + 48, 24, new Point(11, 1), (int) struct.getAttributes().get(Attribute.HEALTH_MAX) + "", 30, g);
+		int y1 = y - height + 80;
+		
+		if (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue())
+		{
+			Assistant.drawLabelWithIcon(x + 16, y - height + 48, 24, new Point(11, 1), (int) struct.getAttributes().get(Attribute.HEALTH_MAX) + "", 30, g);
+			y1 += 26;
+		}
 		
 		// -- costs -- //
-		Assistant.drawHorizontallyCenteredString("Baukosten", x + 60, 0, y - height + 96, g, 24);
-		int y1 = y - height + 102;
+		y1 -= 12;
+		Assistant.drawHorizontallyCenteredString("Baukosten", x + 60, 0, y1, g, 24);
+		y1 += 8;
 		for (int i = 0; i < struct.getBuildingCosts().size(); i++)
 		{
 			if (!filled.get(i).isUsable())

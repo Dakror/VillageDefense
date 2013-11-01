@@ -6,7 +6,6 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.world.Tile;
-import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
@@ -22,8 +21,8 @@ public class House extends Struct
 		setBump(new Rectangle2D.Float(0.25f, 2f, 4.5f, 3f));
 		placeGround = true;
 		name = "Haus";
-		attributes.set(Attribute.HEALTH, 25);
-		attributes.set(Attribute.HEALTH_MAX, 25);
+		// attributes.set(Attribute.HEALTH, 25);
+		// attributes.set(Attribute.HEALTH_MAX, 25);
 		
 		buildingCosts.set(Resource.GOLD, 50);
 		buildingCosts.set(Resource.WOOD, 10);

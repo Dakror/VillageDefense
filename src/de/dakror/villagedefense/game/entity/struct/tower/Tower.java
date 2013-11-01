@@ -52,10 +52,19 @@ public abstract class Tower extends Struct
 	@Override
 	protected void tick(int tick)
 	{
-		if (tick % attributes.get(Attribute.ATTACK_SPEED) == 0)
+		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
 		{
 			ArrayList<Creature> t = getTargetableCreatures();
-			if (t.size() > 0) Game.world.projectiles.add(new Projectile(getCenter(), t.get(0), "arrow", 8f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
+			if (t.size() > 0)
+			{
+				for (int i = 0; i < t.size(); i++)
+				{
+					if (t.get(i).willDieFromTargetedProjectiles()) continue;
+					
+					Game.world.addProjectile(new Projectile(getCenter(), t.get(0), "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
+					break;
+				}
+			}
 		}
 	}
 	

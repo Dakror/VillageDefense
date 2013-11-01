@@ -16,7 +16,6 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -191,59 +190,53 @@ public class Game extends EventListener
 	
 	public void drawBuildStruct(Graphics2D g)
 	{
-		try
+		if (activeStruct != null)
 		{
-			if (activeStruct != null)
+			activeStruct.setX(Assistant.round(mouse.x - activeStruct.getBump(false).x, Tile.SIZE)/* - activeStruct.getBump(false).x - (activeStruct.getBump(true).width % Tile.SIZE) */);
+			activeStruct.setY(Assistant.round(mouse.y - activeStruct.getBump(false).y, Tile.SIZE)/* - activeStruct.getBump(false).y - (activeStruct.getBump(true).height % Tile.SIZE) */);
+			activeStruct.setClicked(true);
+			
+			Rectangle bump = activeStruct.getBump(true);
+			int malus = 5;
+			
+			canPlace = true;
+			
+			for (int i = bump.x + world.x; i < bump.x + bump.width + world.x; i += Tile.SIZE)
 			{
-				activeStruct.setX(Assistant.round(mouse.x - activeStruct.getBump(false).x, Tile.SIZE)/* - activeStruct.getBump(false).x - (activeStruct.getBump(true).width % Tile.SIZE) */);
-				activeStruct.setY(Assistant.round(mouse.y - activeStruct.getBump(false).y, Tile.SIZE)/* - activeStruct.getBump(false).y - (activeStruct.getBump(true).height % Tile.SIZE) */);
-				activeStruct.setClicked(true);
-				
-				Rectangle bump = activeStruct.getBump(true);
-				int malus = 5;
-				
-				canPlace = true;
-				
-				for (int i = bump.x + world.x; i < bump.x + bump.width + world.x; i += Tile.SIZE)
+				for (int j = bump.y + world.y; j < bump.y + bump.height + world.y; j += Tile.SIZE)
 				{
-					for (int j = bump.y + world.y; j < bump.y + bump.height + world.y; j += Tile.SIZE)
+					boolean blocked = false;
+					for (Entity e : world.entities)
 					{
-						boolean blocked = false;
-						for (Entity e : world.entities)
-						{
-							if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
-							{
-								blocked = true;
-								canPlace = false;
-								break;
-							}
-						}
-						
-						if (Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) - Tile.SIZE)
+						if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
 						{
 							blocked = true;
 							canPlace = false;
+							break;
 						}
-						
-						g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 					}
+					
+					if (Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) - Tile.SIZE)
+					{
+						blocked = true;
+						canPlace = false;
+					}
+					
+					g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 				}
-				
-				Composite oldComposite = g.getComposite();
-				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-				activeStruct.draw(g);
-				g.setComposite(oldComposite);
 			}
+			
+			Composite oldComposite = g.getComposite();
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+			activeStruct.draw(g);
+			g.setComposite(oldComposite);
 		}
-		catch (NullPointerException | ConcurrentModificationException e)
-		{}
 	}
 	
 	public void drawGUI(Graphics2D g)
 	{
 		try
 		{
-			
 			Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
 			if (world.selectedEntity != null)
 			{
@@ -389,7 +382,7 @@ public class Game extends EventListener
 		{
 			if (activeStruct != null && e.getButton() == 1)
 			{
-				if (canPlace)
+				if (canPlace && e.getY() < getHeight() - 100)
 				{
 					activeStruct.setClicked(false);
 					ArrayList<Resource> filled = activeStruct.getBuildingCosts().getFilled();
@@ -399,13 +392,32 @@ public class Game extends EventListener
 						resources.add(r, -activeStruct.getBuildingCosts().get(r));
 					}
 					world.addEntity(activeStruct);
+					
+					for (Component c : components)
+					{
+						if (c instanceof BuildButton)
+						{
+							BuildButton b = (BuildButton) c;
+							if (b.getStruct().getName().equals(activeStruct.getName()))
+							{
+								c.update(0);
+								if (b.isEnabled())
+								{
+									activeStruct.setClicked(false);
+									activeStruct = (Struct) b.getStruct().clone();
+									
+									return;
+								}
+							}
+						}
+					}
 				}
 				else return;
 			}
 			
 			activeStruct = null;
 			
-			if (e.getY() < getHeight() - 100) world.mousePressed(e);
+			world.mousePressed(e);
 			for (Component c : components)
 				c.mousePressed(e);
 		}

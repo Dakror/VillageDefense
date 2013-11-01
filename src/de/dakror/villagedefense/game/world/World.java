@@ -6,7 +6,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
@@ -36,8 +37,8 @@ public class World extends EventListener implements Drawable
 	
 	public Entity selectedEntity;
 	
-	public ArrayList<Entity> entities = new ArrayList<>();
-	public ArrayList<Projectile> projectiles = new ArrayList<>();
+	public CopyOnWriteArrayList<Entity> entities = new CopyOnWriteArrayList<Entity>();
+	public CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<Projectile>();
 	
 	public World()
 	{
@@ -129,13 +130,8 @@ public class World extends EventListener implements Drawable
 		for (Entity e : sorted)
 			e.draw(g);
 		
-		try
-		{
-			for (Projectile p : projectiles)
-				p.draw(g);
-		}
-		catch (Exception e)
-		{}
+		for (Projectile p : projectiles)
+			p.draw(g);
 		
 		g.translate(-x, -y);
 	}
@@ -143,7 +139,7 @@ public class World extends EventListener implements Drawable
 	public ArrayList<Entity> getSortedEntities()
 	{
 		@SuppressWarnings("unchecked")
-		ArrayList<Entity> sorted = (ArrayList<Entity>) entities.clone();
+		ArrayList<Entity> sorted = new ArrayList<>((List<Entity>) entities.clone());
 		try
 		{
 			Collections.sort(sorted, new Comparator<Entity>()
@@ -158,9 +154,8 @@ public class World extends EventListener implements Drawable
 				}
 			});
 		}
-		catch (Exception e)
+		catch (IllegalArgumentException e)
 		{}
-		
 		return sorted;
 	}
 	
@@ -223,32 +218,27 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void update(int tick)
 	{
-		try
+		List<Entity> sorted = getSortedEntities();
+		Collections.reverse(sorted);
+		for (Entity entity : sorted)
 		{
-			ArrayList<Entity> sorted = getSortedEntities();
-			Collections.reverse(sorted);
-			for (Entity entity : sorted)
+			entity.update(tick);
+			if (entity.isDead())
 			{
-				entity.update(tick);
-				if (entity.isDead())
-				{
-					if (entity.equals(selectedEntity)) selectedEntity = null;
-					entities.remove(entity);
-				}
+				if (entity.equals(selectedEntity)) selectedEntity = null;
+				entities.remove(entity);
 			}
 		}
-		catch (ConcurrentModificationException e)
-		{}
-		try
+		
+		for (Projectile p : projectiles)
 		{
-			for (Projectile p : projectiles)
+			p.update(tick);
+			if (p.isDead())
 			{
-				p.update(tick);
-				if (p.isDead()) projectiles.remove(p);
+				p.getTarget().targetedProjectiles.remove(p);
+				projectiles.remove(p);
 			}
 		}
-		catch (ConcurrentModificationException e)
-		{}
 	}
 	
 	public void render()
@@ -272,19 +262,28 @@ public class World extends EventListener implements Drawable
 		return true;
 	}
 	
+	public void addEntity2(Entity e)
+	{
+		e.onSpawn();
+		entities.add(e);
+		
+		render();
+	}
+	
+	public void addProjectile(Projectile p)
+	{
+		projectiles.add(p);
+		p.getTarget().addTargetedProjectile(p);
+	}
+	
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
 		e.translatePoint(-x, -y);
-		try
-		{
-			for (Entity entity : entities)
-				entity.setHovered(false);
-			for (Entity entity : entities)
-				if (entity.mouseMoved(e)) break;
-		}
-		catch (ConcurrentModificationException e2)
-		{}
+		for (Entity entity : entities)
+			entity.setHovered(false);
+		for (Entity entity : entities)
+			if (entity.mouseMoved(e)) break;
 		
 		e.translatePoint(x, y);
 	}
@@ -293,45 +292,39 @@ public class World extends EventListener implements Drawable
 	public void mousePressed(MouseEvent e)
 	{
 		e.translatePoint(-x, -y);
-		try
+		if (e.getButton() == MouseEvent.BUTTON1) // LMB
 		{
-			if (e.getButton() == MouseEvent.BUTTON1) // LMB
+			selectedEntity = null;
+			for (Entity entity : entities)
+				entity.setClicked(false);
+			for (Entity entity : entities)
 			{
-				selectedEntity = null;
-				for (Entity entity : entities)
-					entity.setClicked(false);
-				for (Entity entity : entities)
+				if (entity.mousePressed(e))
 				{
-					if (entity.mousePressed(e))
-					{
-						selectedEntity = entity;
-						break;
-					}
-				}
-			}
-			else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Villager)
-			{
-				Entity target = null;
-				for (Entity entity : entities)
-				{
-					if (entity.mousePressed(e))
-					{
-						target = entity;
-						break;
-					}
-				}
-				
-				if (target != null) ((Creature) selectedEntity).setTarget(target);
-				else
-				{
-					((Creature) selectedEntity).setTargetEntity(null);
-					((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
+					selectedEntity = entity;
+					break;
 				}
 			}
 		}
-		catch (ConcurrentModificationException e1)
-		{}
-		
+		else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Villager)
+		{
+			Entity target = null;
+			for (Entity entity : entities)
+			{
+				if (entity.mousePressed(e))
+				{
+					target = entity;
+					break;
+				}
+			}
+			
+			if (target != null) ((Creature) selectedEntity).setTarget(target);
+			else
+			{
+				((Creature) selectedEntity).setTargetEntity(null);
+				((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
+			}
+		}
 		
 		e.translatePoint(x, y);
 	}

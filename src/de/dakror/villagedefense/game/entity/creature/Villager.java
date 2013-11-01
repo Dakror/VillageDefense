@@ -15,7 +15,6 @@ public class Villager extends Creature
 	{
 		super(x, y, "villager" + (int) Math.round(Math.random()));
 		setHostile(false);
-		attributes.set(Attribute.SPEED, 2f);
 		name = "Einwohner";
 		attributes.set(Attribute.HEALTH, 15);
 		attributes.set(Attribute.HEALTH_MAX, 15);

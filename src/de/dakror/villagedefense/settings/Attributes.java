@@ -22,7 +22,7 @@ public class Attributes
 		HEALTH_MAX(1),
 		MINE_SPEED(25),
 		MINE_AMOUNT(1),
-		SPEED(1),
+		SPEED(2),
 		
 		;
 		

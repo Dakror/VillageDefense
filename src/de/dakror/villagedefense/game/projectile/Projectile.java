@@ -70,4 +70,34 @@ public class Projectile implements Drawable
 	{
 		return dead;
 	}
+	
+	public Vector getPos()
+	{
+		return pos;
+	}
+	
+	public Entity getTarget()
+	{
+		return target;
+	}
+	
+	public Image getImage()
+	{
+		return image;
+	}
+	
+	public float getSpeed()
+	{
+		return speed;
+	}
+	
+	public float getAngle()
+	{
+		return angle;
+	}
+	
+	public int getDamage()
+	{
+		return damage;
+	}
 }

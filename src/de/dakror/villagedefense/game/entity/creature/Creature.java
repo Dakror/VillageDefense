@@ -31,8 +31,6 @@ public abstract class Creature extends Entity
 	protected int dir;
 	protected int frame;
 	
-	protected int randomOffset = (int) (Math.random() * 100);
-	
 	public Creature(int x, int y, String img)
 	{
 		super(x, y, Game.getImage("creature/" + img + ".png").getWidth() / 4, Game.getImage("creature/" + img + ".png").getHeight() / 4);

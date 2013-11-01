@@ -16,7 +16,6 @@ public class Zombie extends Creature
 		super(x, y, "zombie");
 		
 		setHostile(true);
-		attributes.set(Attribute.SPEED, 2f);
 		attributes.set(Attribute.DAMAGE_STRUCT, 5);
 		attributes.set(Attribute.HEALTH, 20);
 		attributes.set(Attribute.HEALTH_MAX, 20);
@@ -29,24 +28,24 @@ public class Zombie extends Creature
 	@Override
 	public void onDeath()
 	{
-		super.onDeath();
 		if (Math.random() <= 0.5)
 		{
 			boolean left = Math.random() < 0.5;
-			Game.world.addEntity(new Zombie(left ? 0 : Game.getWidth(), Game.world.height / 2 - Tile.SIZE));
+			Game.world.addEntity(new Ghost(left ? 0 : Game.getWidth(), Game.world.height / 2 - Tile.SIZE));
 		}
 		Game.currentGame.resources.add(resources);
-	}
-	
-	@Override
-	public Entity clone()
-	{
-		return new Zombie((int) x, (int) y);
+		super.onDeath();
 	}
 	
 	@Override
 	protected boolean onArrivalAtEntity(int tick)
 	{
 		return false;
+	}
+	
+	@Override
+	public Entity clone()
+	{
+		return new Zombie((int) x, (int) y);
 	}
 }
