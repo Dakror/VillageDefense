@@ -39,7 +39,7 @@ public class WaveManager
 		}
 	}
 	
-	public static int wave = 15;
+	public static int wave;
 	public static long nextWave; // UNIX timestamp
 	
 	public static EnumMap<Monster, Integer> monsters = new EnumMap<>(Monster.class);
