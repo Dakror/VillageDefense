@@ -78,12 +78,14 @@ public class WaveManager
 					@Override
 					public void run()
 					{
+						EnumMap<Monster, Integer> monsters = WaveManager.monsters.clone();
+						generateNextWave();
+						
 						int leftLength = 0;
 						int rightLength = 0;
 						
 						for (Monster monster : monsters.keySet())
 						{
-							
 							for (int i = 0; i < monsters.get(monster); i++)
 							{
 								boolean left = Math.random() < 0.5;
@@ -103,10 +105,11 @@ public class WaveManager
 								else rightLength++;
 							}
 						}
+						
 					}
 				}.start();
 			}
-			generateNextWave();
+			
 		}
 	}
 }

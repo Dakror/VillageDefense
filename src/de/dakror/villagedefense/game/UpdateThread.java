@@ -15,6 +15,7 @@ public class UpdateThread extends Thread
 	
 	public UpdateThread()
 	{
+		setPriority(Thread.MAX_PRIORITY);
 		start();
 	}
 	

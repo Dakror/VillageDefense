@@ -110,6 +110,7 @@ public class Game extends EventListener
 		world.init();
 		state = 0;
 		initGUI();
+		WaveManager.init();
 		w.setVisible(true);
 		w.getContentPane().setIgnoreRepaint(true);
 		try
