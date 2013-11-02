@@ -40,7 +40,7 @@ public class WaveManager
 	}
 	
 	public static int wave;
-	public static long nextWave; // UNIX timestamp
+	public static int nextWave; // int seconds
 	
 	public static EnumMap<Monster, Integer> monsters = new EnumMap<>(Monster.class);
 	
@@ -63,53 +63,49 @@ public class WaveManager
 		if (wave > 5) monsters.put(Monster.SKELETON, (int) Math.ceil(Math.random() * (wave - 5)) + 1);
 		
 		
-		nextWave = System.currentTimeMillis() + (1000 * 60 * 1); // for now each wave is 1 minutes from now
+		nextWave = 60; // in seconds
 		wave++;
 	}
 	
 	public static void update()
 	{
-		if (System.currentTimeMillis() >= nextWave)
+		if (nextWave <= 0)
 		{
-			if (nextWave > 0)
+			new Thread()
 			{
-				new Thread()
+				@Override
+				public void run()
 				{
-					@Override
-					public void run()
+					EnumMap<Monster, Integer> monsters = WaveManager.monsters.clone();
+					generateNextWave();
+					
+					int leftLength = 0;
+					int rightLength = 0;
+					
+					for (Monster monster : monsters.keySet())
 					{
-						EnumMap<Monster, Integer> monsters = WaveManager.monsters.clone();
-						generateNextWave();
-						
-						int leftLength = 0;
-						int rightLength = 0;
-						
-						for (Monster monster : monsters.keySet())
+						for (int i = 0; i < monsters.get(monster); i++)
 						{
-							for (int i = 0; i < monsters.get(monster); i++)
+							boolean left = Math.random() < 0.5;
+							
+							int x = left ? -leftLength * Tile.SIZE : Game.getWidth() + rightLength * Tile.SIZE;
+							
+							try
 							{
-								boolean left = Math.random() < 0.5;
-								
-								int x = left ? -leftLength * Tile.SIZE : Game.getWidth() + rightLength * Tile.SIZE;
-								
-								try
-								{
-									Game.world.addEntity2((Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, Game.world.height / 2 - Tile.SIZE));
-								}
-								catch (Exception e)
-								{
-									e.printStackTrace();
-								}
-								
-								if (left) leftLength++;
-								else rightLength++;
+								Game.world.addEntity2((Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, Game.world.height / 2 - Tile.SIZE));
 							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+							
+							if (left) leftLength++;
+							else rightLength++;
 						}
-						
 					}
-				}.start();
-			}
-			
+					
+				}
+			}.start();
 		}
 	}
 }

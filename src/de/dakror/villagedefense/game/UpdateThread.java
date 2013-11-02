@@ -11,7 +11,7 @@ import de.dakror.villagedefense.ui.Component;
 public class UpdateThread extends Thread
 {
 	int tick;
-	long time;
+	long time, time2;
 	
 	public UpdateThread()
 	{
@@ -23,10 +23,16 @@ public class UpdateThread extends Thread
 	public void run()
 	{
 		tick = 0;
-		time = System.currentTimeMillis();
+		time = time2 = System.currentTimeMillis();
 		while (true)
 		{
 			if (tick == Integer.MAX_VALUE) tick = 0;
+			
+			if (System.currentTimeMillis() - time2 > 1000 && Game.currentGame.state == 0)
+			{
+				WaveManager.nextWave--;
+				time2 = System.currentTimeMillis();
+			}
 			
 			WaveManager.update();
 			

@@ -14,9 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -62,6 +60,7 @@ public class Game extends EventListener
 	 * 0 = playing<br>
 	 * 1 = won<br>
 	 * 2 = lost<br>
+	 * 3 = pause<br>
 	 */
 	public int state;
 	
@@ -71,8 +70,6 @@ public class Game extends EventListener
 	// -- building menu -- //
 	public Struct activeStruct;
 	public boolean canPlace;
-	
-	long gameOver; // UNIX timestamp
 	
 	ArrayList<Component> components = new ArrayList<>();
 	
@@ -299,8 +296,21 @@ public class Game extends EventListener
 			
 			// -- time panel -- //
 			Assistant.drawContainer(getWidth() / 2 - 150, 0, 300, 80, true, true, g);
-			if (state == 0) Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((WaveManager.nextWave >= System.currentTimeMillis()) ? WaveManager.nextWave - System.currentTimeMillis() : 0)), getWidth(), 60, g, 70);
-			else Assistant.drawHorizontallyCenteredString(new SimpleDateFormat("mm:ss").format(new Date((WaveManager.nextWave >= gameOver) ? WaveManager.nextWave - gameOver : 0)), getWidth(), 60, g, 70);
+			String minutes = ((int) Math.floor(WaveManager.nextWave / 60f)) + "";
+			String seconds = (WaveManager.nextWave % 60) + "";
+			
+			while (minutes.length() < 2)
+				minutes = "0" + minutes;
+			while (seconds.length() < 2)
+				seconds = "0" + seconds;
+			
+			Assistant.drawHorizontallyCenteredString(minutes + ":" + seconds, getWidth(), 60, g, 70);
+			
+			// -- pause -- //
+			if (!new Rectangle(getWidth() - 75, 5, 70, 70).contains(mouse)) Assistant.drawContainer(getWidth() - 75, 5, 70, 70, false, false, g);
+			else Assistant.drawContainer(getWidth() - 80, 0, 80, 80, false, true, g);
+			
+			g.drawImage(getImage("gui/pause.png"), getWidth() - 75, 5, 70, 70, w);
 			
 			// -- build/bottom bar -- //
 			Assistant.drawContainer(0, getHeight() - 100, getWidth(), 100, false, false, g);
@@ -330,8 +340,9 @@ public class Game extends EventListener
 			g.fillRect(0, 0, getWidth(), getHeight());
 			g.setColor(Color.white);
 			g.setComposite(composite);
-			Assistant.drawHorizontallyCenteredString(state == 1 ? "Gewonnen!" : "Niederlage!", getWidth(), getHeight() / 2, g, 100);
-			Assistant.drawHorizontallyCenteredString("Punktestand: " + getPlayerScore(), getWidth(), getHeight() / 2 + 100, g, 60);
+			
+			Assistant.drawHorizontallyCenteredString(state == 1 ? "Gewonnen!" : (state == 2) ? "Niederlage!" : "Spiel pausiert", getWidth(), getHeight() / 2, g, 100);
+			Assistant.drawHorizontallyCenteredString(state != 3 ? "Punktestand: " + getPlayerScore() : "Klicken, um fortzusetzen", getWidth(), getHeight() / 2 + 100, g, 60);
 		}
 	}
 	
@@ -401,6 +412,12 @@ public class Game extends EventListener
 		
 		if (state == 0)
 		{
+			if (new Rectangle(getWidth() - 75, 5, 70, 70).contains(e.getPoint())) // pause
+			{
+				state = 3;
+				return;
+			}
+			
 			if (activeStruct != null && e.getButton() == 1)
 			{
 				if (canPlace && e.getY() < getHeight() - 100)
@@ -442,12 +459,12 @@ public class Game extends EventListener
 			for (Component c : components)
 				c.mousePressed(e);
 		}
+		else if (state == 3) state = 0;
 	}
 	
 	public void setState(int state)
 	{
 		this.state = state;
-		if (state == 2) gameOver = System.currentTimeMillis();
 	}
 	
 	public int getPeople()
