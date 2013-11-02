@@ -25,24 +25,30 @@ public class Assistant
 	// -- draw helper methods -- //
 	public static int[] drawHorizontallyCenteredString(String s, int w, int h, Graphics2D g, int size)
 	{
-		Font old = g.getFont();
-		g.setFont(g.getFont().deriveFont((float) size));
-		FontMetrics fm = g.getFontMetrics();
+		FontMetrics fm = g.getFontMetrics(g.getFont().deriveFont((float) size));
 		int x = (w - fm.stringWidth(s)) / 2;
-		g.drawString(s, x, h);
-		g.setFont(old);
+		
+		drawString(s, x, h, g, size);
+		
 		return new int[] { x, fm.stringWidth(s) };
 	}
 	
 	public static int[] drawHorizontallyCenteredString(String s, int x1, int w, int h, Graphics2D g, int size)
 	{
-		Font oldf = g.getFont();
-		g.setFont(g.getFont().deriveFont((float) size));
-		FontMetrics fm = g.getFontMetrics();
+		FontMetrics fm = g.getFontMetrics(g.getFont().deriveFont((float) size));
 		int x = x1 + (w - fm.stringWidth(s)) / 2;
-		g.drawString(s, x, h);
-		g.setFont(oldf);
+		drawString(s, x, h, g, size);
+		
 		return new int[] { x, fm.stringWidth(s) };
+	}
+	
+	public static void drawString(String s, int x, int y, Graphics2D g, int size)
+	{
+		Font old = g.getFont();
+		g.setFont(old.deriveFont((float) size));
+		g.drawString(s, x, y);
+		
+		g.setFont(old);
 	}
 	
 	public static void drawOutline(int x, int y, int width, int height, boolean doubled, Graphics2D g)

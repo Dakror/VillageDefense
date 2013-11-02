@@ -124,11 +124,10 @@ public class World extends EventListener implements Drawable
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j].draw(g);
 		
-		
 		ArrayList<Entity> sorted = getSortedEntities();
 		
 		for (Entity e : sorted)
-			e.draw(g);
+			e.drawEntity(g);
 		
 		for (Projectile p : projectiles)
 			p.draw(g);

@@ -120,6 +120,17 @@ public abstract class Entity implements Drawable
 		tick(tick);
 	}
 	
+	public void drawEntity(Graphics2D g)
+	{
+		if (alpha == 0) return;
+		
+		drawBump(g, false);
+		
+		draw(g);
+		
+		drawBump(g, true);
+	}
+	
 	protected abstract void tick(int tick);
 	
 	@Override

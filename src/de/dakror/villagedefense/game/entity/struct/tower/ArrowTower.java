@@ -3,6 +3,7 @@ package de.dakror.villagedefense.game.entity.struct.tower;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
  * @author Dakror
@@ -21,8 +22,8 @@ public class ArrowTower extends Tower
 		attributes.set(Attribute.ATTACK_SPEED, 35);
 		attributes.set(Attribute.DAMAGE_CREATURE, 3);
 		
-		// buildingCosts.set(Resource.GOLD, 75);
-		// buildingCosts.set(Resource.STONE, 15);
+		buildingCosts.set(Resource.GOLD, 75);
+		buildingCosts.set(Resource.STONE, 15);
 	}
 	
 	@Override

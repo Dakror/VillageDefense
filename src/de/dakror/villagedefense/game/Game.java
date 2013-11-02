@@ -34,6 +34,7 @@ import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
+import de.dakror.villagedefense.settings.WaveManager.Monster;
 import de.dakror.villagedefense.ui.BuildButton;
 import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.util.Assistant;
@@ -238,6 +239,25 @@ public class Game extends EventListener
 		try
 		{
 			Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
+			
+			// -- wave monster faces -- //
+			if (WaveManager.monsters.size() > 0)
+			{
+				int cSize = 70;
+				Monster[] keys = WaveManager.monsters.keySet().toArray(new Monster[] {});
+				for (int i = 0; i < WaveManager.monsters.size(); i++)
+				{
+					Monster m = keys[i];
+					
+					int x = getWidth() / 2 + 200 + i * cSize;
+					Assistant.drawShadow(x, 72, cSize, cSize, g);
+					Assistant.drawOutline(x, 72, cSize, cSize, false, g);
+					g.drawImage(getImage("creature/" + m.getImage() + "_face.png"), getWidth() / 2 + 200 + i * cSize + (cSize - 48) / 2, 72 + (cSize - 48) / 2, 48, 48, w);
+					
+					Assistant.drawString(WaveManager.monsters.get(m) + "", x + 6, 72 + cSize - 6, g, 22);
+				}
+			}
+			
 			if (world.selectedEntity != null)
 			{
 				Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
@@ -272,7 +292,7 @@ public class Game extends EventListener
 			}
 			
 			// -- wave info -- //
-			Assistant.drawHorizontallyCenteredString("Welle: " + WaveManager.wave, getWidth() / 2 + 220, 0, 55, g, 45);
+			Assistant.drawString("Welle: " + WaveManager.wave, getWidth() / 2 + 170, 55, g, 45);
 			
 			Assistant.drawHorizontallyCenteredString("Punktestand: " + getPlayerScore(), getWidth() / 2, getWidth() / 2, 50, g, 25);
 			
