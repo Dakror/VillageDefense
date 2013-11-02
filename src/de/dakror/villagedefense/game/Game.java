@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
+import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Mine;
 import de.dakror.villagedefense.game.entity.struct.Struct;
@@ -47,7 +48,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new ArrowTower(0, 0) };
+	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new ArrowTower(0, 0), new Barricade(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -205,6 +206,19 @@ public class Game extends EventListener
 				for (int j = bump.y + world.y; j < bump.y + bump.height + world.y; j += Tile.SIZE)
 				{
 					boolean blocked = false;
+					
+					if (activeStruct.canPlaceOnWay())
+					{
+						blocked = true;
+						canPlace = false;
+					}
+					
+					if ((Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) - Tile.SIZE))
+					{
+						blocked = !activeStruct.canPlaceOnWay();
+						canPlace = activeStruct.canPlaceOnWay();
+					}
+					
 					for (Entity e : world.entities)
 					{
 						if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
@@ -215,11 +229,6 @@ public class Game extends EventListener
 						}
 					}
 					
-					if (Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) - Tile.SIZE)
-					{
-						blocked = true;
-						canPlace = false;
-					}
 					
 					g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 				}
@@ -503,7 +512,7 @@ public class Game extends EventListener
 		
 		score += WaveManager.wave * 250;
 		
-		score -= (world.getCoreHouse().getAttributes().get(Attribute.HEALTH_MAX) - world.getCoreHouse().getAttributes().get(Attribute.HEALTH)) * 10;
+		score -= (world.core.getAttributes().get(Attribute.HEALTH_MAX) - world.core.getAttributes().get(Attribute.HEALTH)) * 10;
 		
 		return score - 1551;
 	}

@@ -22,6 +22,7 @@ public abstract class Struct extends Entity
 {
 	protected int tx, ty;
 	protected boolean placeGround;
+	protected boolean canPlaceOnWay;
 	protected StructPoints structPoints;
 	protected Resources buildingCosts;
 	protected Image image;
@@ -32,6 +33,8 @@ public abstract class Struct extends Entity
 		
 		structPoints = new StructPoints();
 		buildingCosts = new Resources();
+		
+		canPlaceOnWay = false;
 	}
 	
 	@Override
@@ -42,6 +45,19 @@ public abstract class Struct extends Entity
 		g.drawImage(getImage(), (int) x, (int) y, Game.w);
 		
 		drawBump(g, true);
+		
+		// TODO: DEBUG
+		// for (Vector p : structPoints.attacks)
+		// {
+		// Vector v = p.clone();
+		// v.mul(Tile.SIZE);
+		// v.add(new Vector(x, y));
+		//
+		// Color old = g.getColor();
+		// g.setColor(Color.green);
+		// g.fillRect((int) v.x, (int) v.y, 4, 4);
+		// g.setColor(old);
+		// }
 	}
 	
 	public void setBump(Rectangle2D r)
@@ -156,6 +172,11 @@ public abstract class Struct extends Entity
 		}
 		
 		return true;
+	}
+	
+	public boolean canPlaceOnWay()
+	{
+		return canPlaceOnWay;
 	}
 	
 	protected abstract void onMinedUp();

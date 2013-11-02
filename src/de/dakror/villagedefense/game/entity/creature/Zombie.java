@@ -33,7 +33,6 @@ public class Zombie extends Creature
 			boolean left = Math.random() < 0.5;
 			Game.world.addEntity(new Ghost(left ? 0 : Game.getWidth(), Game.world.height / 2 - Tile.SIZE));
 		}
-		Game.currentGame.resources.add(resources);
 		super.onDeath();
 	}
 	

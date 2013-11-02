@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
@@ -74,6 +75,11 @@ public abstract class Creature extends Entity
 				}
 			}
 			else if (!onArrivalAtEntity(tick)) frame = 0;
+		}
+		
+		if (hostile && targetEntity == null && target == null) // killed everything
+		{
+			lookupTargetEntity();
 		}
 		
 		frame = frame % 4;
@@ -199,12 +205,31 @@ public abstract class Creature extends Entity
 	public void setHostile(boolean hostile)
 	{
 		this.hostile = hostile;
-		if (hostile) setTarget(Game.world.core);
+		lookupTargetEntity();
+	}
+	
+	public void lookupTargetEntity()
+	{
+		if (!hostile) return;
+		
+		Barricade closestBarricade = null;
+		
+		for (Entity e : Game.world.entities)
+		{
+			if (e instanceof Barricade)
+			{
+				if (closestBarricade == null || e.getPos().getDistance(getPos()) < closestBarricade.getPos().getDistance(getPos())) closestBarricade = (Barricade) e;
+			}
+		}
+		
+		if (closestBarricade == null || closestBarricade.getPos().getDistance(getPos()) > Game.world.core.getPos().getDistance(getPos())) setTarget(Game.world.core);
+		else setTarget(closestBarricade);
 	}
 	
 	@Override
 	public void onDeath()
 	{
+		if (hostile) Game.currentGame.resources.add(resources);
 		dead = true;
 	}
 	

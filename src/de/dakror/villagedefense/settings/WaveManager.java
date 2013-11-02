@@ -16,8 +16,7 @@ public class WaveManager
 		ZOMBIE("zombie", de.dakror.villagedefense.game.entity.creature.Zombie.class),
 		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class),
 		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class),
-		
-		;
+		TROLL("troll", de.dakror.villagedefense.game.entity.creature.Troll.class), ;
 		
 		private String image;
 		private Class<?> creatureClass;
@@ -52,7 +51,7 @@ public class WaveManager
 	
 	static void generateNextWave()
 	{
-		Game.world.getCoreHouse().dealDamage(-1);
+		Game.world.core.dealDamage(-1);
 		monsters.clear();
 		
 		/*
@@ -62,6 +61,11 @@ public class WaveManager
 		monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 3));
 		if (wave > 5) monsters.put(Monster.SKELETON, (int) Math.ceil(Math.random() * (wave - 5)) + 1);
 		
+		if (wave == 9)
+		{
+			monsters.clear();
+			monsters.put(Monster.TROLL, 1);
+		}
 		
 		nextWave = 60; // in seconds
 		wave++;
@@ -86,21 +90,24 @@ public class WaveManager
 					{
 						for (int i = 0; i < monsters.get(monster); i++)
 						{
-							boolean left = Math.random() < 0.5;
-							
-							int x = left ? -leftLength * Tile.SIZE : Game.getWidth() + rightLength * Tile.SIZE;
-							
 							try
 							{
-								Game.world.addEntity2((Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, Game.world.height / 2 - Tile.SIZE));
+								boolean left = Math.random() < 0.5;
+								
+								int x = left ? -leftLength * Tile.SIZE : Game.getWidth() + rightLength * Tile.SIZE;
+								Entity e = (Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, 0);
+								int y = Game.world.height / 2 - e.getHeight() / 2;
+								e.setY(y);
+								
+								Game.world.addEntity2(e);
+								
+								if (left) leftLength++;
+								else rightLength++;
 							}
-							catch (Exception e)
+							catch (Exception e1)
 							{
-								e.printStackTrace();
+								e1.printStackTrace();
 							}
-							
-							if (left) leftLength++;
-							else rightLength++;
 						}
 					}
 					

@@ -20,8 +20,8 @@ public class Mine extends Struct
 		name = "Mine";
 		placeGround = true;
 		setBump(new Rectangle2D.Double(0.1f, 2, 1.8f, 1));
-		attributes.set(Attribute.HEALTH, 35);
-		attributes.set(Attribute.HEALTH_MAX, 35);
+		// attributes.set(Attribute.HEALTH, 35);
+		// attributes.set(Attribute.HEALTH_MAX, 35);
 		attributes.set(Attribute.MINE_SPEED, 40);
 		attributes.set(Attribute.MINE_AMOUNT, 2);
 		

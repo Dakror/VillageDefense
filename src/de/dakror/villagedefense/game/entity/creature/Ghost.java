@@ -1,5 +1,6 @@
 package de.dakror.villagedefense.game.entity.creature;
 
+import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
@@ -33,5 +34,11 @@ public class Ghost extends Creature
 	public Entity clone()
 	{
 		return new Ghost((int) x, (int) y);
+	}
+	
+	@Override
+	public void lookupTargetEntity()
+	{
+		setTarget(Game.world.core);
 	}
 }

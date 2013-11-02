@@ -204,16 +204,6 @@ public class World extends EventListener implements Drawable
 		
 	}
 	
-	public CoreHouse getCoreHouse()
-	{
-		for (Entity e : entities)
-		{
-			if (e instanceof CoreHouse) return (CoreHouse) e;
-		}
-		
-		return null;
-	}
-	
 	@Override
 	public void update(int tick)
 	{
