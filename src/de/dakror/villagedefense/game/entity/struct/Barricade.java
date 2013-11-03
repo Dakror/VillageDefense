@@ -2,8 +2,11 @@ package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.geom.Rectangle2D;
 
+import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -20,8 +23,8 @@ public class Barricade extends Struct
 		attributes.set(Attribute.HEALTH, 21);
 		attributes.set(Attribute.HEALTH_MAX, 21);
 		
-		// buildingCosts.set(Resource.STONE, 5);
-		// buildingCosts.set(Resource.GOLD, 10);
+		buildingCosts.set(Resource.STONE, 5);
+		buildingCosts.set(Resource.GOLD, 10);
 		canPlaceOnWay = true;
 		setBump(new Rectangle2D.Float(0.2f, 1, 0.4f, 2));
 		
@@ -46,5 +49,15 @@ public class Barricade extends Struct
 	protected void onDeath()
 	{
 		dead = true;
+	}
+	
+	@Override
+	public void onSpawn()
+	{
+		super.onSpawn();
+		for (Entity e : Game.world.entities)
+		{
+			if (e instanceof Creature) ((Creature) e).lookupTargetEntity();
+		}
 	}
 }

@@ -25,6 +25,7 @@ import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Mine;
+import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.Tile;
@@ -48,7 +49,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new ArrowTower(0, 0), new Barricade(0, 0) };
+	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new School(0, 0), new ArrowTower(0, 0), new Barricade(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -236,7 +237,7 @@ public class Game extends EventListener
 			
 			Composite oldComposite = g.getComposite();
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-			activeStruct.draw(g);
+			if (activeStruct != null) activeStruct.draw(g);
 			g.setComposite(oldComposite);
 		}
 	}
