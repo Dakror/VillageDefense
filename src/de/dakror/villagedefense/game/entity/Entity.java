@@ -50,12 +50,7 @@ public abstract class Entity implements Drawable
 	
 	public void drawBump(Graphics2D g, boolean above)
 	{
-		if (!above && alpha == 0) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0));
-		if (above && alpha == 0) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-		
 		if (bump == null || (!hovered && !clicked)) return;
-		
-		if (!above) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		
 		Color oldColor = g.getColor();
 		g.setColor(clicked ? Color.black : Color.darkGray);
@@ -70,8 +65,6 @@ public abstract class Entity implements Drawable
 			g.drawLine((int) x + bump.x, (int) y + bump.y, (int) x + bump.x + bump.width, (int) y + bump.y); // top
 		}
 		g.setColor(oldColor);
-		
-		if (above) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 	}
 	
 	public float getX()
@@ -126,9 +119,12 @@ public abstract class Entity implements Drawable
 		
 		drawBump(g, false);
 		
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		draw(g);
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		
 		drawBump(g, true);
+		
 	}
 	
 	protected abstract void tick(int tick);

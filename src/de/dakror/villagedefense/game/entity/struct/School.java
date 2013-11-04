@@ -1,5 +1,7 @@
 package de.dakror.villagedefense.game.entity.struct;
 
+import java.awt.geom.Rectangle2D;
+
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -15,6 +17,7 @@ public class School extends Struct
 		name = "Schule";
 		tx = 8;
 		ty = 0;
+		setBump(new Rectangle2D.Float(0, 4, 6, 4));
 		
 		buildingCosts.set(Resource.GOLD, 500);
 		buildingCosts.set(Resource.STONE, 200);
@@ -32,7 +35,7 @@ public class School extends Struct
 	@Override
 	public Entity clone()
 	{
-		return null;
+		return new School((int) x, (int) y);
 	}
 	
 	@Override
