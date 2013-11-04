@@ -38,15 +38,12 @@ public class Projectile implements Drawable
 	public void draw(Graphics2D g)
 	{
 		if (dead) return;
-		AffineTransform old = g.getTransform();
-		g.setTransform(AffineTransform.getRotateInstance(angle, pos.x, pos.y));
-		g.drawImage(image, (int) pos.x, (int) pos.y, Game.w);
-		g.setTransform(old);
 		
-		// Color oldColor = g.getColor();
-		// g.setColor(Color.green);
-		// g.fillRect((int) pos.x, (int) pos.y, 4, 4);
-		// g.setColor(oldColor);
+		AffineTransform old = g.getTransform();
+		AffineTransform at = AffineTransform.getRotateInstance(angle, pos.x + Game.w.getInsets().left, pos.y + Game.w.getInsets().top);
+		g.setTransform(at);
+		g.drawImage(image, (int) pos.x + Game.w.getInsets().left, (int) pos.y + Game.w.getInsets().top, Game.w);
+		g.setTransform(old);
 	}
 	
 	@Override

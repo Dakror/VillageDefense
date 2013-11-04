@@ -14,7 +14,7 @@ public class School extends Struct
 	{
 		super(x, y, 6, 8);
 		
-		name = "Schule";
+		name = "Schule [WIP]";
 		tx = 8;
 		ty = 0;
 		setBump(new Rectangle2D.Float(0, 4, 6, 4));

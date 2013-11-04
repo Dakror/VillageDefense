@@ -53,10 +53,12 @@ public class Game extends EventListener
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
-	int frames = 0;
-	long start = 0;
+	int frames;
+	long start;
 	
-	boolean debug = false;
+	boolean debug;
+	
+	boolean started;
 	
 	/**
 	 * 0 = playing<br>
@@ -73,7 +75,7 @@ public class Game extends EventListener
 	public Struct activeStruct;
 	public boolean canPlace;
 	
-	ArrayList<Component> components = new ArrayList<>();
+	ArrayList<Component> components;
 	
 	Point mouse;
 	Point mouseDown, mouseDownWorld;
@@ -87,6 +89,12 @@ public class Game extends EventListener
 	
 	public void init()
 	{
+		started = false;
+		debug = false;
+		frames = 0;
+		start = 0;
+		components = new ArrayList<>();
+		
 		w = new JFrame("Village Defense");
 		w.addKeyListener(this);
 		w.addMouseListener(this);
@@ -187,6 +195,12 @@ public class Game extends EventListener
 		if (!s.contentsLost()) s.show();
 		
 		frames++;
+		
+		if (!started)
+		{
+			state = 3;
+			started = true;
+		}
 	}
 	
 	public void drawBuildStruct(Graphics2D g)
@@ -214,7 +228,7 @@ public class Game extends EventListener
 						canPlace = false;
 					}
 					
-					if ((Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(getHeight() / 2, Tile.SIZE) - Tile.SIZE))
+					if ((Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) - Tile.SIZE))
 					{
 						blocked = !activeStruct.canPlaceOnWay();
 						canPlace = activeStruct.canPlaceOnWay();
@@ -229,7 +243,6 @@ public class Game extends EventListener
 							break;
 						}
 					}
-					
 					
 					g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 				}
@@ -353,6 +366,7 @@ public class Game extends EventListener
 			
 			Assistant.drawHorizontallyCenteredString(state == 1 ? "Gewonnen!" : (state == 2) ? "Niederlage!" : "Spiel pausiert", getWidth(), getHeight() / 2, g, 100);
 			Assistant.drawHorizontallyCenteredString(state != 3 ? "Punktestand: " + getPlayerScore() : "Klicken, um fortzusetzen", getWidth(), getHeight() / 2 + 100, g, 60);
+			if (state != 3) Assistant.drawHorizontallyCenteredString("Klicken, um neu zu spielen", getWidth(), getHeight() / 2 + 200, g, 60);
 		}
 	}
 	
@@ -470,6 +484,12 @@ public class Game extends EventListener
 				c.mousePressed(e);
 		}
 		else if (state == 3) state = 0;
+		else
+		{
+			updateThread.closeRequested = true;
+			w.dispose();
+			init();
+		}
 	}
 	
 	public void setState(int state)
@@ -515,7 +535,11 @@ public class Game extends EventListener
 		
 		score -= (world.core.getAttributes().get(Attribute.HEALTH_MAX) - world.core.getAttributes().get(Attribute.HEALTH)) * 10;
 		
-		return score - 1551;
+		score -= 1551;
+		
+		score = score < 0 ? 0 : score;
+		
+		return score;
 	}
 	
 	public static int getWidth()

@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
@@ -119,7 +120,7 @@ public abstract class Entity implements Drawable
 		
 		drawBump(g, false);
 		
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+		if (this instanceof Struct) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		draw(g);
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		

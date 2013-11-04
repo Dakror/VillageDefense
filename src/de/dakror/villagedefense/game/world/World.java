@@ -201,7 +201,6 @@ public class World extends EventListener implements Drawable
 			if (Math.abs(y1 - y + 2) < 3) continue;
 			addEntity(new Tree(x1, y1));
 		}
-		
 	}
 	
 	@Override

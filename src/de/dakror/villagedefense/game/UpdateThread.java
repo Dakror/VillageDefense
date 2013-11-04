@@ -13,6 +13,8 @@ public class UpdateThread extends Thread
 	int tick;
 	long time, time2;
 	
+	public boolean closeRequested = false;
+	
 	public UpdateThread()
 	{
 		setPriority(Thread.MAX_PRIORITY);
@@ -24,7 +26,7 @@ public class UpdateThread extends Thread
 	{
 		tick = 0;
 		time = time2 = System.currentTimeMillis();
-		while (true)
+		while (!closeRequested)
 		{
 			if (tick == Integer.MAX_VALUE) tick = 0;
 			
