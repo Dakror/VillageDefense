@@ -1,5 +1,6 @@
 package de.dakror.villagedefense.game.entity.struct;
 
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
@@ -52,5 +53,9 @@ public class Mine extends Struct
 	
 	@Override
 	protected void onDeath()
+	{}
+	
+	@Override
+	public void drawGUI(Graphics2D g)
 	{}
 }

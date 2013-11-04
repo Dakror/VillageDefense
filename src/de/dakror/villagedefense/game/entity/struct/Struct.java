@@ -60,6 +60,8 @@ public abstract class Struct extends Entity
 		// }
 	}
 	
+	public abstract void drawGUI(Graphics2D g);
+	
 	public void setBump(Rectangle2D r)
 	{
 		super.setBump(new Rectangle((int) Math.round(r.getX() * Tile.SIZE), (int) Math.round(r.getY() * Tile.SIZE), (int) Math.round(r.getWidth() * Tile.SIZE), (int) Math.round(r.getHeight() * Tile.SIZE)));

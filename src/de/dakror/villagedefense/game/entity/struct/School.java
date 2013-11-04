@@ -1,5 +1,6 @@
 package de.dakror.villagedefense.game.entity.struct;
 
+import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.entity.Entity;
@@ -14,7 +15,7 @@ public class School extends Struct
 	{
 		super(x, y, 6, 8);
 		
-		name = "Schule [WIP]";
+		name = "Schule [wip]";
 		tx = 8;
 		ty = 0;
 		setBump(new Rectangle2D.Float(0, 4, 6, 4));
@@ -40,5 +41,9 @@ public class School extends Struct
 	
 	@Override
 	protected void onDeath()
+	{}
+	
+	@Override
+	public void drawGUI(Graphics2D g)
 	{}
 }

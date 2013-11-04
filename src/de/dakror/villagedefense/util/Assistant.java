@@ -92,7 +92,12 @@ public class Assistant
 	
 	public static void drawContainer(int x, int y, int width, int height, boolean doubled, boolean wood, Graphics2D g)
 	{
-		drawShadow(x - 10, y - 10, width + 20, height + 20, g);
+		drawContainer(x, y, width, height, doubled, wood, true, g);
+	}
+	
+	public static void drawContainer(int x, int y, int width, int height, boolean doubled, boolean wood, boolean shadow, Graphics2D g)
+	{
+		if (shadow) drawShadow(x - 10, y - 10, width + 20, height + 20, g);
 		Image image = Game.getImage(wood ? "gui/wood.png" : "gui/paper.png");
 		
 		

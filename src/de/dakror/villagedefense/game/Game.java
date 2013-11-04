@@ -24,8 +24,8 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.House;
+import de.dakror.villagedefense.game.entity.struct.Marketplace;
 import de.dakror.villagedefense.game.entity.struct.Mine;
-import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.Tile;
@@ -39,7 +39,6 @@ import de.dakror.villagedefense.ui.BuildButton;
 import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.EventListener;
-import de.dakror.villagedefense.util.Vector;
 
 /**
  * @author Dakror
@@ -49,7 +48,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new School(0, 0), new ArrowTower(0, 0), new Barricade(0, 0) };
+	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new Marketplace(0, 0),/* new School(0, 0), */new ArrowTower(0, 0), new Barricade(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -77,8 +76,8 @@ public class Game extends EventListener
 	
 	ArrayList<Component> components;
 	
-	Point mouse;
-	Point mouseDown, mouseDownWorld;
+	public Point mouse;
+	public Point mouseDown;
 	
 	public Game()
 	{
@@ -279,30 +278,6 @@ public class Game extends EventListener
 				}
 			}
 			
-			if (world.selectedEntity != null)
-			{
-				Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
-				
-				if (world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue())
-				{
-					Assistant.drawProgressBar(getWidth() / 2 - 179, 111, 358, world.selectedEntity.getAttributes().get(Attribute.HEALTH) / world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
-					Color oldColor = g.getColor();
-					g.setColor(Color.white);
-					Assistant.drawHorizontallyCenteredString((int) world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), getWidth(), 126, g, 15);
-					g.setColor(oldColor);
-				}
-				
-				if (world.selectedEntity.getResources().size() > 0)
-				{
-					ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
-					Assistant.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
-					for (int i = 0; i < resources.size(); i++)
-					{
-						Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
-					}
-				}
-			}
-			
 			// -- top bar -- //
 			Assistant.drawContainer(0, 0, getWidth(), 80, false, false, g);
 			for (int i = 0; i < Resource.values().length; i++)
@@ -344,6 +319,34 @@ public class Game extends EventListener
 			{
 				c.draw(g);
 				if (c instanceof BuildButton && ((BuildButton) c).isHovered()) hovered = (BuildButton) c;
+			}
+			
+			// -- selected entity stuff -- //
+			if (world.selectedEntity != null)
+			{
+				Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
+				
+				if (world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue())
+				{
+					Assistant.drawProgressBar(getWidth() / 2 - 179, 111, 358, world.selectedEntity.getAttributes().get(Attribute.HEALTH) / world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
+					Color oldColor = g.getColor();
+					g.setColor(Color.white);
+					Assistant.drawHorizontallyCenteredString((int) world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), getWidth(), 126, g, 15);
+					g.setColor(oldColor);
+				}
+				
+				if (world.selectedEntity.getResources().size() > 0)
+				{
+					ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
+					Assistant.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
+					for (int i = 0; i < resources.size(); i++)
+					{
+						Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
+					}
+				}
+				
+				// -- selected struct's GUI -- //
+				if (world.selectedEntity instanceof Struct) ((Struct) world.selectedEntity).drawGUI(g);
 			}
 			
 			// -- tooltip -- //
@@ -394,16 +397,16 @@ public class Game extends EventListener
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		if (e.getModifiers() == MouseEvent.BUTTON3_MASK) return;
-		
-		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
-		Vector p = new Vector(e.getPoint()).sub(new Vector(mouseDown));
-		
-		int x = (int) (mouseDownWorld.x + p.x);
-		int y = (int) (mouseDownWorld.y + p.y);
-		
-		if (world.width > getWidth() && x <= 0 && x + world.width >= getWidth()) world.x = x;
-		if (world.height > getHeight() && y <= 0 && y + world.height >= getHeight()) world.y = y;
+		// if (e.getModifiers() == MouseEvent.BUTTON3_MASK) return;
+		//
+		// e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		// Vector p = new Vector(e.getPoint()).sub(new Vector(mouseDown));
+		//
+		// int x = (int) (mouseDownWorld.x + p.x);
+		// int y = (int) (mouseDownWorld.y + p.y);
+		//
+		// if (world.width > getWidth() && x <= 0 && x + world.width >= getWidth()) world.x = x;
+		// if (world.height > getHeight() && y <= 0 && y + world.height >= getHeight()) world.y = y;
 	}
 	
 	@Override
@@ -422,8 +425,7 @@ public class Game extends EventListener
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		mouseDown = null;
-		mouseDownWorld = null;
+		// mouseDownWorld = null;
 	}
 	
 	@Override
@@ -432,7 +434,6 @@ public class Game extends EventListener
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		
 		mouseDown = e.getPoint();
-		mouseDownWorld = new Point(world.x, world.y);
 		
 		if (state == 0)
 		{
