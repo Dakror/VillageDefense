@@ -218,7 +218,7 @@ public abstract class Creature extends Entity
 		{
 			if (e instanceof Barricade)
 			{
-				if (closestBarricade == null || e.getPos().getDistance(getPos()) < closestBarricade.getPos().getDistance(getPos())) closestBarricade = (Barricade) e;
+				if (closestBarricade == null || (e.getPos().getDistance(getPos()) < closestBarricade.getPos().getDistance(getPos()) && e.getPos().getDistance(Game.world.core.getPos()) < closestBarricade.getPos().getDistance(Game.world.core.getPos()))) closestBarricade = (Barricade) e;
 			}
 		}
 		

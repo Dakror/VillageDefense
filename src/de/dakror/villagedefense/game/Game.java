@@ -104,10 +104,10 @@ public class Game extends EventListener
 		w.getContentPane().setBackground(Color.black);
 		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
 		
-		w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		// w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		// w.setExtendedState(JFrame.MAXIMIZED_BOTH); makes game superlaggy somehow
 		w.setMinimumSize(new Dimension(1280, 720));
-		w.setUndecorated(true);
+		w.setUndecorated(false);
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		resources = new Resources();
@@ -215,6 +215,8 @@ public class Game extends EventListener
 				
 				canPlace = true;
 				
+				int centerY = (int) Math.floor(world.height / 2f / Tile.SIZE);
+				
 				for (int i = bump.x + world.x; i < bump.x + bump.width + world.x; i += Tile.SIZE)
 				{
 					for (int j = bump.y + world.y; j < bump.y + bump.height + world.y; j += Tile.SIZE)
@@ -227,7 +229,7 @@ public class Game extends EventListener
 							canPlace = false;
 						}
 						
-						if ((Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) - Tile.SIZE))
+						if ((Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE || Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE + Tile.SIZE))
 						{
 							blocked = !activeStruct.canPlaceOnWay();
 							canPlace = activeStruct.canPlaceOnWay();

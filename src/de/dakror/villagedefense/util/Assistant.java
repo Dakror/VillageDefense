@@ -238,4 +238,10 @@ public class Assistant
 		if (i % step > step / 2.0f) return i + (step - (i % step));
 		else return i - (i % step);
 	}
+	
+	public static int round2(int i, int step)
+	{
+		if (i % step >= step / 2.0f) return i + (step - (i % step));
+		else return i - (i % step);
+	}
 }
