@@ -202,54 +202,59 @@ public class Game extends EventListener
 	
 	public void drawBuildStruct(Graphics2D g)
 	{
-		if (activeStruct != null)
+		try
 		{
-			activeStruct.setX(Assistant.round(mouse.x - activeStruct.getBump(false).x, Tile.SIZE)/* - activeStruct.getBump(false).x - (activeStruct.getBump(true).width % Tile.SIZE) */);
-			activeStruct.setY(Assistant.round(mouse.y - activeStruct.getBump(false).y, Tile.SIZE)/* - activeStruct.getBump(false).y - (activeStruct.getBump(true).height % Tile.SIZE) */);
-			activeStruct.setClicked(true);
-			
-			Rectangle bump = activeStruct.getBump(true);
-			int malus = 5;
-			
-			canPlace = true;
-			
-			for (int i = bump.x + world.x; i < bump.x + bump.width + world.x; i += Tile.SIZE)
+			if (activeStruct != null)
 			{
-				for (int j = bump.y + world.y; j < bump.y + bump.height + world.y; j += Tile.SIZE)
+				activeStruct.setX(Assistant.round(mouse.x - activeStruct.getBump(false).x, Tile.SIZE)/* - activeStruct.getBump(false).x - (activeStruct.getBump(true).width % Tile.SIZE) */);
+				activeStruct.setY(Assistant.round(mouse.y - activeStruct.getBump(false).y, Tile.SIZE)/* - activeStruct.getBump(false).y - (activeStruct.getBump(true).height % Tile.SIZE) */);
+				activeStruct.setClicked(true);
+				
+				Rectangle bump = activeStruct.getBump(true);
+				int malus = 5;
+				
+				canPlace = true;
+				
+				for (int i = bump.x + world.x; i < bump.x + bump.width + world.x; i += Tile.SIZE)
 				{
-					boolean blocked = false;
-					
-					if (activeStruct.canPlaceOnWay())
+					for (int j = bump.y + world.y; j < bump.y + bump.height + world.y; j += Tile.SIZE)
 					{
-						blocked = true;
-						canPlace = false;
-					}
-					
-					if ((Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) - Tile.SIZE))
-					{
-						blocked = !activeStruct.canPlaceOnWay();
-						canPlace = activeStruct.canPlaceOnWay();
-					}
-					
-					for (Entity e : world.entities)
-					{
-						if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
+						boolean blocked = false;
+						
+						if (activeStruct.canPlaceOnWay())
 						{
 							blocked = true;
 							canPlace = false;
-							break;
 						}
+						
+						if ((Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) || Assistant.round(j, Tile.SIZE) == Assistant.round(w.getHeight() / 2, Tile.SIZE) - Tile.SIZE))
+						{
+							blocked = !activeStruct.canPlaceOnWay();
+							canPlace = activeStruct.canPlaceOnWay();
+						}
+						
+						for (Entity e : world.entities)
+						{
+							if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
+							{
+								blocked = true;
+								canPlace = false;
+								break;
+							}
+						}
+						
+						g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 					}
-					
-					g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 				}
+				
+				Composite oldComposite = g.getComposite();
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+				if (activeStruct != null) activeStruct.draw(g);
+				g.setComposite(oldComposite);
 			}
-			
-			Composite oldComposite = g.getComposite();
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-			if (activeStruct != null) activeStruct.draw(g);
-			g.setComposite(oldComposite);
 		}
+		catch (NullPointerException e)
+		{}
 	}
 	
 	public void drawGUI(Graphics2D g)
