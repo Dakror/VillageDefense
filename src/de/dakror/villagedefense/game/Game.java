@@ -76,7 +76,7 @@ public class Game extends EventListener
 	
 	ArrayList<Component> components;
 	
-	public Point mouse;
+	public Point mouse = new Point(0, 0);
 	public Point mouseDown;
 	
 	public Game()
@@ -130,7 +130,6 @@ public class Game extends EventListener
 			init();
 			return;
 		}
-		
 		updateThread = new UpdateThread();
 	}
 	
@@ -194,7 +193,6 @@ public class Game extends EventListener
 		if (!s.contentsLost()) s.show();
 		
 		frames++;
-		
 		if (!started)
 		{
 			state = 3;
@@ -419,7 +417,7 @@ public class Game extends EventListener
 			for (Component c : components)
 				c.mouseMoved(e);
 			
-			if (world.selectedEntity != null && world.selectedEntity instanceof Struct) world.selectedEntity.mouseMoved(e);
+			if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mouseMoved(e);
 		}
 	}
 	
@@ -427,7 +425,7 @@ public class Game extends EventListener
 	public void mouseReleased(MouseEvent e)
 	{
 		// mouseDownWorld = null;
-		if (world.selectedEntity != null && world.selectedEntity instanceof Struct) world.selectedEntity.mouseReleased(e);
+		if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mouseReleased(e);
 	}
 	
 	@Override
@@ -486,7 +484,7 @@ public class Game extends EventListener
 			for (Component c : components)
 				c.mousePressed(e);
 			
-			if (world.selectedEntity != null && world.selectedEntity instanceof Struct) world.selectedEntity.mousePressed(e);
+			if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mousePressed(e);
 		}
 		else if (state == 3) state = 0;
 		else
