@@ -13,7 +13,7 @@ public class CountButton extends Component
 	int scrollSpeed = 3;
 	long timeDown = 0;
 	
-	int min, max, value, step;
+	public int min, max, value, step;
 	
 	ArrowButton minus, plus;
 	

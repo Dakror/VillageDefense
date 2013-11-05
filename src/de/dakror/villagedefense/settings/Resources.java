@@ -11,22 +11,23 @@ public class Resources
 {
 	public enum Resource
 	{
-		GOLD("Gold", 13, 12, true),
-		WOOD("Holz", 0, 12, true),
-		STONE("Stein", 2, 9, true),
-		PEOPLE("Einwohner", 9, 8, false),
+		GOLD("Gold", 13, 12, 1, true),
+		WOOD("Holz", 0, 12, 6, true),
+		STONE("Stein", 2, 9, 4, true),
+		PEOPLE("Einwohner", 9, 8, 0, false),
 		
 		;
 		
 		private String name;
 		private boolean usable;
-		private int iconX, iconY;
+		private int iconX, iconY, goldValue;
 		
-		private Resource(String name, int iconX, int iconY, boolean usable)
+		private Resource(String name, int iconX, int iconY, int goldValue, boolean usable)
 		{
 			this.name = name;
 			this.iconX = iconX;
 			this.iconY = iconY;
+			this.goldValue = goldValue;
 			this.usable = usable;
 		}
 		
@@ -43,6 +44,11 @@ public class Resources
 		public int getIconY()
 		{
 			return iconY;
+		}
+		
+		public int getGoldValue()
+		{
+			return goldValue;
 		}
 		
 		public boolean isUsable()

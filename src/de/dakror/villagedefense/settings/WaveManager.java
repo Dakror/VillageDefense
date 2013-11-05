@@ -67,7 +67,7 @@ public class WaveManager
 			monsters.put(Monster.TROLL, 1);
 		}
 		
-		nextWave = 60000000; // in seconds
+		nextWave = 60; // in seconds
 		wave++;
 	}
 	

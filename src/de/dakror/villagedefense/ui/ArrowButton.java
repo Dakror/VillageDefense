@@ -1,7 +1,6 @@
 package de.dakror.villagedefense.ui;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import de.dakror.villagedefense.game.Game;
@@ -25,8 +24,6 @@ public class ArrowButton extends Component
 	
 	ClickEvent event;
 	
-	Point m = new Point(0, 0);
-	
 	public ArrowButton(int x, int y, int tx, int ty, ClickEvent event)
 	{
 		super(x, y, 32, 32);
@@ -41,8 +38,6 @@ public class ArrowButton extends Component
 	public void draw(Graphics2D g)
 	{
 		Assistant.drawImage(Game.getImage("gui/gui.png"), x, y, width, height, tx, ty + MARGIN * state, width, height, g);
-		
-		g.fillRect(m.x, m.y, 4, 4);
 	}
 	
 	@Override
@@ -73,7 +68,7 @@ public class ArrowButton extends Component
 	public void mouseMoved(MouseEvent e)
 	{
 		if (state == 3) return;
-		m = e.getPoint();
+		
 		state = contains(e.getX(), e.getY()) ? 2 : 0;
 	}
 }
