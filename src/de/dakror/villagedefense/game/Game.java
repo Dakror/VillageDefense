@@ -344,10 +344,9 @@ public class Game extends EventListener
 						Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
 					}
 				}
-				
-				// -- selected struct's GUI -- //
-				if (world.selectedEntity instanceof Struct) ((Struct) world.selectedEntity).drawGUI(g);
 			}
+			
+			if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) ((Struct) world.selectedEntity).drawGUI(g);
 			
 			// -- tooltip -- //
 			if (hovered != null) hovered.drawTooltip(mouse.x, mouse.y, g);
@@ -419,6 +418,8 @@ public class Game extends EventListener
 			world.mouseMoved(e);
 			for (Component c : components)
 				c.mouseMoved(e);
+			
+			if (world.selectedEntity != null && world.selectedEntity instanceof Struct) world.selectedEntity.mouseMoved(e);
 		}
 	}
 	
@@ -426,6 +427,7 @@ public class Game extends EventListener
 	public void mouseReleased(MouseEvent e)
 	{
 		// mouseDownWorld = null;
+		if (world.selectedEntity != null && world.selectedEntity instanceof Struct) world.selectedEntity.mouseReleased(e);
 	}
 	
 	@Override
@@ -483,6 +485,8 @@ public class Game extends EventListener
 			world.mousePressed(e);
 			for (Component c : components)
 				c.mousePressed(e);
+			
+			if (world.selectedEntity != null && world.selectedEntity instanceof Struct) world.selectedEntity.mousePressed(e);
 		}
 		else if (state == 3) state = 0;
 		else

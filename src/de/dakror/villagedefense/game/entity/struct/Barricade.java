@@ -37,10 +37,6 @@ public class Barricade extends Struct
 	{}
 	
 	@Override
-	protected void tick(int tick)
-	{}
-	
-	@Override
 	public Entity clone()
 	{
 		return new Barricade((int) x, (int) y);

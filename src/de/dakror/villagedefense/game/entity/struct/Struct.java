@@ -1,8 +1,11 @@
 package de.dakror.villagedefense.game.entity.struct;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -13,6 +16,7 @@ import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
+import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -26,6 +30,9 @@ public abstract class Struct extends Entity
 	protected StructPoints structPoints;
 	protected Resources buildingCosts;
 	protected Image image;
+	public Point guiPoint;
+	public Dimension guiSize;
+	protected ArrayList<Component> components = new ArrayList<>();
 	
 	public Struct(int x, int y, int width, int height)
 	{
@@ -40,11 +47,7 @@ public abstract class Struct extends Entity
 	@Override
 	public void draw(Graphics2D g)
 	{
-		drawBump(g, false);
-		
 		g.drawImage(getImage(), (int) x, (int) y, Game.w);
-		
-		drawBump(g, true);
 		
 		// TODO: DEBUG
 		// for (Vector p : structPoints.attacks)
@@ -58,6 +61,23 @@ public abstract class Struct extends Entity
 		// g.fillRect((int) v.x, (int) v.y, 4, 4);
 		// g.setColor(old);
 		// }
+	}
+	
+	@Override
+	protected void tick(int tick)
+	{
+		for (Component c : components)
+			c.update(tick);
+	}
+	
+	protected void drawComponents(int x, int y, Graphics2D g)
+	{
+		g.translate(x, y);
+		
+		for (Component c : components)
+			c.draw(g);
+		
+		g.translate(-x, -y);
 	}
 	
 	public abstract void drawGUI(Graphics2D g);
@@ -179,6 +199,54 @@ public abstract class Struct extends Entity
 	public boolean canPlaceOnWay()
 	{
 		return canPlaceOnWay;
+	}
+	
+	@Override
+	public boolean mousePressed(MouseEvent e)
+	{
+		if (guiPoint != null && guiSize != null) e.translatePoint(-(guiPoint.x - guiSize.width / 2), -(guiPoint.y - guiSize.height / 2));
+		
+		for (Component c : components)
+			c.mousePressed(e);
+		
+		if (guiPoint != null && guiSize != null) e.translatePoint(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2);
+		
+		boolean pressed = super.mousePressed(e);
+		
+		if (pressed && guiPoint == null) guiPoint = e.getPoint();
+		else
+		{
+			if (guiPoint != null && guiSize != null && !new Rectangle(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height).contains(e.getPoint()))
+			{
+				guiPoint = null;
+			}
+		}
+		
+		return pressed;
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+		if (guiPoint != null && guiSize != null) e.translatePoint(-(guiPoint.x - guiSize.width / 2), -(guiPoint.y - guiSize.height / 2));
+		
+		for (Component c : components)
+			c.mouseReleased(e);
+		
+		if (guiPoint != null && guiSize != null) e.translatePoint(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2);
+	}
+	
+	@Override
+	public boolean mouseMoved(MouseEvent e)
+	{
+		if (guiPoint != null && guiSize != null) e.translatePoint(-(guiPoint.x - guiSize.width / 2), -(guiPoint.y - guiSize.height / 2));
+		
+		for (Component c : components)
+			c.mouseMoved(e);
+		
+		if (guiPoint != null && guiSize != null) e.translatePoint(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2);
+		
+		return super.mouseMoved(e);
 	}
 	
 	protected abstract void onMinedUp();

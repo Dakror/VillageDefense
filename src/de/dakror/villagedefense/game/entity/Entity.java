@@ -197,6 +197,9 @@ public abstract class Entity implements Drawable
 		return clicked = contains(e.getX(), e.getY());
 	}
 	
+	public void mouseReleased(MouseEvent e)
+	{}
+	
 	public boolean intersects(Entity o)
 	{
 		return getArea().intersects(o.getArea());

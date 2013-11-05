@@ -282,6 +282,8 @@ public class World extends EventListener implements Drawable
 		e.translatePoint(-x, -y);
 		if (e.getButton() == MouseEvent.BUTTON1) // LMB
 		{
+			if (selectedEntity != null && selectedEntity instanceof Struct && ((Struct) selectedEntity).guiPoint != null) return;
+			
 			selectedEntity = null;
 			for (Entity entity : entities)
 				entity.setClicked(false);

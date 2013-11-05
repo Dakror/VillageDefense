@@ -30,10 +30,6 @@ public class House extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{}
-	
-	@Override
 	protected void onDeath()
 	{
 		dead = true;

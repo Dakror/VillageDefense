@@ -52,6 +52,8 @@ public abstract class Tower extends Struct
 	@Override
 	protected void tick(int tick)
 	{
+		super.tick(tick);
+		
 		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
 		{
 			ArrayList<Creature> t = getTargetableCreatures();

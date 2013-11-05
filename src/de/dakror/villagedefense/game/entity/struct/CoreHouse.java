@@ -27,10 +27,6 @@ public class CoreHouse extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{}
-	
-	@Override
 	protected void onDeath()
 	{
 		Game.currentGame.setState(2); // game lost

@@ -39,6 +39,8 @@ public class Mine extends Struct
 	@Override
 	protected void tick(int tick)
 	{
+		super.tick(tick);
+		
 		if (tick % attributes.get(Attribute.MINE_SPEED) == 0)
 		{
 			Game.currentGame.resources.add(Resource.STONE, (int) attributes.get(Attribute.MINE_AMOUNT));

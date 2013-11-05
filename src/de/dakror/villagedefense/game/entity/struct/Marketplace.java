@@ -1,11 +1,11 @@
 package de.dakror.villagedefense.game.entity.struct;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
-import de.dakror.villagedefense.settings.Resources.Resource;
+import de.dakror.villagedefense.ui.CountButton;
 import de.dakror.villagedefense.util.Assistant;
 
 /**
@@ -20,27 +20,27 @@ public class Marketplace extends Struct
 		ty = 8;
 		setBump(new Rectangle2D.Float(0, 0, 5, 5));
 		
+		guiSize = new Dimension(250, 250);
+		
 		name = "Marktplatz [wip]";
 		
-		buildingCosts.set(Resource.GOLD, 200);
-		buildingCosts.set(Resource.WOOD, 80);
-		buildingCosts.set(Resource.STONE, 150);
-		buildingCosts.set(Resource.PEOPLE, 1);
+		components.add(new CountButton(125, 60, 115, 0, 99, 1, 0));
+		// buildingCosts.set(Resource.GOLD, 200);
+		// buildingCosts.set(Resource.WOOD, 80);
+		// buildingCosts.set(Resource.STONE, 150);
+		// buildingCosts.set(Resource.PEOPLE, 1);
 	}
 	
 	@Override
 	public void drawGUI(Graphics2D g)
 	{
-		Assistant.drawContainer(Game.currentGame.mouseDown.x - 125, Game.currentGame.mouseDown.y - 125, 250, 250, false, false, g);
+		Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
 		
+		drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
 	}
 	
 	@Override
 	protected void onMinedUp()
-	{}
-	
-	@Override
-	protected void tick(int tick)
 	{}
 	
 	@Override

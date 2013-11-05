@@ -25,10 +25,6 @@ public class Tree extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{}
-	
-	@Override
 	protected void onDeath()
 	{
 		if (ty == 5)

@@ -30,10 +30,6 @@ public class School extends Struct
 	{}
 	
 	@Override
-	protected void tick(int tick)
-	{}
-	
-	@Override
 	public Entity clone()
 	{
 		return new School((int) x, (int) y);
