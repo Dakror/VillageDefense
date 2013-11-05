@@ -104,10 +104,10 @@ public class Game extends EventListener
 		w.getContentPane().setBackground(Color.black);
 		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
 		
-		// w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		w.setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		// w.setExtendedState(JFrame.MAXIMIZED_BOTH); makes game superlaggy somehow
 		w.setMinimumSize(new Dimension(1280, 720));
-		w.setUndecorated(false);
+		w.setUndecorated(true);
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		resources = new Resources();
