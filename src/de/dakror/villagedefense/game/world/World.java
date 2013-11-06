@@ -242,8 +242,8 @@ public class World extends EventListener implements Drawable
 		{
 			if (e.getBump(true).intersects(entity.getBump(true))) return false;
 		}
-		e.onSpawn();
 		entities.add(e);
+		e.onSpawn();
 		
 		render();
 		

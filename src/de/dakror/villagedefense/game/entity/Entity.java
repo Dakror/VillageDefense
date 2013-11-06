@@ -92,11 +92,12 @@ public abstract class Entity implements Drawable
 	public void update(int tick)
 	{
 		alpha = 1;
-		for (Entity e : Game.world.getSortedEntities())
+		
+		for (Entity e : Game.world.entities)
 		{
 			if (e.equals(this)) continue;
 			
-			if (intersects(e) && e.alpha == 1)
+			if (intersects(e) && e.alpha == 1 && e.y + e.height < y + height)
 			{
 				alpha = 0.6f;
 				break;
