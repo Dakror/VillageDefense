@@ -86,6 +86,8 @@ public class WaveManager
 					int leftLength = 0;
 					int rightLength = 0;
 					
+					int space = Tile.SIZE * 2;
+					
 					for (Monster monster : monsters.keySet())
 					{
 						for (int i = 0; i < monsters.get(monster); i++)
@@ -94,7 +96,7 @@ public class WaveManager
 							{
 								boolean left = Math.random() < 0.5;
 								
-								int x = left ? -leftLength * Tile.SIZE : Game.getWidth() + rightLength * Tile.SIZE;
+								int x = left ? -leftLength * space : Game.getWidth() + rightLength * space;
 								Entity e = (Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, 0);
 								int y = Game.world.height / 2 - e.getHeight() / 2;
 								e.setY(y);

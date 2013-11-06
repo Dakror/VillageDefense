@@ -60,4 +60,8 @@ public class Mine extends Struct
 	@Override
 	public void drawGUI(Graphics2D g)
 	{}
+	
+	@Override
+	public void initGUI()
+	{}
 }

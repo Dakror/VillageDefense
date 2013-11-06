@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
@@ -32,7 +33,7 @@ public abstract class Struct extends Entity
 	protected Image image;
 	public Point guiPoint;
 	public Dimension guiSize;
-	protected ArrayList<Component> components = new ArrayList<>();
+	protected CopyOnWriteArrayList<Component> components = new CopyOnWriteArrayList<>();
 	
 	public Struct(int x, int y, int width, int height)
 	{
@@ -78,6 +79,14 @@ public abstract class Struct extends Entity
 			c.draw(g);
 		
 		g.translate(-x, -y);
+	}
+	
+	public abstract void initGUI();
+	
+	public void destroyGUI()
+	{
+		guiPoint = null;
+		components.clear();
 	}
 	
 	public abstract void drawGUI(Graphics2D g);
@@ -218,7 +227,7 @@ public abstract class Struct extends Entity
 		{
 			if (guiPoint != null && guiSize != null && !new Rectangle(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height).contains(e.getPoint()))
 			{
-				guiPoint = null;
+				destroyGUI();
 			}
 		}
 		

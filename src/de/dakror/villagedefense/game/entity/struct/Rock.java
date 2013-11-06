@@ -43,4 +43,8 @@ public class Rock extends Struct
 	@Override
 	public void drawGUI(Graphics2D g)
 	{}
+	
+	@Override
+	public void initGUI()
+	{}
 }
