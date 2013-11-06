@@ -28,10 +28,10 @@ public class Marketplace extends Struct
 		
 		name = "Marktplatz";
 		
-		// buildingCosts.set(Resource.GOLD, 200);
-		// buildingCosts.set(Resource.WOOD, 80);
-		// buildingCosts.set(Resource.STONE, 150);
-		// buildingCosts.set(Resource.PEOPLE, 1);
+		buildingCosts.set(Resource.GOLD, 200);
+		buildingCosts.set(Resource.WOOD, 80);
+		buildingCosts.set(Resource.STONE, 150);
+		buildingCosts.set(Resource.PEOPLE, 1);
 	}
 	
 	@Override

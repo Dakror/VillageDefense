@@ -3,6 +3,7 @@ package de.dakror.villagedefense.game.world;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 
 import de.dakror.villagedefense.game.Game;
 
@@ -84,5 +85,19 @@ public class Chunk
 	public void setTileId(int x, int y, byte d)
 	{
 		data[x][y] = d;
+	}
+	
+	public byte[] getData()
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
+			{
+				baos.write(data[i][j]);
+			}
+		}
+		
+		return baos.toByteArray();
 	}
 }
