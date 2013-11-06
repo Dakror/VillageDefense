@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game.entity.creature;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -31,10 +32,14 @@ public abstract class Creature extends Entity
 	 */
 	protected int dir;
 	protected int frame;
+	protected Point spawnPoint;
 	
 	public Creature(int x, int y, String img)
 	{
 		super(x, y, Game.getImage("creature/" + img + ".png").getWidth() / 4, Game.getImage("creature/" + img + ".png").getHeight() / 4);
+		
+		spawnPoint = new Point(x, y);
+		
 		image = Game.getImage("creature/" + img + ".png");
 		
 		setBump(new Rectangle((int) (width * 0.25f), (int) (height * 0.75f), (int) (width * 0.5f), (int) (height * 0.25f)));
@@ -218,7 +223,14 @@ public abstract class Creature extends Entity
 		{
 			if (e instanceof Barricade)
 			{
-				if (closestBarricade == null || (e.getPos().getDistance(getPos()) < closestBarricade.getPos().getDistance(getPos()) && e.getPos().getDistance(Game.world.core.getPos()) < closestBarricade.getPos().getDistance(Game.world.core.getPos()))) closestBarricade = (Barricade) e;
+				boolean nearer = (closestBarricade == null) ? true : e.getPos().getDistance(getPos()) < closestBarricade.getPos().getDistance(getPos());
+				
+				boolean inDirection = (closestBarricade == null) ? true : spawnPoint.x < Game.getWidth() / 2 ? /* left side */e.getX() > x : /* right side */e.getX() < x;
+				
+				if (closestBarricade == null || (nearer && inDirection))
+				{
+					closestBarricade = (Barricade) e;
+				}
 			}
 		}
 		

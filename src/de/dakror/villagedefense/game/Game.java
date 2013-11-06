@@ -112,6 +112,8 @@ public class Game extends EventListener
 		
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
+		resources.set(Resource.WOOD, 1000);
+		resources.set(Resource.STONE, 1000);
 		world = new World();
 		world.init();
 		state = 0;
@@ -226,13 +228,11 @@ public class Game extends EventListener
 						if (activeStruct.canPlaceOnWay())
 						{
 							blocked = true;
-							canPlace = false;
 						}
 						
-						if ((Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE || Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE + Tile.SIZE))
+						if (Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE + Tile.SIZE || Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE)
 						{
 							blocked = !activeStruct.canPlaceOnWay();
-							canPlace = activeStruct.canPlaceOnWay();
 						}
 						
 						for (Entity e : world.entities)
@@ -240,10 +240,11 @@ public class Game extends EventListener
 							if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
 							{
 								blocked = true;
-								canPlace = false;
 								break;
 							}
 						}
+						
+						if (blocked) canPlace = false;
 						
 						g.drawImage(getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, w);
 					}
