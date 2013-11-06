@@ -112,8 +112,6 @@ public class Game extends EventListener
 		
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
-		resources.set(Resource.WOOD, 1000);
-		resources.set(Resource.STONE, 1000);
 		world = new World();
 		world.init();
 		state = 0;
