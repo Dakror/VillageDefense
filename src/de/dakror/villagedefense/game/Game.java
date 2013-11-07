@@ -12,6 +12,8 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -99,6 +101,18 @@ public class Game extends EventListener
 		w.addMouseListener(this);
 		w.addMouseMotionListener(this);
 		w.addMouseWheelListener(this);
+		w.addWindowFocusListener(new WindowFocusListener()
+		{
+			@Override
+			public void windowLostFocus(WindowEvent e)
+			{
+				state = 3;
+			}
+			
+			@Override
+			public void windowGainedFocus(WindowEvent e)
+			{}
+		});
 		w.setBackground(Color.black);
 		w.setForeground(Color.white);
 		w.getContentPane().setBackground(Color.black);

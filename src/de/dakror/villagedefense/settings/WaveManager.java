@@ -54,21 +54,22 @@ public class WaveManager
 		Game.world.core.dealDamage(-1);
 		monsters.clear();
 		
+		wave++;
+		
 		/*
 		 * either parabola: 0.075 * wave² + 3
 		 * or line: 2 * wave + 3
 		 */
-		monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 3));
-		if (wave > 5) monsters.put(Monster.SKELETON, (int) Math.ceil(Math.random() * (wave - 5)) + 1);
+		monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 1));
+		if (wave >= 5) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 3));
 		
-		if (wave == 9)
+		if (wave % 10 == 0 && wave > 2)
 		{
 			monsters.clear();
-			monsters.put(Monster.TROLL, 1);
+			monsters.put(Monster.TROLL, wave / 10);
 		}
 		
 		nextWave = 60; // in seconds
-		wave++;
 	}
 	
 	public static void update()
@@ -86,7 +87,8 @@ public class WaveManager
 					int leftLength = 0;
 					int rightLength = 0;
 					
-					int space = Tile.SIZE * 2;
+					int space = Tile.SIZE * 2 - wave;
+					space = space < Tile.SIZE ? Tile.SIZE : space;
 					
 					for (Monster monster : monsters.keySet())
 					{
@@ -101,7 +103,7 @@ public class WaveManager
 								int y = Game.world.height / 2 - e.getHeight() / 2;
 								e.setY(y);
 								
-								Game.world.addEntity2(e);
+								// Game.world.addEntity2(e);
 								
 								if (left) leftLength++;
 								else rightLength++;

@@ -15,8 +15,8 @@ public class Troll extends Creature
 		
 		name = "Troll";
 		setHostile(true);
-		attributes.set(Attribute.HEALTH, 250);
-		attributes.set(Attribute.HEALTH_MAX, 250);
+		attributes.set(Attribute.HEALTH, 500);
+		attributes.set(Attribute.HEALTH_MAX, 500);
 		attributes.set(Attribute.DAMAGE_STRUCT, 25);
 		attributes.set(Attribute.SPEED, 0.6f);
 		

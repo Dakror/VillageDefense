@@ -16,7 +16,7 @@ public class Skeleton extends Creature
 		
 		name = "Skelett";
 		setHostile(true);
-		attributes.set(Attribute.SPEED, 1);
+		attributes.set(Attribute.SPEED, 1.5f);
 		attributes.set(Attribute.DAMAGE_STRUCT, 15);
 		attributes.set(Attribute.HEALTH, 50);
 		attributes.set(Attribute.HEALTH_MAX, 50);
