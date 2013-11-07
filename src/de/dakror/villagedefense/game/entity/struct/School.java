@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.util.Assistant;
 
 /**
@@ -45,6 +47,21 @@ public class School extends Struct
 	{
 		Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
 		Assistant.drawHorizontallyCenteredString("Wissenschaft", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
+		
+		int width = guiSize.width - 20;
+		int height = guiSize.height - 20;
+		
+		int size = 32;
+		int Osize = 48;
+		int gap = 8;
+		
+		int proRow = width / (size + gap);
+		
+		for (Researches research : Researches.values())
+		{
+			Assistant.drawOutline(guiPoint.x - 115 + ((research.ordinal() % proRow) * (size + gap)), guiPoint.y - 80 + ((research.ordinal() / proRow) * (size + gap)), size + 16, size + 16, false, g);
+			Assistant.drawImage(Game.getImage("researches.png"), guiPoint.x - 115 + ((research.ordinal() % proRow) * (size + gap)) + 8, guiPoint.y - 80 + ((research.ordinal() / proRow) * (size + gap)) + 8, size, size, research.getTexturePoint().x * Osize, research.getTexturePoint().y * Osize, Osize, Osize, g);
+		}
 	}
 	
 	@Override
