@@ -70,9 +70,11 @@ public class Resources
 		return res.get(t);
 	}
 	
-	public void set(Resource t, int value)
+	public Resources set(Resource t, int value)
 	{
 		res.put(t, value);
+		
+		return this;
 	}
 	
 	public void add(Resource t, int value)
