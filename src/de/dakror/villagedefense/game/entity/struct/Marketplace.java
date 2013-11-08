@@ -83,8 +83,8 @@ public class Marketplace extends Struct
 	{
 		components.clear();
 		
-		components.add(new CountButton(140, 60, 100, -99, 99, 1, 0)); // Wood
-		components.add(new CountButton(140, 100, 100, -99, 99, 1, 0)); // Stone
+		components.add(new CountButton(140, 60, 100, 0, 99, 1, 0)); // Wood
+		components.add(new CountButton(140, 100, 100, 0, 99, 1, 0)); // Stone
 		components.add(new TextButton(10, 190, 230, "Verkaufen", 30, new ClickEvent()
 		{
 			@Override
