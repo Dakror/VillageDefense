@@ -18,8 +18,8 @@ public class WaveManager
 		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class),
 		TROLL("troll", de.dakror.villagedefense.game.entity.creature.Troll.class), ;
 		
-		private String image;
-		private Class<?> creatureClass;
+		private final String image;
+		private final Class<?> creatureClass;
 		
 		private Monster(String image, Class<?> creatureClass)
 		{
@@ -103,7 +103,7 @@ public class WaveManager
 								int y = Game.world.height / 2 - e.getHeight() / 2;
 								e.setY(y);
 								
-								// Game.world.addEntity2(e);
+								Game.world.addEntity2(e);
 								
 								if (left) leftLength++;
 								else rightLength++;

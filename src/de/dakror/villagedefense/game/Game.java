@@ -34,6 +34,7 @@ import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
@@ -72,6 +73,7 @@ public class Game extends EventListener
 	
 	public Resources resources;
 	public UpdateThread updateThread;
+	public ArrayList<Researches> researches = new ArrayList<>();
 	
 	// -- building menu -- //
 	public Struct activeStruct;

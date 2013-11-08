@@ -14,25 +14,43 @@ public class ResearchButton extends Button
 	public static final int tSize = 48;
 	
 	Researches research;
+	boolean contains;
 	
-	public ResearchButton(int x, int y, Researches research)
+	public ResearchButton(int x, int y, final Researches research)
 	{
-		super(x, y, 32, 32, new ClickEvent()
+		super(x, y, 32, 32, null);
+		
+		event = new ClickEvent()
 		{
 			@Override
 			public void trigger()
-			{}
-		});
+			{
+				if (!Game.currentGame.researches.contains(research))
+				{
+					ArrayList<Resource> filled = research.getCosts().getFilled();
+					for (Resource r : filled)
+					{
+						if (!r.isUsable()) continue;
+						Game.currentGame.resources.add(r, -research.getCosts().get(r));
+					}
+					
+					Game.currentGame.researches.add(research);
+					contains = true;
+				}
+			}
+		};
+		
 		this.research = research;
+		contains = Game.currentGame.researches.contains(research);
 	}
 	
 	@Override
 	public void draw(Graphics2D g)
 	{
-		Assistant.drawContainer(x - 8, y - 8, width + 16, height + 16, false, state == 2, false, g);
+		Assistant.drawContainer(x - 8, y - 8, width + 16, height + 16, false, state == 2 || contains, false, g);
 		Assistant.drawImage(Game.getImage("researches.png"), x, y, width, height, research.getTexturePoint().x * tSize, research.getTexturePoint().y * tSize, tSize, tSize, g);
 		
-		if (state == 3) Assistant.drawShadow(x - 10, y - 10, width + 20, height + 20, g);
+		if (!enabled) Assistant.drawShadow(x - 10, y - 10, width + 20, height + 20, g);
 	}
 	
 	public void drawTooltip(int x, int y, Graphics2D g)
@@ -61,7 +79,7 @@ public class ResearchButton extends Button
 		
 		// -- costs -- //
 		y1 -= 12;
-		Assistant.drawHorizontallyCenteredString("Baukosten", x + 60, 0, y1, g, 24);
+		Assistant.drawString("Forschungskosten", x + 20, y1, g, 24);
 		y1 += 8;
 		for (int i = 0; i < research.getCosts().size(); i++)
 		{
@@ -109,9 +127,10 @@ public class ResearchButton extends Button
 		{
 			if ((r.equals(Resource.PEOPLE) ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < research.getCosts().get(r))
 			{
-				state = 3;
+				enabled = false;
 				return;
 			}
 		}
+		enabled = true;
 	}
 }

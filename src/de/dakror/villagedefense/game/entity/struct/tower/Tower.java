@@ -12,6 +12,7 @@ import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.util.TowerTargetComparator;
 import de.dakror.villagedefense.util.Vector;
 
@@ -20,6 +21,8 @@ import de.dakror.villagedefense.util.Vector;
  */
 public abstract class Tower extends Struct
 {
+	ArrayList<Researches> researches = new ArrayList<>();
+	
 	public Tower(int x, int y)
 	{
 		super(x, y, 1, 3);
@@ -56,16 +59,27 @@ public abstract class Tower extends Struct
 		
 		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
 		{
-			ArrayList<Creature> t = getTargetableCreatures();
-			if (t.size() > 0)
+			shoot();
+		}
+		
+		if (!researches.contains(Researches.TOWER_DOUBLESHOT) && Game.currentGame.researches.contains(Researches.TOWER_DOUBLESHOT))
+		{
+			attributes.set(Attribute.ATTACK_SPEED, attributes.get(Attribute.ATTACK_SPEED) / 2f);
+			researches.add(Researches.TOWER_DOUBLESHOT);
+		}
+	}
+	
+	public void shoot()
+	{
+		ArrayList<Creature> t = getTargetableCreatures();
+		if (t.size() > 0)
+		{
+			for (int i = 0; i < t.size(); i++)
 			{
-				for (int i = 0; i < t.size(); i++)
-				{
-					if (t.get(i).willDieFromTargetedProjectiles()) continue;
-					
-					Game.world.addProjectile(new Projectile(getCenter(), t.get(0), "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
-					break;
-				}
+				if (t.get(i).willDieFromTargetedProjectiles()) continue;
+				
+				Game.world.addProjectile(new Projectile(getCenter(), t.get(0), "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
+				break;
 			}
 		}
 	}

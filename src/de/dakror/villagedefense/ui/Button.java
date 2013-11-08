@@ -11,9 +11,9 @@ public abstract class Button extends Component
 	 * 0 = default<br>
 	 * 1 = pressed<br>
 	 * 2 = hovered<br>
-	 * 3 = disabled<br>
 	 */
 	public int state;
+	public boolean enabled;
 	ClickEvent event;
 	
 	public Button(int x, int y, int width, int height, ClickEvent event)
@@ -21,22 +21,19 @@ public abstract class Button extends Component
 		super(x, y, width, height);
 		this.event = event;
 		state = 0;
+		enabled = true;
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if (state == 3) return;
-		
 		if (contains(e.getX(), e.getY())) state = 1;
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		if (state == 3) return;
-		
-		if (contains(e.getX(), e.getY()) && state == 1)
+		if (contains(e.getX(), e.getY()) && enabled)
 		{
 			event.trigger();
 			state = 0;
@@ -46,8 +43,6 @@ public abstract class Button extends Component
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
-		if (state == 3) return;
-		
 		state = contains(e.getX(), e.getY()) ? 2 : 0;
 	}
 }
