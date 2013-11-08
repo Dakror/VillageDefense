@@ -120,6 +120,12 @@ public class Assistant
 	{
 		BufferedImage shadow = Game.getImage("gui/shadow.png");
 		
+		if (width == height && width < 64)
+		{
+			g.drawImage(shadow, x, y, width, height, Game.w);
+			return;
+		}
+		
 		int size = 32;
 		
 		drawImage(shadow, x, y, size, size, 0, 0, size, size, g); // lt
