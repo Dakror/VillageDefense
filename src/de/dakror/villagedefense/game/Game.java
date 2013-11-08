@@ -303,7 +303,7 @@ public class Game extends EventListener
 			Assistant.drawContainer(0, 0, getWidth(), 80, false, false, g);
 			for (int i = 0; i < Resource.values().length; i++)
 			{
-				int w = (getWidth() / 2 - 100) / 4;
+				int w = (getWidth() / 2 - 100) / Resource.values().length;
 				
 				Assistant.drawResource(resources, Resource.values()[i], 25 + i * w, 30, 30, 25, g);
 			}
@@ -570,7 +570,6 @@ public class Game extends EventListener
 		
 		return score;
 	}
-	
 	
 	public Researches[] getResearches(Class<?> targetClass)
 	{

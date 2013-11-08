@@ -50,12 +50,12 @@ public class ResearchButton extends Button
 	@Override
 	public void draw(Graphics2D g)
 	{
-		if (state == 2) Assistant.drawContainer(x - 8, y - 8, width + 16, height + 16, false, state == 2 || contains, true, g);
+		if (state == 2 || contains) Assistant.drawContainer(x - 8, y - 8, width + 16, height + 16, false, state == 2 || contains, true, g);
 		else Assistant.drawOutline(x - 8, y - 8, width + 16, height + 16, false, g);
 		
 		Assistant.drawImage(Game.getImage("researches.png"), x, y, width, height, research.getTexturePoint().x * tSize, research.getTexturePoint().y * tSize, tSize, tSize, g);
 		
-		if (!enabled)
+		if (!enabled && !contains)
 		{
 			if (state == 2) Assistant.drawShadow(x - 14, y - 14, width + 28, height + 28, g);
 			else Assistant.drawShadow(x - 4, y - 4, width + 8, height + 8, g);

@@ -14,6 +14,7 @@ import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
+import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.ui.button.ResearchButton;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.TowerTargetComparator;
@@ -120,6 +121,17 @@ public abstract class Tower extends Struct
 		Assistant.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
 		
 		drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
+		for (Component c : components)
+		{
+			if ((c instanceof ResearchButton))
+			{
+				ResearchButton n = (ResearchButton) c;
+				if (n.state != 2) continue;
+				
+				((ResearchButton) c).drawTooltip(Game.currentGame.mouse.x, Game.currentGame.mouse.y, g);
+				break;
+			}
+		}
 	}
 	
 	@Override
