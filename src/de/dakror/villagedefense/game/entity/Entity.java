@@ -193,7 +193,7 @@ public abstract class Entity implements Drawable
 	{
 		if (alpha == 0) return false;
 		
-		if (alpha != 1) return clicked = getBump(true).contains(e.getPoint());
+		if (alpha != 1 && this instanceof Struct) return clicked = getBump(true).contains(e.getPoint());
 		
 		return clicked = contains(e.getX(), e.getY());
 	}

@@ -1,6 +1,9 @@
-package de.dakror.villagedefense.ui;
+package de.dakror.villagedefense.ui.button;
 
 import java.awt.event.MouseEvent;
+
+import de.dakror.villagedefense.ui.ClickEvent;
+import de.dakror.villagedefense.ui.Component;
 
 /**
  * @author Dakror

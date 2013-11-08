@@ -1,7 +1,5 @@
 package de.dakror.villagedefense.game.entity.struct.tower;
 
-import java.awt.Graphics2D;
-
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
@@ -33,12 +31,4 @@ public class ArrowTower extends Tower
 	{
 		return new ArrowTower((int) x, (int) y);
 	}
-	
-	@Override
-	public void drawGUI(Graphics2D g)
-	{}
-	
-	@Override
-	public void initGUI()
-	{}
 }

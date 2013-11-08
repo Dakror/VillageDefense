@@ -2,8 +2,8 @@ package de.dakror.villagedefense.game;
 
 import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.settings.WaveManager;
-import de.dakror.villagedefense.ui.BuildButton;
 import de.dakror.villagedefense.ui.Component;
+import de.dakror.villagedefense.ui.button.BuildButton;
 
 /**
  * @author Dakror

@@ -1,6 +1,7 @@
 package de.dakror.villagedefense.game.entity.struct.tower;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
+import de.dakror.villagedefense.ui.button.ResearchButton;
+import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.TowerTargetComparator;
 import de.dakror.villagedefense.util.Vector;
 
@@ -21,12 +24,14 @@ import de.dakror.villagedefense.util.Vector;
  */
 public abstract class Tower extends Struct
 {
-	ArrayList<Researches> researches = new ArrayList<>();
-	
 	public Tower(int x, int y)
 	{
 		super(x, y, 1, 3);
+		
 		placeGround = false;
+		
+		guiSize = new Dimension(250, 250);
+		
 		setBump(new Rectangle2D.Float(0, 2.5f, 1, 0.5f));
 	}
 	
@@ -59,28 +64,26 @@ public abstract class Tower extends Struct
 		
 		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
 		{
-			shoot();
-		}
-		
-		if (!researches.contains(Researches.TOWER_DOUBLESHOT) && Game.currentGame.researches.contains(Researches.TOWER_DOUBLESHOT))
-		{
-			attributes.set(Attribute.ATTACK_SPEED, attributes.get(Attribute.ATTACK_SPEED) / 2f);
-			researches.add(Researches.TOWER_DOUBLESHOT);
+			shoot(0);
+			
+			if (has(Researches.TOWER_DOUBLESHOT)) shoot(1);
 		}
 	}
 	
-	public void shoot()
+	public void shoot(int targetIndex)
 	{
 		ArrayList<Creature> t = getTargetableCreatures();
-		if (t.size() > 0)
+		
+		if (t.size() == 0) return;
+		
+		targetIndex = targetIndex >= t.size() ? t.size() - 1 : targetIndex;
+		
+		for (int i = 0; i < t.size(); i++)
 		{
-			for (int i = 0; i < t.size(); i++)
-			{
-				if (t.get(i).willDieFromTargetedProjectiles()) continue;
-				
-				Game.world.addProjectile(new Projectile(getCenter(), t.get(0), "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
-				break;
-			}
+			if (t.get(i).willDieFromTargetedProjectiles()) continue;
+			
+			Game.world.addProjectile(new Projectile(getCenter(), t.get(targetIndex), "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
+			break;
 		}
 	}
 	
@@ -105,4 +108,33 @@ public abstract class Tower extends Struct
 	@Override
 	protected void onDeath()
 	{}
+	
+	@Override
+	public void drawGUI(Graphics2D g)
+	{
+		if (Game.currentGame.getResearches(Tower.class).length == 0) return;
+		
+		if (components.size() == 0) initGUI();
+		
+		Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
+		Assistant.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
+		
+		drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
+	}
+	
+	@Override
+	public void initGUI()
+	{
+		int width = guiSize.width - 20;
+		
+		int size = 32;
+		int gap = 24;
+		
+		int proRow = width / (size + gap);
+		
+		for (Researches research : Researches.values(Tower.class))
+		{
+			components.add(new ResearchButton(20 + ((research.ordinal() % proRow) * (size + gap)), 55 + ((research.ordinal() / proRow) * (size + gap)), research, researches, true));
+		}
+	}
 }

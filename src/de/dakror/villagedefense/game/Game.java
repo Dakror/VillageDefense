@@ -39,8 +39,8 @@ import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.settings.WaveManager.Monster;
-import de.dakror.villagedefense.ui.BuildButton;
 import de.dakror.villagedefense.ui.Component;
+import de.dakror.villagedefense.ui.button.BuildButton;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.EventListener;
 
@@ -339,7 +339,7 @@ public class Game extends EventListener
 			for (Component c : components)
 			{
 				c.draw(g);
-				if (c instanceof BuildButton && ((BuildButton) c).isHovered()) hovered = (BuildButton) c;
+				if (c instanceof BuildButton && ((BuildButton) c).state == 2) hovered = (BuildButton) c;
 			}
 			
 			// -- selected entity stuff -- //
@@ -449,6 +449,9 @@ public class Game extends EventListener
 	{
 		// mouseDownWorld = null;
 		if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mouseReleased(e);
+		
+		for (Component c : components)
+			c.mouseReleased(e);
 	}
 	
 	@Override
@@ -487,7 +490,7 @@ public class Game extends EventListener
 							if (b.getStruct().getName().equals(activeStruct.getName()))
 							{
 								c.update(0);
-								if (b.isEnabled())
+								if (b.enabled)
 								{
 									activeStruct.setClicked(false);
 									activeStruct = (Struct) b.getStruct().clone();
@@ -566,6 +569,18 @@ public class Game extends EventListener
 		score = score < 0 ? 0 : score;
 		
 		return score;
+	}
+	
+	
+	public Researches[] getResearches(Class<?> targetClass)
+	{
+		ArrayList<Researches> res = new ArrayList<>();
+		for (Researches r : researches)
+		{
+			if (r.isTarget(targetClass)) res.add(r);
+		}
+		
+		return res.toArray(new Researches[] {});
 	}
 	
 	public static int getWidth()

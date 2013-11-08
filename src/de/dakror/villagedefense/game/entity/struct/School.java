@@ -7,8 +7,9 @@ import java.awt.geom.Rectangle2D;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.settings.Researches;
+import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.Component;
-import de.dakror.villagedefense.ui.ResearchButton;
+import de.dakror.villagedefense.ui.button.ResearchButton;
 import de.dakror.villagedefense.util.Assistant;
 
 /**
@@ -20,14 +21,14 @@ public class School extends Struct
 	{
 		super(x, y, 6, 8);
 		
-		name = "Schule [wip]";
+		name = "Schule";
 		tx = 8;
 		ty = 0;
 		setBump(new Rectangle2D.Float(0, 4, 6, 4));
 		guiSize = new Dimension(250, 250);
-		// buildingCosts.set(Resource.GOLD, 500);
-		// buildingCosts.set(Resource.STONE, 200);
-		// buildingCosts.set(Resource.WOOD, 80);
+		buildingCosts.set(Resource.GOLD, 1000);
+		buildingCosts.set(Resource.STONE, 400);
+		buildingCosts.set(Resource.WOOD, 80);
 	}
 	
 	@Override
@@ -78,7 +79,7 @@ public class School extends Struct
 		
 		for (Researches research : Researches.values())
 		{
-			components.add(new ResearchButton(20 + ((research.ordinal() % proRow) * (size + gap)), 55 + ((research.ordinal() / proRow) * (size + gap)), research));
+			components.add(new ResearchButton(20 + ((research.ordinal() % proRow) * (size + gap)), 55 + ((research.ordinal() / proRow) * (size + gap)), research, Game.currentGame.researches, false));
 		}
 	}
 }

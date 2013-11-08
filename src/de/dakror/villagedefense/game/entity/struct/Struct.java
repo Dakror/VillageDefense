@@ -14,6 +14,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
@@ -34,6 +35,7 @@ public abstract class Struct extends Entity
 	public Point guiPoint;
 	public Dimension guiSize;
 	protected CopyOnWriteArrayList<Component> components = new CopyOnWriteArrayList<>();
+	protected ArrayList<Researches> researches = new ArrayList<>();
 	
 	public Struct(int x, int y, int width, int height)
 	{
@@ -256,6 +258,16 @@ public abstract class Struct extends Entity
 		if (guiPoint != null && guiSize != null) e.translatePoint(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2);
 		
 		return super.mouseMoved(e);
+	}
+	
+	public boolean has(Researches res)
+	{
+		return researches.contains(res);
+	}
+	
+	public void add(Researches res)
+	{
+		researches.add(res);
 	}
 	
 	protected abstract void onMinedUp();

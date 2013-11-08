@@ -1,50 +1,53 @@
-package de.dakror.villagedefense.ui;
+package de.dakror.villagedefense.ui.button;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
+import de.dakror.villagedefense.ui.ClickEvent;
 import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
  */
-public class BuildButton extends Component
+public class BuildButton extends Button
 {
 	public static final int SIZE = 68;
 	
 	Struct struct;
 	Dimension scale;
-	boolean hover;
-	boolean enabled;
 	
-	public BuildButton(int x, int y, Struct s)
+	public BuildButton(int x, int y, final Struct s)
 	{
-		super(x, y, SIZE, SIZE);
+		super(x, y, SIZE, SIZE, new ClickEvent()
+		{
+			@Override
+			public void trigger()
+			{
+				Game.currentGame.activeStruct = (Struct) s.clone();
+			}
+		});
 		struct = s;
 		scale = Assistant.scaleTo(new Dimension(struct.getWidth(), struct.getHeight()), new Dimension(width, height));
-		hover = false;
-		enabled = true;
 	}
 	
 	@Override
 	public void draw(Graphics2D g)
 	{
-		if (hover) Assistant.drawContainer(x - 10, y - 16, width + 20, height + 32, false, true, g);
+		if (state == 2) Assistant.drawContainer(x - 10, y - 16, width + 20, height + 32, false, true, g);
 		else Assistant.drawOutline(x - 10, y - 10, width + 20, height + 20, false, g);
 		
 		g.drawImage(struct.getImage(), x + (SIZE - scale.width) / 2, y, scale.width, scale.height, Game.w);
 		
 		if (!enabled)
 		{
-			if (hover) Assistant.drawShadow(x - 20, y - 26, width + 40, height + 52, g);
+			if (state == 2) Assistant.drawShadow(x - 20, y - 26, width + 40, height + 52, g);
 			else Assistant.drawShadow(x - 10, y - 10, width + 20, height + 20, g);
 		}
 		
@@ -138,30 +141,8 @@ public class BuildButton extends Component
 		enabled = true;
 	}
 	
-	public boolean isHovered()
-	{
-		return hover;
-	}
-	
-	public boolean isEnabled()
-	{
-		return enabled;
-	}
-	
 	public Struct getStruct()
 	{
 		return struct;
-	}
-	
-	@Override
-	public void mouseMoved(MouseEvent e)
-	{
-		hover = contains(e.getX(), e.getY());
-	}
-	
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
-		if (contains(e.getX(), e.getY()) && e.getButton() == MouseEvent.BUTTON1 && enabled) Game.currentGame.activeStruct = (Struct) struct.clone();
 	}
 }
