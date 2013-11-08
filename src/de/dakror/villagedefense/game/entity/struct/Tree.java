@@ -13,27 +13,80 @@ import de.dakror.villagedefense.settings.Resources.Resource;
  */
 public class Tree extends Struct
 {
-	public Tree(int x, int y)
+	int startTick;
+	
+	public Tree(int x, int y, boolean sapling)
 	{
-		super(x, y, 5, 5);
-		tx = 0;
-		ty = 0;
-		setBump(new Rectangle2D.Float(2, 4.3f, 1, 0.6f));
-		placeGround = false;
-		resources.set(Resource.WOOD, 100);
-		name = "Baum";
+		super(x, y, sapling ? 1 : 5, sapling ? 2 : 5);
+		
+		if (sapling)
+		{
+			tx = 6;
+			ty = 5;
+			setBump(new Rectangle2D.Float(0.3f, 1.7f, 0.3f, 0.3f));
+			placeGround = false;
+			resources.set(Resource.WOOD, 4);
+			attributes.set(Attribute.ATTACK_SPEED, 30 * 60 * 4); // 4 minutes (30 ticks * 60 seconds * 4)
+			name = "Setzling";
+		}
+		else
+		{
+			tx = 0;
+			ty = 0;
+			setBump(new Rectangle2D.Float(2, 4.3f, 1, 0.6f));
+			placeGround = false;
+			resources.set(Resource.WOOD, 100);
+			name = "Baum";
+		}
+	}
+	
+	@Override
+	protected void tick(int tick)
+	{
+		super.tick(tick);
+		
+		if (isSapling())
+		{
+			if (startTick == 0) startTick = tick;
+			
+			if ((tick - startTick) % attributes.get(Attribute.ATTACK_SPEED) == 0 && startTick < tick)
+			{
+				setGrown();
+			}
+		}
 	}
 	
 	@Override
 	protected void onDeath()
 	{
-		if (ty == 5)
+		if (isStump() || isSapling())
 		{
 			dead = true;
 			return;
 		}
 		
-		// transform into leftovers
+		setStump();
+	}
+	
+	@Override
+	protected void onMinedUp()
+	{
+		onDeath();
+	}
+	
+	@Override
+	public Entity clone()
+	{
+		return new Tree((int) x, (int) y, isSapling());
+	}
+	
+	public boolean isSapling()
+	{
+		return tx == 6 && ty == 5;
+	}
+	
+	public void setStump()
+	{
 		width = Tile.SIZE;
 		height = Tile.SIZE;
 		tx = 7;
@@ -47,16 +100,24 @@ public class Tree extends Struct
 		resources.set(Resource.WOOD, 1);
 	}
 	
-	@Override
-	protected void onMinedUp()
+	public void setGrown()
 	{
-		onDeath();
+		width = 5 * Tile.SIZE;
+		height = 5 * Tile.SIZE;
+		tx = 0;
+		ty = 0;
+		x -= 2 * Tile.SIZE;
+		y -= 3 * Tile.SIZE;
+		image = null;
+		setBump(new Rectangle2D.Float(2, 4.3f, 1, 0.6f));
+		placeGround = false;
+		resources.set(Resource.WOOD, 100);
+		name = "Baum";
 	}
 	
-	@Override
-	public Entity clone()
+	public boolean isStump()
 	{
-		return new Tree((int) x, (int) y);
+		return tx == 7 && ty == 5;
 	}
 	
 	@Override

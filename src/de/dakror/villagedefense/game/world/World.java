@@ -181,7 +181,7 @@ public class World extends EventListener implements Drawable
 		
 		int heightMalus = 3;
 		
-		int rocks = (int) (Math.random() * 10) + 5;
+		int rocks = (int) (Math.random() * 10) + 10;
 		for (int i = 0; i < rocks; i++)
 		{
 			int x1 = (int) (Math.random() * width / Tile.SIZE);
@@ -191,7 +191,8 @@ public class World extends EventListener implements Drawable
 			if (Math.abs(y1 - y + 2) < 3) continue;
 			addEntity(new Rock(x1, y1));
 		}
-		int trees = (int) (Math.random() * 15) + 10;
+		
+		int trees = (int) (Math.random() * 10) + 10;
 		for (int i = 0; i < trees; i++)
 		{
 			int x1 = (int) (Math.random() * width / Tile.SIZE);
@@ -199,7 +200,7 @@ public class World extends EventListener implements Drawable
 			
 			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
 			if (Math.abs(y1 - y + 2) < 3) continue;
-			addEntity(new Tree(x1, y1));
+			addEntity(new Tree(x1, y1, false));
 		}
 	}
 	
