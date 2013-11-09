@@ -494,9 +494,11 @@ public class Game extends EventListener
 		
 		if (mouseDown != null && mouseDrag != null)
 		{
+			
+			Rectangle r = getDragRectangle();
 			for (Entity e1 : world.entities)
 			{
-				if (e1 instanceof Villager) e1.setClicked(true);
+				if (e1 instanceof Villager && e1.getArea().intersects(r)) e1.setClicked(true);
 			}
 		}
 		
