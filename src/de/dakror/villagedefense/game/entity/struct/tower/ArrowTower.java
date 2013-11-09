@@ -13,9 +13,10 @@ public class ArrowTower extends Tower
 	public ArrowTower(int x, int y)
 	{
 		super(x, y);
-		tx = 5;
-		ty = 7;
+		
 		name = "Pfeil-Turm";
+		color = 0;
+		spheres = 1;
 		attributes.set(Attribute.ATTACK_RANGE, Tile.SIZE * 5);
 		// attributes.set(Attribute.HEALTH, 50);
 		// attributes.set(Attribute.HEALTH_MAX, 50);

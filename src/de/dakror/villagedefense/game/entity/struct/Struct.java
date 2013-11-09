@@ -2,11 +2,11 @@ package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -31,7 +31,7 @@ public abstract class Struct extends Entity
 	protected boolean canPlaceOnWay;
 	protected StructPoints structPoints;
 	protected Resources buildingCosts;
-	protected Image image;
+	protected BufferedImage image;
 	public Point guiPoint;
 	public Dimension guiSize;
 	protected CopyOnWriteArrayList<Component> components = new CopyOnWriteArrayList<>();
@@ -180,11 +180,16 @@ public abstract class Struct extends Entity
 		return buildingCosts;
 	}
 	
-	public Image getImage()
+	public BufferedImage getImage()
 	{
 		if (image != null) return image;
-		image = Game.getImage("structs.png").getSubimage(tx * Tile.SIZE, ty * Tile.SIZE, width, height);
+		image = createImage();
 		return image;
+	}
+	
+	protected BufferedImage createImage()
+	{
+		return Game.getImage("structs.png").getSubimage(tx * Tile.SIZE, ty * Tile.SIZE, width, height);
 	}
 	
 	public boolean requestVillagersToCome(int amount)

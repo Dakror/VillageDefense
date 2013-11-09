@@ -3,7 +3,9 @@ package de.dakror.villagedefense.game.entity.struct.tower;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -12,6 +14,7 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.ui.Component;
@@ -25,10 +28,24 @@ import de.dakror.villagedefense.util.Vector;
  */
 public abstract class Tower extends Struct
 {
+	/**
+	 * -1 = none<br>
+	 * 0 = red<br>
+	 * 1 = blue<br>
+	 * 2 = green<br>
+	 * 3 = purple<br>
+	 */
+	protected int color;
+	protected int spheres;
+	
 	public Tower(int x, int y)
 	{
 		super(x, y, 1, 3);
 		
+		tx = 3;
+		ty = 11;
+		color = -1;
+		spheres = 0;
 		placeGround = false;
 		
 		guiSize = new Dimension(250, 250);
@@ -68,6 +85,12 @@ public abstract class Tower extends Struct
 			shoot(0);
 			
 			if (has(Researches.TOWER_DOUBLESHOT)) shoot(1);
+		}
+		
+		if (has(Researches.TOWER_DOUBLESHOT))
+		{
+			if (spheres != 2) image = null;
+			spheres = 2;
 		}
 	}
 	
@@ -148,5 +171,28 @@ public abstract class Tower extends Struct
 		{
 			components.add(new ResearchButton(20 + ((research.ordinal() % proRow) * (size + gap)), 55 + ((research.ordinal() / proRow) * (size + gap)), research, researches, true));
 		}
+	}
+	
+	@Override
+	protected BufferedImage createImage()
+	{
+		BufferedImage tower = super.createImage();
+		BufferedImage image = new BufferedImage(Tile.SIZE, 3 * Tile.SIZE, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = (Graphics2D) image.getGraphics();
+		g.drawImage(tower, 0, Tile.SIZE, null);
+		
+		Point spheresP = new Point(13, 8);
+		
+		if (spheres == 1)
+		{
+			Assistant.drawImage(Game.getImage("structs.png"), 0, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
+		}
+		else if (spheres == 2)
+		{
+			Assistant.drawImage(Game.getImage("structs.png"), -6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
+			Assistant.drawImage(Game.getImage("structs.png"), 6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
+			
+		}
+		return image;
 	}
 }

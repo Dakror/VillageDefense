@@ -10,7 +10,7 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 
 public enum Researches
 {
-	TOWER_DOUBLESHOT("Pfeil-Turm Doppelschuss", new Resources().set(Resource.GOLD, 250).set(Resource.WOOD, 150), new Point(0, 0), 5, Tower.class),
+	TOWER_DOUBLESHOT("Pfeil-Turm Doppelschuss", new Resources().set(Resource.GOLD, 250).set(Resource.WOOD, 0), new Point(0, 0), 5, Tower.class),
 	
 	;
 	private String name;

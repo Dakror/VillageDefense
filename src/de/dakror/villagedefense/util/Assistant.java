@@ -157,6 +157,11 @@ public class Assistant
 		g.drawImage(img, x, y, x + width, y + height, sx, sy, sx + swidth, sy + sheight, Game.w);
 	}
 	
+	public static void drawImage2(Image img, int x, int y, int width, int height, int sx, int sy, int swidth, int sheight, Graphics2D g)
+	{
+		g.drawImage(img, x, y, x + width, y + height, sx, sy, sx + swidth, sy + sheight, null);
+	}
+	
 	public static void drawResource(Resources resources, Resource r, int x, int y, int size, int space, Graphics2D g)
 	{
 		drawLabelWithIcon(x, y, size, new Point(r.getIconX(), r.getIconY()), resources.get(r) + "", space, g);
