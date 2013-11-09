@@ -24,8 +24,8 @@ public class School extends Struct
 		tx = 8;
 		ty = 0;
 		setBump(new Rectangle2D.Float(0, 4, 6, 4));
-		buildingCosts.set(Resource.GOLD, 1000);
-		buildingCosts.set(Resource.STONE, 400);
+		buildingCosts.set(Resource.GOLD, 500);
+		buildingCosts.set(Resource.STONE, 350);
 		buildingCosts.set(Resource.WOOD, 80);
 	}
 	

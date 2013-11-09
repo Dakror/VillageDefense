@@ -36,7 +36,7 @@ public abstract class Struct extends Entity
 	protected BufferedImage image;
 	public Point guiPoint;
 	public Dimension guiSize;
-	protected CopyOnWriteArrayList<Component> components = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<Component> components = new CopyOnWriteArrayList<>();
 	protected ArrayList<Researches> researches = new ArrayList<>();
 	protected Class<?> researchClass;
 	

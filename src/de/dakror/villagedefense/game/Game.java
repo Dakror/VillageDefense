@@ -207,7 +207,14 @@ public class Game extends EventListener
 		
 		g.dispose();
 		
-		if (!s.contentsLost()) s.show();
+		try
+		{
+			if (!s.contentsLost()) s.show();
+		}
+		catch (Exception e)
+		{
+			return;
+		}
 		
 		frames++;
 		if (!started)

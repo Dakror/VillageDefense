@@ -20,7 +20,7 @@ public class ArrowTower extends Tower
 		attributes.set(Attribute.ATTACK_RANGE, Tile.SIZE * 5);
 		// attributes.set(Attribute.HEALTH, 50);
 		// attributes.set(Attribute.HEALTH_MAX, 50);
-		attributes.set(Attribute.ATTACK_SPEED, 35);
+		attributes.set(Attribute.ATTACK_SPEED, 30);
 		attributes.set(Attribute.DAMAGE_CREATURE, 3);
 		
 		buildingCosts.set(Resource.GOLD, 75);
