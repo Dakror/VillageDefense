@@ -31,8 +31,10 @@ import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Marketplace;
 import de.dakror.villagedefense.game.entity.struct.Mine;
+import de.dakror.villagedefense.game.entity.struct.Rock;
 import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.game.world.World;
@@ -317,8 +319,6 @@ public class Game extends EventListener
 	{
 		try
 		{
-			Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
-			
 			// -- wave monster faces -- //
 			if (WaveManager.monsters.size() > 0)
 			{
@@ -334,6 +334,46 @@ public class Game extends EventListener
 					g.drawImage(getImage("creature/" + m.getImage() + "_face.png"), getWidth() / 2 + 200 + i * cSize + (cSize - 48) / 2, 72 + (cSize - 48) / 2, 48, 48, w);
 					
 					Assistant.drawString(WaveManager.monsters.get(m) + "", x + 6, 72 + cSize - 6, g, 22);
+				}
+			}
+			
+			// -- selected entity stuff -- //
+			Assistant.drawContainer(getWidth() / 2 - 175, 70, 350, 60, false, false, g);
+			if (world.selectedEntity != null)
+			{
+				Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
+				
+				if (world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue())
+				{
+					Assistant.drawProgressBar(getWidth() / 2 - 179, 111, 358, world.selectedEntity.getAttributes().get(Attribute.HEALTH) / world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
+					Color oldColor = g.getColor();
+					g.setColor(Color.white);
+					Assistant.drawHorizontallyCenteredString((int) world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), getWidth(), 126, g, 15);
+					g.setColor(oldColor);
+				}
+				
+				if (world.selectedEntity.getResources().size() > 0)
+				{
+					ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
+					Assistant.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
+					for (int i = 0; i < resources.size(); i++)
+					{
+						Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
+					}
+				}
+				
+				if (world.selectedEntity instanceof Struct)
+				{
+					Struct s = (Struct) world.selectedEntity;
+					if (!(s instanceof Tree) && !(s instanceof Rock))
+					{
+						Assistant.drawShadow(getWidth() / 2 - 260, 72, 70, 70, g);
+						
+						if (new Rectangle(getWidth() / 2 - 260, 72, 70, 70).contains(mouse)) Assistant.drawContainer(getWidth() / 2 - 260, 72, 70, 70, false, false, g);
+						else Assistant.drawOutline(getWidth() / 2 - 260, 72, 70, 70, false, g);
+						
+						g.drawImage(getImage("icon/bomb.png"), getWidth() / 2 - 250, 82, 50, 50, w);
+					}
 				}
 			}
 			
@@ -378,31 +418,6 @@ public class Game extends EventListener
 			{
 				c.draw(g);
 				if (c instanceof BuildButton && ((BuildButton) c).state == 2) hovered = (BuildButton) c;
-			}
-			
-			// -- selected entity stuff -- //
-			if (world.selectedEntity != null)
-			{
-				Assistant.drawHorizontallyCenteredString(world.selectedEntity.getName(), getWidth(), 111, g, 40);
-				
-				if (world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue())
-				{
-					Assistant.drawProgressBar(getWidth() / 2 - 179, 111, 358, world.selectedEntity.getAttributes().get(Attribute.HEALTH) / world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
-					Color oldColor = g.getColor();
-					g.setColor(Color.white);
-					Assistant.drawHorizontallyCenteredString((int) world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), getWidth(), 126, g, 15);
-					g.setColor(oldColor);
-				}
-				
-				if (world.selectedEntity.getResources().size() > 0)
-				{
-					ArrayList<Resource> resources = world.selectedEntity.getResources().getFilled();
-					Assistant.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
-					for (int i = 0; i < resources.size(); i++)
-					{
-						Assistant.drawResource(world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
-					}
-				}
 			}
 			
 			if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) ((Struct) world.selectedEntity).drawGUI(g);
@@ -558,11 +573,25 @@ public class Game extends EventListener
 			
 			activeStruct = null;
 			
+			if (world.selectedEntity != null && world.selectedEntity instanceof Struct)
+			{
+				if (new Rectangle(getWidth() / 2 - 260, 72, 70, 70).contains(e.getPoint()))
+				{
+					Resources res = ((Struct) world.selectedEntity).getBuildingCosts();
+					
+					for (Resource r : res.getFilled())
+					{
+						resources.add(r, Math.round(res.get(r) / 4f)); // give 25% back
+					}
+					world.selectedEntity.getAttributes().set(Attribute.HEALTH, 0); // kill
+				}
+				
+				if (((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mousePressed(e);
+			}
+			
 			world.mousePressed(e);
 			for (Component c : components)
 				c.mousePressed(e);
-			
-			if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mousePressed(e);
 		}
 		else if (state == 3) state = 0;
 		else
