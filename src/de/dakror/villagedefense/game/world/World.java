@@ -327,6 +327,33 @@ public class World extends EventListener implements Drawable
 				((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
 			}
 		}
+		else if (e.getButton() == MouseEvent.BUTTON3) // after Drag
+		{
+			Entity target = null;
+			for (Entity entity : entities)
+			{
+				if (entity.isClicked() && entity instanceof Villager) continue;
+				
+				if (entity.mousePressed(e))
+				{
+					target = entity;
+					break;
+				}
+			}
+			
+			for (Entity entity : entities)
+			{
+				if (entity.isClicked() && entity instanceof Villager)
+				{
+					if (target != null) ((Villager) entity).setTarget(target);
+					else
+					{
+						((Villager) entity).setTargetEntity(null);
+						((Villager) entity).setTarget(new Vector(e.getX(), e.getY()));
+					}
+				}
+			}
+		}
 		
 		e.translatePoint(x, y);
 	}

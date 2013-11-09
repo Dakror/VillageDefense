@@ -216,6 +216,11 @@ public abstract class Entity implements Drawable
 		clicked = b;
 	}
 	
+	public boolean isClicked()
+	{
+		return clicked;
+	}
+	
 	public void setHovered(boolean b)
 	{
 		hovered = b;

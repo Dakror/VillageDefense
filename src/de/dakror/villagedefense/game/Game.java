@@ -82,7 +82,7 @@ public class Game extends EventListener
 	ArrayList<Component> components;
 	
 	public Point mouse = new Point(0, 0);
-	public Point mouseDown;
+	public Point mouseDown, mouseDrag;
 	
 	public Game()
 	{
@@ -201,6 +201,21 @@ public class Game extends EventListener
 		g.setColor(oldColor);
 		g.setFont(oldFont);
 		
+		if (mouseDown != null && mouseDrag != null)
+		{
+			Rectangle r = getDragRectangle();
+			
+			Composite c = g.getComposite();
+			Color o = g.getColor();
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+			g.setColor(Color.decode("#0030ff"));
+			g.fillRect(r.x, r.y, r.width, r.height);
+			g.setComposite(c);
+			g.setColor(Color.decode("#09c3f1"));
+			g.drawRect(r.x, r.y, r.width, r.height);
+			g.setColor(o);
+		}
+		
 		drawBuildStruct(g);
 		
 		drawState(g);
@@ -222,6 +237,15 @@ public class Game extends EventListener
 			state = 3;
 			started = true;
 		}
+	}
+	
+	public Rectangle getDragRectangle()
+	{
+		int x = mouseDown.x < mouseDrag.x ? mouseDown.x : mouseDrag.x;
+		int y = mouseDown.y < mouseDrag.y ? mouseDown.y : mouseDrag.y;
+		int w = mouseDown.x < mouseDrag.x ? mouseDrag.x - mouseDown.x : mouseDown.x - mouseDrag.x;
+		int h = mouseDown.y < mouseDrag.y ? mouseDrag.y - mouseDown.y : mouseDown.y - mouseDrag.y;
+		return new Rectangle(x, y, w, h);
 	}
 	
 	public void drawBuildStruct(Graphics2D g)
@@ -424,16 +448,11 @@ public class Game extends EventListener
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		// if (e.getModifiers() == MouseEvent.BUTTON3_MASK) return;
-		//
-		// e.translatePoint(-w.getInsets().left, -w.getInsets().top);
-		// Vector p = new Vector(e.getPoint()).sub(new Vector(mouseDown));
-		//
-		// int x = (int) (mouseDownWorld.x + p.x);
-		// int y = (int) (mouseDownWorld.y + p.y);
-		//
-		// if (world.width > getWidth() && x <= 0 && x + world.width >= getWidth()) world.x = x;
-		// if (world.height > getHeight() && y <= 0 && y + world.height >= getHeight()) world.y = y;
+		if (e.getModifiers() != MouseEvent.BUTTON1_MASK) return;
+		
+		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		
+		mouseDrag = e.getPoint();
 	}
 	
 	@Override
@@ -459,6 +478,17 @@ public class Game extends EventListener
 		
 		for (Component c : components)
 			c.mouseReleased(e);
+		
+		if (mouseDown != null && mouseDrag != null)
+		{
+			for (Entity e1 : world.entities)
+			{
+				if (e1 instanceof Villager) e1.setClicked(true);
+			}
+		}
+		
+		mouseDown = null;
+		mouseDrag = null;
 	}
 	
 	@Override
