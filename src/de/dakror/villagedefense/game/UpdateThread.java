@@ -13,6 +13,8 @@ public class UpdateThread extends Thread
 	int tick;
 	long time, time2;
 	
+	public int speed = 1;
+	
 	public boolean closeRequested = false;
 	
 	public UpdateThread()
@@ -30,7 +32,7 @@ public class UpdateThread extends Thread
 		{
 			if (tick == Integer.MAX_VALUE) tick = 0;
 			
-			if (System.currentTimeMillis() - time2 > 1000 && Game.currentGame.state == 0)
+			if (System.currentTimeMillis() - time2 > 1000 / speed && Game.currentGame.state == 0)
 			{
 				WaveManager.nextWave--;
 				time2 = System.currentTimeMillis();
@@ -55,7 +57,7 @@ public class UpdateThread extends Thread
 			try
 			{
 				tick++;
-				Thread.sleep(CFG.TICK_TIMEOUT);
+				Thread.sleep(Math.round(CFG.TICK_TIMEOUT / (float) speed));
 			}
 			catch (InterruptedException e)
 			{}

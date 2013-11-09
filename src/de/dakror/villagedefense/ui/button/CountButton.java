@@ -12,7 +12,7 @@ import de.dakror.villagedefense.util.Assistant;
  */
 public class CountButton extends Component
 {
-	int scrollSpeed = 3;
+	int scrollSpeed = 2;
 	long timeDown = 0;
 	
 	public int min, max, value, step;
@@ -56,7 +56,7 @@ public class CountButton extends Component
 	@Override
 	public void update(int tick)
 	{
-		if (System.currentTimeMillis() - timeDown > 800)
+		if (System.currentTimeMillis() - timeDown > 300)
 		{
 			if (tick % scrollSpeed == 0 && minus.state == 1) minus.event.trigger();
 			if (tick % scrollSpeed == 0 && plus.state == 1) plus.event.trigger();

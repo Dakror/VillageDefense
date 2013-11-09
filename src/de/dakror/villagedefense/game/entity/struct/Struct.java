@@ -208,6 +208,9 @@ public abstract class Struct extends Entity
 		int w = (int) Math.round(bump.getWidth() / Tile.SIZE);
 		int h = (int) Math.round(bump.getHeight() / Tile.SIZE);
 		
+		w = w == 0 ? 1 : w;
+		h = h == 0 ? 1 : h;
+		
 		for (int i = 0; i < w + 2; i++)
 		{
 			for (int j = 0; j < h + 2; j++)

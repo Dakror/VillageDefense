@@ -45,9 +45,11 @@ public class Forester extends Creature
 		
 		if (target == null)
 		{
-			if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity(new Tree(Assistant.round(Math.round(getPos().x), Tile.SIZE) / Tile.SIZE, Assistant.round(Math.round(getPos().y), Tile.SIZE) / Tile.SIZE, true));
-			
-			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0) setTarget(lookupPlantTarget());
+			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
+			{
+				if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity(new Tree(Assistant.round(Math.round(getPos().x), Tile.SIZE) / Tile.SIZE, Assistant.round(Math.round(getPos().y), Tile.SIZE) / Tile.SIZE, true));
+				setTarget(lookupPlantTarget());
+			}
 		}
 	}
 	

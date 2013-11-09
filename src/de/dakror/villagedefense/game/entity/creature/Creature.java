@@ -164,6 +164,7 @@ public abstract class Creature extends Entity
 				v.add(s.getPos());
 				if (nearestPoint == null || v.getDistance(pos) < nearestPoint.getDistance(pos)) nearestPoint = v;
 			}
+			
 			nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Attribute.ATTACK_RANGE));
 			
 			nearestPoint.y -= height * 0.6f;
