@@ -1,7 +1,6 @@
 package de.dakror.villagedefense.game.entity.struct.tower;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
@@ -17,8 +16,6 @@ import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
-import de.dakror.villagedefense.ui.Component;
-import de.dakror.villagedefense.ui.button.ResearchButton;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.TowerTargetComparator;
 import de.dakror.villagedefense.util.Vector;
@@ -47,8 +44,6 @@ public abstract class Tower extends Struct
 		color = -1;
 		spheres = 0;
 		placeGround = false;
-		
-		guiSize = new Dimension(250, 250);
 		
 		setBump(new Rectangle2D.Float(0, 2.5f, 1, 0.5f));
 	}
@@ -85,12 +80,6 @@ public abstract class Tower extends Struct
 			shoot(0);
 			
 			if (has(Researches.TOWER_DOUBLESHOT)) shoot(1);
-		}
-		
-		if (has(Researches.TOWER_DOUBLESHOT))
-		{
-			if (spheres != 2) image = null;
-			spheres = 2;
 		}
 	}
 	
@@ -136,42 +125,12 @@ public abstract class Tower extends Struct
 	@Override
 	public void drawGUI(Graphics2D g)
 	{
-		if (Game.currentGame.getResearches(Tower.class).length == 0) return;
-		
-		if (components.size() == 0) initGUI();
-		
-		Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
-		Assistant.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
-		
-		drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
-		for (Component c : components)
-		{
-			if ((c instanceof ResearchButton))
-			{
-				ResearchButton n = (ResearchButton) c;
-				if (n.state != 2) continue;
-				
-				((ResearchButton) c).drawTooltip(Game.currentGame.mouse.x, Game.currentGame.mouse.y, g);
-				break;
-			}
-		}
+		drawUpgrades(g);
 	}
 	
 	@Override
 	public void initGUI()
-	{
-		int width = guiSize.width - 20;
-		
-		int size = 32;
-		int gap = 24;
-		
-		int proRow = width / (size + gap);
-		
-		for (Researches research : Researches.values(Tower.class))
-		{
-			components.add(new ResearchButton(20 + ((research.ordinal() % proRow) * (size + gap)), 55 + ((research.ordinal() / proRow) * (size + gap)), research, researches, true));
-		}
-	}
+	{}
 	
 	@Override
 	protected BufferedImage createImage()
@@ -191,8 +150,17 @@ public abstract class Tower extends Struct
 		{
 			Assistant.drawImage(Game.getImage("structs.png"), -6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
 			Assistant.drawImage(Game.getImage("structs.png"), 6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
-			
 		}
 		return image;
+	}
+	
+	@Override
+	public void onUpgrade(Researches research)
+	{
+		if (research == Researches.TOWER_DOUBLESHOT)
+		{
+			image = null;
+			spheres = 2;
+		}
 	}
 }

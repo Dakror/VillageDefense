@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game.world;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -247,6 +248,16 @@ public class World extends EventListener implements Drawable
 		e.onSpawn();
 		
 		render();
+		
+		return true;
+	}
+	
+	public boolean isFreeTile(int x, int y)
+	{
+		for (Entity entity : entities)
+		{
+			if (entity.getBump(true).intersects(new Rectangle(x, y, Tile.SIZE, Tile.SIZE))) return false;
+		}
 		
 		return true;
 	}

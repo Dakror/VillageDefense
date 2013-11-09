@@ -7,6 +7,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.util.Vector;
 
@@ -64,5 +65,9 @@ public class Barricade extends Struct
 	
 	@Override
 	public void initGUI()
+	{}
+	
+	@Override
+	public void onUpgrade(Researches research)
 	{}
 }

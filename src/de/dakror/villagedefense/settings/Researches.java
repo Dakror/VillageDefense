@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.tower.Tower;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
 public enum Researches
 {
-	TOWER_DOUBLESHOT("Pfeil-Turm Doppelschuss", new Resources().set(Resource.GOLD, 250).set(Resource.WOOD, 0), new Point(0, 0), 5, Tower.class),
+	TOWER_DOUBLESHOT("Pfeil-Turm Doppelschuss", new Resources().set(Resource.GOLD, 250).set(Resource.WOOD, 150), new Point(0, 0), 5, Tower.class),
+	FORESTERHOUSE("Forsthaus", new Resources().set(Resource.GOLD, 150).set(Resource.WOOD, 150), new Point(1, 0), 1, House.class),
 	
 	;
 	private String name;

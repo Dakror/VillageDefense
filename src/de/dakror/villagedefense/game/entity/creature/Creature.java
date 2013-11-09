@@ -105,7 +105,7 @@ public abstract class Creature extends Entity
 			
 			dif.setLength(attributes.get(Attribute.SPEED));
 			
-			float angle = dif.getAngleOnXAxis();
+			float angle = Math.round(dif.getAngleOnXAxis());
 			if (angle <= 135 && angle >= 45) dir = 0;
 			else if (angle <= 45 && angle >= -45) dir = 2;
 			else if (angle <= -45 && angle >= -135) dir = 3;

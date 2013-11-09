@@ -19,6 +19,8 @@ import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
 import de.dakror.villagedefense.ui.Component;
+import de.dakror.villagedefense.ui.button.ResearchButton;
+import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -36,6 +38,7 @@ public abstract class Struct extends Entity
 	public Dimension guiSize;
 	protected CopyOnWriteArrayList<Component> components = new CopyOnWriteArrayList<>();
 	protected ArrayList<Researches> researches = new ArrayList<>();
+	protected Class<?> researchClass;
 	
 	public Struct(int x, int y, int width, int height)
 	{
@@ -45,6 +48,9 @@ public abstract class Struct extends Entity
 		buildingCosts = new Resources();
 		
 		canPlaceOnWay = false;
+		researchClass = getClass();
+		
+		guiSize = new Dimension(250, 250);
 	}
 	
 	@Override
@@ -92,6 +98,47 @@ public abstract class Struct extends Entity
 	}
 	
 	public abstract void drawGUI(Graphics2D g);
+	
+	public void drawUpgrades(Graphics2D g)
+	{
+		if (Game.currentGame.getResearches(researchClass).length == 0) return;
+		
+		if (components.size() < Researches.values(researchClass).length) initUpgrades();
+		
+		Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
+		Assistant.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
+		
+		drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
+		for (Component c : components)
+		{
+			if ((c instanceof ResearchButton))
+			{
+				ResearchButton n = (ResearchButton) c;
+				if (n.state != 2) continue;
+				
+				((ResearchButton) c).drawTooltip(Game.currentGame.mouse.x, Game.currentGame.mouse.y, g);
+				break;
+			}
+		}
+	}
+	
+	public void initUpgrades()
+	{
+		int width = guiSize.width - 20;
+		
+		int size = 32;
+		int gap = 24;
+		
+		int proRow = width / (size + gap);
+		
+		Researches[] res = Researches.values(researchClass);
+		
+		for (int i = 0; i < res.length; i++)
+		{
+			Researches research = res[i];
+			components.add(new ResearchButton(20 + ((i % proRow) * (size + gap)), 55 + ((i / proRow) * (size + gap)), research, researches, this));
+		}
+	}
 	
 	public void setBump(Rectangle2D r)
 	{
@@ -276,4 +323,6 @@ public abstract class Struct extends Entity
 	}
 	
 	protected abstract void onMinedUp();
+	
+	public abstract void onUpgrade(Researches research);
 }

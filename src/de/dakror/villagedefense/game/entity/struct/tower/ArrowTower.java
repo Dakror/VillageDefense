@@ -25,6 +25,8 @@ public class ArrowTower extends Tower
 		
 		buildingCosts.set(Resource.GOLD, 75);
 		buildingCosts.set(Resource.STONE, 15);
+		
+		researchClass = Tower.class;
 	}
 	
 	@Override

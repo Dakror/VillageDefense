@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
@@ -19,7 +20,7 @@ public class ResearchButton extends Button
 	boolean contains;
 	boolean discount;
 	
-	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool, final boolean discount)
+	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool)
 	{
 		super(x, y, 32, 32, null);
 		
@@ -43,7 +44,36 @@ public class ResearchButton extends Button
 			}
 		};
 		this.research = research;
-		this.discount = discount;
+		discount = false;
+		contains = pool.contains(research);
+	}
+	
+	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool, final Struct struct)
+	{
+		super(x, y, 32, 32, null);
+		
+		event = new ClickEvent()
+		{
+			@Override
+			public void trigger()
+			{
+				if (!pool.contains(research))
+				{
+					ArrayList<Resource> filled = research.getCosts(discount).getFilled();
+					for (Resource r : filled)
+					{
+						if (!r.isUsable()) continue;
+						Game.currentGame.resources.add(r, -research.getCosts(discount).get(r));
+					}
+					
+					pool.add(research);
+					contains = true;
+					struct.onUpgrade(research);
+				}
+			}
+		};
+		this.research = research;
+		discount = true;
 		contains = pool.contains(research);
 	}
 	
@@ -90,7 +120,7 @@ public class ResearchButton extends Button
 		
 		// -- costs -- //
 		y1 -= 12;
-		Assistant.drawString("Forschungskosten", x + 20, y1, g, 24);
+		Assistant.drawString("Kosten", x + 20, y1, g, 24);
 		y1 += 8;
 		for (int i = 0; i < costs.size(); i++)
 		{
@@ -120,7 +150,7 @@ public class ResearchButton extends Button
 				if (res.isUsable()) continue;
 				Color oldColor = g.getColor();
 				
-				if ((res.equals(Resource.PEOPLE) ? Game.currentGame.getPeople() : Game.currentGame.resources.get(res)) < costs.get(res)) g.setColor(Color.decode("#6b0000"));
+				if ((res == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(res)) < costs.get(res)) g.setColor(Color.decode("#6b0000"));
 				else g.setColor(Color.decode("#18acf1"));
 				Assistant.drawResource(costs, res, x + 16, y1, 24, 30, g);
 				
@@ -136,7 +166,7 @@ public class ResearchButton extends Button
 		ArrayList<Resource> filled = research.getCosts(discount).getFilled();
 		for (Resource r : filled)
 		{
-			if ((r.equals(Resource.PEOPLE) ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < research.getCosts(discount).get(r))
+			if ((r == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < research.getCosts(discount).get(r))
 			{
 				enabled = false;
 				return;

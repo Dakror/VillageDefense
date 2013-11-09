@@ -1,11 +1,11 @@
 package de.dakror.villagedefense.game.entity.struct;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.ClickEvent;
 import de.dakror.villagedefense.ui.button.CountButton;
@@ -23,8 +23,6 @@ public class Marketplace extends Struct
 		tx = 8;
 		ty = 8;
 		setBump(new Rectangle2D.Float(0, 0, 5, 5));
-		
-		guiSize = new Dimension(250, 250);
 		
 		name = "Marktplatz";
 		
@@ -100,4 +98,8 @@ public class Marketplace extends Struct
 			}
 		}));
 	}
+	
+	@Override
+	public void onUpgrade(Researches research)
+	{}
 }

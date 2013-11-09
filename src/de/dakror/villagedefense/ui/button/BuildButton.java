@@ -115,7 +115,7 @@ public class BuildButton extends Button
 				if (res.isUsable()) continue;
 				Color oldColor = g.getColor();
 				
-				if ((res.equals(Resource.PEOPLE) ? Game.currentGame.getPeople() : Game.currentGame.resources.get(res)) < struct.getBuildingCosts().get(res)) g.setColor(Color.decode("#6b0000"));
+				if ((res == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(res)) < struct.getBuildingCosts().get(res)) g.setColor(Color.decode("#6b0000"));
 				else g.setColor(Color.decode("#18acf1"));
 				Assistant.drawResource(struct.getBuildingCosts(), res, x + 16, y1, 24, 30, g);
 				
@@ -131,7 +131,7 @@ public class BuildButton extends Button
 		ArrayList<Resource> filled = struct.getBuildingCosts().getFilled();
 		for (Resource r : filled)
 		{
-			if ((r.equals(Resource.PEOPLE) ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < struct.getBuildingCosts().get(r))
+			if ((r == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < struct.getBuildingCosts().get(r))
 			{
 				enabled = false;
 				return;
