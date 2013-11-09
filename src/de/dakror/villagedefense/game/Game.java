@@ -16,11 +16,14 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
@@ -34,6 +37,7 @@ import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
@@ -62,6 +66,7 @@ public class Game extends EventListener
 	boolean debug;
 	
 	boolean started;
+	boolean scoreSent;
 	
 	/**
 	 * 0 = playing<br>
@@ -95,6 +100,7 @@ public class Game extends EventListener
 	{
 		started = false;
 		debug = false;
+		scoreSent = false;
 		frames = 0;
 		start = 0;
 		components = new ArrayList<>();
@@ -109,7 +115,7 @@ public class Game extends EventListener
 			@Override
 			public void windowLostFocus(WindowEvent e)
 			{
-				state = 3;
+				if (state == 0) state = 3;
 			}
 			
 			@Override
@@ -118,6 +124,7 @@ public class Game extends EventListener
 		});
 		w.setBackground(Color.black);
 		w.setForeground(Color.white);
+		w.setIconImage(getImage("icon/castle.png"));
 		w.getContentPane().setBackground(Color.black);
 		w.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(getImage("cursor.png"), new Point(0, 0), "cursor"));
 		
@@ -420,7 +427,13 @@ public class Game extends EventListener
 			
 			Assistant.drawHorizontallyCenteredString(state == 1 ? "Gewonnen!" : (state == 2) ? "Niederlage!" : "Spiel pausiert", getWidth(), getHeight() / 2, g, 100);
 			Assistant.drawHorizontallyCenteredString(state != 3 ? "Punktestand: " + getPlayerScore() : "Klicken, um fortzusetzen", getWidth(), getHeight() / 2 + 100, g, 60);
-			if (state != 3) Assistant.drawHorizontallyCenteredString("Klicken, um neu zu spielen", getWidth(), getHeight() / 2 + 200, g, 60);
+			if (state != 3)
+			{
+				Assistant.drawHorizontallyCenteredString("Klicken, um neu zu spielen", getWidth(), getHeight() / 2 + 200, g, 60);
+				Assistant.drawContainer(getWidth() / 4 * 3, getHeight() / 2 - 50, 200, 200, true, new Rectangle(getWidth() / 4 * 3, getHeight() / 2 - 50, 200, 200).contains(mouse), g);
+				g.drawImage(getImage("icon/ebook.png"), getWidth() / 4 * 3 + 20, getHeight() / 2 - 30, 160, 160, w);
+				if (scoreSent) Assistant.drawShadow(getWidth() / 4 * 3 - 10, getHeight() / 2 - 60, 220, 220, g);
+			}
 		}
 	}
 	
@@ -459,9 +472,9 @@ public class Game extends EventListener
 	public void mouseMoved(MouseEvent e)
 	{
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		mouse = e.getPoint();
 		if (state == 0)
 		{
-			mouse = e.getPoint();
 			world.mouseMoved(e);
 			for (Component c : components)
 				c.mouseMoved(e);
@@ -552,9 +565,30 @@ public class Game extends EventListener
 		else if (state == 3) state = 0;
 		else
 		{
-			updateThread.closeRequested = true;
-			w.dispose();
-			init();
+			if (new Rectangle(getWidth() / 4 * 3, getHeight() / 2 - 50, 200, 200).contains(e.getPoint()) && e.getButton() == MouseEvent.BUTTON1)
+			{
+				if (scoreSent) return;
+				try
+				{
+					String response = Assistant.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + CFG.USERNAME + "&SCORE=" + getPlayerScore()));
+					if (!response.equals("false"))
+					{
+						JOptionPane.showMessageDialog(null, "Dein Highscore wurde erfolgreich in der Bestenliste platziert.", "Platzieren erfolgreich!", JOptionPane.INFORMATION_MESSAGE);
+						scoreSent = true;
+					}
+					else JOptionPane.showMessageDialog(null, "Dein Highscore konnte nicht in der Bestenliste platziert werden!", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
+				}
+				catch (MalformedURLException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+			else
+			{
+				updateThread.closeRequested = true;
+				w.dispose();
+				init();
+			}
 		}
 	}
 	

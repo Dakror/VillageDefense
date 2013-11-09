@@ -9,9 +9,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.Resources;
@@ -216,6 +221,40 @@ public class Assistant
 		}
 		catch (Exception e)
 		{}
+	}
+	
+	public static String getFileContent(File f)
+	{
+		String res = "", line = "";
+		try
+		{
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			while ((line = br.readLine()) != null)
+				res += line;
+			br.close();
+		}
+		catch (IOException e)
+		{
+			return null;
+		}
+		return res;
+	}
+	
+	public static String getURLContent(URL u)
+	{
+		String res = "", line = "";
+		try
+		{
+			BufferedReader br = new BufferedReader(new InputStreamReader(u.openStream()));
+			while ((line = br.readLine()) != null)
+				res += line;
+			br.close();
+		}
+		catch (IOException e)
+		{
+			return null;
+		}
+		return res;
 	}
 	
 	// -- math helper methods -- //
