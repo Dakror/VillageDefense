@@ -42,19 +42,7 @@ public class UpdateThread extends Thread
 			for (Layer l : Game.currentGame.layers)
 				l.update(tick);
 			
-			// for (int i = 0; i < Game.buildableStructs.length; i++)
-			// {
-			// int x = Game.getWidth() / 2 + BuildButton.SIZE / 4 - (Game.buildableStructs.length * (BuildButton.SIZE + 32)) / 2 + i * (BuildButton.SIZE + 32);
-			// Game.currentGame.components.get(i).setX(x);
-			// Game.currentGame.components.get(i).setY(Game.getHeight() - 84);
-			// }
-			
 			if (Game.world != null && Game.currentGame.state == 0) Game.world.update(tick);
-			
-			// for (Component c : Game.currentGame.components)
-			// {
-			// c.update(tick);
-			// }
 			
 			try
 			{

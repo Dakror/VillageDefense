@@ -114,13 +114,17 @@ public class HUDLayer extends Layer
 			
 			// -- top bar -- //
 			Assistant.drawContainer(0, 0, Game.getWidth(), 80, false, false, g);
+			
+			int total = Game.getWidth() / 2 - 200;
+			int w = Game.getWidth() / 14;
+			
+			int rows = Math.round((Resource.values().length * (float) w) / total);
+			int del = Resource.values().length / rows;
 			for (int i = 0; i < Resource.values().length; i++)
 			{
-				int w = (Game.getWidth() / 2 - 100) / Resource.values().length;
-				
 				Resource r = Resource.values()[i];
 				
-				Assistant.drawLabelWithIcon(25 + i * w, 30, 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + (rps.getF(r) != 0 ? " (" + (rps.getF(r) < 0 ? "" : "+") + rps.getF(r) + ")" : ""), 25, g);
+				Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + (rps.getF(r) != 0 ? " (" + (rps.getF(r) < 0 ? "" : "+") + rps.getF(r) + ")" : ""), 30, g);
 			}
 			
 			// -- wave info -- //
@@ -166,6 +170,14 @@ public class HUDLayer extends Layer
 		for (Entity e : Game.world.entities)
 		{
 			if (e instanceof Struct) rps.add(((Struct) e).getResourcesPerSecond());
+		}
+		
+		
+		for (int i = 0; i < components.size(); i++)
+		{
+			int x = Game.getWidth() / 2 + BuildButton.SIZE / 4 - (components.size() * (BuildButton.SIZE + 32)) / 2 + i * (BuildButton.SIZE + 32);
+			components.get(i).setX(x);
+			components.get(i).setY(Game.getHeight() - 84);
 		}
 	}
 	

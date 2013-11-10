@@ -26,10 +26,10 @@ public class Mine extends Struct
 		attributes.set(Attribute.MINE_SPEED, 40);
 		attributes.set(Attribute.MINE_AMOUNT, 2);
 		
-		// buildingCosts.set(Resource.GOLD, 125);
-		// buildingCosts.set(Resource.WOOD, 65);
-		// buildingCosts.set(Resource.STONE, 30);
-		// buildingCosts.set(Resource.PEOPLE, 2);
+		buildingCosts.set(Resource.GOLD, 125);
+		buildingCosts.set(Resource.WOOD, 65);
+		buildingCosts.set(Resource.STONE, 30);
+		buildingCosts.set(Resource.PEOPLE, 2);
 		
 		researches.add(Researches.MINE_STONE);
 	}

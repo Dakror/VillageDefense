@@ -208,7 +208,7 @@ public class Game extends EventListener
 		g.setColor(Color.green);
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
 		g.drawString(Math.round(frames / ((System.currentTimeMillis() - start) / 1000f)) + " FPS", 0, 14);
-		g.drawString(getUPS() + " UPS", 0, 28);
+		g.drawString(getUPS() + " UPS", 100, 14);
 		g.setColor(oldColor);
 		g.setFont(oldFont);
 		
