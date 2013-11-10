@@ -30,7 +30,7 @@ public class Sawmill extends Struct
 		buildingCosts.set(Resource.STONE, 50);
 		buildingCosts.set(Resource.PEOPLE, 1);
 		
-		attributes.set(Attribute.MINE_SPEED, 100);
+		attributes.set(Attribute.MINE_SPEED, 300);
 		attributes.set(Attribute.MINE_AMOUNT, 1); // use 1 get 2
 	}
 	
