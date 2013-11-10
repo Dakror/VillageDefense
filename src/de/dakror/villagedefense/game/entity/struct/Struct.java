@@ -1,18 +1,23 @@
 package de.dakror.villagedefense.game.entity.struct;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Villager;
+import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
@@ -21,6 +26,7 @@ import de.dakror.villagedefense.settings.StructPoints;
 import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.ui.button.ResearchButton;
 import de.dakror.villagedefense.util.Assistant;
+import de.dakror.villagedefense.util.TowerTargetComparator;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -58,6 +64,14 @@ public abstract class Struct extends Entity
 	{
 		g.drawImage(getImage(), (int) x, (int) y, Game.w);
 		
+		if (getAttackArea().getBounds().width > 0 && (clicked || hovered))
+		{
+			Color oldColor = g.getColor();
+			g.setColor(Color.darkGray);
+			
+			g.draw(getAttackArea());
+			g.setColor(oldColor);
+		}
 		// TODO: DEBUG
 		// for (Vector p : structPoints.attacks)
 		// {
@@ -328,6 +342,51 @@ public abstract class Struct extends Entity
 	public Resources getResourcesPerSecond()
 	{
 		return new Resources();
+	}
+	
+	public Shape getAttackArea()
+	{
+		return new Rectangle();
+	}
+	
+	public Projectile getProjectile(Entity target)
+	{
+		return null;
+	}
+	
+	protected ArrayList<Creature> getTargetableCreatures()
+	{
+		ArrayList<Creature> targetable = new ArrayList<>();
+		for (Entity e : Game.world.entities)
+		{
+			if (!(e instanceof Creature)) continue;
+			
+			Creature c = (Creature) e;
+			if (!c.isHostile()) continue;
+			
+			if (getAttackArea().intersects(e.getArea())) targetable.add(c);
+		}
+		
+		Collections.sort(targetable, new TowerTargetComparator());
+		
+		return targetable;
+	}
+	
+	public void shoot(int targetIndex)
+	{
+		ArrayList<Creature> t = getTargetableCreatures();
+		
+		if (t.size() == 0) return;
+		
+		targetIndex = targetIndex >= t.size() ? t.size() - 1 : targetIndex;
+		
+		for (int i = 0; i < t.size(); i++)
+		{
+			if (t.get(i).willDieFromTargetedProjectiles()) continue;
+			
+			Game.world.addProjectile(getProjectile(t.get(targetIndex)));
+			break;
+		}
 	}
 	
 	protected abstract void onMinedUp();

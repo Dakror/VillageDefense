@@ -108,7 +108,7 @@ public class BuildStructLayer extends Layer
 				}
 				Game.world.addEntity(Game.currentGame.activeStruct);
 				
-				for (Component c : components)
+				for (Component c : HUDLayer.currentHudLayer.components)
 				{
 					if (c instanceof BuildButton)
 					{

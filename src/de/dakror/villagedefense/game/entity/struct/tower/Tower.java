@@ -1,23 +1,20 @@
 package de.dakror.villagedefense.game.entity.struct.tower;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
-import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.util.Assistant;
-import de.dakror.villagedefense.util.TowerTargetComparator;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -49,24 +46,6 @@ public abstract class Tower extends Struct
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
-		super.draw(g);
-		
-		if (hovered || clicked)
-		{
-			Color oldColor = g.getColor();
-			g.setColor(Color.darkGray);
-			
-			int rad = (int) attributes.get(Attribute.ATTACK_RANGE);
-			Vector c = getCenter();
-			
-			g.drawArc((int) c.x - rad, (int) c.y - rad, rad * 2, rad * 2, 0, 360);
-			g.setColor(oldColor);
-		}
-	}
-	
-	@Override
 	protected void onMinedUp()
 	{}
 	
@@ -83,39 +62,18 @@ public abstract class Tower extends Struct
 		}
 	}
 	
-	public void shoot(int targetIndex)
+	@Override
+	public Projectile getProjectile(Entity target)
 	{
-		ArrayList<Creature> t = getTargetableCreatures();
-		
-		if (t.size() == 0) return;
-		
-		targetIndex = targetIndex >= t.size() ? t.size() - 1 : targetIndex;
-		
-		for (int i = 0; i < t.size(); i++)
-		{
-			if (t.get(i).willDieFromTargetedProjectiles()) continue;
-			
-			Game.world.addProjectile(new Projectile(getCenter(), t.get(targetIndex), "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE)));
-			break;
-		}
+		return new Projectile(getCenter(), target, "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE));
 	}
 	
-	protected ArrayList<Creature> getTargetableCreatures()
+	@Override
+	public Shape getAttackArea()
 	{
-		ArrayList<Creature> targetable = new ArrayList<>();
-		for (Entity e : Game.world.entities)
-		{
-			if (!(e instanceof Creature)) continue;
-			
-			Creature c = (Creature) e;
-			if (!c.isHostile()) continue;
-			
-			if (e.getCenter().getDistance(getCenter()) <= attributes.get(Attribute.ATTACK_RANGE)) targetable.add(c);
-		}
-		
-		Collections.sort(targetable, new TowerTargetComparator());
-		
-		return targetable;
+		int rad = (int) attributes.get(Attribute.ATTACK_RANGE);
+		Vector c = getCenter();
+		return new Arc2D.Float(c.x - rad, c.y - rad, rad * 2, rad * 2, 0, 360, Arc2D.OPEN);
 	}
 	
 	@Override

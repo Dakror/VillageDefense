@@ -22,6 +22,7 @@ public class Projectile implements Drawable
 	float angle;
 	int damage;
 	boolean dead;
+	boolean rotate;
 	
 	public Projectile(Vector pos, Entity target, String image, float speed, int damage)
 	{
@@ -32,6 +33,7 @@ public class Projectile implements Drawable
 		this.damage = damage;
 		dead = false;
 		angle = 0;
+		rotate = true;
 	}
 	
 	@Override
@@ -41,9 +43,16 @@ public class Projectile implements Drawable
 		
 		AffineTransform old = g.getTransform();
 		AffineTransform at = AffineTransform.getRotateInstance(angle, pos.x + Game.w.getInsets().left, pos.y + Game.w.getInsets().top);
-		g.setTransform(at);
+		if (rotate) g.setTransform(at);
 		g.drawImage(image, (int) pos.x + Game.w.getInsets().left, (int) pos.y + Game.w.getInsets().top, Game.w);
 		g.setTransform(old);
+	}
+	
+	public Projectile setRotate(boolean rotate)
+	{
+		this.rotate = rotate;
+		
+		return this;
 	}
 	
 	@Override

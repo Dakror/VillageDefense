@@ -25,7 +25,16 @@ import de.dakror.villagedefense.util.Assistant;
  */
 public class HUDLayer extends Layer
 {
+	public static HUDLayer currentHudLayer;
+	
 	Resources rps;
+	
+	public HUDLayer()
+	{
+		super();
+		
+		currentHudLayer = this;
+	}
 	
 	@Override
 	public void init()
