@@ -53,6 +53,7 @@ public class BuildButton extends Button
 		
 	}
 	
+	@Override
 	public void drawTooltip(int x, int y, Graphics2D g)
 	{
 		int w = g.getFontMetrics(g.getFont().deriveFont(30f)).stringWidth(struct.getName()) + 32;

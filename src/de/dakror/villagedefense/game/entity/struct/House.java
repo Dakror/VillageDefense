@@ -35,6 +35,14 @@ public class House extends Struct
 	protected void onDeath()
 	{
 		dead = true;
+		for (Entity e : Game.world.entities)
+		{
+			if (e instanceof Villager && e.alpha > 0)
+			{
+				e.kill();
+				break;
+			}
+		}
 	}
 	
 	@Override

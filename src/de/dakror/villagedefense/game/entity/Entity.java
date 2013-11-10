@@ -106,11 +106,11 @@ public abstract class Entity implements Drawable
 		
 		if (new Double(x).isNaN()) // dead glitched
 		{
-			dead = true;
+			kill();
 			return;
 		}
 		
-		if (attributes.get(Attribute.HEALTH) < 1) onDeath();
+		if (attributes.get(Attribute.HEALTH) < 1) kill();
 		
 		tick(tick);
 	}
@@ -293,6 +293,12 @@ public abstract class Entity implements Drawable
 			damage += p.getDamage();
 		
 		return damage >= attributes.get(Attribute.HEALTH);
+	}
+	
+	public void kill()
+	{
+		dead = true;
+		onDeath();
 	}
 	
 	// -- abstract event methods -- //
