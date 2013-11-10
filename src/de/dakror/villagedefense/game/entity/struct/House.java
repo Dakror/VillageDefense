@@ -24,8 +24,6 @@ public class House extends Struct
 		setBump(new Rectangle2D.Float(0.25f, 2f, 4.5f, 3f));
 		placeGround = true;
 		name = "Haus";
-		// attributes.set(Attribute.HEALTH, 25);
-		// attributes.set(Attribute.HEALTH_MAX, 25);
 		
 		buildingCosts.set(Resource.GOLD, 50);
 		buildingCosts.set(Resource.WOOD, 10);

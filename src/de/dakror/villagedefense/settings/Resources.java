@@ -58,20 +58,30 @@ public class Resources
 		}
 	}
 	
-	HashMap<Resource, Integer> res = new HashMap<>();
+	HashMap<Resource, Float> res = new HashMap<>();
 	
 	public Resources()
 	{
 		for (Resource t : Resource.values())
-			res.put(t, 0);
+			res.put(t, 0f);
 	}
 	
 	public int get(Resource t)
+	{
+		return (int) (float) res.get(t);
+	}
+	
+	public float getF(Resource t)
 	{
 		return res.get(t);
 	}
 	
 	public Resources set(Resource t, int value)
+	{
+		return set(t, (float) value);
+	}
+	
+	public Resources set(Resource t, float value)
 	{
 		res.put(t, value);
 		
@@ -80,13 +90,18 @@ public class Resources
 	
 	public void add(Resource t, int value)
 	{
-		res.put(t, get(t) + value);
+		add(t, (float) value);
+	}
+	
+	public void add(Resource t, float value)
+	{
+		res.put(t, getF(t) + value);
 	}
 	
 	public void add(Resources r)
 	{
 		for (Resource s : r.getFilled())
-			add(s, r.get(s));
+			add(s, r.getF(s));
 	}
 	
 	public int size()
@@ -104,7 +119,7 @@ public class Resources
 		ArrayList<Resource> res = new ArrayList<>();
 		
 		for (Resource r : Resource.values())
-			if (get(r) != 0) res.add(r);
+			if (getF(r) != 0) res.add(r);
 		
 		return res;
 	}

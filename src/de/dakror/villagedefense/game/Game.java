@@ -29,6 +29,7 @@ import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Marketplace;
 import de.dakror.villagedefense.game.entity.struct.Mine;
+import de.dakror.villagedefense.game.entity.struct.Sawmill;
 import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
@@ -43,6 +44,7 @@ import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
+import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.EventListener;
 
 /**
@@ -53,7 +55,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Barricade(0, 0) };
+	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new Sawmill(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Barricade(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -198,7 +200,7 @@ public class Game extends EventListener
 		g.setColor(Color.green);
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
 		g.drawString(Math.round(frames / ((System.currentTimeMillis() - start) / 1000f)) + " FPS", 0, 14);
-		g.drawString(Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f)) + " UPS", 0, 28);
+		g.drawString(getUPS() + " UPS", 0, 28);
 		g.setColor(oldColor);
 		g.setFont(oldFont);
 		
@@ -234,6 +236,16 @@ public class Game extends EventListener
 			state = 3;
 			started = true;
 		}
+	}
+	
+	public int getUPS()
+	{
+		return Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f));
+	}
+	
+	public int getUPS2()
+	{
+		return Assistant.round(Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f)), 30);
 	}
 	
 	public void addLayer(Layer l)

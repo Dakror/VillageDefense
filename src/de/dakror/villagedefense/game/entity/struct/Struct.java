@@ -325,6 +325,11 @@ public abstract class Struct extends Entity
 		researches.add(res);
 	}
 	
+	public Resources getResourcesPerSecond()
+	{
+		return new Resources();
+	}
+	
 	protected abstract void onMinedUp();
 	
 	public abstract void onUpgrade(Researches research);

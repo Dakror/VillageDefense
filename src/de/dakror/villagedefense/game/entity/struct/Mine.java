@@ -7,6 +7,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
+import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
@@ -22,8 +23,7 @@ public class Mine extends Struct
 		name = "Mine";
 		placeGround = true;
 		setBump(new Rectangle2D.Double(0.1f, 2, 1.8f, 1));
-		// attributes.set(Attribute.HEALTH, 35);
-		// attributes.set(Attribute.HEALTH_MAX, 35);
+		
 		attributes.set(Attribute.MINE_SPEED, 40);
 		attributes.set(Attribute.MINE_AMOUNT, 2);
 		
@@ -46,6 +46,12 @@ public class Mine extends Struct
 		{
 			Game.currentGame.resources.add(Resource.STONE, (int) attributes.get(Attribute.MINE_AMOUNT));
 		}
+	}
+	
+	@Override
+	public Resources getResourcesPerSecond()
+	{
+		return new Resources().set(Resource.STONE, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * attributes.get(Attribute.MINE_AMOUNT));
 	}
 	
 	@Override

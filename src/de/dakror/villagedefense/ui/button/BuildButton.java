@@ -43,7 +43,7 @@ public class BuildButton extends Button
 		if (state == 2) Assistant.drawContainer(x - 10, y - 16, width + 20, height + 32, false, true, g);
 		else Assistant.drawOutline(x - 10, y - 10, width + 20, height + 20, false, g);
 		
-		g.drawImage(struct.getImage(), x + (SIZE - scale.width) / 2, y, scale.width, scale.height, Game.w);
+		g.drawImage(struct.getImage(), x + (SIZE - scale.width) / 2, y + (SIZE - scale.height) / 2, scale.width, scale.height, Game.w);
 		
 		if (!enabled)
 		{

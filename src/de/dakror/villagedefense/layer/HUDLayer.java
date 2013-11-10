@@ -2,11 +2,13 @@ package de.dakror.villagedefense.layer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Rock;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.Tree;
@@ -23,6 +25,8 @@ import de.dakror.villagedefense.util.Assistant;
  */
 public class HUDLayer extends Layer
 {
+	Resources rps;
+	
 	@Override
 	public void init()
 	{
@@ -32,6 +36,8 @@ public class HUDLayer extends Layer
 			BuildButton bb = new BuildButton(x, Game.getHeight() - 84, Game.buildableStructs[i]);
 			components.add(bb);
 		}
+		
+		rps = new Resources();
 	}
 	
 	@Override
@@ -103,7 +109,9 @@ public class HUDLayer extends Layer
 			{
 				int w = (Game.getWidth() / 2 - 100) / Resource.values().length;
 				
-				Assistant.drawResource(Game.currentGame.resources, Resource.values()[i], 25 + i * w, 30, 30, 25, g);
+				Resource r = Resource.values()[i];
+				
+				Assistant.drawLabelWithIcon(25 + i * w, 30, 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + (rps.getF(r) != 0 ? " (" + (rps.getF(r) < 0 ? "" : "+") + rps.getF(r) + ")" : ""), 25, g);
 			}
 			
 			// -- wave info -- //
@@ -143,6 +151,13 @@ public class HUDLayer extends Layer
 	public void update(int tick)
 	{
 		updateComponents(tick);
+		
+		rps = new Resources();
+		
+		for (Entity e : Game.world.entities)
+		{
+			if (e instanceof Struct) rps.add(((Struct) e).getResourcesPerSecond());
+		}
 	}
 	
 	@Override
