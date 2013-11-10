@@ -85,7 +85,9 @@ public class Game extends EventListener
 	
 	public Struct activeStruct;
 	
+	// -- layer hacks -- //
 	public boolean killedCoreHouse;
+	public boolean placedStruct;
 	
 	public CopyOnWriteArrayList<Layer> layers;
 	
@@ -145,6 +147,11 @@ public class Game extends EventListener
 		addLayer(new HUDLayer());
 		addLayer(new StructGUILayer());
 		addLayer(new BuildStructLayer());
+		
+		for (Researches r : Researches.values())
+		{
+			if (r.getCosts(false).size() == 0) researches.add(r);
+		}
 		
 		WaveManager.init();
 		w.setVisible(true);
@@ -313,6 +320,8 @@ public class Game extends EventListener
 	{
 		// mouseDownWorld = null;
 		if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mouseReleased(e);
+		
+		placedStruct = false;
 		
 		for (Layer l : layers)
 			l.mouseReleased(e);

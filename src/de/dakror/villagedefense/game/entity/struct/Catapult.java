@@ -102,10 +102,6 @@ public class Catapult extends Struct
 	{}
 	
 	@Override
-	public void drawGUI(Graphics2D g)
-	{}
-	
-	@Override
 	protected void onMinedUp()
 	{}
 	

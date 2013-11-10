@@ -111,7 +111,10 @@ public abstract class Struct extends Entity
 		components.clear();
 	}
 	
-	public abstract void drawGUI(Graphics2D g);
+	public void drawGUI(Graphics2D g)
+	{
+		drawUpgrades(g);
+	}
 	
 	public void drawUpgrades(Graphics2D g)
 	{
@@ -150,7 +153,7 @@ public abstract class Struct extends Entity
 		for (int i = 0; i < res.length; i++)
 		{
 			Researches research = res[i];
-			components.add(new ResearchButton(20 + ((i % proRow) * (size + gap)), 55 + ((i / proRow) * (size + gap)), research, researches, this));
+			if (Game.currentGame.researches.contains(research)) components.add(new ResearchButton(20 + ((i % proRow) * (size + gap)), 55 + ((i / proRow) * (size + gap)), research, researches, this));
 		}
 	}
 	

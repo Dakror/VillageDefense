@@ -92,6 +92,7 @@ public class ResearchButton extends Button
 		}
 	}
 	
+	@Override
 	public void drawTooltip(int x, int y, Graphics2D g)
 	{
 		int w = g.getFontMetrics(g.getFont().deriveFont(30f)).stringWidth(research.getName()) + 32;
@@ -120,7 +121,7 @@ public class ResearchButton extends Button
 		
 		// -- costs -- //
 		y1 -= 12;
-		Assistant.drawString("Kosten", x + 20, y1, g, 24);
+		Assistant.drawString((costs.size() == 0 ? "Keine " : "") + "Kosten", x + 20, y1, g, 24);
 		y1 += 8;
 		for (int i = 0; i < costs.size(); i++)
 		{

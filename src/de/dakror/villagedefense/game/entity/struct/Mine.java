@@ -1,6 +1,5 @@
 package de.dakror.villagedefense.game.entity.struct;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
@@ -27,10 +26,12 @@ public class Mine extends Struct
 		attributes.set(Attribute.MINE_SPEED, 40);
 		attributes.set(Attribute.MINE_AMOUNT, 2);
 		
-		buildingCosts.set(Resource.GOLD, 125);
-		buildingCosts.set(Resource.WOOD, 65);
-		buildingCosts.set(Resource.STONE, 30);
-		buildingCosts.set(Resource.PEOPLE, 2);
+		// buildingCosts.set(Resource.GOLD, 125);
+		// buildingCosts.set(Resource.WOOD, 65);
+		// buildingCosts.set(Resource.STONE, 30);
+		// buildingCosts.set(Resource.PEOPLE, 2);
+		
+		researches.add(Researches.MINE_STONE);
 	}
 	
 	@Override
@@ -62,10 +63,6 @@ public class Mine extends Struct
 	
 	@Override
 	protected void onDeath()
-	{}
-	
-	@Override
-	public void drawGUI(Graphics2D g)
 	{}
 	
 	@Override

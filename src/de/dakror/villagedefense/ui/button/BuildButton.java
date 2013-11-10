@@ -57,7 +57,10 @@ public class BuildButton extends Button
 	public void drawTooltip(int x, int y, Graphics2D g)
 	{
 		int w = g.getFontMetrics(g.getFont().deriveFont(30f)).stringWidth(struct.getName()) + 32;
-		w = w > 150 ? w : 150;
+		
+		int min = 170;
+		
+		w = w > min ? w : min;
 		
 		ArrayList<Resource> filled = struct.getBuildingCosts().getFilled();
 		boolean hasPreq = false;
@@ -86,7 +89,7 @@ public class BuildButton extends Button
 		
 		// -- costs -- //
 		y1 -= 12;
-		Assistant.drawHorizontallyCenteredString("Baukosten", x + 60, 0, y1, g, 24);
+		Assistant.drawString((filled.size() == 0 ? "Keine " : "") + "Baukosten", x + 10, y1, g, 24);
 		y1 += 8;
 		for (int i = 0; i < struct.getBuildingCosts().size(); i++)
 		{

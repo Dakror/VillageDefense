@@ -6,15 +6,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.dakror.villagedefense.game.entity.struct.House;
+import de.dakror.villagedefense.game.entity.struct.Mine;
 import de.dakror.villagedefense.game.entity.struct.tower.Tower;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
 public enum Researches
 {
 	TOWER_DOUBLESHOT("Pfeil-Turm Doppelschuss", new Resources().set(Resource.GOLD, 250).set(Resource.WOOD, 150), new Point(0, 0), 5, Tower.class),
-	FORESTERHOUSE("Forsthaus", new Resources().set(Resource.GOLD, 150).set(Resource.WOOD, 150), new Point(1, 0), 1, House.class),
+	HOUSE_FORESTER("Forsthaus", new Resources().set(Resource.GOLD, 150).set(Resource.WOOD, 150), new Point(1, 0), 1, House.class),
+	MINE_STONE("Stein-Abbau", new Resources(), new Point(2, 0), 1, Mine.class),
+	MINE_IRON("Eisenerz-Abbau", new Resources().set(Resource.GOLD, 200).set(Resource.STONE, 100), new Point(0, 1), 5, Mine.class),
 	
 	;
+	
 	private String name;
 	private Resources costs;
 	private Point texturePoint;

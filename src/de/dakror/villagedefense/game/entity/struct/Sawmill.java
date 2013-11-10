@@ -1,6 +1,5 @@
 package de.dakror.villagedefense.game.entity.struct;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
@@ -49,10 +48,6 @@ public class Sawmill extends Struct
 	
 	@Override
 	public void initGUI()
-	{}
-	
-	@Override
-	public void drawGUI(Graphics2D g)
 	{}
 	
 	@Override

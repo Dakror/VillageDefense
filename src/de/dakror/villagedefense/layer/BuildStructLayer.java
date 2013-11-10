@@ -107,6 +107,7 @@ public class BuildStructLayer extends Layer
 					Game.currentGame.resources.add(r, -Game.currentGame.activeStruct.getBuildingCosts().get(r));
 				}
 				Game.world.addEntity(Game.currentGame.activeStruct);
+				Game.currentGame.placedStruct = true;
 				
 				for (Component c : HUDLayer.currentHudLayer.components)
 				{

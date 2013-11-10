@@ -1,6 +1,5 @@
 package de.dakror.villagedefense.game.entity.struct;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.entity.Entity;
@@ -120,10 +119,6 @@ public class Tree extends Struct
 	{
 		return tx == 7 && ty == 5;
 	}
-	
-	@Override
-	public void drawGUI(Graphics2D g)
-	{}
 	
 	@Override
 	public void initGUI()

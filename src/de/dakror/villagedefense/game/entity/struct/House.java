@@ -1,6 +1,5 @@
 package de.dakror.villagedefense.game.entity.struct;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
@@ -61,19 +60,13 @@ public class House extends Struct
 	}
 	
 	@Override
-	public void drawGUI(Graphics2D g)
-	{
-		drawUpgrades(g);
-	}
-	
-	@Override
 	public void initGUI()
 	{}
 	
 	@Override
 	public void onUpgrade(Researches research)
 	{
-		if (research == Researches.FORESTERHOUSE)
+		if (research == Researches.HOUSE_FORESTER)
 		{
 			tx = 9;
 			ty = 13;

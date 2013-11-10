@@ -1,6 +1,5 @@
 package de.dakror.villagedefense.game.entity.struct;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
@@ -58,10 +57,6 @@ public class Barricade extends Struct
 			if (e instanceof Creature) ((Creature) e).lookupTargetEntity();
 		}
 	}
-	
-	@Override
-	public void drawGUI(Graphics2D g)
-	{}
 	
 	@Override
 	public void initGUI()

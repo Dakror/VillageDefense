@@ -30,6 +30,8 @@ public class StructGUILayer extends Layer
 	{
 		super.mousePressed(e);
 		
+		if (Game.currentGame.placedStruct) return;
+		
 		if (Game.currentGame.state == 0 && Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct) if (((Struct) Game.world.selectedEntity).guiPoint != null) Game.world.selectedEntity.mousePressed(e);
 	}
 }

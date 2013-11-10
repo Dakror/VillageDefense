@@ -81,12 +81,6 @@ public abstract class Tower extends Struct
 	{}
 	
 	@Override
-	public void drawGUI(Graphics2D g)
-	{
-		drawUpgrades(g);
-	}
-	
-	@Override
 	public void initGUI()
 	{}
 	
