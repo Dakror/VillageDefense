@@ -33,7 +33,7 @@ public class UpdateThread extends Thread
 			
 			if (System.currentTimeMillis() - time2 > 1000 / speed && Game.currentGame.state == 0)
 			{
-				WaveManager.nextWave--;
+				if (WaveManager.nextWave > 0) WaveManager.nextWave--;
 				time2 = System.currentTimeMillis();
 			}
 			

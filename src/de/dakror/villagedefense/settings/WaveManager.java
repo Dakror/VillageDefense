@@ -4,6 +4,7 @@ import java.util.EnumMap;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.world.Tile;
 
 /**
@@ -76,47 +77,62 @@ public class WaveManager
 	{
 		if (nextWave <= 0)
 		{
-			new Thread()
+			if (monsters.size() > 0)
 			{
-				@Override
-				public void run()
+				new Thread()
 				{
-					EnumMap<Monster, Integer> monsters = WaveManager.monsters.clone();
-					generateNextWave();
-					
-					int leftLength = 0;
-					int rightLength = 0;
-					
-					int space = Tile.SIZE * 2 - wave;
-					space = space < Tile.SIZE ? Tile.SIZE : space;
-					
-					for (Monster monster : monsters.keySet())
+					@Override
+					public void run()
 					{
-						for (int i = 0; i < monsters.get(monster); i++)
+						EnumMap<Monster, Integer> monsters = WaveManager.monsters.clone();
+						WaveManager.monsters.clear();
+						int leftLength = 0;
+						int rightLength = 0;
+						
+						int space = Tile.SIZE * 2 - wave;
+						space = space < Tile.SIZE ? Tile.SIZE : space;
+						
+						for (Monster monster : monsters.keySet())
 						{
-							try
+							for (int i = 0; i < monsters.get(monster); i++)
 							{
-								boolean left = Math.random() < 0.5;
-								
-								int x = left ? -leftLength * space : Game.getWidth() + rightLength * space;
-								Entity e = (Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, 0);
-								int y = Game.world.height / 2 - e.getHeight() / 2;
-								e.setY(y);
-								
-								Game.world.addEntity2(e);
-								
-								if (left) leftLength++;
-								else rightLength++;
-							}
-							catch (Exception e1)
-							{
-								e1.printStackTrace();
+								try
+								{
+									boolean left = Math.random() < 0.5;
+									
+									int x = left ? -leftLength * space : Game.getWidth() + rightLength * space;
+									Entity e = (Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, 0);
+									int y = Game.world.height / 2 - e.getHeight() / 2;
+									e.setY(y);
+									
+									Game.world.addEntity2(e);
+									
+									if (left) leftLength++;
+									else rightLength++;
+								}
+								catch (Exception e1)
+								{
+									e1.printStackTrace();
+								}
 							}
 						}
 					}
-					
-				}
-			}.start();
+				}.start();
+			}
+			else
+			{
+				if (stageClear()) generateNextWave();
+			}
 		}
+	}
+	
+	public static boolean stageClear()
+	{
+		for (Entity e : Game.world.entities)
+		{
+			if (e instanceof Creature && ((Creature) e).isHostile()) return false;
+		}
+		
+		return true;
 	}
 }
