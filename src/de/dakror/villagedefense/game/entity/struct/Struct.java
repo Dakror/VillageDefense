@@ -296,7 +296,14 @@ public abstract class Struct extends Entity
 		
 		boolean pressed = super.mousePressed(e);
 		
-		if (pressed && guiPoint == null && guiSize != null) guiPoint = e.getPoint();
+		if (pressed && guiPoint == null && guiSize != null)
+		{
+			guiPoint = e.getPoint();
+			if (guiPoint.x - guiSize.width / 2 < 0) guiPoint.x = guiSize.width / 2;
+			if (guiPoint.y - guiSize.height / 2 < 0) guiPoint.y = guiSize.height / 2;
+			if (guiPoint.x + guiSize.width / 2 > Game.getWidth()) guiPoint.x = Game.getWidth() - guiSize.width / 2;
+			if (guiPoint.y + guiSize.height / 2 > Game.getHeight()) guiPoint.y = Game.getHeight() - guiSize.height / 2;
+		}
 		else
 		{
 			if (guiPoint != null && guiSize != null && !new Rectangle(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height).contains(e.getPoint()))

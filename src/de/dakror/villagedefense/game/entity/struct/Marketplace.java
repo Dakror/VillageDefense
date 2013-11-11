@@ -31,6 +31,9 @@ public class Marketplace extends Struct
 		buildingCosts.set(Resource.WOOD, 80);
 		buildingCosts.set(Resource.STONE, 150);
 		buildingCosts.set(Resource.PEOPLE, 1);
+		
+		guiSize.height = 250 - 90 + Resource.usable().length * 30;
+		guiSize.width = 300;
 	}
 	
 	@Override
@@ -40,8 +43,11 @@ public class Marketplace extends Struct
 		
 		if (components.size() == 0) return;
 		
-		((CountButton) components.get(0)).max = Game.currentGame.resources.get(Resource.WOOD); // Wood button
-		((CountButton) components.get(1)).max = Game.currentGame.resources.get(Resource.STONE); // Stone button
+		Resource[] res = Resource.usableNoGold();
+		for (int i = 0; i < res.length; i++)
+		{
+			((CountButton) components.get(i)).max = Game.currentGame.resources.get(res[i]);
+		}
 	}
 	
 	@Override
@@ -49,18 +55,24 @@ public class Marketplace extends Struct
 	{
 		if (components.size() == 0) initGUI();
 		
-		Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
-		Assistant.drawHorizontallyCenteredString("Verkauf", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
-		Assistant.drawString(Resource.WOOD.getName(), guiPoint.x - 110, guiPoint.y - 125 + 80, g, 30);
-		Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, Resource.WOOD.getGoldValue(), guiPoint.x - 40, guiPoint.y - 125 + 60, 30, 30, g);
+		Assistant.drawContainer(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height, false, false, g);
+		Assistant.drawHorizontallyCenteredString("Verkauf", guiPoint.x - guiSize.width / 2, guiSize.width, guiPoint.y - guiSize.height / 2 + 40, g, 40);
 		
-		Assistant.drawString(Resource.STONE.getName(), guiPoint.x - 110, guiPoint.y - 125 + 120, g, 30);
-		Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, Resource.STONE.getGoldValue(), guiPoint.x - 40, guiPoint.y - 125 + 100, 30, 30, g);
-		drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
+		Resource[] res = Resource.usableNoGold();
+		int sum = 0;
+		for (int i = 0; i < res.length; i++)
+		{
+			CountButton cb = (CountButton) components.get(i);
+			sum += cb.value * res[i].getGoldValue();
+			
+			Assistant.drawString(res[i].getName(), guiPoint.x - guiSize.width / 2 + 15, guiPoint.y - guiSize.height / 2 + 80 + 30 * i, g, 30);
+			Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, res[i].getGoldValue(), guiPoint.x - 20, guiPoint.y - guiSize.height / 2 + 60 + 30 * i, 30, 30, g);
+		}
 		
-		Assistant.drawString("Gesamt:", guiPoint.x - 110, guiPoint.y + 60, g, 30);
-		int sum = ((CountButton) components.get(0)).value * Resource.WOOD.getGoldValue() + ((CountButton) components.get(1)).value * Resource.STONE.getGoldValue();
-		Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, sum, guiPoint.x, guiPoint.y + 40, 30, 30, g);
+		Assistant.drawString("Gesamt:", guiPoint.x - guiSize.width / 2 + 15, guiPoint.y + guiSize.height / 2 - 65, g, 30);
+		Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, sum, guiPoint.x, guiPoint.y + guiSize.height / 2 - 85, 30, 30, g);
+		
+		drawComponents(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, g);
 	}
 	
 	@Override
@@ -82,19 +94,27 @@ public class Marketplace extends Struct
 	{
 		components.clear();
 		
-		components.add(new CountButton(140, 60, 100, 0, 99, 1, 0)); // Wood
-		components.add(new CountButton(140, 100, 100, 0, 99, 1, 0)); // Stone
-		TextButton sell = new TextButton(10, 190, 230, "Verkaufen", 30);
+		Resource[] res = Resource.usableNoGold();
+		for (int i = 0; i < res.length; i++)
+		{
+			components.add(new CountButton(guiSize.width / 2 + 35, 60 + 30 * i, 100, 0, 99, 1, 0));
+		}
+		TextButton sell = new TextButton((guiSize.width - 230) / 2, guiSize.height - 60, 230, "Verkaufen", 30);
 		sell.addClickEvent(new ClickEvent()
 		{
 			@Override
 			public void trigger()
 			{
-				int sum = ((CountButton) components.get(0)).value * Resource.WOOD.getGoldValue() + ((CountButton) components.get(1)).value * Resource.STONE.getGoldValue();
+				int sum = 0;
+				Resource[] res = Resource.usableNoGold();
+				for (int i = 0; i < res.length; i++)
+				{
+					CountButton cb = (CountButton) components.get(i);
+					sum += cb.value * res[i].getGoldValue();
+					Game.currentGame.resources.add(res[i], -cb.value);
+				}
 				
 				Game.currentGame.resources.add(Resource.GOLD, sum);
-				Game.currentGame.resources.add(Resource.WOOD, -((CountButton) components.get(0)).value);
-				Game.currentGame.resources.add(Resource.STONE, -((CountButton) components.get(1)).value);
 				
 				destroyGUI();
 			}

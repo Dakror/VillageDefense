@@ -26,7 +26,7 @@ public class Mine extends Struct
 		placeGround = true;
 		setBump(new Rectangle2D.Double(0.1f, 2, 1.8f, 1));
 		
-		attributes.set(Attribute.MINE_SPEED, 120);
+		attributes.set(Attribute.MINE_SPEED, 60);
 		attributes.set(Attribute.MINE_AMOUNT, 2);
 		
 		buildingCosts.set(Resource.GOLD, 125);

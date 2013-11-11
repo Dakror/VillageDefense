@@ -61,6 +61,26 @@ public class Resources
 		{
 			return usable;
 		}
+		
+		public static Resource[] usable()
+		{
+			ArrayList<Resource> res = new ArrayList<>();
+			
+			for (Resource r : values())
+				if (r.isUsable()) res.add(r);
+			
+			return res.toArray(new Resource[] {});
+		}
+		
+		public static Resource[] usableNoGold()
+		{
+			ArrayList<Resource> res = new ArrayList<>();
+			
+			for (Resource r : values())
+				if (r.isUsable() && r != GOLD) res.add(r);
+			
+			return res.toArray(new Resource[] {});
+		}
 	}
 	
 	HashMap<Resource, Float> res = new HashMap<>();
