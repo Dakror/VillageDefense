@@ -25,7 +25,8 @@ public class BuildButton extends Button
 	
 	public BuildButton(int x, int y, final Struct s)
 	{
-		super(x, y, SIZE, SIZE, new ClickEvent()
+		super(x, y, SIZE, SIZE);
+		addClickEvent(new ClickEvent()
 		{
 			@Override
 			public void trigger()

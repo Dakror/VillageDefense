@@ -113,18 +113,29 @@ public class HUDLayer extends Layer
 			}
 			
 			// -- top bar -- //
-			Assistant.drawContainer(0, 0, Game.getWidth(), 80, false, false, g);
-			
 			int total = Game.getWidth() / 2 - 200;
-			int w = Game.getWidth() / 14;
+			boolean hover = new Rectangle(0, 0, total + 48, 80).contains(Game.currentGame.mouse);
+			
+			int w = total / (Resource.values().length);
+			int min = Game.getWidth() / (hover ? 5 : 10);
+			if (w < min) w = min;
 			
 			int rows = Math.round((Resource.values().length * (float) w) / total);
 			int del = Resource.values().length / rows;
+			
+			Assistant.drawContainer(0, 0, Game.getWidth(), 80, false, false, g);
+			if (hover) Assistant.drawContainer(0, 0, Game.getWidth() / 2 - 150, rows * 30 + 20, false, false, g);
+			
 			for (int i = 0; i < Resource.values().length; i++)
 			{
 				Resource r = Resource.values()[i];
 				
-				Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + (rps.getF(r) != 0 ? " (" + (rps.getF(r) < 0 ? "" : "+") + rps.getF(r) + ")" : ""), 30, g);
+				float dif = Math.round(rps.getF(r) * 100) / 100f;
+				
+				String delta = (dif != 0 ? " (" + (dif < 0 ? "" : "+") + dif + ")" : "");
+				if (!hover) delta = "";
+				
+				Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + delta, 30, g);
 			}
 			
 			// -- wave info -- //

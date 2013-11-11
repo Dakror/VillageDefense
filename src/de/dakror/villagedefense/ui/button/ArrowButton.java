@@ -3,7 +3,6 @@ package de.dakror.villagedefense.ui.button;
 import java.awt.Graphics2D;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.ui.ClickEvent;
 import de.dakror.villagedefense.util.Assistant;
 
 /**
@@ -15,9 +14,9 @@ public class ArrowButton extends Button
 	
 	int tx, ty;
 	
-	public ArrowButton(int x, int y, int tx, int ty, ClickEvent event)
+	public ArrowButton(int x, int y, int tx, int ty)
 	{
-		super(x, y, 32, 32, event);
+		super(x, y, 32, 32);
 		
 		this.tx = tx;
 		this.ty = ty;

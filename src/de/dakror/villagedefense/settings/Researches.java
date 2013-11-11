@@ -15,7 +15,7 @@ public enum Researches
 	TOWER_DOUBLESHOT("Pfeil-Turm Doppelschuss", new Resources().set(Resource.GOLD, 250).set(Resource.WOOD, 150), new Point(0, 0), 5, Tower.class),
 	HOUSE_FORESTER("Forsthaus", new Resources().set(Resource.GOLD, 150).set(Resource.WOOD, 150), new Point(1, 0), 1, House.class),
 	MINE_STONE("Stein-Abbau", new Resources(), new Point(2, 0), 1, Mine.class),
-	MINE_IRON("Eisenerz-Abbau", new Resources().set(Resource.GOLD, 200).set(Resource.STONE, 100), new Point(0, 1), 5, Mine.class),
+	MINE_IRON("Eisenerz-Abbau", new Resources().set(Resource.GOLD, 200).set(Resource.STONE, 100), new Point(0, 1), -1, Mine.class),
 	
 	;
 	
@@ -23,6 +23,9 @@ public enum Researches
 	private Resources costs;
 	private Point texturePoint;
 	private List<Class<?>> targetClasses;
+	/**
+	 * -1 = discounted version is free
+	 */
 	private float buyDiscount;
 	
 	private Researches(String name, Resources costs, Point texturePoint, float buyDiscount, Class<?>... targetClasses)
@@ -42,6 +45,8 @@ public enum Researches
 	public Resources getCosts(boolean discounted)
 	{
 		if (!discounted) return costs;
+		
+		if (buyDiscount == -1) return new Resources();
 		
 		Resources r = new Resources();
 		for (Resource res : costs.getFilled())

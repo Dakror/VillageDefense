@@ -27,11 +27,13 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.Catapult;
+import de.dakror.villagedefense.game.entity.struct.CoalFactory;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Marketplace;
 import de.dakror.villagedefense.game.entity.struct.Mine;
 import de.dakror.villagedefense.game.entity.struct.Sawmill;
 import de.dakror.villagedefense.game.entity.struct.School;
+import de.dakror.villagedefense.game.entity.struct.Smeltery;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.World;
@@ -56,7 +58,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new Sawmill(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Barricade(0, 0) };
+	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Barricade(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -139,13 +141,14 @@ public class Game extends EventListener
 		
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
+		
 		world = new World();
 		world.init();
 		state = 0;
 		
 		addLayer(new StateLayer());
-		addLayer(new HUDLayer());
 		addLayer(new StructGUILayer());
+		addLayer(new HUDLayer());
 		addLayer(new BuildStructLayer());
 		
 		for (Researches r : Researches.values())

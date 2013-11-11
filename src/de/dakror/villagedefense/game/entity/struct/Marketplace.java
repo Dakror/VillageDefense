@@ -22,6 +22,7 @@ public class Marketplace extends Struct
 		super(x, y, 5, 5);
 		tx = 8;
 		ty = 8;
+		placeGround = true;
 		setBump(new Rectangle2D.Float(0, 0, 5, 5));
 		
 		name = "Marktplatz";
@@ -83,7 +84,8 @@ public class Marketplace extends Struct
 		
 		components.add(new CountButton(140, 60, 100, 0, 99, 1, 0)); // Wood
 		components.add(new CountButton(140, 100, 100, 0, 99, 1, 0)); // Stone
-		components.add(new TextButton(10, 190, 230, "Verkaufen", 30, new ClickEvent()
+		TextButton sell = new TextButton(10, 190, 230, "Verkaufen", 30);
+		sell.addClickEvent(new ClickEvent()
 		{
 			@Override
 			public void trigger()
@@ -96,7 +98,8 @@ public class Marketplace extends Struct
 				
 				destroyGUI();
 			}
-		}));
+		});
+		components.add(sell);
 	}
 	
 	@Override

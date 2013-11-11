@@ -23,7 +23,9 @@ public class School extends Struct
 		name = "Schule";
 		tx = 8;
 		ty = 0;
+		placeGround = true;
 		setBump(new Rectangle2D.Float(0, 4, 6, 4));
+		
 		buildingCosts.set(Resource.GOLD, 500);
 		buildingCosts.set(Resource.STONE, 350);
 		buildingCosts.set(Resource.WOOD, 80);

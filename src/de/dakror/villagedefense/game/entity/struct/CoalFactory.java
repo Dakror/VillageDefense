@@ -12,26 +12,23 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Sawmill extends Struct
+public class CoalFactory extends Struct
 {
-	public Sawmill(int x, int y)
+	public CoalFactory(int x, int y)
 	{
-		super(x, y, 4, 3);
-		
-		name = "Sägewerk";
-		placeGround = true;
+		super(x, y, 6, 7);
 		tx = 0;
-		ty = 13;
-		setBump(new Rectangle2D.Float(0.25f, 2, 3.5f, 1));
-		
-		buildingCosts.set(Resource.GOLD, 300);
-		buildingCosts.set(Resource.WOOD, 120);
-		buildingCosts.set(Resource.STONE, 50);
-		buildingCosts.set(Resource.IRONINGOT, 80);
-		buildingCosts.set(Resource.PEOPLE, 1);
-		
+		ty = 23;
+		placeGround = true;
+		name = "Köhlerei";
+		setBump(new Rectangle2D.Float(0.9f, 3.5f, 4.8f, 3.4f));
 		attributes.set(Attribute.MINE_SPEED, 300);
-		attributes.set(Attribute.MINE_AMOUNT, 1); // use 1 get 2
+		attributes.set(Attribute.MINE_AMOUNT, 3); // use 3 get 1
+		
+		buildingCosts.set(Resource.GOLD, 350);
+		buildingCosts.set(Resource.WOOD, 150);
+		buildingCosts.set(Resource.STONE, 225);
+		buildingCosts.set(Resource.PEOPLE, 2);
 	}
 	
 	@Override
@@ -42,9 +39,21 @@ public class Sawmill extends Struct
 		if (Game.currentGame.resources.get(Resource.WOOD) == 0) return res;
 		
 		res.set(Resource.WOOD, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * (-attributes.get(Attribute.MINE_AMOUNT)));
-		res.set(Resource.PLANKS, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * attributes.get(Attribute.MINE_AMOUNT) * 2);
+		res.set(Resource.COAL, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * 1);
 		
 		return res;
+	}
+	
+	@Override
+	protected void tick(int tick)
+	{
+		super.tick(tick);
+		
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) >= attributes.get(Attribute.MINE_AMOUNT))
+		{
+			Game.currentGame.resources.add(Resource.WOOD, (int) -attributes.get(Attribute.MINE_AMOUNT));
+			Game.currentGame.resources.add(Resource.COAL, 1);
+		}
 	}
 	
 	@Override
@@ -56,25 +65,13 @@ public class Sawmill extends Struct
 	{}
 	
 	@Override
-	protected void tick(int tick)
-	{
-		super.tick(tick);
-		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) > 0)
-		{
-			Game.currentGame.resources.add(Resource.WOOD, (int) -attributes.get(Attribute.MINE_AMOUNT));
-			Game.currentGame.resources.add(Resource.PLANKS, (int) attributes.get(Attribute.MINE_AMOUNT) * 2);
-		}
-	}
-	
-	@Override
 	public void onUpgrade(Researches research)
 	{}
 	
 	@Override
 	public Entity clone()
 	{
-		return new Sawmill((int) x, (int) y);
+		return new CoalFactory((int) x, (int) y);
 	}
 	
 	@Override

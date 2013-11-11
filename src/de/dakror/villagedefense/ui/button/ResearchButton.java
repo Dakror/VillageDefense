@@ -16,15 +16,15 @@ public class ResearchButton extends Button
 {
 	public static final int tSize = 48;
 	
-	Researches research;
+	public Researches research;
 	boolean contains;
 	boolean discount;
 	
 	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool)
 	{
-		super(x, y, 32, 32, null);
+		super(x, y, 32, 32);
 		
-		event = new ClickEvent()
+		addClickEvent(new ClickEvent()
 		{
 			@Override
 			public void trigger()
@@ -42,7 +42,7 @@ public class ResearchButton extends Button
 					contains = true;
 				}
 			}
-		};
+		});
 		this.research = research;
 		discount = false;
 		contains = pool.contains(research);
@@ -50,9 +50,9 @@ public class ResearchButton extends Button
 	
 	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool, final Struct struct)
 	{
-		super(x, y, 32, 32, null);
+		super(x, y, 32, 32);
 		
-		event = new ClickEvent()
+		addClickEvent(new ClickEvent()
 		{
 			@Override
 			public void trigger()
@@ -71,7 +71,7 @@ public class ResearchButton extends Button
 					struct.onUpgrade(research);
 				}
 			}
-		};
+		});
 		this.research = research;
 		discount = true;
 		contains = pool.contains(research);
@@ -174,5 +174,10 @@ public class ResearchButton extends Button
 			}
 		}
 		enabled = true;
+	}
+	
+	public void setContains(boolean b)
+	{
+		contains = b;
 	}
 }

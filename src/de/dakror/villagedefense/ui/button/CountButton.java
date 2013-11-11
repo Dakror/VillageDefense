@@ -27,7 +27,8 @@ public class CountButton extends Component
 		this.step = step;
 		this.value = value;
 		
-		minus = new ArrowButton(x, y, 326, 16, new ClickEvent()
+		minus = new ArrowButton(x, y, 326, 16);
+		minus.addClickEvent(new ClickEvent()
 		{
 			@Override
 			public void trigger()
@@ -35,7 +36,8 @@ public class CountButton extends Component
 				CountButton.this.value = (CountButton.this.value - CountButton.this.step >= CountButton.this.min) ? CountButton.this.value - CountButton.this.step : CountButton.this.min;
 			}
 		});
-		plus = new ArrowButton(x + width - 32, y, 363, 16, new ClickEvent()
+		plus = new ArrowButton(x + width - 32, y, 363, 16);
+		plus.addClickEvent(new ClickEvent()
 		{
 			@Override
 			public void trigger()
@@ -58,8 +60,8 @@ public class CountButton extends Component
 	{
 		if (System.currentTimeMillis() - timeDown > 300)
 		{
-			if (tick % scrollSpeed == 0 && minus.state == 1) minus.event.trigger();
-			if (tick % scrollSpeed == 0 && plus.state == 1) plus.event.trigger();
+			if (tick % scrollSpeed == 0 && minus.state == 1) minus.triggerEvents();
+			if (tick % scrollSpeed == 0 && plus.state == 1) plus.triggerEvents();
 		}
 	}
 	

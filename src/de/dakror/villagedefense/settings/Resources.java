@@ -12,15 +12,15 @@ public class Resources
 	public enum Resource
 	{
 		GOLD("Gold", 2, 2, 1, true),
-		WOOD("Holz", 3, 0, 4, true),
-		STONE("Stein", 1, 1, 2, true),
-		PLANKS("Bretter", 2, 0, 6, true),
 		PEOPLE("Einwohner", 0, 0, 0, false),
-		IRONORE("Eisenerz", 0, 1, 3, true),
-		GOLDORE("Golderz", 2, 1, 4, true),
+		WOOD("Holz", 3, 0, 4, true),
+		PLANKS("Bretter", 2, 0, 6, true),
+		STONE("Stein", 1, 1, 2, true),
 		COAL("Kohle", 3, 1, 5, true),
+		IRONORE("Eisenerz", 0, 1, 3, true),
+		// GOLDORE("Golderz", 2, 1, 4, true),
 		IRONINGOT("Eisen", 0, 2, 7, true),
-		GOLDINGOT("Gold", 1, 2, 8, true),
+		// GOLDINGOT("Gold", 1, 2, 8, true),
 		
 		;
 		
