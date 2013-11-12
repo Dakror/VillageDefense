@@ -121,22 +121,26 @@ public abstract class Struct extends Entity
 		if (Game.currentGame.getResearches(researchClass).length == 0) return;
 		
 		if (components.size() < Researches.values(researchClass).length) initUpgrades();
-		
-		Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
-		Assistant.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
-		
-		drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
-		for (Component c : components)
+		try
 		{
-			if ((c instanceof ResearchButton))
+			Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
+			Assistant.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
+			
+			drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
+			for (Component c : components)
 			{
-				ResearchButton n = (ResearchButton) c;
-				if (n.state != 2) continue;
-				
-				((ResearchButton) c).drawTooltip(Game.currentGame.mouse.x, Game.currentGame.mouse.y, g);
-				break;
+				if ((c instanceof ResearchButton))
+				{
+					ResearchButton n = (ResearchButton) c;
+					if (n.state != 2) continue;
+					
+					((ResearchButton) c).drawTooltip(Game.currentGame.mouse.x, Game.currentGame.mouse.y, g);
+					break;
+				}
 			}
 		}
+		catch (NullPointerException e)
+		{}
 	}
 	
 	public void initUpgrades()
