@@ -52,7 +52,7 @@ public class WaveManager
 	
 	static void generateNextWave()
 	{
-		Game.world.core.dealDamage(-1);
+		Game.world.core.dealDamage(-5);
 		monsters.clear();
 		
 		wave++;

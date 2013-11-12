@@ -9,7 +9,7 @@ import de.dakror.villagedefense.settings.WaveManager;
  */
 public class UpdateThread extends Thread
 {
-	int tick;
+	public int tick;
 	long time, time2;
 	
 	public int speed = 1;

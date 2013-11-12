@@ -28,7 +28,7 @@ public class Zombie extends Creature
 	@Override
 	public void onDeath()
 	{
-		if (Math.random() <= 0.5)
+		if (Math.random() <= 0.35) // 35% prob. spawning ghost
 		{
 			boolean left = Math.random() < 0.5;
 			Game.world.addEntity(new Ghost(left ? 0 : Game.getWidth(), Game.world.height / 2 - Tile.SIZE));
