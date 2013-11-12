@@ -62,7 +62,7 @@ public class Game extends EventListener
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
-	int frames;
+	public int frames;
 	public long start;
 	
 	boolean debug;
