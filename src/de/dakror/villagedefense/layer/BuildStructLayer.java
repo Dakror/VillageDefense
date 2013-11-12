@@ -97,7 +97,7 @@ public class BuildStructLayer extends Layer
 		super.mousePressed(e);
 		if (Game.currentGame.activeStruct != null && e.getButton() == 1)
 		{
-			if (canPlace && e.getY() < Game.getHeight() - 100)
+			if (canPlace && e.getY() < Game.getHeight() - 100 && e.getY() > 80)
 			{
 				Game.currentGame.activeStruct.setClicked(false);
 				ArrayList<Resource> filled = Game.currentGame.activeStruct.getBuildingCosts().getFilled();
