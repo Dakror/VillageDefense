@@ -155,6 +155,16 @@ public class HUDLayer extends Layer
 			
 			Assistant.drawHorizontallyCenteredString(minutes + ":" + seconds, Game.getWidth(), 60, g, 70);
 			
+			// -- forward -- //
+			int x = Game.getWidth() / 2 + 100;
+			int y = 30;
+			
+			boolean hover2 = new Rectangle(x, y, 60, 60).contains(Game.currentGame.mouse);
+			
+			if (hover2 || Game.currentGame.updateThread.speed != 1) Assistant.drawShadow(x, y, 60, 60, g);
+			Assistant.drawOutline(x, y, 60, 60, false, g);
+			g.drawImage(Game.getImage("icon/fwd.png"), x + 10, y + 10, 40, 40, Game.w);
+			
 			// -- pause -- //
 			if (!new Rectangle(Game.getWidth() - 75, 5, 70, 70).contains(Game.currentGame.mouse)) Assistant.drawContainer(Game.getWidth() - 75, 5, 70, 70, false, false, g);
 			else Assistant.drawContainer(Game.getWidth() - 80, 0, 80, 80, false, true, g);
@@ -198,6 +208,11 @@ public class HUDLayer extends Layer
 		super.mousePressed(e);
 		if (Game.currentGame.state == 0)
 		{
+			if (new Rectangle(Game.getWidth() / 2 + 100, 30, 60, 60).contains(e.getPoint()))
+			{
+				Game.currentGame.updateThread.speed = Game.currentGame.updateThread.speed == 1 ? 5 : 1;
+			}
+			
 			if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct)
 			{
 				if (new Rectangle(Game.getWidth() / 2 - 260, 72, 70, 70).contains(e.getPoint()))
