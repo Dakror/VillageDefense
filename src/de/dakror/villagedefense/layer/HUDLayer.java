@@ -129,13 +129,21 @@ public class HUDLayer extends Layer
 			for (int i = 0; i < Resource.values().length; i++)
 			{
 				Resource r = Resource.values()[i];
-				
 				float dif = Math.round(rps.getF(r) * 100) / 100f;
 				
 				String delta = (dif != 0 ? " (" + (dif < 0 ? "" : "+") + dif + ")" : "");
 				if (!hover) delta = "";
 				
-				Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + delta, 30, g);
+				
+				if (r == Resource.PEOPLE)
+				{
+					int free = Game.currentGame.getPeople();
+					Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), (free != Game.currentGame.resources.get(r) ? Game.currentGame.getPeople() + " / " : "") + Game.currentGame.resources.get(r) + delta, 30, g);
+				}
+				else
+				{
+					Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + delta, 30, g);
+				}
 			}
 			
 			// -- wave info -- //

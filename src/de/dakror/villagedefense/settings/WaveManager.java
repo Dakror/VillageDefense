@@ -62,7 +62,7 @@ public class WaveManager
 		 * or line: 2 * wave + 3
 		 */
 		monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 1));
-		if (wave >= 5) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 3));
+		if (wave >= 5) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 5));
 		
 		if (wave % 10 == 0 && wave > 2)
 		{
