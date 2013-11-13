@@ -54,25 +54,29 @@ public class Marketplace extends Struct
 	public void drawGUI(Graphics2D g)
 	{
 		if (components.size() == 0) initGUI();
-		
-		Assistant.drawContainer(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height, false, false, g);
-		Assistant.drawHorizontallyCenteredString("Verkauf", guiPoint.x - guiSize.width / 2, guiSize.width, guiPoint.y - guiSize.height / 2 + 40, g, 40);
-		
-		Resource[] res = Resource.usableNoGold();
-		int sum = 0;
-		for (int i = 0; i < res.length; i++)
+		try
 		{
-			CountButton cb = (CountButton) components.get(i);
-			sum += cb.value * res[i].getGoldValue();
+			Assistant.drawContainer(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height, false, false, g);
+			Assistant.drawHorizontallyCenteredString("Verkauf", guiPoint.x - guiSize.width / 2, guiSize.width, guiPoint.y - guiSize.height / 2 + 40, g, 40);
 			
-			Assistant.drawString(res[i].getName(), guiPoint.x - guiSize.width / 2 + 15, guiPoint.y - guiSize.height / 2 + 80 + 30 * i, g, 30);
-			Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, res[i].getGoldValue(), guiPoint.x - 20, guiPoint.y - guiSize.height / 2 + 60 + 30 * i, 30, 30, g);
+			Resource[] res = Resource.usableNoGold();
+			int sum = 0;
+			for (int i = 0; i < res.length; i++)
+			{
+				CountButton cb = (CountButton) components.get(i);
+				sum += cb.value * res[i].getGoldValue();
+				
+				Assistant.drawString(res[i].getName(), guiPoint.x - guiSize.width / 2 + 15, guiPoint.y - guiSize.height / 2 + 80 + 30 * i, g, 30);
+				Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, res[i].getGoldValue(), guiPoint.x - 20, guiPoint.y - guiSize.height / 2 + 60 + 30 * i, 30, 30, g);
+			}
+			
+			Assistant.drawString("Gesamt:", guiPoint.x - guiSize.width / 2 + 15, guiPoint.y + guiSize.height / 2 - 65, g, 30);
+			Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, sum, guiPoint.x, guiPoint.y + guiSize.height / 2 - 85, 30, 30, g);
+			
+			drawComponents(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, g);
 		}
-		
-		Assistant.drawString("Gesamt:", guiPoint.x - guiSize.width / 2 + 15, guiPoint.y + guiSize.height / 2 - 65, g, 30);
-		Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, sum, guiPoint.x, guiPoint.y + guiSize.height / 2 - 85, 30, 30, g);
-		
-		drawComponents(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, g);
+		catch (NullPointerException e)
+		{}
 	}
 	
 	@Override
