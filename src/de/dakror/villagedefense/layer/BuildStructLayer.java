@@ -42,9 +42,9 @@ public class BuildStructLayer extends Layer
 				
 				int centerY = (int) Math.floor(Game.world.height / 2f / Tile.SIZE);
 				
-				for (int i = bump.x + Game.world.x; i < bump.x + bump.width + Game.world.x; i += Tile.SIZE)
+				for (int i = Assistant.round(bump.x + Game.world.x, Tile.SIZE); i < bump.x + bump.width + Game.world.x; i += Tile.SIZE)
 				{
-					for (int j = bump.y + Game.world.y; j < bump.y + bump.height + Game.world.y; j += Tile.SIZE)
+					for (int j = Assistant.round(bump.y + Game.world.y, Tile.SIZE); j < bump.y + bump.height + Game.world.y; j += Tile.SIZE)
 					{
 						boolean blocked = false;
 						
@@ -53,23 +53,22 @@ public class BuildStructLayer extends Layer
 							blocked = true;
 						}
 						
-						if (Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE + Tile.SIZE || Assistant.round(j, Tile.SIZE) == centerY * Tile.SIZE)
+						if (j == centerY * Tile.SIZE + Tile.SIZE || j == centerY * Tile.SIZE)
 						{
 							blocked = !Game.currentGame.activeStruct.canPlaceOnWay();
 						}
 						
 						for (Entity e : Game.world.entities)
 						{
-							if (e.getBump(true).intersects(i + 5, j + 5, Tile.SIZE - 10, Tile.SIZE - 10))
+							if (e.getBump(true).intersects(i, j, Tile.SIZE, Tile.SIZE))
 							{
 								blocked = true;
 								break;
 							}
 						}
-						
 						if (blocked) canPlace = false;
 						
-						g.drawImage(Game.getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), Assistant.round(i, Tile.SIZE) - malus, Assistant.round(j, Tile.SIZE) - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, Game.w);
+						g.drawImage(Game.getImage(blocked ? "tile/blockedtile.png" : "tile/freetile.png"), i - malus, j - malus, Tile.SIZE + malus * 2, Tile.SIZE + malus * 2, Game.w);
 					}
 				}
 				

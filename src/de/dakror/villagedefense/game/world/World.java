@@ -184,7 +184,7 @@ public class World extends EventListener implements Drawable
 		
 		int heightMalus = 3;
 		
-		int rocks = (int) (Math.random() * 10) + 10;
+		int rocks = (int) (Math.random() * 1000) + 10;
 		for (int i = 0; i < rocks; i++)
 		{
 			int x1 = (int) (Math.random() * width / Tile.SIZE);
