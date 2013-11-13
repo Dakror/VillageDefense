@@ -148,9 +148,6 @@ public class Game extends EventListener
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
 		
-		for (Resource r : Resource.values())
-			resources.set(r, 100000);
-		
 		world = new World();
 		world.init();
 		state = 0;
