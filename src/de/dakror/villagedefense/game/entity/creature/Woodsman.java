@@ -18,6 +18,8 @@ public class Woodsman extends Creature
 		name = "Holzfäller";
 		attributes.set(Attribute.MINE_AMOUNT, 2);
 		attributes.set(Attribute.MINE_SPEED, 15);
+		
+		description = "Fällt rasant Bäume.";
 	}
 	
 	@Override

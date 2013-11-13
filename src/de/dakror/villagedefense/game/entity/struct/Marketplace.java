@@ -26,7 +26,7 @@ public class Marketplace extends Struct
 		setBump(new Rectangle2D.Float(0, 0, 5, 5));
 		
 		name = "Marktplatz";
-		
+		description = "Hier kannst mit deinen Ressourcen Handel treiben.";
 		buildingCosts.set(Resource.GOLD, 200);
 		buildingCosts.set(Resource.WOOD, 80);
 		buildingCosts.set(Resource.STONE, 150);

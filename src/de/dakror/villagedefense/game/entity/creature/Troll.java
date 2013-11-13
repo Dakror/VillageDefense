@@ -21,6 +21,8 @@ public class Troll extends Creature
 		attributes.set(Attribute.SPEED, 0.6f);
 		
 		resources.set(Resource.GOLD, 150);
+		
+		description = "Ein Troll.";
 	}
 	
 	@Override

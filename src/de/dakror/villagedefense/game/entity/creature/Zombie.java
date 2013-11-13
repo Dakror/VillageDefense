@@ -23,6 +23,8 @@ public class Zombie extends Creature
 		resources.add(Resource.GOLD, 6);
 		
 		name = "Zombie";
+		
+		description = "Ein Zombie.";
 	}
 	
 	@Override

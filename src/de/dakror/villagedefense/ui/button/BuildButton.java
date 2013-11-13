@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
+import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.ClickEvent;
 import de.dakror.villagedefense.util.Assistant;
@@ -51,7 +52,6 @@ public class BuildButton extends Button
 			if (state == 2) Assistant.drawShadow(x - 20, y - 26, width + 40, height + 52, g);
 			else Assistant.drawShadow(x - 10, y - 10, width + 20, height + 20, g);
 		}
-		
 	}
 	
 	@Override
@@ -74,7 +74,8 @@ public class BuildButton extends Button
 			}
 		}
 		
-		int height = 64 + (struct.getBuildingCosts().size() + (hasPreq ? 3 : 2) - (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue() ? 0 : 1)) * 26;
+		int infoHeight = 26 + (struct.getResourcesPerSecond().size() + Assistant.getLineCount(struct.description, w - 20, g, 24)) * 24 - 12;
+		int height = 64 + (struct.getBuildingCosts().size() + (hasPreq ? 3 : 2) - (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue() ? 0 : 1)) * 26 + infoHeight;
 		Assistant.drawShadow(x, y - height, w, height, g);
 		Assistant.drawOutline(x, y - height, w, height, false, g);
 		
@@ -111,7 +112,7 @@ public class BuildButton extends Button
 		if (hasPreq)
 		{
 			y1 += 20;
-			Assistant.drawHorizontallyCenteredString("Bedingungen", x + 70, 0, y1, g, 24);
+			Assistant.drawString("Bedingungen", x + 10, y1, g, 24);
 			y1 += 6;
 			
 			for (int i = 0; i < struct.getBuildingCosts().size(); i++)
@@ -127,6 +128,24 @@ public class BuildButton extends Button
 				y1 += 26;
 				g.setColor(oldColor);
 			}
+		}
+		
+		// -- info -- //
+		y1 += 20;
+		Assistant.drawString("Details", x + 10, y1, g, 24);
+		y1 += 26;
+		
+		Assistant.drawStringWrapped(struct.description, x + 10, y1, w - 20, g, 24);
+		y1 += Assistant.getLineCount(struct.description, w - 20, g, 24) * 24 - 30;
+		
+		Resources res = struct.getResourcesPerSecond();
+		ArrayList<Resource> fll = res.getFilled();
+		
+		for (int i = 0; i < res.size(); i++)
+		{
+			float r = res.getF(fll.get(i));
+			Assistant.drawLabelWithIcon(x + 16, y1, 24, new Point(fll.get(i).getIconX(), fll.get(i).getIconY()), (r > 0 ? "+" : "") + r + "/s", 30, g);
+			y1 += 26;
 		}
 	}
 	

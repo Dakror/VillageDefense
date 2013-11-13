@@ -55,10 +55,13 @@ public class HUDLayer extends Layer
 		try
 		{
 			// -- wave monster faces -- //
+			int selectedMonster = -1;
 			if (WaveManager.monsters.size() > 0)
 			{
 				int cSize = 70;
 				Monster[] keys = WaveManager.monsters.keySet().toArray(new Monster[] {});
+				
+				
 				for (int i = 0; i < WaveManager.monsters.size(); i++)
 				{
 					Monster m = keys[i];
@@ -69,6 +72,8 @@ public class HUDLayer extends Layer
 					g.drawImage(Game.getImage("creature/" + m.getImage() + "_face.png"), Game.getWidth() / 2 + 200 + i * cSize + (cSize - 48) / 2, 72 + (cSize - 48) / 2, 48, 48, Game.w);
 					
 					Assistant.drawString(WaveManager.monsters.get(m) + "", x + 6, 72 + cSize - 6, g, 22);
+					
+					if (new Rectangle(x, 72, cSize, cSize).contains(Game.currentGame.mouse)) selectedMonster = i;
 				}
 			}
 			
@@ -184,6 +189,33 @@ public class HUDLayer extends Layer
 			
 			// -- UI components -- //
 			drawComponents(g);
+			
+			// -- monster tooltip -- //
+			if (selectedMonster != -1)
+			{
+				String text = Monster.values()[selectedMonster].getDescription();
+				String name = text.substring(0, text.indexOf(":"));
+				text = text.substring(text.indexOf(":") + 1);
+				String[] lines = text.split("\\. ");
+				int width = 0;
+				for (String s : lines)
+				{
+					int myW = g.getFontMetrics(g.getFont().deriveFont(24f)).stringWidth(s);
+					if (myW > width) width = myW;
+				}
+				
+				width += 32;
+				int height = 64 + text.split("\\. ").length * 30;
+				
+				Assistant.drawShadow(Game.currentGame.mouse.x + 12, Game.currentGame.mouse.y + 24, width, height, g);
+				Assistant.drawOutline(Game.currentGame.mouse.x + 12, Game.currentGame.mouse.y + 24, width, height, false, g);
+				
+				Assistant.drawHorizontallyCenteredString(name, Game.currentGame.mouse.x + 12, width, Game.currentGame.mouse.y + 24 + 40, g, 30);
+				for (int i = 0; i < lines.length; i++)
+				{
+					Assistant.drawString(lines[i] + ".", Game.currentGame.mouse.x + 25, Game.currentGame.mouse.y + 24 + 70 + i * 30, g, 24);
+				}
+			}
 		}
 		catch (Exception e)
 		{}

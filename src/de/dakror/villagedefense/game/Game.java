@@ -423,7 +423,7 @@ public class Game extends EventListener
 		
 		score -= (world.core.getAttributes().get(Attribute.HEALTH_MAX) - world.core.getAttributes().get(Attribute.HEALTH)) * 10;
 		
-		score -= 1551;
+		score -= 1601;
 		
 		score = score < 0 ? 0 : score;
 		

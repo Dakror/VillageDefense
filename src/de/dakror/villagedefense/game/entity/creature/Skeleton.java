@@ -9,7 +9,6 @@ import de.dakror.villagedefense.settings.Resources.Resource;
  */
 public class Skeleton extends Creature
 {
-	
 	public Skeleton(int x, int y)
 	{
 		super(x, y, "skeleton");
@@ -22,6 +21,8 @@ public class Skeleton extends Creature
 		attributes.set(Attribute.HEALTH_MAX, 50);
 		
 		resources.set(Resource.GOLD, 13);
+		
+		description = "Ein Skelett.";
 	}
 	
 	@Override

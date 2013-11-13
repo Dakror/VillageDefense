@@ -20,6 +20,7 @@ public class Rock extends Struct
 		placeGround = false;
 		resources.set(Resource.STONE, 50);
 		name = "Stein";
+		description = "Ein Stein.";
 	}
 	
 	@Override

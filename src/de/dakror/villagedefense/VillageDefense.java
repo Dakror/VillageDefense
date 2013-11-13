@@ -25,7 +25,7 @@ public class VillageDefense
 			e.printStackTrace();
 		}
 		UniVersion.init(VillageDefense.class, 0, 0);
-		Reporter.init(new File(CFG.DIR, "log.txt"));
+		Reporter.init(new File(CFG.DIR, "log"));
 		
 		new Game();
 		

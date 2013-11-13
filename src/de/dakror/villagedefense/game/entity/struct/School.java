@@ -29,6 +29,8 @@ public class School extends Struct
 		buildingCosts.set(Resource.GOLD, 500);
 		buildingCosts.set(Resource.STONE, 350);
 		buildingCosts.set(Resource.WOOD, 80);
+		
+		description = "Hier werden neue Technologien erforscht.";
 	}
 	
 	@Override

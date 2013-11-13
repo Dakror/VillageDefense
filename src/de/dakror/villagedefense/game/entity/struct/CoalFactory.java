@@ -29,6 +29,8 @@ public class CoalFactory extends Struct
 		buildingCosts.set(Resource.WOOD, 150);
 		buildingCosts.set(Resource.STONE, 225);
 		buildingCosts.set(Resource.PEOPLE, 2);
+		
+		description = "Erzeugt Kohle mit Holz.";
 	}
 	
 	@Override

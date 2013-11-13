@@ -27,6 +27,8 @@ public class ArrowTower extends Tower
 		buildingCosts.set(Resource.STONE, 15);
 		
 		researchClass = Tower.class;
+		
+		description = "Schießt mit Pfeilen auf Monster.";
 	}
 	
 	@Override

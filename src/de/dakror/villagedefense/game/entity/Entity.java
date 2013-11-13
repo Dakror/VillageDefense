@@ -29,6 +29,7 @@ public abstract class Entity implements Drawable
 	protected Rectangle bump;
 	protected Attributes attributes;
 	protected Resources resources;
+	public String description;
 	
 	protected int randomOffset = (int) (Math.random() * 100);
 	

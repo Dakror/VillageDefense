@@ -18,6 +18,8 @@ public class Villager extends Creature
 		name = "Einwohner";
 		attributes.set(Attribute.HEALTH, 15);
 		attributes.set(Attribute.HEALTH_MAX, 15);
+		
+		description = "Kann Rohstoffe sammeln und in Gebäuden arbeiten.";
 	}
 	
 	@Override

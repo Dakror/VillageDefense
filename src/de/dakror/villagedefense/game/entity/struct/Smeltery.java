@@ -31,6 +31,8 @@ public class Smeltery extends Struct
 		buildingCosts.set(Resource.STONE, 275);
 		buildingCosts.set(Resource.COAL, 25);
 		buildingCosts.set(Resource.PEOPLE, 2);
+		
+		description = "Schmilzt Metallerz mit Kohle zu Barren.";
 	}
 	
 	@Override

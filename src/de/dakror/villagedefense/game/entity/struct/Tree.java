@@ -28,6 +28,7 @@ public class Tree extends Struct
 			resources.set(Resource.WOOD, 4);
 			attributes.set(Attribute.ATTACK_SPEED, 30 * 60 * 3); // 3 minutes (30 ticks * 60 seconds * 3)
 			name = "Setzling";
+			description = "Ein Setzling. Ausgewachsen nach 3 Minuten.";
 		}
 		else
 		{
@@ -37,7 +38,9 @@ public class Tree extends Struct
 			placeGround = false;
 			resources.set(Resource.WOOD, 100);
 			name = "Baum";
+			description = "Ein Baum";
 		}
+		
 	}
 	
 	@Override

@@ -246,6 +246,50 @@ public class Assistant
 			drawImage(filling, i, y, 1, 23, 6, 0, 1, 23, g);
 	}
 	
+	public static void drawStringWrapped(String raw, int x, int y, int maxWidth, Graphics2D g, int size)
+	{
+		String[] words = raw.split(" ");
+		
+		int lW = 0;
+		int lY = 0;
+		for (int i = 0; i < words.length; i++)
+		{
+			String word = words[i] + " ";
+			int w = g.getFontMetrics(g.getFont().deriveFont((float) size)).stringWidth(word);
+			if (w + lW > maxWidth)
+			{
+				lW = 0;
+				lY += size * 0.75f;
+			}
+			
+			drawString(word, x + lW, y + lY, g, 24);
+			lW += w;
+		}
+	}
+	
+	public static int getLineCount(String raw, int maxWidth, Graphics2D g, int size)
+	{
+		String[] words = raw.split(" ");
+		
+		int lW = 0;
+		
+		int rows = 1;
+		
+		for (int i = 0; i < words.length; i++)
+		{
+			String word = words[i] + " ";
+			int w = g.getFontMetrics(g.getFont().deriveFont((float) size)).stringWidth(word);
+			if (w + lW > maxWidth)
+			{
+				lW = 0;
+				rows++;
+			}
+			lW += w;
+		}
+		
+		return rows;
+	}
+	
 	// -- file helper methods -- //
 	public static void setFileContent(File f, String s)
 	{

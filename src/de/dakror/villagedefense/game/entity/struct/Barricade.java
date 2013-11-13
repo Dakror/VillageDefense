@@ -30,6 +30,8 @@ public class Barricade extends Struct
 		setBump(new Rectangle2D.Float(0.2f, 1, 0.4f, 2));
 		
 		structPoints.addAttacks(new Vector(-0.8f, 2), new Vector(0.6f, 2));
+		
+		description = "Blockiert Monster bis zur Zerstörung. Geister fliegen hindurch!";
 	}
 	
 	@Override

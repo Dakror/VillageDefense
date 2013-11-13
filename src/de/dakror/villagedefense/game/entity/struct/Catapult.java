@@ -45,6 +45,8 @@ public class Catapult extends Struct
 		buildingCosts.set(Resource.IRONINGOT, 5);
 		
 		setBump(new Rectangle2D.Float(0.29f, 1.4f, 1.40f, 1.3f));
+		
+		description = "Schleudert Steine auf die Monster.";
 	}
 	
 	@Override

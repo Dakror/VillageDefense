@@ -22,6 +22,8 @@ public class Ghost extends Creature
 		attributes.set(Attribute.DAMAGE_STRUCT, 10);
 		
 		resources.add(Resource.GOLD, 2);
+		
+		description = "Ein Geist.";
 	}
 	
 	@Override

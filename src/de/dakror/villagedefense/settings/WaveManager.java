@@ -14,23 +14,32 @@ public class WaveManager
 {
 	public enum Monster
 	{
-		ZOMBIE("zombie", de.dakror.villagedefense.game.entity.creature.Zombie.class),
-		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class),
-		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class),
-		TROLL("troll", de.dakror.villagedefense.game.entity.creature.Troll.class), ;
+		ZOMBIE("zombie", de.dakror.villagedefense.game.entity.creature.Zombie.class, "Zombie:Normalschneller Untoter. Fügt Gebäuden 5 Schaden hinzu. Hält mittleren Schaden aus"),
+		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Halt fast keinen Schaden aus"),
+		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält eingigen Schaden aus"),
+		TROLL("troll", de.dakror.villagedefense.game.entity.creature.Troll.class, "Troll:Schlurfender Monsterboss. Fügt Gebäuden 25 Schaden hinzu. Hält verdammt viel Schaden aus"),
+		
+		;
 		
 		private final String image;
 		private final Class<?> creatureClass;
+		private final String description;
 		
-		private Monster(String image, Class<?> creatureClass)
+		private Monster(String image, Class<?> creatureClass, String desc)
 		{
 			this.image = image;
 			this.creatureClass = creatureClass;
+			description = desc;
 		}
 		
 		public String getImage()
 		{
 			return image;
+		}
+		
+		public String getDescription()
+		{
+			return description;
 		}
 		
 		public Class<?> getCreatureClass()
