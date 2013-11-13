@@ -46,7 +46,7 @@ public class Catapult extends Struct
 		
 		setBump(new Rectangle2D.Float(0.29f, 1.4f, 1.40f, 1.3f));
 		
-		description = "Schleudert Steine auf die Monster.";
+		description = "Schleudert Steine auf Monster.";
 	}
 	
 	@Override
@@ -120,5 +120,4 @@ public class Catapult extends Struct
 	@Override
 	protected void onDeath()
 	{}
-	
 }

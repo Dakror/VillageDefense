@@ -191,7 +191,7 @@ public class World extends EventListener implements Drawable
 			if ((width / Tile.SIZE) - x1 < 4) continue;
 			
 			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
-			if (Math.abs(y1 - y + 2) < 3) continue;
+			if (Math.abs(y1 - y) < 2) continue;
 			addEntity(new Rock(x1, y1));
 		}
 		

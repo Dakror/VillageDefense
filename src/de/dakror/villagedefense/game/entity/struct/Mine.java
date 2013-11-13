@@ -36,7 +36,7 @@ public class Mine extends Struct
 		
 		researches.add(Researches.MINE_STONE);
 		
-		description = "Baut Untertage Metal oder Stein ab.";
+		description = "Baut untertage Metal oder Stein ab.";
 	}
 	
 	@Override
