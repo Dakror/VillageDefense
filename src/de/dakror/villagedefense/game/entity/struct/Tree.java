@@ -26,7 +26,7 @@ public class Tree extends Struct
 			setBump(new Rectangle2D.Float(0.3f, 1.7f, 0.3f, 0.3f));
 			placeGround = false;
 			resources.set(Resource.WOOD, 4);
-			attributes.set(Attribute.ATTACK_SPEED, 30 * 60 * 4); // 4 minutes (30 ticks * 60 seconds * 4)
+			attributes.set(Attribute.ATTACK_SPEED, 30 * 60 * 3); // 3 minutes (30 ticks * 60 seconds * 3)
 			name = "Setzling";
 		}
 		else
@@ -49,7 +49,7 @@ public class Tree extends Struct
 		{
 			if (startTick == 0) startTick = tick;
 			
-			if ((tick - startTick) % attributes.get(Attribute.ATTACK_SPEED) == 0 && startTick < tick)
+			if ((tick - startTick) > attributes.get(Attribute.ATTACK_SPEED) && startTick < tick)
 			{
 				setGrown();
 			}
@@ -113,6 +113,11 @@ public class Tree extends Struct
 		placeGround = false;
 		resources.set(Resource.WOOD, 100);
 		name = "Baum";
+	}
+	
+	public boolean isGrown()
+	{
+		return tx == 0 && ty == 0;
 	}
 	
 	public boolean isStump()

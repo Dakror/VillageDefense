@@ -167,6 +167,43 @@ public class Assistant
 		g.drawImage(img, x, y, x + width, y + height, sx, sy, sx + swidth, sy + sheight, null);
 	}
 	
+	public static void drawImageCenteredRelativeScaled(Image img, int y, int width, int height, int scaleW, int scaleH, int nowW, int nowH, Graphics2D g)
+	{
+		Dimension s = getRelativeScaled(new Dimension(width, height), new Dimension(scaleW, scaleH), new Dimension(nowW, nowH));
+		
+		g.drawImage(img, (Game.getWidth() - s.width) / 2, y, s.width, s.height, Game.w);
+	}
+	
+	public static Dimension getRelativeScaled(Dimension src, Dimension scale, Dimension target)
+	{
+		int w = (src.width * target.width) / scale.width;
+		int h = (src.height * target.height) / scale.height;
+		
+		float sourceRatio = src.width / (float) src.height;
+		float targetRatio = w / (float) h;
+		
+		int width1 = 0;
+		int height1 = 0;
+		
+		if (sourceRatio >= targetRatio)
+		{
+			width1 = w;
+			height1 = Math.round(w / sourceRatio);
+		}
+		else
+		{
+			height1 = h;
+			width1 = Math.round(h * sourceRatio);
+		}
+		
+		return new Dimension(width1, height1);
+	}
+	
+	public static void drawImageCenteredRelativeScaled(Image img, int y, int scaleW, int scaleH, int nowW, int nowH, Graphics2D g)
+	{
+		drawImageCenteredRelativeScaled(img, y, img.getWidth(null), img.getHeight(null), scaleW, scaleH, nowW, nowH, g);
+	}
+	
 	public static void drawResource(Resources resources, Resource r, int x, int y, int size, int space, Graphics2D g)
 	{
 		drawLabelWithIcon(x, y, size, new Point(r.getIconX(), r.getIconY()), resources.get(r) + "", space, g);

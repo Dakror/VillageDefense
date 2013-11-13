@@ -218,7 +218,7 @@ public class HUDLayer extends Layer
 		{
 			if (new Rectangle(Game.getWidth() / 2 + 100, 30, 60, 60).contains(e.getPoint()))
 			{
-				Game.currentGame.updateThread.tick = 0;
+				Game.currentGame.updateThread.ticks = 0;
 				Game.currentGame.frames = 0;
 				Game.currentGame.start = System.currentTimeMillis();
 				Game.currentGame.updateThread.speed = Game.currentGame.updateThread.speed == 1 ? 5 : 1;

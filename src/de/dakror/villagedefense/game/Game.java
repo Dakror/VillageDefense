@@ -40,6 +40,7 @@ import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.layer.BuildStructLayer;
 import de.dakror.villagedefense.layer.HUDLayer;
 import de.dakror.villagedefense.layer.Layer;
+import de.dakror.villagedefense.layer.MenuLayer;
 import de.dakror.villagedefense.layer.StateLayer;
 import de.dakror.villagedefense.layer.StructGUILayer;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
@@ -77,6 +78,11 @@ public class Game extends EventListener
 	 * 3 = pause<br>
 	 */
 	public int state;
+	
+	public float alpha = 0;
+	float speed = 0;
+	float fadeTo = 0;
+	boolean fade = false;
 	
 	public Resources resources;
 	public UpdateThread updateThread;
@@ -146,6 +152,7 @@ public class Game extends EventListener
 		world.init();
 		state = 0;
 		
+		addLayer(new MenuLayer());
 		addLayer(new StateLayer());
 		addLayer(new StructGUILayer());
 		addLayer(new HUDLayer());
@@ -202,6 +209,7 @@ public class Game extends EventListener
 		
 		world.draw(g);
 		
+		
 		for (Layer l : layers)
 			l.draw(g);
 		
@@ -230,6 +238,13 @@ public class Game extends EventListener
 			g.setColor(o);
 		}
 		
+		Composite c1 = g.getComposite();
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+		
+		g.setColor(Color.black);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		g.setComposite(c1);
 		g.dispose();
 		
 		try
@@ -251,12 +266,12 @@ public class Game extends EventListener
 	
 	public int getUPS()
 	{
-		return Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f));
+		return Math.round(updateThread.ticks / ((System.currentTimeMillis() - start) / 1000f));
 	}
 	
 	public int getUPS2()
 	{
-		return Assistant.round(Math.round(updateThread.tick / ((System.currentTimeMillis() - start) / 1000f)), 30);
+		return Assistant.round(Math.round(updateThread.ticks / ((System.currentTimeMillis() - start) / 1000f)), 30);
 	}
 	
 	public void addLayer(Layer l)
@@ -307,7 +322,10 @@ public class Game extends EventListener
 		mouse = e.getPoint();
 		
 		for (Layer l : layers)
+		{
 			l.mouseMoved(e);
+			if (l.isModal()) break;
+		}
 		
 		if (state == 0)
 		{
@@ -327,7 +345,10 @@ public class Game extends EventListener
 		placedStruct = false;
 		
 		for (Layer l : layers)
+		{
 			l.mouseReleased(e);
+			if (l.isModal()) break;
+		}
 		
 		if (mouseDown != null && mouseDrag != null)
 		{
@@ -351,7 +372,10 @@ public class Game extends EventListener
 		mouseDown = e.getPoint();
 		
 		for (Layer l : layers)
+		{
 			l.mousePressed(e);
+			if (l.isModal()) break;
+		}
 		
 		if (state == 0) world.mousePressed(e);
 	}
@@ -415,6 +439,13 @@ public class Game extends EventListener
 		}
 		
 		return res.toArray(new Researches[] {});
+	}
+	
+	public void fadeTo(float target, float speed)
+	{
+		fade = true;
+		fadeTo = target;
+		this.speed = speed;
 	}
 	
 	public static int getWidth()

@@ -42,6 +42,8 @@ public class WaveManager
 	public static int wave;
 	public static int nextWave; // int seconds
 	
+	public static final int waveTimer = 60; // in seconds
+	
 	public static EnumMap<Monster, Integer> monsters = new EnumMap<>(Monster.class);
 	
 	public static void init()
@@ -70,7 +72,7 @@ public class WaveManager
 			monsters.put(Monster.TROLL, wave / 10);
 		}
 		
-		nextWave = 60; // in seconds
+		nextWave = waveTimer;
 	}
 	
 	public static void update()

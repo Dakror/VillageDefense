@@ -1,7 +1,11 @@
 package de.dakror.villagedefense;
 
+import java.io.File;
+
 import javax.swing.UIManager;
 
+import de.dakror.reporter.Reporter;
+import de.dakror.universion.UniVersion;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.CFG;
 
@@ -20,6 +24,8 @@ public class VillageDefense
 		{
 			e.printStackTrace();
 		}
+		UniVersion.init(VillageDefense.class, 0, 0);
+		Reporter.init(new File(CFG.DIR, "log.txt"));
 		
 		new Game();
 		

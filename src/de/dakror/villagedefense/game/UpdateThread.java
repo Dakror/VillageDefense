@@ -9,7 +9,7 @@ import de.dakror.villagedefense.settings.WaveManager;
  */
 public class UpdateThread extends Thread
 {
-	public int tick;
+	public int tick, ticks;
 	long time, time2;
 	
 	public int speed = 1;
@@ -39,6 +39,16 @@ public class UpdateThread extends Thread
 			
 			WaveManager.update();
 			
+			if (Game.currentGame.fade == true)
+			{
+				if (Game.currentGame.alpha != Game.currentGame.fadeTo)
+				{
+					float dif = Game.currentGame.fadeTo - Game.currentGame.alpha;
+					Game.currentGame.alpha += dif > 0 ? (dif > Game.currentGame.speed ? Game.currentGame.speed : dif) : (dif < -Game.currentGame.speed ? -Game.currentGame.speed : dif);
+				}
+				else Game.currentGame.fade = false;
+			}
+			
 			for (Layer l : Game.currentGame.layers)
 				l.update(tick);
 			
@@ -47,6 +57,7 @@ public class UpdateThread extends Thread
 			try
 			{
 				tick++;
+				ticks++;
 				Thread.sleep(Math.round(CFG.TICK_TIMEOUT / (float) speed));
 			}
 			catch (InterruptedException e)

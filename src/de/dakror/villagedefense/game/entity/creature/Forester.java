@@ -19,8 +19,7 @@ public class Forester extends Creature
 		super(x, y, "forester");
 		setHostile(false);
 		name = "Förster";
-		attributes.set(Attribute.HEALTH, 15);
-		attributes.set(Attribute.HEALTH_MAX, 15);
+		
 		attributes.set(Attribute.ATTACK_SPEED, 30 * 30); // 30 second plant cooldown
 		attributes.set(Attribute.ATTACK_RANGE, 8 * Tile.SIZE); // 6 fields plant radius
 	}

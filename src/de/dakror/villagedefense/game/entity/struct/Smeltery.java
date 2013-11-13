@@ -23,13 +23,13 @@ public class Smeltery extends Struct
 		placeGround = true;
 		setBump(new Rectangle2D.Float(0, 2, 6, 4.7f));
 		
-		attributes.set(Attribute.MINE_SPEED, 400);
+		attributes.set(Attribute.MINE_SPEED, 300);
 		attributes.set(Attribute.MINE_AMOUNT, 2); // use 3 ore + 4 coal -> 2 ingot
 		
 		buildingCosts.set(Resource.GOLD, 450);
 		buildingCosts.set(Resource.WOOD, 200);
 		buildingCosts.set(Resource.STONE, 275);
-		buildingCosts.set(Resource.COAL, 50);
+		buildingCosts.set(Resource.COAL, 25);
 		buildingCosts.set(Resource.PEOPLE, 2);
 	}
 	
@@ -38,11 +38,11 @@ public class Smeltery extends Struct
 	{
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0)
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.IRONORE) >= 3 && Game.currentGame.resources.get(Resource.COAL) >= 4)
 		{
 			Game.currentGame.resources.add(Resource.IRONORE, -3);
 			Game.currentGame.resources.add(Resource.IRONINGOT, (int) attributes.get(Attribute.MINE_AMOUNT));
-			Game.currentGame.resources.add(Resource.COAL, -5);
+			Game.currentGame.resources.add(Resource.COAL, -4);
 		}
 	}
 	
@@ -51,8 +51,8 @@ public class Smeltery extends Struct
 	{
 		Resources res = new Resources();
 		res.set(Resource.IRONORE, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * -3);
+		res.set(Resource.COAL, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * -4);
 		res.set(Resource.IRONINGOT, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * attributes.get(Attribute.MINE_AMOUNT));
-		res.set(Resource.COAL, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * -5);
 		
 		return res;
 	}

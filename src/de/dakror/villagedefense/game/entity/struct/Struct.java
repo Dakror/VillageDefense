@@ -154,10 +154,15 @@ public abstract class Struct extends Entity
 		
 		Researches[] res = Researches.values(researchClass);
 		
+		int index = 0;
 		for (int i = 0; i < res.length; i++)
 		{
 			Researches research = res[i];
-			if (Game.currentGame.researches.contains(research)) components.add(new ResearchButton(20 + ((i % proRow) * (size + gap)), 55 + ((i / proRow) * (size + gap)), research, researches, this));
+			if (Game.currentGame.researches.contains(research))
+			{
+				components.add(new ResearchButton(20 + ((index % proRow) * (size + gap)), 55 + ((index / proRow) * (size + gap)), research, researches, this));
+				index++;
+			}
 		}
 	}
 	

@@ -40,9 +40,9 @@ public class Catapult extends Struct
 		attributes.set(Attribute.ATTACK_SPEED, 250);
 		attributes.add(Attribute.DAMAGE_CREATURE, 30);
 		
-		buildingCosts.set(Resource.GOLD, 200);
-		buildingCosts.set(Resource.PLANKS, 100);
-		buildingCosts.set(Resource.STONE, 80);
+		buildingCosts.set(Resource.GOLD, 150);
+		buildingCosts.set(Resource.PLANKS, 20);
+		buildingCosts.set(Resource.IRONINGOT, 5);
 		
 		setBump(new Rectangle2D.Float(0.29f, 1.4f, 1.40f, 1.3f));
 	}

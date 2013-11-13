@@ -6,6 +6,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Forester;
 import de.dakror.villagedefense.game.entity.creature.Villager;
+import de.dakror.villagedefense.game.entity.creature.Woodsman;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
@@ -75,7 +76,12 @@ public class House extends Struct
 			y -= 5 * Tile.SIZE;
 			setBump(new Rectangle2D.Float(0.25f, 7f, 4.5f, 3f));
 			image = null;
-			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + 9 * Tile.SIZE));
+			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE));
+		}
+		else if (research == Researches.HOUSE_WOODSMAN)
+		{
+			
+			Game.world.addEntity2(new Woodsman((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE));
 		}
 	}
 }

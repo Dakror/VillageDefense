@@ -82,7 +82,7 @@ public abstract class Creature extends Entity
 			else if (!onArrivalAtEntity(tick)) frame = 0;
 		}
 		
-		if (hostile && targetEntity == null && target == null) // killed everything
+		if (targetEntity == null && target == null) // killed everything
 		{
 			lookupTargetEntity();
 		}

@@ -17,9 +17,11 @@ import de.dakror.villagedefense.util.EventListener;
 public abstract class Layer extends EventListener implements Drawable
 {
 	protected CopyOnWriteArrayList<Component> components;
+	protected boolean modal;
 	
 	public Layer()
 	{
+		modal = false;
 		components = new CopyOnWriteArrayList<>();
 	}
 	
@@ -117,5 +119,10 @@ public abstract class Layer extends EventListener implements Drawable
 	{
 		for (Component c : components)
 			c.keyReleased(e);
+	}
+	
+	public boolean isModal()
+	{
+		return modal;
 	}
 }

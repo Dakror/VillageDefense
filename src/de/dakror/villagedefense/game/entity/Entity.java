@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game.entity;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -104,9 +105,8 @@ public abstract class Entity implements Drawable
 			}
 		}
 		
-		if (new Double(x).isNaN()) // dead glitched
+		if (new Double(x).isNaN()) // glitched
 		{
-			kill();
 			return;
 		}
 		
@@ -120,13 +120,12 @@ public abstract class Entity implements Drawable
 		if (alpha == 0) return;
 		
 		drawBump(g, false);
-		
+		Composite c = g.getComposite();
 		if (this instanceof Struct) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		draw(g);
-		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		g.setComposite(c);
 		
 		drawBump(g, true);
-		
 	}
 	
 	protected abstract void tick(int tick);

@@ -36,8 +36,6 @@ public class CoalFactory extends Struct
 	{
 		Resources res = new Resources();
 		
-		if (Game.currentGame.resources.get(Resource.WOOD) == 0) return res;
-		
 		res.set(Resource.WOOD, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * (-attributes.get(Attribute.MINE_AMOUNT)));
 		res.set(Resource.COAL, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * 1);
 		
