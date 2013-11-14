@@ -288,15 +288,6 @@ public abstract class Entity implements Drawable
 		targetedProjectiles.add(p);
 	}
 	
-	public boolean willDieFromTargetedProjectiles()
-	{
-		int damage = 0;
-		for (Projectile p : targetedProjectiles)
-			damage += p.getDamage();
-		
-		return damage >= attributes.get(Attribute.HEALTH);
-	}
-	
 	public void kill()
 	{
 		dead = true;

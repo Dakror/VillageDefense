@@ -15,8 +15,8 @@ public class WaveManager
 	public enum Monster
 	{
 		ZOMBIE("zombie", de.dakror.villagedefense.game.entity.creature.Zombie.class, "Zombie:Normalschneller Untoter. Fügt Gebäuden 5 Schaden hinzu. Hält 20 Schaden aus"),
-		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Hält 8 Schaden aus"),
-		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält 50 aus"),
+		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Hält 8 Schaden aus. Kann durch Barrikaden hindurchfliegen"),
+		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält 50 Schaden aus"),
 		TROLL("troll", de.dakror.villagedefense.game.entity.creature.Troll.class, "Troll:Schlurfender Monsterboss. Fügt Gebäuden 25 Schaden hinzu. Hält 500 Schaden aus"),
 		GOLEM("golem", de.dakror.villagedefense.game.entity.creature.Golem.class, "Golem:Normalschnelle Steingestalt. Fügt Gebäuden 20 Schaden hinzu. Hält 150 Schaden aus. Ist immun gegen Pfeile"),
 		

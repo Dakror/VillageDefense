@@ -228,7 +228,6 @@ public class World extends EventListener implements Drawable
 			p.update(tick);
 			if (p.isDead())
 			{
-				p.getTarget().targetedProjectiles.remove(p);
 				projectiles.remove(p);
 			}
 		}
@@ -276,7 +275,6 @@ public class World extends EventListener implements Drawable
 	public void addProjectile(Projectile p)
 	{
 		projectiles.add(p);
-		p.getTarget().addTargetedProjectile(p);
 	}
 	
 	@Override

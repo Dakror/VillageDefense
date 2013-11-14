@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -13,26 +12,23 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class Projectile implements Drawable
+public abstract class Projectile implements Drawable
 {
 	Vector pos;
-	Entity target;
+	Vector target;
 	Image image;
 	String imgName;
 	float speed;
 	float angle;
-	int damage;
 	boolean dead;
 	boolean rotate;
 	
-	public Projectile(Vector pos, Entity target, String image, float speed, int damage)
+	public Projectile(Vector pos, String image, float speed)
 	{
 		this.pos = pos;
-		this.target = target;
 		this.image = Game.getImage("particle/" + image + ".png");
 		imgName = image;
 		this.speed = speed;
-		this.damage = damage;
 		dead = false;
 		angle = 0;
 		rotate = true;
@@ -60,19 +56,25 @@ public class Projectile implements Drawable
 	@Override
 	public void update(int tick)
 	{
-		Vector dif = target.getCenter2().sub(pos);
+		target = getTargetVector();
+		
+		Vector dif = target.clone().sub(pos);
 		if (dif.getLength() > speed) dif.setLength(speed);
 		
 		angle = (float) Math.atan2(dif.y, dif.x);
 		
 		pos.add(dif);
 		
-		if (pos.equals(target.getCenter2()))
+		if (pos.equals(target))
 		{
-			target.dealDamage(damage, this);
+			onImpact();
 			dead = true;
 		}
 	}
+	
+	protected abstract Vector getTargetVector();
+	
+	protected abstract void onImpact();
 	
 	public boolean isDead()
 	{
@@ -84,7 +86,7 @@ public class Projectile implements Drawable
 		return pos;
 	}
 	
-	public Entity getTarget()
+	public Vector getTarget()
 	{
 		return target;
 	}
@@ -107,10 +109,5 @@ public class Projectile implements Drawable
 	public float getAngle()
 	{
 		return angle;
-	}
-	
-	public int getDamage()
-	{
-		return damage;
 	}
 }

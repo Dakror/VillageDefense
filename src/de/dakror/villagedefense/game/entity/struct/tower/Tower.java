@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.projectile.Arrow;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
@@ -65,7 +66,7 @@ public abstract class Tower extends Struct
 	@Override
 	public Projectile getProjectile(Entity target)
 	{
-		return new Projectile(getCenter(), target, "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE));
+		return new Arrow(getCenter(), target, "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE));
 	}
 	
 	@Override

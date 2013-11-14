@@ -399,13 +399,7 @@ public abstract class Struct extends Entity
 		
 		targetIndex = targetIndex >= t.size() ? t.size() - 1 : targetIndex;
 		
-		for (int i = 0; i < t.size(); i++)
-		{
-			if (t.get(i).willDieFromTargetedProjectiles()) continue;
-			
-			Game.world.addProjectile(getProjectile(t.get(targetIndex)));
-			break;
-		}
+		Game.world.addProjectile(getProjectile(t.get(targetIndex)));
 	}
 	
 	protected abstract void onMinedUp();
