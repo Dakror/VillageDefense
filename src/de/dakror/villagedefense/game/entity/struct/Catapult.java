@@ -10,9 +10,11 @@ import java.awt.image.BufferedImage;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.projectile.Projectile;
+import de.dakror.villagedefense.game.projectile.Rock;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
+import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Vector;
 
@@ -39,9 +41,9 @@ public class Catapult extends Struct
 		attributes.set(Attribute.ATTACK_SPEED, 250);
 		attributes.add(Attribute.DAMAGE_CREATURE, 30);
 		
-		// buildingCosts.set(Resource.GOLD, 150);
-		// buildingCosts.set(Resource.PLANKS, 20);
-		// buildingCosts.set(Resource.IRONINGOT, 5);
+		buildingCosts.set(Resource.GOLD, 150);
+		buildingCosts.set(Resource.PLANKS, 20);
+		buildingCosts.set(Resource.IRONINGOT, 5);
 		
 		setBump(new Rectangle2D.Float(0.29f, 1.4f, 1.40f, 1.3f));
 		
@@ -81,7 +83,7 @@ public class Catapult extends Struct
 	@Override
 	public Projectile getProjectile(Entity target)
 	{
-		return null;// new Arrow(getCenter(), target, "rock", 6f, (int) attributes.get(Attribute.DAMAGE_CREATURE));
+		return new Rock(getCenter(), target.getCenter2(), 6f, (int) attributes.get(Attribute.DAMAGE_CREATURE), Tile.SIZE * 3);
 	}
 	
 	@Override

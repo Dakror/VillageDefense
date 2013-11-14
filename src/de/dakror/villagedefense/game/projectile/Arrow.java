@@ -11,9 +11,9 @@ public class Arrow extends Projectile
 	Entity targetEntity;
 	int damage;
 	
-	public Arrow(Vector pos, Entity target, String image, float speed, int damage)
+	public Arrow(Vector pos, Entity target, float speed, int damage)
 	{
-		super(pos, image, speed);
+		super(pos, "arrow", speed);
 		targetEntity = target;
 		this.target = target.getCenter2();
 		this.damage = damage;

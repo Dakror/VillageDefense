@@ -66,7 +66,7 @@ public abstract class Tower extends Struct
 	@Override
 	public Projectile getProjectile(Entity target)
 	{
-		return new Arrow(getCenter(), target, "arrow", 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE));
+		return new Arrow(getCenter(), target, 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE));
 	}
 	
 	@Override
