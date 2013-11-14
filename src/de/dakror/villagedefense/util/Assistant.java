@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.URL;
 
 import de.dakror.villagedefense.game.Game;
@@ -336,6 +337,18 @@ public class Assistant
 			return null;
 		}
 		return res;
+	}
+	
+	public static boolean isInternetReachable()
+	{
+		try
+		{
+			return InetAddress.getByName("dakror.de").isReachable(60000);
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
 	}
 	
 	// -- math helper methods -- //

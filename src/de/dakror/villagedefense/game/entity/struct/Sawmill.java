@@ -27,7 +27,7 @@ public class Sawmill extends Struct
 		buildingCosts.set(Resource.GOLD, 300);
 		buildingCosts.set(Resource.WOOD, 120);
 		buildingCosts.set(Resource.STONE, 50);
-		buildingCosts.set(Resource.IRONINGOT, 80);
+		buildingCosts.set(Resource.IRONINGOT, 40);
 		buildingCosts.set(Resource.PEOPLE, 1);
 		
 		attributes.set(Attribute.MINE_SPEED, 300);

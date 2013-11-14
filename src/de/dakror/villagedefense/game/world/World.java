@@ -126,9 +126,7 @@ public class World extends EventListener implements Drawable
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j].draw(g);
 		
-		ArrayList<Entity> sorted = getSortedEntities();
-		
-		for (Entity e : sorted)
+		for (Entity e : entities)
 			e.drawEntity(g);
 		
 		for (Projectile p : projectiles)
@@ -137,7 +135,7 @@ public class World extends EventListener implements Drawable
 		g.translate(-x, -y);
 	}
 	
-	public ArrayList<Entity> getSortedEntities()
+	public void sortEntities()
 	{
 		@SuppressWarnings("unchecked")
 		ArrayList<Entity> sorted = new ArrayList<>((List<Entity>) entities.clone());
@@ -157,7 +155,7 @@ public class World extends EventListener implements Drawable
 		}
 		catch (IllegalArgumentException e)
 		{}
-		return sorted;
+		entities = new CopyOnWriteArrayList<>(sorted);
 	}
 	
 	public void generate()
@@ -210,7 +208,10 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void update(int tick)
 	{
-		List<Entity> sorted = getSortedEntities();
+		sortEntities();
+		
+		@SuppressWarnings("unchecked")
+		List<Entity> sorted = (List<Entity>) entities.clone();
 		Collections.reverse(sorted);
 		for (Entity entity : sorted)
 		{

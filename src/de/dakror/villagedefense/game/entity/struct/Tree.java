@@ -26,7 +26,7 @@ public class Tree extends Struct
 			setBump(new Rectangle2D.Float(0.3f, 1.7f, 0.3f, 0.3f));
 			placeGround = false;
 			resources.set(Resource.WOOD, 4);
-			attributes.set(Attribute.ATTACK_SPEED, 30 * 60 * 3); // 3 minutes (30 ticks * 60 seconds * 3)
+			attributes.set(Attribute.ATTACK_SPEED, 30 * 60 * 2 + 30); // 2 minutes 30 (30 ticks * 60 seconds * 2 + 30)
 			name = "Setzling";
 			description = "Ein Setzling. Ausgewachsen nach 3 Minuten.";
 		}

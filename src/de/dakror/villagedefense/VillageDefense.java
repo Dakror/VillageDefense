@@ -24,8 +24,10 @@ public class VillageDefense
 		{
 			e.printStackTrace();
 		}
+		UniVersion.offline = true;// !Assistant.isInternetReachable();
+		
 		UniVersion.init(VillageDefense.class, 0, 0);
-		Reporter.init(new File(CFG.DIR, "log"));
+		if (!UniVersion.offline) Reporter.init(new File(CFG.DIR, "log"));
 		
 		new Game();
 		

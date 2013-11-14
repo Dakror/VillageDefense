@@ -16,7 +16,7 @@ public class Resources
 		WOOD("Holz", 3, 0, 4, true),
 		PLANKS("Bretter", 2, 0, 6, true),
 		STONE("Stein", 1, 1, 2, true),
-		COAL("Kohle", 3, 1, 5, true),
+		COAL("Kohle", 3, 1, WOOD.getGoldValue() * 2, true),
 		IRONORE("Eisenerz", 0, 1, 3, true),
 		// GOLDORE("Golderz", 2, 1, 4, true),
 		IRONINGOT("Eisen", 0, 2, 7, true),

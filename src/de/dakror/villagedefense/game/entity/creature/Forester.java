@@ -20,7 +20,7 @@ public class Forester extends Creature
 		setHostile(false);
 		name = "Förster";
 		
-		attributes.set(Attribute.ATTACK_SPEED, 30 * 30); // 30 second plant cooldown
+		attributes.set(Attribute.ATTACK_SPEED, 30 * 45); // 45 second plant cooldown
 		attributes.set(Attribute.ATTACK_RANGE, 8 * Tile.SIZE); // 6 fields plant radius
 		
 		description = "Pflanzt Setzlinge um sein Haus.";
