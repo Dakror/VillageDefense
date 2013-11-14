@@ -138,11 +138,11 @@ public class Game extends EventListener
 		world.init();
 		state = 0;
 		
-		addLayer(new MenuLayer());
-		addLayer(new StateLayer());
-		addLayer(new StructGUILayer());
-		addLayer(new HUDLayer());
 		addLayer(new BuildStructLayer());
+		addLayer(new HUDLayer());
+		addLayer(new StructGUILayer());
+		addLayer(new StateLayer());
+		addLayer(new MenuLayer());
 		
 		for (Researches r : Researches.values())
 		{
@@ -263,7 +263,23 @@ public class Game extends EventListener
 	public void addLayer(Layer l)
 	{
 		l.init();
-		layers.add(0, l);
+		layers.add(l);
+	}
+	
+	public void toggleLayer(Layer l)
+	{
+		for (Layer layer : layers)
+		{
+			if (layer.getClass().equals(l.getClass()))
+			{
+				layers.remove(layer);
+				return;
+			}
+		}
+		
+		l.init();
+		layers.add(l);
+		
 	}
 	
 	public Rectangle getDragRectangle()

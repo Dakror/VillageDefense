@@ -1,6 +1,10 @@
 package de.dakror.villagedefense.layer;
 
+import java.awt.Desktop;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.WaveManager;
@@ -24,6 +28,11 @@ public class MenuLayer extends Layer
 		g.drawImage(Game.getImage("gui/menu/menuBG.png"), 0, 0, Game.getWidth(), Game.getHeight(), Game.w);
 		Assistant.drawImageCenteredRelativeScaled(Game.getImage("gui/menu/menuFG.png"), 80, 1920, 1080, Game.getWidth(), Game.getHeight(), g);
 		
+		int size = 60;
+		int size2 = size - 20;
+		
+		Assistant.drawContainer(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size, false, new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(Game.currentGame.mouse), g);
+		g.drawImage(Game.getImage("icon/help.png"), Game.getWidth() - size, Game.getHeight() - size, size2, size2, Game.w);
 		drawComponents(g);
 	}
 	
@@ -66,5 +75,24 @@ public class MenuLayer extends Layer
 			}
 		});
 		components.add(quit);
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		super.mousePressed(e);
+		
+		int size = 60;
+		if (new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(e.getPoint()))
+		{
+			try
+			{
+				Desktop.getDesktop().browse(new URI("https://github.com/Dakror/Village-Defense/wiki"));
+			}
+			catch (Exception e1)
+			{
+				e1.printStackTrace();
+			}
+		}
 	}
 }
