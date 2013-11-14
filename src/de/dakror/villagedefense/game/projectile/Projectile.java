@@ -18,6 +18,7 @@ public class Projectile implements Drawable
 	Vector pos;
 	Entity target;
 	Image image;
+	String imgName;
 	float speed;
 	float angle;
 	int damage;
@@ -29,6 +30,7 @@ public class Projectile implements Drawable
 		this.pos = pos;
 		this.target = target;
 		this.image = Game.getImage("particle/" + image + ".png");
+		imgName = image;
 		this.speed = speed;
 		this.damage = damage;
 		dead = false;
@@ -67,7 +69,7 @@ public class Projectile implements Drawable
 		
 		if (pos.equals(target.getCenter2()))
 		{
-			target.dealDamage(damage);
+			target.dealDamage(damage, this);
 			dead = true;
 		}
 	}
@@ -90,6 +92,11 @@ public class Projectile implements Drawable
 	public Image getImage()
 	{
 		return image;
+	}
+	
+	public String getImageName()
+	{
+		return imgName;
 	}
 	
 	public float getSpeed()

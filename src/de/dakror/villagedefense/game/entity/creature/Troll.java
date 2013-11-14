@@ -1,6 +1,7 @@
 package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -19,6 +20,7 @@ public class Troll extends Creature
 		attributes.set(Attribute.HEALTH_MAX, 500);
 		attributes.set(Attribute.DAMAGE_STRUCT, 25);
 		attributes.set(Attribute.SPEED, 0.6f);
+		attributes.set(Attribute.ATTACK_RANGE, Tile.SIZE);
 		
 		resources.set(Resource.GOLD, 150);
 		

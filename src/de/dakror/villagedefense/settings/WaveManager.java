@@ -15,9 +15,10 @@ public class WaveManager
 	public enum Monster
 	{
 		ZOMBIE("zombie", de.dakror.villagedefense.game.entity.creature.Zombie.class, "Zombie:Normalschneller Untoter. Fügt Gebäuden 5 Schaden hinzu. Hält 20 Schaden aus"),
-		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Halt 8 Schaden aus"),
+		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Hält 8 Schaden aus"),
 		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält 50 aus"),
 		TROLL("troll", de.dakror.villagedefense.game.entity.creature.Troll.class, "Troll:Schlurfender Monsterboss. Fügt Gebäuden 25 Schaden hinzu. Hält 500 Schaden aus"),
+		GOLEM("golem", de.dakror.villagedefense.game.entity.creature.Golem.class, "Golem:Normalschnelle Steingestalt. Fügt Gebäuden 20 Schaden hinzu. Hält 150 Schaden aus. Ist immun gegen Pfeile"),
 		
 		;
 		
@@ -63,7 +64,7 @@ public class WaveManager
 	
 	static void generateNextWave()
 	{
-		Game.world.core.dealDamage(-5);
+		Game.world.core.dealDamage(-5, null);
 		monsters.clear();
 		
 		wave++;
@@ -72,8 +73,10 @@ public class WaveManager
 		 * either parabola: 0.075 * wave² + 3
 		 * or line: 2 * wave + 3
 		 */
-		monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 1));
-		if (wave >= 5) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 5));
+		if (wave < 30) monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 1));
+		else monsters.put(Monster.GOLEM, Math.round(wave - 29));
+		
+		if (wave >= 5) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 5 - (wave > 30 ? 30 : 0)));
 		
 		if (wave % 10 == 0 && wave > 2)
 		{
@@ -126,6 +129,9 @@ public class WaveManager
 									e1.printStackTrace();
 								}
 							}
+							
+							leftLength /= 2;
+							rightLength /= 2;
 						}
 					}
 				}.start();

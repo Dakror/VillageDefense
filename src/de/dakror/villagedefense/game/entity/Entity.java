@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.settings.Attributes;
@@ -108,6 +109,7 @@ public abstract class Entity implements Drawable
 		
 		if (new Double(x).isNaN()) // glitched
 		{
+			if ((this instanceof Creature) && ((Creature) this).isHostile()) kill();
 			return;
 		}
 		
@@ -261,7 +263,7 @@ public abstract class Entity implements Drawable
 		return resources;
 	}
 	
-	public void dealDamage(int amount)
+	public void dealDamage(int amount, Object source)
 	{
 		int newVal = (int) (attributes.get(Attribute.HEALTH) - amount);
 		

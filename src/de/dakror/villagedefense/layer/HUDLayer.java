@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
@@ -59,21 +60,22 @@ public class HUDLayer extends Layer
 			if (WaveManager.monsters.size() > 0)
 			{
 				int cSize = 70;
-				Monster[] keys = WaveManager.monsters.keySet().toArray(new Monster[] {});
+				ArrayList<Monster> keys = new ArrayList<>(WaveManager.monsters.keySet());
+				if (keys.contains(Monster.ZOMBIE)) keys.add(Monster.GHOST);
 				
-				
-				for (int i = 0; i < WaveManager.monsters.size(); i++)
+				for (int i = 0; i < keys.size(); i++)
 				{
-					Monster m = keys[i];
+					Monster m = keys.get(i);
 					
 					int x = Game.getWidth() / 2 + 200 + i * cSize;
 					Assistant.drawShadow(x, 72, cSize, cSize, g);
 					Assistant.drawOutline(x, 72, cSize, cSize, false, g);
 					g.drawImage(Game.getImage("creature/" + m.getImage() + "_face.png"), Game.getWidth() / 2 + 200 + i * cSize + (cSize - 48) / 2, 72 + (cSize - 48) / 2, 48, 48, Game.w);
 					
-					Assistant.drawString(WaveManager.monsters.get(m) + "", x + 6, 72 + cSize - 6, g, 22);
+					if (m != Monster.GHOST) Assistant.drawString(WaveManager.monsters.get(m) + "", x + 6, 72 + cSize - 6, g, 22);
+					else Assistant.drawString("?", x + 6, 72 + cSize - 6, g, 22);
 					
-					if (new Rectangle(x, 72, cSize, cSize).contains(Game.currentGame.mouse)) selectedMonster = i;
+					if (new Rectangle(x, 72, cSize, cSize).contains(Game.currentGame.mouse)) selectedMonster = Arrays.asList(Monster.values()).indexOf(m);
 				}
 			}
 			

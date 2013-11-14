@@ -12,8 +12,6 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -121,18 +119,6 @@ public class Game extends EventListener
 		w.addMouseListener(this);
 		w.addMouseMotionListener(this);
 		w.addMouseWheelListener(this);
-		w.addWindowFocusListener(new WindowFocusListener()
-		{
-			@Override
-			public void windowLostFocus(WindowEvent e)
-			{
-				if (state == 0) state = 3;
-			}
-			
-			@Override
-			public void windowGainedFocus(WindowEvent e)
-			{}
-		});
 		w.setBackground(Color.black);
 		w.setForeground(Color.white);
 		w.setIconImage(getImage("icon/castle.png"));
@@ -282,6 +268,8 @@ public class Game extends EventListener
 	
 	public Rectangle getDragRectangle()
 	{
+		if (mouseDown == null || mouseDrag == null) return new Rectangle();
+		
 		int x = mouseDown.x < mouseDrag.x ? mouseDown.x : mouseDrag.x;
 		int y = mouseDown.y < mouseDrag.y ? mouseDown.y : mouseDrag.y;
 		int w = mouseDown.x < mouseDrag.x ? mouseDrag.x - mouseDown.x : mouseDown.x - mouseDrag.x;

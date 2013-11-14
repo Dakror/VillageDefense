@@ -75,7 +75,7 @@ public class Marketplace extends Struct
 			
 			drawComponents(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, g);
 		}
-		catch (NullPointerException e)
+		catch (Exception e)
 		{}
 	}
 	
