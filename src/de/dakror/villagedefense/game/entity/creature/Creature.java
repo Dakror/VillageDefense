@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Barricade;
@@ -110,18 +112,25 @@ public abstract class Creature extends Entity
 	
 	public Vector getVelocityVector()
 	{
-		Vector pos = getPos();
-		Vector dif = target.clone().sub(pos);
-		
-		if (dif.getLength() < attributes.get(Attribute.SPEED))
+		try
 		{
-			target = null;
-			frame = 0;
+			Vector pos = getPos();
+			Vector dif = target.clone().sub(pos);
+			
+			if (dif.getLength() < attributes.get(Attribute.SPEED))
+			{
+				target = null;
+				frame = 0;
+			}
+			
+			dif.setLength(attributes.get(Attribute.SPEED));
+			
+			return dif;
 		}
-		
-		dif.setLength(attributes.get(Attribute.SPEED));
-		
-		return dif;
+		catch (NullPointerException e)
+		{
+			return new Vector(0, 0);
+		}
 	}
 	
 	public void setTarget(int x, int y)
@@ -256,6 +265,12 @@ public abstract class Creature extends Entity
 	@Override
 	public void onSpawn()
 	{}
+	
+	@Override
+	public JSONObject getData()
+	{
+		return new JSONObject();
+	}
 	
 	protected abstract boolean onArrivalAtEntity(int tick);
 }

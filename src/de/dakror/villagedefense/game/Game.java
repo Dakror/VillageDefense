@@ -12,6 +12,7 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -328,7 +329,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mouseMoved(e);
-			if (l.isModal()) break;
+			if (l.isModal() && l.isEnabled()) break;
 		}
 		
 		if (state == 0)
@@ -351,7 +352,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mouseReleased(e);
-			if (l.isModal()) break;
+			if (l.isModal() && l.isEnabled()) break;
 		}
 		
 		if (mouseDown != null && mouseDrag != null)
@@ -378,10 +379,22 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mousePressed(e);
-			if (l.isModal()) break;
+			if (l.isModal() && l.isEnabled()) break;
 		}
 		
 		if (state == 0) world.mousePressed(e);
+	}
+	
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e)
+	{
+		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		
+		for (Layer l : layers)
+		{
+			l.mouseWheelMoved(e);
+			if (l.isModal() && l.isEnabled()) break;
+		}
 	}
 	
 	public void setState(int state)

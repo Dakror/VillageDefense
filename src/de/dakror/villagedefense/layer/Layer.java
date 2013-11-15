@@ -18,9 +18,11 @@ public abstract class Layer extends EventListener implements Drawable
 {
 	protected CopyOnWriteArrayList<Component> components;
 	protected boolean modal;
+	protected boolean enabled;
 	
 	public Layer()
 	{
+		enabled = true;
 		modal = false;
 		components = new CopyOnWriteArrayList<>();
 	}
@@ -40,6 +42,8 @@ public abstract class Layer extends EventListener implements Drawable
 	
 	protected void updateComponents(int tick)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.update(tick);
 	}
@@ -47,6 +51,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mouseWheelMoved(e);
 	}
@@ -54,6 +60,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mouseDragged(e);
 	}
@@ -61,6 +69,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mouseMoved(e);
 	}
@@ -68,6 +78,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mouseClicked(e);
 	}
@@ -75,6 +87,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mousePressed(e);
 	}
@@ -82,6 +96,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mouseReleased(e);
 	}
@@ -89,6 +105,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mouseEntered(MouseEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mouseEntered(e);
 	}
@@ -96,6 +114,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void mouseExited(MouseEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.mouseExited(e);
 	}
@@ -103,6 +123,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.keyTyped(e);
 	}
@@ -110,6 +132,8 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.keyPressed(e);
 	}
@@ -117,8 +141,20 @@ public abstract class Layer extends EventListener implements Drawable
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
+		if (!enabled) return;
+		
 		for (Component c : components)
 			c.keyReleased(e);
+	}
+	
+	public boolean isEnabled()
+	{
+		return enabled;
+	}
+	
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
 	}
 	
 	public boolean isModal()

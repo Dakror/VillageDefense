@@ -49,7 +49,7 @@ public class MenuButton extends Button
 	@Override
 	public void update(int tick)
 	{
-		if (state == 2)
+		if (state == 2 || state == 1)
 		{
 			alpha += speed;
 		}

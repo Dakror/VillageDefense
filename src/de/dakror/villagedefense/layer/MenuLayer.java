@@ -69,7 +69,18 @@ public class MenuLayer extends Layer
 		});
 		components.add(start);
 		
-		MenuButton quit = new MenuButton("quit", 1);
+		MenuButton load = new MenuButton("loadGame", 1);
+		load.addClickEvent(new ClickEvent()
+		{
+			@Override
+			public void trigger()
+			{
+				Game.currentGame.addLayer(new LoadGameLayer(MenuLayer.this));
+			}
+		});
+		components.add(load);
+		
+		MenuButton quit = new MenuButton("quit", 2);
 		quit.addClickEvent(new ClickEvent()
 		{
 			@Override

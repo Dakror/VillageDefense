@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
@@ -400,6 +403,24 @@ public abstract class Struct extends Entity
 		targetIndex = targetIndex >= t.size() ? t.size() - 1 : targetIndex;
 		
 		Game.world.addProjectile(getProjectile(t.get(targetIndex)));
+	}
+	
+	@Override
+	public JSONObject getData()
+	{
+		JSONObject o = new JSONObject();
+		try
+		{
+			o.put("x", x);
+			o.put("y", y);
+			o.put("class", getClass().getName());
+			o.put("researches", researches);
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+		return o;
 	}
 	
 	protected abstract void onMinedUp();

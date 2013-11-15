@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -288,6 +290,26 @@ public class World extends EventListener implements Drawable
 	public void addAnimation(Animation a)
 	{
 		animations.add(a);
+	}
+	
+	public byte[] getData()
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try
+		{
+			for (Chunk[] c1 : chunks)
+			{
+				for (Chunk c : c1)
+				{
+					baos.write(c.getData());
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return baos.toByteArray();
 	}
 	
 	@Override

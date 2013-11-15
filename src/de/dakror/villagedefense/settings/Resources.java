@@ -3,6 +3,9 @@ package de.dakror.villagedefense.settings;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * @author Dakror
@@ -147,6 +150,23 @@ public class Resources
 			if (getF(r) != 0) res.add(r);
 		
 		return res;
+	}
+	
+	public JSONObject getData()
+	{
+		JSONObject o = new JSONObject();
+		try
+		{
+			for (Resource r : Resource.values())
+			{
+				o.put(r.name(), getF(r));
+			}
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+		return o;
 	}
 	
 	public static Resources mul(Resources res, int f)

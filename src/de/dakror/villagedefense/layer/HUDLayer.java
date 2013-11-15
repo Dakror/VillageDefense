@@ -20,6 +20,7 @@ import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.settings.WaveManager.Monster;
 import de.dakror.villagedefense.ui.button.BuildButton;
 import de.dakror.villagedefense.util.Assistant;
+import de.dakror.villagedefense.util.SaveHandler;
 
 /**
  * @author Dakror
@@ -141,7 +142,6 @@ public class HUDLayer extends Layer
 				String delta = (dif != 0 ? " (" + (dif < 0 ? "" : "+") + dif + ")" : "");
 				if (!hover) delta = "";
 				
-				
 				if (r == Resource.PEOPLE)
 				{
 					int free = Game.currentGame.getPeople();
@@ -155,8 +155,7 @@ public class HUDLayer extends Layer
 			
 			// -- wave info -- //
 			Assistant.drawString("Welle: " + WaveManager.wave, Game.getWidth() / 2 + 170, 55, g, 45);
-			
-			Assistant.drawHorizontallyCenteredString("Punktestand: " + Game.currentGame.getPlayerScore(), Game.getWidth() / 2, Game.getWidth() / 2, 50, g, 25);
+			Assistant.drawString(Game.currentGame.getPlayerScore() + " Punkte", Game.getWidth() / 4 * 3, 50, g, 25);
 			
 			// -- time panel -- //
 			Assistant.drawContainer(Game.getWidth() / 2 - 150, 0, 300, 80, true, true, g);
@@ -180,11 +179,17 @@ public class HUDLayer extends Layer
 			Assistant.drawOutline(x, y, 60, 60, false, g);
 			g.drawImage(Game.getImage("icon/fwd.png"), x + 10, y + 10, 40, 40, Game.w);
 			
+			// -- save -- //
+			if (!new Rectangle(Game.getWidth() - 155, 5, 70, 70).contains(Game.currentGame.mouse)) Assistant.drawContainer(Game.getWidth() - 155, 5, 70, 70, false, false, g);
+			else Assistant.drawContainer(Game.getWidth() - 160, 0, 80, 80, false, true, g);
+			
+			g.drawImage(Game.getImage("icon/save.png"), Game.getWidth() - 145, 15, 50, 50, Game.w);
+			
 			// -- pause -- //
 			if (!new Rectangle(Game.getWidth() - 75, 5, 70, 70).contains(Game.currentGame.mouse)) Assistant.drawContainer(Game.getWidth() - 75, 5, 70, 70, false, false, g);
 			else Assistant.drawContainer(Game.getWidth() - 80, 0, 80, 80, false, true, g);
 			
-			g.drawImage(Game.getImage("gui/pause.png"), Game.getWidth() - 75, 5, 70, 70, Game.w);
+			g.drawImage(Game.getImage("icon/pause.png"), Game.getWidth() - 75, 5, 70, 70, Game.w);
 			
 			// -- build/bottom bar -- //
 			Assistant.drawContainer(0, Game.getHeight() - 100, Game.getWidth(), 100, false, false, g);
@@ -273,6 +278,16 @@ public class HUDLayer extends Layer
 					Game.currentGame.killedCoreHouse = true; // hack to prevent StateLayer from funk around
 				}
 			}
+		}
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+		super.mouseReleased(e);
+		if (new Rectangle(Game.getWidth() - 155, 5, 70, 70).contains(e.getPoint())) // save
+		{
+			SaveHandler.saveGame();
 		}
 	}
 }

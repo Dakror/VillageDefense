@@ -2,6 +2,9 @@ package de.dakror.villagedefense.settings;
 
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * @author Dakror
  */
@@ -73,6 +76,21 @@ public class Attributes
 			if (attr.get(r) != 0) s++;
 		
 		return s;
+	}
+	
+	public JSONObject getData()
+	{
+		JSONObject o = new JSONObject();
+		try
+		{
+			for (Attribute a : Attribute.values())
+				o.put(a.name(), get(a));
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+		return o;
 	}
 	
 	@Override

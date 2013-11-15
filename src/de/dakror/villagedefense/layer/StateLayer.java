@@ -33,7 +33,7 @@ public class StateLayer extends Layer
 			g.setComposite(composite);
 			
 			Assistant.drawHorizontallyCenteredString(Game.currentGame.state == 1 ? "Gewonnen!" : (Game.currentGame.state == 2) ? "Niederlage!" : "Spiel pausiert", Game.getWidth(), Game.getHeight() / 2, g, 100);
-			Assistant.drawHorizontallyCenteredString(Game.currentGame.state != 3 ? "Punktestand: " + Game.currentGame.getPlayerScore() : "Mit Klicken fortzusetzen", Game.getWidth(), Game.getHeight() / 2 + 100, g, 60);
+			Assistant.drawHorizontallyCenteredString(Game.currentGame.state != 3 ? "Punktestand: " + Game.currentGame.getPlayerScore() : "Mit Klicken fortsetzen", Game.getWidth(), Game.getHeight() / 2 + 100, g, 60);
 			if (Game.currentGame.state != 3 && Game.currentGame.getPlayerScore() > 0 && UniVersion.compareToOnline() == 0)
 			{
 				Assistant.drawHorizontallyCenteredString("Mit Klicken ins Hauptmenü", Game.getWidth(), Game.getHeight() / 2 + 200, g, 60);

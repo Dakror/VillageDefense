@@ -8,6 +8,8 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.json.JSONObject;
+
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.struct.Struct;
@@ -293,6 +295,8 @@ public abstract class Entity implements Drawable
 		dead = true;
 		onDeath();
 	}
+	
+	public abstract JSONObject getData();
 	
 	// -- abstract event methods -- //
 	public abstract void onSpawn();
