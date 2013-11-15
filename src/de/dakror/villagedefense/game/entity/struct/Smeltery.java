@@ -23,7 +23,7 @@ public class Smeltery extends Struct
 		placeGround = true;
 		setBump(new Rectangle2D.Float(0, 2, 6, 4.7f));
 		
-		attributes.set(Attribute.MINE_SPEED, 60);
+		attributes.set(Attribute.MINE_SPEED, 300);
 		attributes.set(Attribute.MINE_AMOUNT, 2); // use 3 ore + 4 coal -> 2 ingot
 		
 		buildingCosts.set(Resource.GOLD, 450);

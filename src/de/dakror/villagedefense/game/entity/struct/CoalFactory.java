@@ -22,7 +22,7 @@ public class CoalFactory extends Struct
 		placeGround = true;
 		name = "Köhlerei";
 		setBump(new Rectangle2D.Float(0.9f, 3.5f, 4.8f, 3.4f));
-		attributes.set(Attribute.MINE_SPEED, 60);
+		attributes.set(Attribute.MINE_SPEED, 300);
 		attributes.set(Attribute.MINE_AMOUNT, 3); // use 3 get 2
 		
 		buildingCosts.set(Resource.GOLD, 375);
