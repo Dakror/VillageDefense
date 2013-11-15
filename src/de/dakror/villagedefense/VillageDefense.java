@@ -27,7 +27,7 @@ public class VillageDefense
 		}
 		UniVersion.offline = !Assistant.isInternetReachable();
 		
-		UniVersion.init(VillageDefense.class, CFG.VERSION, CFG.PHASE);
+		UniVersion.init(VillageDefense.class, CFG.VERSION - 1, CFG.PHASE);
 		if (!UniVersion.offline) Reporter.init(new File(CFG.DIR, "log"));
 		
 		new Game();
