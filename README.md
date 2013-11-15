@@ -3,17 +3,17 @@ Village-Defense
 
 A mix between the Settlers and towerdefense in 2.5D
 
-Download it: https://github.com/Dakror/Village-Defense/raw/master/Village%20Defense.jar<br>
-Checkout the leaderboard: http://dakror.de/villagedefense/ranking
+Download it: [Village Defense.jar](http://dakror.de/download?u=https://github.com/Dakror/Village-Defense/raw/master/Village%20Defense.jar)<br>
+Checkout the leaderboard: [Village Defense Leaderboard](http://dakror.de/villagedefense/ranking)
 
 
 
 ------------------------
 Ein Mix aus die Siedler und Towerdefense in 2.5D
 
-Lade es herunter: https://github.com/Dakror/Village-Defense/raw/master/Village%20Defense.jar<br>
-Sieh dir die Bestenliste an: http://dakror.de/villagedefense/ranking
+Lade es herunter: [Village Defense.jar](http://dakror.de/download?u=https://github.com/Dakror/Village-Defense/raw/master/Village%20Defense.jar)<br>
+Sieh dir die Bestenliste an: [Village Defense Bestenliste](http://dakror.de/villagedefense/ranking)
 
 ------------------------
 
-Wiki: https://github.com/Dakror/Village-Defense/wiki
+Wiki: [Village Defense Wiki](https://github.com/Dakror/Village-Defense/wiki)
