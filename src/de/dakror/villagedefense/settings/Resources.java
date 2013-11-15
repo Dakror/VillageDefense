@@ -3,6 +3,7 @@ package de.dakror.villagedefense.settings;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -92,6 +93,17 @@ public class Resources
 	{
 		for (Resource t : Resource.values())
 			res.put(t, 0f);
+	}
+	
+	public Resources(JSONObject data) throws JSONException
+	{
+		this();
+		
+		JSONArray names = data.names();
+		for (int i = 0; i < data.length(); i++)
+		{
+			res.put(Resource.valueOf(names.getString(i)), (float) data.getDouble(names.getString(i)));
+		}
 	}
 	
 	public int get(Resource t)

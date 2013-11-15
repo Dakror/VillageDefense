@@ -34,7 +34,9 @@ public class Chunk
 	
 	public void render()
 	{
-		image.flush();
+		if (image == null) image = new BufferedImage(SIZE * Tile.SIZE, SIZE * Tile.SIZE, BufferedImage.TYPE_INT_ARGB);
+		else image.flush();
+		
 		Graphics2D g = (Graphics2D) image.getGraphics();
 		
 		for (int i = 0; i < SIZE; i++)
@@ -79,6 +81,8 @@ public class Chunk
 	
 	public void draw(Graphics2D g)
 	{
+		if (image == null) render();
+		
 		g.drawImage(image, x * SIZE * Tile.SIZE, y * SIZE * Tile.SIZE, Game.w);
 	}
 	
@@ -99,5 +103,16 @@ public class Chunk
 		}
 		
 		return baos.toByteArray();
+	}
+	
+	public void setData(byte[] data)
+	{
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
+			{
+				this.data[i][j] = data[i * SIZE + j];
+			}
+		}
 	}
 }

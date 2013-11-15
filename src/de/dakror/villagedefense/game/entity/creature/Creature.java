@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.dakror.villagedefense.game.Game;
@@ -269,7 +270,25 @@ public abstract class Creature extends Entity
 	@Override
 	public JSONObject getData()
 	{
-		return new JSONObject();
+		JSONObject o = new JSONObject();
+		try
+		{
+			o.put("x", x);
+			o.put("y", y);
+			o.put("spawnX", spawnPoint.x);
+			o.put("spawnY", spawnPoint.y);
+			o.put("targetX", target != null ? target.x : JSONObject.NULL);
+			o.put("targetY", target != null ? target.y : JSONObject.NULL);
+			o.put("targetEntity", targetEntity != null ? targetEntity.getData() : JSONObject.NULL);
+			o.put("class", getClass().getName());
+			o.put("attributes", attributes.getData());
+			o.put("resources", resources.getData());
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+		return o;
 	}
 	
 	protected abstract boolean onArrivalAtEntity(int tick);

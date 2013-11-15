@@ -15,6 +15,11 @@ public class Tree extends Struct
 {
 	int startTick;
 	
+	public Tree(int x, int y)
+	{
+		this(x, y, false);
+	}
+	
 	public Tree(int x, int y, boolean sapling)
 	{
 		super(x, y, sapling ? 1 : 5, sapling ? 2 : 5);

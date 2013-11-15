@@ -2,6 +2,7 @@ package de.dakror.villagedefense.settings;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +49,17 @@ public class Attributes
 	{
 		for (Attribute t : Attribute.values())
 			attr.put(t, t.getDefaultValue());
+	}
+	
+	public Attributes(JSONObject data) throws JSONException
+	{
+		this();
+		
+		JSONArray names = data.names();
+		for (int i = 0; i < data.length(); i++)
+		{
+			attr.put(Attribute.valueOf(names.getString(i)), (float) data.getDouble(names.getString(i)));
+		}
 	}
 	
 	public float get(Attribute t)

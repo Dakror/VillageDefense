@@ -411,10 +411,12 @@ public abstract class Struct extends Entity
 		JSONObject o = new JSONObject();
 		try
 		{
-			o.put("x", x);
-			o.put("y", y);
+			o.put("x", x / Tile.SIZE);
+			o.put("y", y / Tile.SIZE);
 			o.put("class", getClass().getName());
 			o.put("researches", researches);
+			o.put("attributes", attributes.getData());
+			o.put("resources", resources.getData());
 		}
 		catch (JSONException e)
 		{

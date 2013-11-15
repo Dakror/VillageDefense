@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +37,7 @@ public class World extends EventListener implements Drawable
 {
 	public int x, y, width, height;
 	
-	Chunk[][] chunks;
+	public Chunk[][] chunks;
 	
 	public Struct core;
 	
@@ -310,6 +311,27 @@ public class World extends EventListener implements Drawable
 			e.printStackTrace();
 		}
 		return baos.toByteArray();
+	}
+	
+	public void setData(int width, int height, byte[] data)
+	{
+		entities.clear();
+		projectiles.clear();
+		animations.clear();
+		
+		chunks = new Chunk[width][height];
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++)
+			{
+				chunks[i][j] = new Chunk(i, j);
+				
+				int len = Chunk.SIZE * Chunk.SIZE;
+				int start = (i * height + j) * len;
+				chunks[i][j].setData(Arrays.copyOfRange(data, start, start + len));
+				chunks[i][j].image = null;
+			}
+		}
 	}
 	
 	@Override
