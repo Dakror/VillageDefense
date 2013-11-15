@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.animation.Animation;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Villager;
@@ -39,8 +40,9 @@ public class World extends EventListener implements Drawable
 	
 	public Entity selectedEntity;
 	
-	public CopyOnWriteArrayList<Entity> entities = new CopyOnWriteArrayList<Entity>();
-	public CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<Projectile>();
+	public CopyOnWriteArrayList<Entity> entities = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
+	public CopyOnWriteArrayList<Animation> animations = new CopyOnWriteArrayList<>();
 	
 	public World()
 	{
@@ -131,6 +133,9 @@ public class World extends EventListener implements Drawable
 		
 		for (Projectile p : projectiles)
 			p.draw(g);
+		
+		for (Animation a : animations)
+			a.draw(g);
 		
 		g.translate(-x, -y);
 	}
@@ -226,10 +231,13 @@ public class World extends EventListener implements Drawable
 		for (Projectile p : projectiles)
 		{
 			p.update(tick);
-			if (p.isDead())
-			{
-				projectiles.remove(p);
-			}
+			if (p.isDead()) projectiles.remove(p);
+		}
+		
+		for (Animation a : animations)
+		{
+			a.update(tick);
+			if (a.isDead()) animations.remove(a);
 		}
 	}
 	
@@ -275,6 +283,11 @@ public class World extends EventListener implements Drawable
 	public void addProjectile(Projectile p)
 	{
 		projectiles.add(p);
+	}
+	
+	public void addAnimation(Animation a)
+	{
+		animations.add(a);
 	}
 	
 	@Override

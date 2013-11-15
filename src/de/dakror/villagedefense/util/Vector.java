@@ -95,4 +95,9 @@ public class Vector
 		}
 		return false;
 	}
+	
+	public float dot(Vector o)
+	{
+		return x * o.x + y * o.y;
+	}
 }

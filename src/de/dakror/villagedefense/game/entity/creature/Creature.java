@@ -94,16 +94,7 @@ public abstract class Creature extends Entity
 	{
 		if (!frozen && attributes.get(Attribute.SPEED) > 0 && target != null)
 		{
-			Vector pos = getPos();
-			Vector dif = target.clone().sub(pos);
-			
-			if (dif.getLength() < attributes.get(Attribute.SPEED))
-			{
-				target = null;
-				frame = 0;
-			}
-			
-			dif.setLength(attributes.get(Attribute.SPEED));
+			Vector dif = getVelocityVector();
 			
 			float angle = Math.round(dif.getAngleOnXAxis());
 			if (angle <= 135 && angle >= 45) dir = 0;
@@ -113,8 +104,24 @@ public abstract class Creature extends Entity
 			
 			if ((tick + randomOffset) % 10 == 0) frame++;
 			
-			setPos(pos.add(dif));
+			setPos(getPos().add(dif));
 		}
+	}
+	
+	public Vector getVelocityVector()
+	{
+		Vector pos = getPos();
+		Vector dif = target.clone().sub(pos);
+		
+		if (dif.getLength() < attributes.get(Attribute.SPEED))
+		{
+			target = null;
+			frame = 0;
+		}
+		
+		dif.setLength(attributes.get(Attribute.SPEED));
+		
+		return dif;
 	}
 	
 	public void setTarget(int x, int y)
