@@ -16,6 +16,10 @@ public class CFG
 	public static final File DIR = new File(System.getProperty("user.home") + "/.dakror/VillageDefense");
 	public static final int TICK_TIMEOUT = 33;
 	
+	// -- UniVersion -- //
+	public static final int VERSION = 2013111518;
+	public static final int PHASE = 1;
+	
 	static long time = 0;
 	
 	public static String USERNAME;

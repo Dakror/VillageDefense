@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
+import de.dakror.universion.UniVersion;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.ui.ClickEvent;
@@ -33,6 +34,9 @@ public class MenuLayer extends Layer
 		
 		Assistant.drawContainer(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size, false, new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(Game.currentGame.mouse), g);
 		g.drawImage(Game.getImage("icon/help.png"), Game.getWidth() - size, Game.getHeight() - size, size2, size2, Game.w);
+		
+		Assistant.drawString(UniVersion.prettyVersion(), 10, Game.getHeight() - 10, g, 24);
+		
 		drawComponents(g);
 	}
 	
