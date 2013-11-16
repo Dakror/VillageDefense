@@ -14,6 +14,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.projectile.Projectile;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
@@ -33,6 +34,7 @@ public abstract class Entity implements Drawable
 	protected Attributes attributes;
 	protected Resources resources;
 	public String description;
+	private int tick; // for cosine in drawEntity
 	
 	protected int randomOffset = (int) (Math.random() * 100);
 	
@@ -96,6 +98,8 @@ public abstract class Entity implements Drawable
 	@Override
 	public void update(int tick)
 	{
+		this.tick = tick;
+		
 		if (alpha > 0)
 		{
 			alpha = 1;
@@ -132,6 +136,11 @@ public abstract class Entity implements Drawable
 		if (this instanceof Struct) g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 		draw(g);
 		g.setComposite(c);
+		
+		if (this instanceof Struct && !((Struct) this).isWorking())
+		{
+			g.drawImage(Game.getImage("icon/sleep.png"), (int) (x + width * 0.75f), (int) (y - Tile.SIZE - Math.cos(tick / 10f) * Tile.SIZE / 4), 32, 32, Game.w);
+		}
 		
 		drawBump(g, true);
 	}

@@ -41,7 +41,7 @@ public class Smeltery extends Struct
 	{
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.IRONORE) >= 3 && Game.currentGame.resources.get(Resource.COAL) >= 4)
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.IRONORE) >= 3 && Game.currentGame.resources.get(Resource.COAL) >= 4 && working)
 		{
 			Game.currentGame.resources.add(Resource.IRONORE, -3);
 			Game.currentGame.resources.add(Resource.IRONINGOT, (int) attributes.get(Attribute.MINE_AMOUNT));
@@ -53,6 +53,9 @@ public class Smeltery extends Struct
 	public Resources getResourcesPerSecond()
 	{
 		Resources res = new Resources();
+		
+		if (!working) return res;
+		
 		res.set(Resource.IRONORE, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * -3);
 		res.set(Resource.COAL, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * -4);
 		res.set(Resource.IRONINGOT, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * attributes.get(Attribute.MINE_AMOUNT));

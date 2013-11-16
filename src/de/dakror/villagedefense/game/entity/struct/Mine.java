@@ -49,7 +49,7 @@ public class Mine extends Struct
 	{
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0)
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && working)
 		{
 			if (has(Researches.MINE_STONE)) Game.currentGame.resources.add(Resource.STONE, (int) attributes.get(Attribute.MINE_AMOUNT));
 			else if (has(Researches.MINE_IRON)) Game.currentGame.resources.add(Resource.IRONORE, (int) attributes.get(Attribute.MINE_AMOUNT));
@@ -60,6 +60,9 @@ public class Mine extends Struct
 	public Resources getResourcesPerSecond()
 	{
 		Resources res = new Resources();
+		
+		if (!working) return res;
+		
 		if (has(Researches.MINE_STONE)) res.set(Resource.STONE, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * attributes.get(Attribute.MINE_AMOUNT));
 		if (has(Researches.MINE_IRON)) res.set(Resource.IRONORE, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * attributes.get(Attribute.MINE_AMOUNT));
 		

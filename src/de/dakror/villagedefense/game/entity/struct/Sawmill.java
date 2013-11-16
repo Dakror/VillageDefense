@@ -42,6 +42,8 @@ public class Sawmill extends Struct
 	{
 		Resources res = new Resources();
 		
+		if (!working) return res;
+		
 		res.set(Resource.WOOD, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * (-attributes.get(Attribute.MINE_AMOUNT)));
 		res.set(Resource.PLANKS, Game.currentGame.getUPS2() / attributes.get(Attribute.MINE_SPEED) * attributes.get(Attribute.MINE_AMOUNT) * 2);
 		
@@ -61,7 +63,7 @@ public class Sawmill extends Struct
 	{
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) > 0)
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) > 0 && working)
 		{
 			Game.currentGame.resources.add(Resource.WOOD, (int) -attributes.get(Attribute.MINE_AMOUNT));
 			Game.currentGame.resources.add(Resource.PLANKS, (int) attributes.get(Attribute.MINE_AMOUNT) * 2);

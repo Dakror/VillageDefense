@@ -33,7 +33,7 @@ public class Zombie extends Creature
 		if (Math.random() <= 0.35) // 35% prob. spawning ghost
 		{
 			boolean left = Math.random() < 0.5;
-			Game.world.addEntity(new Ghost(left ? 0 : Game.getWidth(), Game.world.height / 2 - Tile.SIZE), false);
+			Game.world.addEntity(new Ghost(left ? 0 : Game.world.width, Game.world.height / 2 - Tile.SIZE), false);
 		}
 		super.onDeath();
 	}

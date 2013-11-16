@@ -117,12 +117,22 @@ public class HUDLayer extends Layer
 						
 						g.drawImage(Game.getImage("icon/bomb.png"), Game.getWidth() / 2 - 250, 82, 50, 50, Game.w);
 					}
+					
+					if (s.getResourcesPerSecond().size() > 0 || !s.isWorking())
+					{
+						Assistant.drawShadow(Game.getWidth() / 2 - 330, 72, 70, 70, g);
+						
+						if (new Rectangle(Game.getWidth() / 2 - 330, 72, 70, 70).contains(Game.currentGame.mouse)) Assistant.drawContainer(Game.getWidth() / 2 - 330, 72, 70, 70, s.isWorking(), false, g);
+						else Assistant.drawOutline(Game.getWidth() / 2 - 330, 72, 70, 70, s.isWorking(), g);
+						
+						g.drawImage(Game.getImage("icon/working.png"), Game.getWidth() / 2 - 320, 82, 50, 50, Game.w);
+					}
 				}
 			}
 			
 			// -- top bar -- //
 			int total = Game.getWidth() / 2 - 200;
-			boolean hover = new Rectangle(0, 0, total + 48, 80).contains(Game.currentGame.mouse);
+			boolean hover = new Rectangle(0, 0, total + 48, 80).contains(Game.currentGame.mouse) && Game.currentGame.state == 0;
 			
 			int w = total / (Resource.values().length);
 			int min = Game.getWidth() / (hover ? 5 : 10);
@@ -267,7 +277,7 @@ public class HUDLayer extends Layer
 			
 			if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct)
 			{
-				if (new Rectangle(Game.getWidth() / 2 - 260, 72, 70, 70).contains(e.getPoint()))
+				if (new Rectangle(Game.getWidth() / 2 - 260, 72, 70, 70).contains(e.getPoint())) // destroy
 				{
 					Resources res = ((Struct) Game.world.selectedEntity).getBuildingCosts();
 					
@@ -278,6 +288,10 @@ public class HUDLayer extends Layer
 					
 					Game.world.selectedEntity.kill();
 					Game.currentGame.killedCoreHouse = true; // hack to prevent StateLayer from funk around
+				}
+				else if (new Rectangle(Game.getWidth() / 2 - 330, 72, 70, 70).contains(e.getPoint())) // change working state
+				{
+					((Struct) Game.world.selectedEntity).setWorking(!((Struct) Game.world.selectedEntity).isWorking());
 				}
 			}
 		}

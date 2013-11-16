@@ -48,6 +48,7 @@ public abstract class Struct extends Entity
 	public CopyOnWriteArrayList<Component> components = new CopyOnWriteArrayList<>();
 	protected ArrayList<Researches> researches = new ArrayList<>();
 	protected Class<?> researchClass;
+	protected boolean working;
 	
 	public Struct(int x, int y, int width, int height)
 	{
@@ -60,6 +61,7 @@ public abstract class Struct extends Entity
 		researchClass = getClass();
 		
 		guiSize = new Dimension(250, 250);
+		working = true;
 	}
 	
 	@Override
@@ -400,6 +402,16 @@ public abstract class Struct extends Entity
 		Collections.sort(targetable, new TowerTargetComparator());
 		
 		return targetable;
+	}
+	
+	public boolean isWorking()
+	{
+		return working;
+	}
+	
+	public void setWorking(boolean working)
+	{
+		this.working = working;
 	}
 	
 	public void shoot(int targetIndex)
