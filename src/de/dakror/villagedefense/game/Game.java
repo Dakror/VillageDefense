@@ -65,6 +65,8 @@ public class Game extends EventListener
 	public int frames;
 	public long start;
 	
+	public int worldCreated; // in seconds
+	
 	boolean debug;
 	
 	boolean started;
@@ -140,6 +142,7 @@ public class Game extends EventListener
 		
 		world = new World();
 		world.init();
+		worldCreated = (int) (System.currentTimeMillis() / 1000);
 		state = 0;
 		
 		addLayer(new BuildStructLayer());

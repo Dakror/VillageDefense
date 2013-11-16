@@ -88,8 +88,8 @@ public class LoadGameLayer extends Layer
 			
 			if (eY < saves.length)
 			{
-				Game.currentGame.fadeTo(1, 0.05f);
 				SaveHandler.loadSave(saves[eY]);
+				Game.currentGame.fadeTo(1, 0.05f);
 				
 				ml.setEnabled(true);
 				Game.currentGame.layers.remove(this);

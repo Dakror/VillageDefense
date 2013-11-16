@@ -6,14 +6,11 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.net.URL;
-
-import javax.swing.JOptionPane;
 
 import de.dakror.universion.UniVersion;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.util.Assistant;
+import de.dakror.villagedefense.util.SaveHandler;
 
 /**
  * @author Dakror
@@ -77,20 +74,7 @@ public class StateLayer extends Layer
 			{
 				if (Game.currentGame.scoreSent) return;
 				
-				try
-				{
-					String response = Assistant.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + CFG.USERNAME + "&SCORE=" + Game.currentGame.getPlayerScore()));
-					if (!response.equals("false"))
-					{
-						JOptionPane.showMessageDialog(null, "Dein Punktestand wurde erfolgreich in der Bestenliste platziert.", "Platzieren erfolgreich!", JOptionPane.INFORMATION_MESSAGE);
-						Game.currentGame.scoreSent = true;
-					}
-					else JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
-				}
-				catch (Exception e1)
-				{
-					JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!\nMöglicherweise bist du nicht mit dem Internet verbunden.", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
-				}
+				SaveHandler.sendScore();
 			}
 			else
 			{

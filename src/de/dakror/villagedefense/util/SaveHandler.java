@@ -1,8 +1,11 @@
 package de.dakror.villagedefense.util;
 
 import java.awt.Point;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +46,7 @@ public class SaveHandler
 			
 			JSONObject o = new JSONObject();
 			
+			o.put("created", Game.currentGame.worldCreated);
 			o.put("width", Game.world.chunks.length);
 			o.put("height", Game.world.chunks[0].length);
 			o.put("tile", new BASE64Encoder().encode(Compressor.compressRow(Game.world.getData())));
@@ -63,7 +67,7 @@ public class SaveHandler
 			Compressor.compressFile(save, o.toString());
 			// Assistant.setFileContent(new File(save.getPath() + ".debug"), o.toString());
 			Game.currentGame.state = 3;
-			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erflogreich", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 		}
 		catch (Exception e)
 		{
@@ -78,6 +82,8 @@ public class SaveHandler
 			JSONObject o = new JSONObject(Compressor.decompressFile(f));
 			Game.world.setData(o.getInt("width"), o.getInt("height"), Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
 			Game.currentGame.resources = new Resources(o.getJSONObject("resources"));
+			
+			if (o.has("created")) Game.currentGame.worldCreated = o.getInt("created");
 			
 			JSONArray researches = o.getJSONArray("researches");
 			Game.currentGame.researches = new ArrayList<>();
@@ -167,5 +173,70 @@ public class SaveHandler
 				return pathname.getName().endsWith(".save");
 			}
 		});
+	}
+	
+	public static boolean isWorldScorePosted(int worldCreated) throws Exception
+	{
+		File f = new File(CFG.DIR, "scores");
+		try
+		{
+			if (!f.exists()) return false;
+			
+			BufferedReader br = new BufferedReader(new FileReader(f));
+			String line = "";
+			while ((line = br.readLine()) != null)
+			{
+				if (Integer.parseInt(line) == worldCreated)
+				{
+					br.close();
+					return true;
+				}
+			}
+			br.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static void addWorldScorePosted(int worldCreated)
+	{
+		File f = new File(CFG.DIR, "scores");
+		try
+		{
+			f.createNewFile();
+			Assistant.setFileContent(f, Assistant.getFileContent(f) + worldCreated + "\r\n");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void sendScore()
+	{
+		try
+		{
+			if (isWorldScorePosted(Game.currentGame.worldCreated))
+			{
+				JOptionPane.showMessageDialog(null, "Du hast deinen Punktestand auf dieser Karte bereits in der Bestenliste platziert!", "Bereits platziert!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			String response = Assistant.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + CFG.USERNAME + "&SCORE=" + Game.currentGame.getPlayerScore()));
+			if (!response.equals("false"))
+			{
+				JOptionPane.showMessageDialog(null, "Dein Punktestand wurde erfolgreich in der Bestenliste platziert.", "Platzieren erfolgreich!", JOptionPane.INFORMATION_MESSAGE);
+				addWorldScorePosted(Game.currentGame.worldCreated);
+				Game.currentGame.scoreSent = true;
+			}
+			else JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
+		}
+		catch (Exception e1)
+		{
+			JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!\nMöglicherweise bist du nicht mit dem Internet verbunden.", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
