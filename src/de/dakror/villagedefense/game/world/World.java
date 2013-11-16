@@ -130,18 +130,26 @@ public class World extends EventListener implements Drawable
 	public void draw(Graphics2D g)
 	{
 		g.translate(x, y);
+		Rectangle visible = new Rectangle(-x, -y, Game.getWidth(), Game.getHeight());
 		try
 		{
 			for (int i = 0; i < chunks.length; i++)
+			{
 				for (int j = 0; j < chunks[0].length; j++)
-					chunks[i][j].draw(g);
+				{
+					if (new Rectangle(i * Chunk.SIZE * Tile.SIZE, j * Chunk.SIZE * Tile.SIZE, Chunk.SIZE * Tile.SIZE, Chunk.SIZE * Tile.SIZE).intersects(visible)) chunks[i][j].draw(g);
+				}
+			}
 		}
 		catch (NullPointerException e)
 		{
 			return;
 		}
+		
 		for (Entity e : entities)
-			e.drawEntity(g);
+		{
+			if (e.getArea(false).intersects(visible)) e.drawEntity(g);
+		}
 		
 		for (Projectile p : projectiles)
 			p.draw(g);

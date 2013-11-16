@@ -17,7 +17,7 @@ public class NewGameLayer extends Layer
 	int height = 90;
 	int h;
 	String[] sizes = { "Normal", "Groß", "Riesig" };
-	int[][] res = { { 1920, 1080 }, { 3072, 1728 }, { 5120, 2880 } };
+	int[][] res = { { 1920, 1088 }, { 3072, 1728 }, { 5120, 2880 } };
 	
 	public NewGameLayer(MenuLayer ml)
 	{
@@ -74,6 +74,7 @@ public class NewGameLayer extends Layer
 			Rectangle r = new Rectangle(Game.getWidth() / 8 * 3, Game.getHeight() / 4 + 100 + height * i, Game.getWidth() / 4, height - 10);
 			if (r.contains(e.getPoint()))
 			{
+				Game.currentGame.skipDraw = true;
 				Game.currentGame.startGame(res[i][0], res[i][1]);
 				Game.currentGame.state = 3;
 				WaveManager.nextWave = WaveManager.waveTimer;

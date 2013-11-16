@@ -71,6 +71,7 @@ public class Game extends EventListener
 	
 	boolean started;
 	public boolean scoreSent;
+	public boolean skipDraw = false;
 	
 	/**
 	 * 0 = playing<br>
@@ -207,8 +208,8 @@ public class Game extends EventListener
 		
 		g.clearRect(0, 0, getWidth(), getHeight());
 		
-		world.draw(g);
-		
+		if (!skipDraw) world.draw(g);
+		else skipDraw = false;
 		
 		for (Layer l : layers)
 			l.draw(g);

@@ -41,7 +41,7 @@ public class BuildStructLayer extends Layer
 				
 				canPlace = true;
 				
-				int centerY = (int) Math.floor(Game.world.height / 2f);
+				int centerY = Assistant.round(Math.round(Game.world.height / 2f), Tile.SIZE);
 				
 				for (int i = Assistant.round(bump.x, Tile.SIZE) + Game.world.x % Tile.SIZE; i < bump.x + bump.width + Game.world.x % Tile.SIZE; i += Tile.SIZE)
 				{
@@ -53,6 +53,7 @@ public class BuildStructLayer extends Layer
 						{
 							blocked = true;
 						}
+						
 						if (j == centerY + Tile.SIZE + Game.world.y || j == centerY + Game.world.y)
 						{
 							blocked = !Game.currentGame.activeStruct.canPlaceOnWay();
