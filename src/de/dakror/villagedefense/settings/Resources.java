@@ -23,7 +23,7 @@ public class Resources
 		COAL("Kohle", 3, 1, WOOD.getGoldValue() * 2, true),
 		IRONORE("Eisenerz", 0, 1, 3, true),
 		// GOLDORE("Golderz", 2, 1, 4, true),
-		IRONINGOT("Eisen", 0, 2, 7, true),
+		IRONINGOT("Eisen", 0, 2, Math.round((COAL.getGoldValue() * 3 + IRONORE.getGoldValue() * 4) * 0.75f), true),
 		// GOLDINGOT("Gold", 1, 2, 8, true),
 		
 		;

@@ -51,9 +51,9 @@ public class Barricade extends Struct
 	}
 	
 	@Override
-	public void onSpawn()
+	public void onSpawn(boolean initial)
 	{
-		super.onSpawn();
+		super.onSpawn(initial);
 		for (Entity e : Game.world.entities)
 		{
 			if (e instanceof Creature) ((Creature) e).lookupTargetEntity();
@@ -65,6 +65,6 @@ public class Barricade extends Struct
 	{}
 	
 	@Override
-	public void onUpgrade(Researches research)
+	public void onUpgrade(Researches research, boolean inititial)
 	{}
 }

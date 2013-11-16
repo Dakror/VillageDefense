@@ -27,7 +27,7 @@ public class Forester extends Creature
 	}
 	
 	@Override
-	public void onSpawn()
+	public void onSpawn(boolean initial)
 	{
 		Game.currentGame.resources.add(Resource.PEOPLE, 1);
 	}
@@ -48,7 +48,7 @@ public class Forester extends Creature
 		{
 			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
 			{
-				if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity(new Tree(Assistant.round(Math.round(getPos().x), Tile.SIZE) / Tile.SIZE, Assistant.round(Math.round(getPos().y), Tile.SIZE) / Tile.SIZE, true));
+				if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity(new Tree(Assistant.round(Math.round(getPos().x), Tile.SIZE) / Tile.SIZE, Assistant.round(Math.round(getPos().y), Tile.SIZE) / Tile.SIZE, true), false);
 				setTarget(lookupPlantTarget());
 			}
 		}

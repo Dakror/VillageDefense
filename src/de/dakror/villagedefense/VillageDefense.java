@@ -1,13 +1,11 @@
 package de.dakror.villagedefense;
 
-import java.io.File;
-
 import javax.swing.UIManager;
 
-import de.dakror.reporter.Reporter;
 import de.dakror.universion.UniVersion;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.CFG;
+import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -24,10 +22,10 @@ public class VillageDefense
 		{
 			e.printStackTrace();
 		}
-		UniVersion.offline = true;// !Assistant.isInternetReachable();
+		UniVersion.offline = !Assistant.isInternetReachable();
 		
 		UniVersion.init(VillageDefense.class, CFG.VERSION, CFG.PHASE);
-		if (!UniVersion.offline) Reporter.init(new File(CFG.DIR, "log"));
+		// if (!UniVersion.offline) Reporter.init(new File(CFG.DIR, "log"));
 		
 		new Game();
 		

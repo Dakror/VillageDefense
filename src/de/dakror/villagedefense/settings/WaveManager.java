@@ -119,7 +119,7 @@ public class WaveManager
 									int y = Game.world.height / 2 - e.getHeight() / 2;
 									e.setY(y);
 									
-									Game.world.addEntity2(e);
+									Game.world.addEntity2(e, false);
 									
 									if (left) leftLength++;
 									else rightLength++;

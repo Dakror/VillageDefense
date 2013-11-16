@@ -203,8 +203,9 @@ public abstract class Struct extends Entity
 	}
 	
 	@Override
-	public void onSpawn()
+	public void onSpawn(boolean initial)
 	{
+		if (initial) return;
 		placeGround();
 		requestVillagersToCome(buildingCosts.get(Resource.PEOPLE));
 	}
@@ -359,6 +360,12 @@ public abstract class Struct extends Entity
 	public void add(Researches res)
 	{
 		researches.add(res);
+		onUpgrade(res, true);
+	}
+	
+	public void clearResearches()
+	{
+		researches.clear();
 	}
 	
 	public Resources getResourcesPerSecond()
@@ -427,5 +434,5 @@ public abstract class Struct extends Entity
 	
 	protected abstract void onMinedUp();
 	
-	public abstract void onUpgrade(Researches research);
+	public abstract void onUpgrade(Researches research, boolean initial);
 }

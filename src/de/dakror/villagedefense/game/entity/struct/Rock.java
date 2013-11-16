@@ -46,6 +46,6 @@ public class Rock extends Struct
 	{}
 	
 	@Override
-	public void onUpgrade(Researches research)
+	public void onUpgrade(Researches research, boolean inititial)
 	{}
 }

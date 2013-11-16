@@ -178,15 +178,15 @@ public class World extends EventListener implements Drawable
 		}
 		
 		core = new CoreHouse(x - 2, y - 3);
-		addEntity(core);
+		addEntity(core, false);
 		
-		addEntity(new House(x - 7, y - 8));
-		addEntity(new School(x + 1, y - 12));
+		addEntity(new House(x - 7, y - 8), false);
+		addEntity(new School(x + 1, y - 12), false);
 		
-		addEntity(new ArrowTower(x - 3, y));
-		addEntity(new ArrowTower(x - 3, y - 3));
-		addEntity(new ArrowTower(x + 1, y));
-		addEntity(new ArrowTower(x + 1, y - 3));
+		addEntity(new ArrowTower(x - 3, y), false);
+		addEntity(new ArrowTower(x - 3, y - 3), false);
+		addEntity(new ArrowTower(x + 1, y), false);
+		addEntity(new ArrowTower(x + 1, y - 3), false);
 		
 		int heightMalus = 3;
 		
@@ -198,7 +198,7 @@ public class World extends EventListener implements Drawable
 			
 			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
 			if (Math.abs(y1 - y) < 2) continue;
-			addEntity(new Rock(x1, y1));
+			addEntity(new Rock(x1, y1), false);
 		}
 		
 		int trees = (int) (Math.random() * 10) + 10;
@@ -209,7 +209,7 @@ public class World extends EventListener implements Drawable
 			
 			int y1 = (int) (Math.random() * (height / Tile.SIZE - heightMalus * 4)) + heightMalus;
 			if (Math.abs(y1 - y + 2) < 3) continue;
-			addEntity(new Tree(x1, y1, false));
+			addEntity(new Tree(x1, y1, false), false);
 		}
 	}
 	
@@ -251,14 +251,14 @@ public class World extends EventListener implements Drawable
 				chunks[i][j].render();
 	}
 	
-	public boolean addEntity(Entity e)
+	public boolean addEntity(Entity e, boolean initial)
 	{
 		for (Entity entity : entities)
 		{
 			if (e.getBump(true).intersects(entity.getBump(true))) return false;
 		}
 		entities.add(e);
-		e.onSpawn();
+		e.onSpawn(initial);
 		
 		render();
 		
@@ -275,9 +275,9 @@ public class World extends EventListener implements Drawable
 		return true;
 	}
 	
-	public void addEntity2(Entity e)
+	public void addEntity2(Entity e, boolean initial)
 	{
-		e.onSpawn();
+		e.onSpawn(initial);
 		entities.add(e);
 		
 		render();

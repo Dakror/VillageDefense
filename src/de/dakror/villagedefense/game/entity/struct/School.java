@@ -95,6 +95,6 @@ public class School extends Struct
 	}
 	
 	@Override
-	public void onUpgrade(Researches research)
+	public void onUpgrade(Researches research, boolean inititial)
 	{}
 }

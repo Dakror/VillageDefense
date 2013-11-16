@@ -85,11 +85,15 @@ public class LoadGameLayer extends Layer
 		else if (new Rectangle(Game.getWidth() / 4 + 100, Game.getHeight() / 8 + 120, Game.getWidth() / 2 - 200, h).contains(e.getPoint()))
 		{
 			int eY = Assistant.round(e.getY() - Game.getHeight() / 8 + 120 - y, height) / height - 3;
-			SaveHandler.loadSave(saves[eY]);
 			
-			ml.setEnabled(true);
-			Game.currentGame.layers.remove(this);
-			Game.currentGame.alpha = 1;
+			if (eY < saves.length)
+			{
+				Game.currentGame.fadeTo(1, 0.05f);
+				SaveHandler.loadSave(saves[eY]);
+				
+				ml.setEnabled(true);
+				Game.currentGame.layers.remove(this);
+			}
 		}
 	}
 	

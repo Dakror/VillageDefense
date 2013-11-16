@@ -23,7 +23,7 @@ public class Villager extends Creature
 	}
 	
 	@Override
-	public void onSpawn()
+	public void onSpawn(boolean initial)
 	{
 		Game.currentGame.resources.add(Resource.PEOPLE, 1);
 	}

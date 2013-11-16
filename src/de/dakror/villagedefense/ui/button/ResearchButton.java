@@ -68,7 +68,7 @@ public class ResearchButton extends Button
 					
 					pool.add(research);
 					contains = true;
-					struct.onUpgrade(research);
+					struct.onUpgrade(research, false);
 				}
 			}
 		});

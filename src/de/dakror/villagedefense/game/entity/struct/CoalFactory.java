@@ -65,7 +65,7 @@ public class CoalFactory extends Struct
 	{}
 	
 	@Override
-	public void onUpgrade(Researches research)
+	public void onUpgrade(Researches research, boolean inititial)
 	{}
 	
 	@Override

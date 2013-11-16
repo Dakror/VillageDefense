@@ -65,7 +65,11 @@ public abstract class Creature extends Entity
 	@Override
 	public void tick(int tick)
 	{
-		if (targetEntity != null && !Game.world.entities.contains(targetEntity)) targetEntity = null;
+		if (targetEntity != null && !Game.world.entities.contains(targetEntity))
+		{
+			alpha = 1;
+			targetEntity = null;
+		}
 		
 		move(tick);
 		
@@ -123,8 +127,7 @@ public abstract class Creature extends Entity
 				target = null;
 				frame = 0;
 			}
-			
-			dif.setLength(attributes.get(Attribute.SPEED));
+			else dif.setLength(attributes.get(Attribute.SPEED));
 			
 			return dif;
 		}
@@ -200,6 +203,11 @@ public abstract class Creature extends Entity
 		return target == null ? getPos() : target;
 	}
 	
+	public void setSpawnPoint(Point point)
+	{
+		spawnPoint = point;
+	}
+	
 	public void setFrozen(boolean frozen)
 	{
 		this.frozen = frozen;
@@ -264,7 +272,7 @@ public abstract class Creature extends Entity
 	}
 	
 	@Override
-	public void onSpawn()
+	public void onSpawn(boolean initial)
 	{}
 	
 	@Override
@@ -283,6 +291,7 @@ public abstract class Creature extends Entity
 			o.put("class", getClass().getName());
 			o.put("attributes", attributes.getData());
 			o.put("resources", resources.getData());
+			o.put("alpha", alpha);
 		}
 		catch (JSONException e)
 		{

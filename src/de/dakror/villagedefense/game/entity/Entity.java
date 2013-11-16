@@ -96,16 +96,19 @@ public abstract class Entity implements Drawable
 	@Override
 	public void update(int tick)
 	{
-		alpha = 1;
-		
-		for (Entity e : Game.world.entities)
+		if (alpha > 0)
 		{
-			if (e.equals(this)) continue;
+			alpha = 1;
 			
-			if (intersects(e) && e.alpha == 1 && e.y + e.height < y + height)
+			for (Entity e : Game.world.entities)
 			{
-				alpha = 0.6f;
-				break;
+				if (e.equals(this)) continue;
+				
+				if (intersects(e) && e.alpha == 1 && e.y + e.height < y + height)
+				{
+					alpha = 0.6f;
+					break;
+				}
 			}
 		}
 		
@@ -260,9 +263,19 @@ public abstract class Entity implements Drawable
 		return attributes;
 	}
 	
+	public void setAttributes(Attributes attributes)
+	{
+		this.attributes = attributes;
+	}
+	
 	public Resources getResources()
 	{
 		return resources;
+	}
+	
+	public void setResources(Resources resources)
+	{
+		this.resources = resources;
 	}
 	
 	public void dealDamage(int amount, Object source)
@@ -299,7 +312,7 @@ public abstract class Entity implements Drawable
 	public abstract JSONObject getData();
 	
 	// -- abstract event methods -- //
-	public abstract void onSpawn();
+	public abstract void onSpawn(boolean initial);
 	
 	protected abstract void onDeath();
 }

@@ -185,6 +185,8 @@ public class HUDLayer extends Layer
 			
 			g.drawImage(Game.getImage("icon/save.png"), Game.getWidth() - 145, 15, 50, 50, Game.w);
 			
+			if (WaveManager.nextWave == 0) Assistant.drawShadow(Game.getWidth() - 155, 5, 70, 70, g);
+			
 			// -- pause -- //
 			if (!new Rectangle(Game.getWidth() - 75, 5, 70, 70).contains(Game.currentGame.mouse)) Assistant.drawContainer(Game.getWidth() - 75, 5, 70, 70, false, false, g);
 			else Assistant.drawContainer(Game.getWidth() - 80, 0, 80, 80, false, true, g);
@@ -285,7 +287,7 @@ public class HUDLayer extends Layer
 	public void mouseReleased(MouseEvent e)
 	{
 		super.mouseReleased(e);
-		if (new Rectangle(Game.getWidth() - 155, 5, 70, 70).contains(e.getPoint())) // save
+		if (new Rectangle(Game.getWidth() - 155, 5, 70, 70).contains(e.getPoint()) && WaveManager.nextWave != 0) // save
 		{
 			SaveHandler.saveGame();
 		}

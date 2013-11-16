@@ -1,10 +1,13 @@
 package de.dakror.villagedefense.util;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.FileFilter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
@@ -15,6 +18,12 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.creature.Creature;
+import de.dakror.villagedefense.game.entity.creature.Forester;
+import de.dakror.villagedefense.game.entity.creature.Woodsman;
+import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
@@ -44,11 +53,15 @@ public class SaveHandler
 			
 			JSONArray entities = new JSONArray();
 			for (Entity e : Game.world.entities)
+			{
+				if ((e instanceof Forester) || (e instanceof Woodsman)) continue; // don't save them, because they get spawned by the house upgrades
+				
 				entities.put(e.getData());
+			}
 			o.put("entities", entities);
 			
 			Compressor.compressFile(save, o.toString());
-			Assistant.setFileContent(new File(save.getPath() + ".debug"), o.toString());
+			// Assistant.setFileContent(new File(save.getPath() + ".debug"), o.toString());
 			Game.currentGame.state = 3;
 			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erflogreich", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -68,19 +81,72 @@ public class SaveHandler
 			
 			JSONArray researches = o.getJSONArray("researches");
 			Game.currentGame.researches = new ArrayList<>();
-			
-			WaveManager.wave = o.getInt("wave");
-			WaveManager.nextWave = o.getInt("time");
 			for (int i = 0; i < researches.length(); i++)
 				Game.currentGame.researches.add(Researches.valueOf(researches.getString(i)));
 			
+			WaveManager.wave = o.getInt("wave");
+			WaveManager.nextWave = o.getInt("time");
+			
 			JSONArray entities = o.getJSONArray("entities");
+			
+			HashMap<Integer, Creature> creaturesWithTargets = new HashMap<>();
+			
 			for (int i = 0; i < entities.length(); i++)
 			{
 				JSONObject e = entities.getJSONObject(i);
 				Entity entity = (Entity) Class.forName(e.getString("class")).getConstructor(int.class, int.class).newInstance(e.getInt("x"), e.getInt("y"));
+				entity.setAttributes(new Attributes(e.getJSONObject("attributes")));
+				entity.setResources(new Resources(e.getJSONObject("resources")));
 				
-				Game.world.addEntity2(entity);
+				if (entity instanceof Creature)
+				{
+					Creature c = (Creature) entity;
+					c.alpha = (float) e.getDouble("alpha");
+					c.setSpawnPoint(new Point(e.getInt("spawnX"), e.getInt("spawnY")));
+					
+					if (!e.isNull("targetX") || !e.isNull("targetEntity")) creaturesWithTargets.put(i, c);
+					continue;
+				}
+				else if (entity instanceof Struct)
+				{
+					JSONArray researches2 = e.getJSONArray("researches");
+					
+					((Struct) entity).clearResearches();
+					for (int j = 0; j < researches2.length(); j++)
+						((Struct) entity).add(Researches.valueOf(researches2.getString(j)));
+				}
+				
+				Game.world.addEntity2(entity, true);
+			}
+			
+			// -- set creatures' targets
+			for (Iterator<Integer> iterator = creaturesWithTargets.keySet().iterator(); iterator.hasNext();)
+			{
+				int index = iterator.next();
+				JSONObject e = entities.getJSONObject(index);
+				
+				Entity entity = creaturesWithTargets.get(index);
+				
+				if (!e.isNull("targetEntity"))
+				{
+					JSONObject tE = e.getJSONObject("targetEntity");
+					for (Entity e1 : Game.world.entities)
+					{
+						int x = (int) (e1 instanceof Creature ? e1.getX() : e1.getX() / Tile.SIZE);
+						int y = (int) (e1 instanceof Creature ? e1.getY() : e1.getY() / Tile.SIZE);
+						if (e1.getClass().getName().equals(tE.getString("class")) && tE.getInt("x") == x && tE.getInt("y") == y)
+						{
+							((Creature) entity).setTarget(e1);
+							continue;
+						}
+					}
+				}
+				if (!e.isNull("targetX"))
+				{
+					((Creature) entity).setTarget(e.getInt("targetX"), e.getInt("targetY"));
+				}
+				
+				Game.world.addEntity2(entity, true);
 			}
 			
 			Game.currentGame.state = 3;

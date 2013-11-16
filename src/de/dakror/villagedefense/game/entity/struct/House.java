@@ -44,10 +44,11 @@ public class House extends Struct
 	}
 	
 	@Override
-	public void onSpawn()
+	public void onSpawn(boolean initial)
 	{
-		super.onSpawn();
-		Game.world.addEntity2(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE));
+		if (initial) return;
+		super.onSpawn(initial);
+		Game.world.addEntity2(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE), false);
 	}
 	
 	@Override
@@ -65,23 +66,22 @@ public class House extends Struct
 	{}
 	
 	@Override
-	public void onUpgrade(Researches research)
+	public void onUpgrade(Researches research, boolean inititial)
 	{
 		if (research == Researches.HOUSE_FORESTER)
 		{
-			tx = 9;
 			ty = 13;
+			tx = 9;
 			width = 5 * Tile.SIZE;
 			height = 10 * Tile.SIZE;
-			y -= 5 * Tile.SIZE;
+			if (!inititial) y -= 5 * Tile.SIZE;
 			setBump(new Rectangle2D.Float(0.25f, 7f, 4.5f, 3f));
 			image = null;
-			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE));
+			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE), false);
 		}
 		else if (research == Researches.HOUSE_WOODSMAN)
 		{
-			
-			Game.world.addEntity2(new Woodsman((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE));
+			Game.world.addEntity2(new Woodsman((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE), false);
 		}
 	}
 }

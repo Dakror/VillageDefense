@@ -135,6 +135,9 @@ public class Game extends EventListener
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
 		
+		// for (Resource r : Resource.values())
+		// resources.set(r, 99999);
+		
 		world = new World();
 		world.init();
 		state = 0;
@@ -335,7 +338,6 @@ public class Game extends EventListener
 		if (state == 0)
 		{
 			world.mouseMoved(e);
-			
 			
 			if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mouseMoved(e);
 		}

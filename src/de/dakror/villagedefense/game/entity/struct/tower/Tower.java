@@ -108,7 +108,7 @@ public abstract class Tower extends Struct
 	}
 	
 	@Override
-	public void onUpgrade(Researches research)
+	public void onUpgrade(Researches research, boolean inititial)
 	{
 		if (research == Researches.TOWER_DOUBLESHOT)
 		{
