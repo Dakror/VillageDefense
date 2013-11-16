@@ -312,6 +312,7 @@ public abstract class Struct extends Entity
 		if (pressed && guiPoint == null && guiSize != null)
 		{
 			guiPoint = e.getPoint();
+			guiPoint.translate(Game.world.x, Game.world.y);
 			if (guiPoint.x - guiSize.width / 2 < 0) guiPoint.x = guiSize.width / 2;
 			if (guiPoint.y - guiSize.height / 2 < 0) guiPoint.y = guiSize.height / 2;
 			if (guiPoint.x + guiSize.width / 2 > Game.getWidth()) guiPoint.x = Game.getWidth() - guiSize.width / 2;
@@ -393,7 +394,7 @@ public abstract class Struct extends Entity
 			Creature c = (Creature) e;
 			if (!c.isHostile()) continue;
 			
-			if (getAttackArea().intersects(e.getArea())) targetable.add(c);
+			if (getAttackArea().intersects(e.getArea(false))) targetable.add(c);
 		}
 		
 		Collections.sort(targetable, new TowerTargetComparator());

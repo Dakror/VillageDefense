@@ -50,14 +50,18 @@ public class World extends EventListener implements Drawable
 	public World()
 	{
 		x = y = 0;
-		width = Game.getWidth();
-		height = Game.getHeight();
-		// width = (int) Math.ceil(Game.getWidth() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
-		// height = (int) Math.ceil(Game.getHeight() / (float) (Chunk.SIZE * Tile.SIZE)) * Chunk.SIZE * Tile.SIZE;
 	}
 	
-	public void init()
+	public void init(int width, int height)
 	{
+		entities.clear();
+		animations.clear();
+		projectiles.clear();
+		
+		this.width = width;
+		this.height = height;
+		x = -(width - Game.getWidth()) / 2;
+		y = -(height - Game.getHeight()) / 2;
 		chunks = new Chunk[(int) Math.ceil(width / (float) (Chunk.SIZE * Tile.SIZE))][(int) Math.ceil(height / (float) (Chunk.SIZE * Tile.SIZE))];
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
@@ -126,11 +130,16 @@ public class World extends EventListener implements Drawable
 	public void draw(Graphics2D g)
 	{
 		g.translate(x, y);
-		
-		for (int i = 0; i < chunks.length; i++)
-			for (int j = 0; j < chunks[0].length; j++)
-				chunks[i][j].draw(g);
-		
+		try
+		{
+			for (int i = 0; i < chunks.length; i++)
+				for (int j = 0; j < chunks[0].length; j++)
+					chunks[i][j].draw(g);
+		}
+		catch (NullPointerException e)
+		{
+			return;
+		}
 		for (Entity e : entities)
 			e.drawEntity(g);
 		

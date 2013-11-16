@@ -3,6 +3,7 @@ package de.dakror.villagedefense.game.entity.struct;
 import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -38,7 +39,7 @@ public class Rock extends Struct
 	@Override
 	public Entity clone()
 	{
-		return new Rock((int) x, (int) y);
+		return new Rock((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override

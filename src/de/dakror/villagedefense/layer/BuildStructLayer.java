@@ -31,20 +31,21 @@ public class BuildStructLayer extends Layer
 		{
 			if (Game.currentGame.activeStruct != null)
 			{
-				Game.currentGame.activeStruct.setX(Assistant.round(Game.currentGame.mouse.x - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE)/* - Game.currentGame.activeStruct.getBump(false).x - (Game.currentGame.activeStruct.getBump(true).width % Tile.SIZE) */);
-				Game.currentGame.activeStruct.setY(Assistant.round(Game.currentGame.mouse.y - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE)/* - Game.currentGame.activeStruct.getBump(false).y - (Game.currentGame.activeStruct.getBump(true).height % Tile.SIZE) */);
+				Game.currentGame.activeStruct.setX(Assistant.round(Game.currentGame.mouse.x - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+				Game.currentGame.activeStruct.setY(Assistant.round(Game.currentGame.mouse.y - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 				Game.currentGame.activeStruct.setClicked(true);
 				
 				Rectangle bump = Game.currentGame.activeStruct.getBump(true);
+				bump.translate(-Game.world.x % Tile.SIZE, -Game.world.y % Tile.SIZE);
 				int malus = 5;
 				
 				canPlace = true;
 				
-				int centerY = (int) Math.floor(Game.world.height / 2f / Tile.SIZE);
+				int centerY = (int) Math.floor(Game.world.height / 2f);
 				
-				for (int i = Assistant.round(bump.x + Game.world.x, Tile.SIZE); i < bump.x + bump.width + Game.world.x; i += Tile.SIZE)
+				for (int i = Assistant.round(bump.x, Tile.SIZE) + Game.world.x % Tile.SIZE; i < bump.x + bump.width + Game.world.x % Tile.SIZE; i += Tile.SIZE)
 				{
-					for (int j = Assistant.round(bump.y + Game.world.y, Tile.SIZE); j < bump.y + bump.height + Game.world.y; j += Tile.SIZE)
+					for (int j = Assistant.round(bump.y, Tile.SIZE) + Game.world.y % Tile.SIZE; j < bump.y + bump.height + Game.world.y % Tile.SIZE; j += Tile.SIZE)
 					{
 						boolean blocked = false;
 						
@@ -52,15 +53,14 @@ public class BuildStructLayer extends Layer
 						{
 							blocked = true;
 						}
-						
-						if (j == centerY * Tile.SIZE + Tile.SIZE || j == centerY * Tile.SIZE)
+						if (j == centerY + Tile.SIZE + Game.world.y || j == centerY + Game.world.y)
 						{
 							blocked = !Game.currentGame.activeStruct.canPlaceOnWay();
 						}
 						
 						for (Entity e : Game.world.entities)
 						{
-							if (e.getBump(true).intersects(i, j, Tile.SIZE, Tile.SIZE))
+							if (e.getBump(true).intersects(i - Game.world.x, j - Game.world.y, Tile.SIZE, Tile.SIZE))
 							{
 								blocked = true;
 								break;
@@ -96,7 +96,7 @@ public class BuildStructLayer extends Layer
 		super.mousePressed(e);
 		if (Game.currentGame.activeStruct != null && e.getButton() == 1)
 		{
-			if (canPlace && e.getY() < Game.getHeight() - 100 && e.getY() > 80)
+			if (canPlace)
 			{
 				Game.currentGame.activeStruct.setClicked(false);
 				ArrayList<Resource> filled = Game.currentGame.activeStruct.getBuildingCosts().getFilled();
@@ -105,7 +105,10 @@ public class BuildStructLayer extends Layer
 					if (!r.isUsable()) continue;
 					Game.currentGame.resources.add(r, -Game.currentGame.activeStruct.getBuildingCosts().get(r));
 				}
-				Game.world.addEntity(Game.currentGame.activeStruct, false);
+				
+				Game.currentGame.activeStruct.translate(-Game.world.x, -Game.world.y);
+				
+				Game.world.addEntity(Game.currentGame.activeStruct.clone(), false);
 				Game.currentGame.placedStruct = true;
 				
 				for (Component c : HUDLayer.currentHudLayer.components)

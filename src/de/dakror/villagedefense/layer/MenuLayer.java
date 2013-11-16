@@ -8,7 +8,6 @@ import java.net.URI;
 
 import de.dakror.universion.UniVersion;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.ui.ClickEvent;
 import de.dakror.villagedefense.ui.button.MenuButton;
 import de.dakror.villagedefense.util.Assistant;
@@ -62,9 +61,7 @@ public class MenuLayer extends Layer
 			@Override
 			public void trigger()
 			{
-				Game.currentGame.state = 3;
-				WaveManager.nextWave = WaveManager.waveTimer;
-				Game.currentGame.fadeTo(1, 0.05f);
+				Game.currentGame.addLayer(new NewGameLayer(MenuLayer.this));
 			}
 		});
 		components.add(start);

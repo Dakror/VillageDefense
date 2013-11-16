@@ -5,6 +5,7 @@ import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.Component;
@@ -40,7 +41,7 @@ public class School extends Struct
 	@Override
 	public Entity clone()
 	{
-		return new School((int) x, (int) y);
+		return new School((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override

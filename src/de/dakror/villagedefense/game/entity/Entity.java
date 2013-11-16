@@ -174,7 +174,6 @@ public abstract class Entity implements Drawable
 		{
 			Rectangle rect = (Rectangle) bump.clone();
 			rect.translate((int) x, (int) y);
-			rect.translate(Game.world.x, Game.world.y);
 			return rect;
 		}
 	}
@@ -210,12 +209,12 @@ public abstract class Entity implements Drawable
 	
 	public boolean intersects(Entity o)
 	{
-		return getArea().intersects(o.getArea());
+		return getArea(false).intersects(o.getArea(false));
 	}
 	
-	public Rectangle getArea()
+	public Rectangle getArea(boolean world)
 	{
-		return new Rectangle((int) x, (int) y, width, height);
+		return new Rectangle((int) x + (world ? Game.world.x : 0), (int) y + (world ? Game.world.y : 0), width, height);
 	}
 	
 	public void setClicked(boolean b)

@@ -25,6 +25,7 @@ import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Forester;
 import de.dakror.villagedefense.game.entity.creature.Woodsman;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.world.Chunk;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.CFG;
@@ -80,6 +81,7 @@ public class SaveHandler
 		try
 		{
 			JSONObject o = new JSONObject(Compressor.decompressFile(f));
+			Game.world.init(o.getInt("width") * Chunk.SIZE * Tile.SIZE, o.getInt("height") * Chunk.SIZE * Tile.SIZE);
 			Game.world.setData(o.getInt("width"), o.getInt("height"), Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
 			Game.currentGame.resources = new Resources(o.getJSONObject("resources"));
 			

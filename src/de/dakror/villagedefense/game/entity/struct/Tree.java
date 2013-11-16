@@ -85,7 +85,7 @@ public class Tree extends Struct
 	@Override
 	public Entity clone()
 	{
-		return new Tree((int) x, (int) y, isSapling());
+		return new Tree((int) x / Tile.SIZE, (int) y / Tile.SIZE, isSapling());
 	}
 	
 	public boolean isSapling()

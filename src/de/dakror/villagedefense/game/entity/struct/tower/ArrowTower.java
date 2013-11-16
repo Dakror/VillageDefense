@@ -32,6 +32,6 @@ public class ArrowTower extends Tower
 	@Override
 	public Entity clone()
 	{
-		return new ArrowTower((int) x, (int) y);
+		return new ArrowTower((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 }

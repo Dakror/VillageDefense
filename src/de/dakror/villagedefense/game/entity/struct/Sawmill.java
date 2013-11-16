@@ -4,6 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
@@ -74,7 +75,7 @@ public class Sawmill extends Struct
 	@Override
 	public Entity clone()
 	{
-		return new Sawmill((int) x, (int) y);
+		return new Sawmill((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override

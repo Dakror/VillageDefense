@@ -140,7 +140,7 @@ public class Catapult extends Struct
 	@Override
 	public Entity clone()
 	{
-		return new Catapult((int) x, (int) y);
+		return new Catapult((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override

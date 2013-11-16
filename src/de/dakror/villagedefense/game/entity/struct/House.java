@@ -58,7 +58,7 @@ public class House extends Struct
 	@Override
 	public Entity clone()
 	{
-		return new House((int) x, (int) y);
+		return new House((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override

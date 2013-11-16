@@ -90,7 +90,7 @@ public class Game extends EventListener
 	public ArrayList<Researches> researches = new ArrayList<>();
 	
 	public Point mouse = new Point(0, 0);
-	public Point mouseDown, mouseDrag;
+	public Point mouseDown, mouseDownWorld, mouseDrag;
 	
 	public Struct activeStruct;
 	
@@ -135,13 +135,9 @@ public class Game extends EventListener
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		resources = new Resources();
-		resources.set(Resource.GOLD, 1000);
-		
-		// for (Resource r : Resource.values())
-		// resources.set(r, 99999);
 		
 		world = new World();
-		world.init();
+		world.init(20, 20);
 		worldCreated = (int) (System.currentTimeMillis() / 1000);
 		state = 0;
 		
@@ -171,6 +167,17 @@ public class Game extends EventListener
 			return;
 		}
 		updateThread = new UpdateThread();
+	}
+	
+	public void startGame(int width, int height)
+	{
+		resources = new Resources();
+		resources.set(Resource.GOLD, 1000);
+		
+		for (Resource r : Resource.values())
+			resources.set(r, 99999);
+		
+		Game.world.init(width, height);
 	}
 	
 	public void draw()
@@ -319,11 +326,23 @@ public class Game extends EventListener
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		if (e.getModifiers() != MouseEvent.BUTTON1_MASK) return;
-		
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		
-		mouseDrag = e.getPoint();
+		if ((world.width > getWidth() || world.height > getHeight()) && mouseDown != null && e.getModifiers() == MouseEvent.BUTTON2_MASK)
+		{
+			int x = mouseDown.x - e.getX() - mouseDownWorld.x;
+			int y = mouseDown.y - e.getY() - mouseDownWorld.y;
+			
+			if (x < 0) x = 0;
+			if (x > world.width - getWidth()) x = world.width - getWidth();
+			if (y < 0) y = 0;
+			if (y > world.height - getHeight()) y = world.height - getHeight();
+			
+			world.x = -x;
+			world.y = -y;
+		}
+		
+		if (e.getModifiers() == MouseEvent.BUTTON1_MASK) mouseDrag = e.getPoint();
 	}
 	
 	@Override
@@ -349,6 +368,8 @@ public class Game extends EventListener
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
+		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
+		
 		// mouseDownWorld = null;
 		if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mouseReleased(e);
 		
@@ -366,11 +387,12 @@ public class Game extends EventListener
 			Rectangle r = getDragRectangle();
 			for (Entity e1 : world.entities)
 			{
-				if (e1 instanceof Villager && e1.getArea().intersects(r) && e1.alpha > 0) e1.setClicked(true);
+				if (e1 instanceof Villager && e1.getArea(true).intersects(r) && e1.alpha > 0) e1.setClicked(true);
 			}
 		}
 		
 		mouseDown = null;
+		mouseDownWorld = null;
 		mouseDrag = null;
 	}
 	
@@ -380,6 +402,7 @@ public class Game extends EventListener
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		
 		mouseDown = e.getPoint();
+		mouseDownWorld = new Point(world.x, world.y);
 		
 		for (Layer l : layers)
 		{
