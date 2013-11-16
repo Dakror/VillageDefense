@@ -22,6 +22,7 @@ public class Rock extends Projectile
 	{
 		super(pos, "rock", speed);
 		t = target;
+		rotate = false;
 		this.radius = radius;
 		this.damage = damage;
 	}

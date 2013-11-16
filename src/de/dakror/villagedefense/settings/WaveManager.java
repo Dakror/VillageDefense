@@ -114,7 +114,7 @@ public class WaveManager
 								{
 									boolean left = Math.random() < 0.5;
 									
-									int x = left ? -leftLength * space : Game.world.x + rightLength * space;
+									int x = left ? -leftLength * space : Game.world.width + rightLength * space;
 									Entity e = (Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, 0);
 									int y = Game.world.height / 2 - e.getHeight() / 2;
 									e.setY(y);

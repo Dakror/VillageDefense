@@ -2,7 +2,6 @@ package de.dakror.villagedefense.game.projectile;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.util.Drawable;
@@ -39,11 +38,11 @@ public abstract class Projectile implements Drawable
 	{
 		if (dead) return;
 		
-		AffineTransform old = g.getTransform();
-		AffineTransform at = AffineTransform.getRotateInstance(angle, pos.x + Game.w.getInsets().left, pos.y + Game.w.getInsets().top);
-		if (rotate) g.setTransform(at);
-		g.drawImage(image, (int) pos.x + Game.w.getInsets().left, (int) pos.y + Game.w.getInsets().top, Game.w);
-		g.setTransform(old);
+		if (rotate) g.rotate(angle, pos.x, pos.y);
+		
+		g.drawImage(image, (int) pos.x, (int) pos.y, Game.w);
+		
+		if (rotate) g.rotate(-angle, pos.x, pos.y);
 	}
 	
 	public Projectile setRotate(boolean rotate)

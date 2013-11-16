@@ -17,6 +17,7 @@ public class Arrow extends Projectile
 		targetEntity = target;
 		this.target = target.getCenter2();
 		this.damage = damage;
+		rotate = true;
 	}
 	
 	@Override
