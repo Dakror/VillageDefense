@@ -13,6 +13,7 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
+import de.dakror.villagedefense.ui.BuildBar;
 import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.ui.button.BuildButton;
 import de.dakror.villagedefense.util.Assistant;
@@ -112,7 +113,7 @@ public class BuildStructLayer extends Layer
 				Game.world.addEntity(Game.currentGame.activeStruct.clone(), false);
 				Game.currentGame.placedStruct = true;
 				
-				for (Component c : HUDLayer.currentHudLayer.components)
+				for (Component c : ((BuildBar) HUDLayer.currentHudLayer.components.get(0)).buttons)
 				{
 					if (c instanceof BuildButton)
 					{

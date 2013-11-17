@@ -15,7 +15,7 @@ import de.dakror.villagedefense.util.Assistant;
  */
 public class BuildBar extends Component
 {
-	ArrayList<BuildButton> buttons;
+	public ArrayList<BuildButton> buttons;
 	Point down, drag;
 	int sX;
 	
