@@ -70,8 +70,8 @@ public class House extends Struct
 	{
 		if (research == Researches.HOUSE_FORESTER)
 		{
-			ty = 13;
-			tx = 9;
+			ty = 23;
+			tx = 0;
 			width = 5 * Tile.SIZE;
 			height = 10 * Tile.SIZE;
 			if (!inititial) y -= 5 * Tile.SIZE;

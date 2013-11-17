@@ -144,14 +144,14 @@ public class SaveHandler
 						int y = (int) (e1 instanceof Creature ? e1.getY() : e1.getY() / Tile.SIZE);
 						if (e1.getClass().getName().equals(tE.getString("class")) && tE.getInt("x") == x && tE.getInt("y") == y)
 						{
-							((Creature) entity).setTarget(e1);
+							((Creature) entity).setTarget(e1, false);
 							continue;
 						}
 					}
 				}
 				if (!e.isNull("targetX"))
 				{
-					((Creature) entity).setTarget(e.getInt("targetX"), e.getInt("targetY"));
+					((Creature) entity).setTarget(e.getInt("targetX"), e.getInt("targetY"), false);
 				}
 				
 				Game.world.addEntity2(entity, true);

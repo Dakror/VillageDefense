@@ -25,6 +25,9 @@ public class Resources
 		// GOLDORE("Golderz", 2, 1, 4, true),
 		IRONINGOT("Eisen", 0, 2, Math.round((COAL.getGoldValue() * 3 + IRONORE.getGoldValue() * 4) * 0.75f), true),
 		// GOLDINGOT("Gold", 1, 2, 8, true),
+		WHEAT("Weizen", 0, 3, 5, true),
+		FLOUR("Mehl", 1, 3, 7, true),
+		BREAD("Brot", 2, 3, 2 * COAL.getGoldValue() + 3 * FLOUR.getGoldValue() + 4, true),
 		
 		;
 		

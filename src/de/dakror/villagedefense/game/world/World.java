@@ -16,7 +16,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.animation.Animation;
 import de.dakror.villagedefense.game.entity.Entity;
-import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.entity.struct.CoreHouse;
 import de.dakror.villagedefense.game.entity.struct.House;
@@ -397,12 +396,7 @@ public class World extends EventListener implements Drawable
 				}
 			}
 			
-			if (target != null) ((Creature) selectedEntity).setTarget(target);
-			else
-			{
-				((Creature) selectedEntity).setTargetEntity(null);
-				((Creature) selectedEntity).setTarget(new Vector(e.getX(), e.getY()));
-			}
+			setVillagerTarget((Villager) selectedEntity, e.getX(), e.getY(), target);
 		}
 		else if (e.getButton() == MouseEvent.BUTTON3) // after Drag
 		{
@@ -422,16 +416,26 @@ public class World extends EventListener implements Drawable
 			{
 				if (entity.isClicked() && entity instanceof Villager)
 				{
-					if (target != null) ((Villager) entity).setTarget(target);
-					else
-					{
-						((Villager) entity).setTargetEntity(null);
-						((Villager) entity).setTarget(new Vector(e.getX(), e.getY()));
-					}
+					setVillagerTarget((Villager) entity, e.getX(), e.getY(), target);
 				}
 			}
 		}
 		
 		e.translatePoint(x, y);
+	}
+	
+	public void setVillagerTarget(Villager v, int targetX, int targetY, Entity target)
+	{
+		if (!v.isTargetByUser() && v.getTarget() != null) return;
+		
+		if (target != null)
+		{
+			v.setTarget(target, true);
+		}
+		else
+		{
+			v.setTargetEntity(null);
+			v.setTarget(new Vector(targetX, targetY), true);
+		}
 	}
 }

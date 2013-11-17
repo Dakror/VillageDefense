@@ -14,7 +14,12 @@ public class StructGUILayer extends Layer
 	@Override
 	public void draw(Graphics2D g)
 	{
-		if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct && ((Struct) Game.world.selectedEntity).guiPoint != null) ((Struct) Game.world.selectedEntity).drawGUI(g);
+		try
+		{
+			if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct && ((Struct) Game.world.selectedEntity).guiPoint != null) ((Struct) Game.world.selectedEntity).drawGUI(g);
+		}
+		catch (NullPointerException e)
+		{}
 	}
 	
 	@Override

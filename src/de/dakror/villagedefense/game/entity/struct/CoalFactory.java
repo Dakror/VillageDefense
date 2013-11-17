@@ -18,8 +18,8 @@ public class CoalFactory extends Struct
 	public CoalFactory(int x, int y)
 	{
 		super(x, y, 6, 7);
-		tx = 0;
-		ty = 23;
+		tx = 8;
+		ty = 13;
 		placeGround = true;
 		name = "Köhlerei";
 		setBump(new Rectangle2D.Float(0.9f, 3.5f, 4.8f, 3.4f));

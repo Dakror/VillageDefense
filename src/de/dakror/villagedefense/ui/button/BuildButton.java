@@ -143,7 +143,7 @@ public class BuildButton extends Button
 		
 		for (int i = 0; i < res.size(); i++)
 		{
-			float r = res.getF(fll.get(i));
+			float r = Math.round(res.getF(fll.get(i)) * 100) / 100f;
 			Assistant.drawLabelWithIcon(x + 16, y1, 24, new Point(fll.get(i).getIconX(), fll.get(i).getIconY()), (r > 0 ? "+" : "") + r + "/s", 30, g);
 			y1 += 26;
 		}

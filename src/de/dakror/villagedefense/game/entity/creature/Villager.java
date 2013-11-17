@@ -46,7 +46,7 @@ public class Villager extends Creature
 	{
 		if (targetEntity instanceof Struct)
 		{
-			if (((Struct) targetEntity).getBuildingCosts().get(Resource.PEOPLE) > 0)
+			if (((Struct) targetEntity).getBuildingCosts().get(Resource.PEOPLE) > 0 && !targetByUser)
 			{
 				alpha = 0;
 			}
@@ -60,4 +60,5 @@ public class Villager extends Creature
 		}
 		return false;
 	}
+	
 }

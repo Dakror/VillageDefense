@@ -24,9 +24,11 @@ import javax.swing.JFrame;
 
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Villager;
+import de.dakror.villagedefense.game.entity.struct.Bakery;
 import de.dakror.villagedefense.game.entity.struct.Barricade;
 import de.dakror.villagedefense.game.entity.struct.Catapult;
 import de.dakror.villagedefense.game.entity.struct.CoalFactory;
+import de.dakror.villagedefense.game.entity.struct.Farm;
 import de.dakror.villagedefense.game.entity.struct.House;
 import de.dakror.villagedefense.game.entity.struct.Marketplace;
 import de.dakror.villagedefense.game.entity.struct.Mine;
@@ -34,6 +36,7 @@ import de.dakror.villagedefense.game.entity.struct.Sawmill;
 import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Smeltery;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.entity.struct.Windmill;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.World;
 import de.dakror.villagedefense.layer.BuildStructLayer;
@@ -58,7 +61,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Barricade(0, 0) };
+	public static Struct[] buildableStructs = { new House(0, 0), new Farm(0, 0), new Windmill(0, 0), new Bakery(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Barricade(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -174,9 +177,10 @@ public class Game extends EventListener
 	{
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
+		resources.set(Resource.BREAD, 500);
 		
 		// for (Resource r : Resource.values())
-		// resources.set(r, 99999);
+		// resources.set(r, 10000);
 		
 		Game.world.init(width, height);
 	}
@@ -211,19 +215,6 @@ public class Game extends EventListener
 		if (!skipDraw) world.draw(g);
 		else skipDraw = false;
 		
-		for (Layer l : layers)
-			l.draw(g);
-		
-		// TODO: DEBUG
-		Color oldColor = g.getColor();
-		Font oldFont = g.getFont();
-		g.setColor(Color.green);
-		g.setFont(new Font("Arial", Font.PLAIN, 18));
-		g.drawString(Math.round(frames / ((System.currentTimeMillis() - start) / 1000f)) + " FPS", 0, 14);
-		g.drawString(getUPS() + " UPS", 100, 14);
-		g.setColor(oldColor);
-		g.setFont(oldFont);
-		
 		if (mouseDown != null && mouseDrag != null)
 		{
 			Rectangle r = getDragRectangle();
@@ -238,6 +229,19 @@ public class Game extends EventListener
 			g.drawRect(r.x, r.y, r.width, r.height);
 			g.setColor(o);
 		}
+		
+		for (Layer l : layers)
+			l.draw(g);
+		
+		// TODO: DEBUG
+		Color oldColor = g.getColor();
+		Font oldFont = g.getFont();
+		g.setColor(Color.green);
+		g.setFont(new Font("Arial", Font.PLAIN, 18));
+		g.drawString(Math.round(frames / ((System.currentTimeMillis() - start) / 1000f)) + " FPS", 0, 14);
+		g.drawString(getUPS() + " UPS", 100, 14);
+		g.setColor(oldColor);
+		g.setFont(oldFont);
 		
 		Composite c1 = g.getComposite();
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
@@ -329,6 +333,12 @@ public class Game extends EventListener
 	{
 		e.translatePoint(-w.getInsets().left, -w.getInsets().top);
 		
+		for (Layer l : layers)
+		{
+			l.mouseDragged(e);
+			if (l.isModal() && l.isEnabled()) break;
+		}
+		
 		if ((world.width > getWidth() || world.height > getHeight()) && mouseDown != null && e.getModifiers() == MouseEvent.BUTTON2_MASK)
 		{
 			int x = mouseDown.x - e.getX() - mouseDownWorld.x;
@@ -343,7 +353,7 @@ public class Game extends EventListener
 			world.y = -y;
 		}
 		
-		if (e.getModifiers() == MouseEvent.BUTTON1_MASK) mouseDrag = e.getPoint();
+		if (e.getModifiers() == MouseEvent.BUTTON1_MASK && e.getY() > 80 && e.getY() < Game.getHeight() - 100) mouseDrag = e.getPoint();
 	}
 	
 	@Override

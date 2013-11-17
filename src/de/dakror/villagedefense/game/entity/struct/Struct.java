@@ -286,7 +286,7 @@ public abstract class Struct extends Entity
 			if (e instanceof Villager && e.alpha > 0)
 			{
 				Villager v = (Villager) e;
-				v.setTarget(this);
+				v.setTarget(this, false);
 				count++;
 			}
 		}

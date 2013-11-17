@@ -58,10 +58,25 @@ public class CountButton extends Component
 	@Override
 	public void update(int tick)
 	{
-		if (System.currentTimeMillis() - timeDown > 300)
+		if (timeDown == 0) return;
+		
+		int scrollSpeed = this.scrollSpeed;
+		if (System.currentTimeMillis() - timeDown > 5000) scrollSpeed = 1;
+		if (System.currentTimeMillis() - timeDown > 7500) scrollSpeed = 0;
+		
+		if (System.currentTimeMillis() - timeDown > 300 && (scrollSpeed == 0 || tick % scrollSpeed == 0))
 		{
-			if (tick % scrollSpeed == 0 && minus.state == 1) minus.triggerEvents();
-			if (tick % scrollSpeed == 0 && plus.state == 1) plus.triggerEvents();
+			if (minus.state == 1) minus.triggerEvents();
+			if (plus.state == 1) plus.triggerEvents();
+			
+			if (scrollSpeed == 0)
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					if (minus.state == 1) minus.triggerEvents();
+					if (plus.state == 1) plus.triggerEvents();
+				}
+			}
 		}
 	}
 	

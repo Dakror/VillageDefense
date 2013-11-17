@@ -41,6 +41,6 @@ public class Ghost extends Creature
 	@Override
 	public void lookupTargetEntity()
 	{
-		setTarget(Game.world.core);
+		setTarget(Game.world.core, false);
 	}
 }

@@ -18,7 +18,7 @@ import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.settings.WaveManager.Monster;
-import de.dakror.villagedefense.ui.button.BuildButton;
+import de.dakror.villagedefense.ui.BuildBar;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.SaveHandler;
 
@@ -41,14 +41,8 @@ public class HUDLayer extends Layer
 	@Override
 	public void init()
 	{
-		for (int i = 0; i < Game.buildableStructs.length; i++)
-		{
-			int x = Game.getWidth() / 2 + BuildButton.SIZE / 4 - (Game.buildableStructs.length * (BuildButton.SIZE + 32)) / 2 + i * (BuildButton.SIZE + 32);
-			BuildButton bb = new BuildButton(x, Game.getHeight() - 84, Game.buildableStructs[i]);
-			components.add(bb);
-		}
-		
 		rps = new Resources();
+		components.add(new BuildBar());
 	}
 	
 	@Override
@@ -85,7 +79,6 @@ public class HUDLayer extends Layer
 			if (Game.world.selectedEntity != null)
 			{
 				Assistant.drawHorizontallyCenteredString(Game.world.selectedEntity.getName(), Game.getWidth(), 111, g, 40);
-				
 				if (Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue())
 				{
 					Assistant.drawProgressBar(Game.getWidth() / 2 - 179, 111, 358, Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH) / Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
@@ -131,18 +124,18 @@ public class HUDLayer extends Layer
 			}
 			
 			// -- top bar -- //
-			int total = Game.getWidth() / 2 - 200;
+			int total = Game.getWidth() / 2 - 150;
 			boolean hover = new Rectangle(0, 0, total + 48, 80).contains(Game.currentGame.mouse) && Game.currentGame.state == 0;
 			
-			int w = total / (Resource.values().length);
-			int min = Game.getWidth() / (hover ? 5 : 10);
-			if (w < min) w = min;
-			
-			int rows = Math.round((Resource.values().length * (float) w) / total);
-			int del = Resource.values().length / rows;
-			
 			Assistant.drawContainer(0, 0, Game.getWidth(), 80, false, false, g);
-			if (hover) Assistant.drawContainer(0, 0, Game.getWidth() / 2 - 150, rows * 30 + 20, false, false, g);
+			
+			int w = 300;
+			
+			if (hover)
+			{
+				Assistant.drawShadow(0, 0, w, Resource.values().length * 30 + 20, g);
+				Assistant.drawOutline(0, 0, w, Resource.values().length * 30 + 20, false, g);
+			}
 			
 			for (int i = 0; i < Resource.values().length; i++)
 			{
@@ -152,14 +145,18 @@ public class HUDLayer extends Layer
 				String delta = (dif != 0 ? " (" + (dif < 0 ? "" : "+") + dif + ")" : "");
 				if (!hover) delta = "";
 				
+				int y = 13 + 30 * i;
+				
+				if (!hover && y > 70) continue;
+				
 				if (r == Resource.PEOPLE)
 				{
 					int free = Game.currentGame.getPeople();
-					Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), (free != Game.currentGame.resources.get(r) ? Game.currentGame.getPeople() + " / " : "") + Game.currentGame.resources.get(r) + delta, 30, g);
+					Assistant.drawLabelWithIcon(25, y, 30, new Point(r.getIconX(), r.getIconY()), (free != Game.currentGame.resources.get(r) ? Game.currentGame.getPeople() + " / " : "") + Game.currentGame.resources.get(r) + delta, 30, g);
 				}
 				else
 				{
-					Assistant.drawLabelWithIcon(25 + (i % del) * w, 13 + 30 * (i / del), 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + delta, 30, g);
+					Assistant.drawLabelWithIcon(25, y, 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + delta, 30, g);
 				}
 			}
 			
@@ -203,12 +200,7 @@ public class HUDLayer extends Layer
 			
 			g.drawImage(Game.getImage("icon/pause.png"), Game.getWidth() - 75, 5, 70, 70, Game.w);
 			
-			// -- build/bottom bar -- //
-			Assistant.drawContainer(0, Game.getHeight() - 100, Game.getWidth(), 100, false, false, g);
-			
-			// -- UI components -- //
 			drawComponents(g);
-			
 			// -- monster tooltip -- //
 			if (selectedMonster != -1)
 			{
@@ -235,9 +227,16 @@ public class HUDLayer extends Layer
 					Assistant.drawString(lines[i] + ".", Game.currentGame.mouse.x + 25, Game.currentGame.mouse.y + 24 + 70 + i * 30, g, 24);
 				}
 			}
+			
+			// -- UI components -- //
+			drawComponents(g);
 		}
-		catch (Exception e)
+		catch (NullPointerException e)
 		{}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -250,14 +249,6 @@ public class HUDLayer extends Layer
 		for (Entity e : Game.world.entities)
 		{
 			if (e instanceof Struct) rps.add(((Struct) e).getResourcesPerSecond());
-		}
-		
-		
-		for (int i = 0; i < components.size(); i++)
-		{
-			int x = Game.getWidth() / 2 + BuildButton.SIZE / 4 - (components.size() * (BuildButton.SIZE + 32)) / 2 + i * (BuildButton.SIZE + 32);
-			components.get(i).setX(x);
-			components.get(i).setY(Game.getHeight() - 84);
 		}
 	}
 	

@@ -34,7 +34,7 @@ public class Woodsman extends Creature
 			}
 		}
 		
-		if (nearest != null) setTarget(nearest);
+		if (nearest != null) setTarget(nearest, false);
 	}
 	
 	@Override

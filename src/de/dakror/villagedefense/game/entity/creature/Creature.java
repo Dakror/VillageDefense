@@ -25,6 +25,7 @@ public abstract class Creature extends Entity
 	protected Image image;
 	protected Vector target;
 	protected Entity targetEntity;
+	protected boolean targetByUser;
 	protected boolean frozen;
 	private boolean hostile;
 	/**
@@ -67,6 +68,7 @@ public abstract class Creature extends Entity
 	{
 		if (targetEntity != null && !Game.world.entities.contains(targetEntity))
 		{
+			frame = 0;
 			alpha = 1;
 			targetEntity = null;
 		}
@@ -137,23 +139,24 @@ public abstract class Creature extends Entity
 		}
 	}
 	
-	public void setTarget(int x, int y)
+	public void setTarget(int x, int y, boolean user)
 	{
-		setTarget(new Vector(x, y));
+		setTarget(new Vector(x, y), user);
 	}
 	
-	public void setTarget(Vector target)
+	public void setTarget(Vector target, boolean user)
 	{
 		this.target = target;
+		targetByUser = user;
 	}
 	
-	public void setTarget(Entity entity)
+	public void setTarget(Entity entity, boolean user)
 	{
 		targetEntity = null;
+		if (frozen || attributes.get(Attribute.SPEED) == 0) return;
 		
 		if (hostile) targetEntity = entity;
-		
-		if (frozen || attributes.get(Attribute.SPEED) == 0) return;
+		targetByUser = user;
 		
 		if (entity instanceof Creature)
 		{
@@ -189,7 +192,7 @@ public abstract class Creature extends Entity
 			
 			nearestPoint.y -= height * 0.6f;
 			
-			setTarget(nearestPoint);
+			setTarget(nearestPoint, user);
 		}
 	}
 	
@@ -260,8 +263,8 @@ public abstract class Creature extends Entity
 			}
 		}
 		
-		if (closestBarricade == null || closestBarricade.getPos().getDistance(getPos()) > Game.world.core.getPos().getDistance(getPos())) setTarget(Game.world.core);
-		else setTarget(closestBarricade);
+		if (closestBarricade == null || closestBarricade.getPos().getDistance(getPos()) > Game.world.core.getPos().getDistance(getPos())) setTarget(Game.world.core, false);
+		else setTarget(closestBarricade, false);
 	}
 	
 	@Override
@@ -274,6 +277,11 @@ public abstract class Creature extends Entity
 	@Override
 	public void onSpawn(boolean initial)
 	{}
+	
+	public boolean isTargetByUser()
+	{
+		return targetByUser;
+	}
 	
 	@Override
 	public JSONObject getData()
