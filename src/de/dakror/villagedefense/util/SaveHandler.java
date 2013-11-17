@@ -112,8 +112,11 @@ public class SaveHandler
 					c.alpha = (float) e.getDouble("alpha");
 					c.setSpawnPoint(new Point(e.getInt("spawnX"), e.getInt("spawnY")));
 					
-					if (!e.isNull("targetX") || !e.isNull("targetEntity")) creaturesWithTargets.put(i, c);
-					continue;
+					if (!e.isNull("targetX") || !e.isNull("targetEntity"))
+					{
+						creaturesWithTargets.put(i, c);
+						continue;
+					}
 				}
 				else if (entity instanceof Struct)
 				{
