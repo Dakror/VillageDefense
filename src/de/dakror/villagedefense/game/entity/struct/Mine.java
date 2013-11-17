@@ -38,6 +38,7 @@ public class Mine extends Struct
 		researches.add(Researches.MINE_STONE);
 		
 		description = "Baut untertage Metal oder Stein ab.";
+		canHunger = true;
 	}
 	
 	@Override

@@ -248,8 +248,10 @@ public class HUDLayer extends Layer
 		
 		for (Entity e : Game.world.entities)
 		{
-			if (e instanceof Struct) rps.add(((Struct) e).getResourcesPerSecond());
+			if (e instanceof Struct && !e.isHungry()) rps.add(((Struct) e).getResourcesPerSecond());
 		}
+		
+		rps.add(Resource.BREAD, -Game.hungerPerUnitPerSecond * Game.currentGame.resources.get(Resource.PEOPLE));
 	}
 	
 	@Override
@@ -263,7 +265,7 @@ public class HUDLayer extends Layer
 				Game.currentGame.updateThread.ticks = 0;
 				Game.currentGame.frames = 0;
 				Game.currentGame.start = System.currentTimeMillis();
-				Game.currentGame.updateThread.speed = Game.currentGame.updateThread.speed == 1 ? 5 : 1;
+				Game.currentGame.updateThread.speed = Game.currentGame.updateThread.speed == 1 ? Game.forwardFactor : 1;
 			}
 			
 			if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct)

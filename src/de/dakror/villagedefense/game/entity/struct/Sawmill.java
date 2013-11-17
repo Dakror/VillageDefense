@@ -35,6 +35,7 @@ public class Sawmill extends Struct
 		attributes.set(Attribute.MINE_AMOUNT, 1); // use 1 get 2
 		
 		description = "Sägt Holz in Bretter.";
+		canHunger = true;
 	}
 	
 	@Override

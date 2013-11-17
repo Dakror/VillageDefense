@@ -20,6 +20,7 @@ public class Woodsman extends Creature
 		attributes.set(Attribute.MINE_SPEED, 15);
 		
 		description = "Fällt rasant Bäume.";
+		canHunger = true;
 	}
 	
 	@Override

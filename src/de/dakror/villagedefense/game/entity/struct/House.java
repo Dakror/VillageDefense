@@ -78,10 +78,12 @@ public class House extends Struct
 			setBump(new Rectangle2D.Float(0.25f, 7f, 4.5f, 3f));
 			image = null;
 			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE), false);
+			canHunger = true;
 		}
 		else if (research == Researches.HOUSE_WOODSMAN)
 		{
 			Game.world.addEntity2(new Woodsman((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE), false);
+			canHunger = true;
 		}
 	}
 }

@@ -20,6 +20,7 @@ public class Villager extends Creature
 		attributes.set(Attribute.HEALTH_MAX, 15);
 		
 		description = "Kann Rohstoffe sammeln und in Gebäuden arbeiten.";
+		canHunger = true;
 	}
 	
 	@Override

@@ -62,6 +62,7 @@ public abstract class Struct extends Entity
 		
 		guiSize = new Dimension(250, 250);
 		working = true;
+		canHunger = false;
 	}
 	
 	@Override
@@ -443,6 +444,11 @@ public abstract class Struct extends Entity
 			e.printStackTrace();
 		}
 		return o;
+	}
+	
+	public boolean isCanHunger()
+	{
+		return canHunger;
 	}
 	
 	protected abstract void onMinedUp();

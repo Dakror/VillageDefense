@@ -24,6 +24,7 @@ public class Forester extends Creature
 		attributes.set(Attribute.ATTACK_RANGE, 6 * Tile.SIZE); // 6 fields plant radius
 		
 		description = "Pflanzt Setzlinge um sein Haus herum.";
+		canHunger = true;
 	}
 	
 	@Override

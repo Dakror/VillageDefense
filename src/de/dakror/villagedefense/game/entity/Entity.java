@@ -18,6 +18,7 @@ import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
+import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -31,6 +32,7 @@ public abstract class Entity implements Drawable
 	protected boolean hovered, clicked, dead;
 	protected String name;
 	protected Rectangle bump;
+	protected boolean canHunger;
 	protected Attributes attributes;
 	protected Resources resources;
 	public String description;
@@ -124,7 +126,7 @@ public abstract class Entity implements Drawable
 		
 		if (attributes.get(Attribute.HEALTH) < 1) kill();
 		
-		tick(tick);
+		if (!isHungry()) tick(tick);
 	}
 	
 	public void drawEntity(Graphics2D g)
@@ -137,7 +139,12 @@ public abstract class Entity implements Drawable
 		draw(g);
 		g.setComposite(c);
 		
-		if (this instanceof Struct && !((Struct) this).isWorking())
+		
+		if (isHungry())
+		{
+			g.drawImage(Game.getImage("icon/hunger.png"), (int) x, (int) (y - Tile.SIZE - Math.cos(tick / 10f) * Tile.SIZE / 4), 32, 32, Game.w);
+		}
+		else if (this instanceof Struct && !((Struct) this).isWorking())
 		{
 			g.drawImage(Game.getImage("icon/sleep.png"), (int) (x + width * 0.75f), (int) (y - Tile.SIZE - Math.cos(tick / 10f) * Tile.SIZE / 4), 32, 32, Game.w);
 		}
@@ -318,6 +325,13 @@ public abstract class Entity implements Drawable
 	}
 	
 	public abstract JSONObject getData();
+	
+	public boolean isHungry()
+	{
+		if (!canHunger) return false;
+		
+		return Game.currentGame.resources.get(Resource.BREAD) == 0;
+	}
 	
 	// -- abstract event methods -- //
 	public abstract void onSpawn(boolean initial);

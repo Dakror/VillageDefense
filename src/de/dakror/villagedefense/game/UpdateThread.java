@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game;
 
 import de.dakror.villagedefense.layer.Layer;
 import de.dakror.villagedefense.settings.CFG;
+import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
 
 /**
@@ -51,6 +52,11 @@ public class UpdateThread extends Thread
 			
 			for (Layer l : Game.currentGame.layers)
 				l.update(tick);
+			
+			if (tick % 30 == 0 && Game.currentGame.resources.get(Resource.BREAD) > 0)
+			{
+				Game.currentGame.resources.add(Resource.BREAD, -Game.hungerPerUnitPerSecond * Game.currentGame.resources.get(Resource.PEOPLE));
+			}
 			
 			if (Game.world != null && Game.currentGame.state == 0) Game.world.update(tick);
 			
