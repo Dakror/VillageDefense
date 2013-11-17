@@ -6,10 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.struct.Catapult;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
@@ -150,6 +152,17 @@ public class BuildStructLayer extends Layer
 				Game.currentGame.activeStruct = null;
 				break;
 			}
+		}
+	}
+	
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e)
+	{
+		super.mouseWheelMoved(e);
+		if (Game.currentGame.activeStruct instanceof Catapult)
+		{
+			Catapult c = (Catapult) Game.currentGame.activeStruct;
+			c.setDownwards(e.getWheelRotation() == 1);
 		}
 	}
 }

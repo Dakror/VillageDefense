@@ -182,8 +182,8 @@ public class Game extends EventListener
 		resources.set(Resource.GOLD, 1000);
 		resources.set(Resource.BREAD, 500);
 		
-		// for (Resource r : Resource.values())
-		// resources.set(r, 10000);
+		for (Resource r : Resource.values())
+			resources.set(r, 10000);
 		
 		Game.world.init(width, height);
 	}

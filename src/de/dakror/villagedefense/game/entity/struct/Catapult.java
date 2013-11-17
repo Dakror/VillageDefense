@@ -25,13 +25,11 @@ import de.dakror.villagedefense.util.Vector;
 public class Catapult extends Struct
 {
 	int frame;
-	boolean downwards;
 	boolean shooting;
 	
 	public Catapult(int x, int y)
 	{
 		super(x, y, 2, 2);
-		downwards = true;
 		shooting = false;
 		frame = 0;
 		
@@ -48,6 +46,8 @@ public class Catapult extends Struct
 		
 		setBump(new Rectangle2D.Float(0.29f, 1.4f, 1.40f, 1.3f));
 		
+		setDownwards(true);
+		
 		description = "Schleudert Steine auf Monster.";
 	}
 	
@@ -56,7 +56,7 @@ public class Catapult extends Struct
 	{
 		int y = 0;
 		if (shooting) y += 64;
-		if (!downwards) y += 64 * 2;
+		if (!isDownwards()) y += 64 * 2;
 		
 		Assistant.drawImage(Game.getImage("creature/catapult.png"), (int) x, (int) this.y + Tile.SIZE / 4 * 3, width, height, frame * 64, y, 64, 64, g);
 		
@@ -105,7 +105,9 @@ public class Catapult extends Struct
 			float angle = (float) Math.toRadians(90 - v.getAngleOnXAxis());
 			float yDif = Math.abs(c.getCenter2().y - getCenter().y);
 			
-			targetVector = new Vector(getCenter().x + (float) Math.tan(angle) * yDif, c.getCenter().y);
+			float tan = (float) Math.tan(angle) * yDif;
+			
+			targetVector = new Vector(getCenter().x + (isDownwards() ? tan : -tan), c.getCenter().y);
 		}
 		
 		return new Rock(getCenter(), targetVector, rockSpeed, (int) attributes.get(Attribute.DAMAGE_CREATURE), Tile.SIZE * 3);
@@ -122,7 +124,7 @@ public class Catapult extends Struct
 	{
 		int rad = (int) attributes.get(Attribute.ATTACK_RANGE);
 		Vector c = getCenter();
-		return new Arc2D.Float(c.x - rad, c.y - rad, rad * 2, rad * 2, -120, 60, Arc2D.PIE);
+		return new Arc2D.Float(c.x - rad, c.y - rad, rad * 2, rad * 2, isDownwards() ? -120 : 60, 60, Arc2D.PIE);
 	}
 	
 	@Override
@@ -140,7 +142,19 @@ public class Catapult extends Struct
 	@Override
 	public Entity clone()
 	{
-		return new Catapult((int) x / Tile.SIZE, (int) y / Tile.SIZE);
+		Catapult c = new Catapult((int) x / Tile.SIZE, (int) y / Tile.SIZE);
+		c.setDownwards(isDownwards());
+		return c;
+	}
+	
+	public void setDownwards(boolean b)
+	{
+		attributes.set(Attribute.MINE_SPEED, b ? 0 : 1);
+	}
+	
+	public boolean isDownwards()
+	{
+		return attributes.get(Attribute.MINE_SPEED) == 0;
 	}
 	
 	@Override
