@@ -17,7 +17,7 @@ public class NewGameLayer extends Layer
 	int height = 90;
 	int h;
 	String[] sizes = { "Normal", "Groß", "Riesig" };
-	int[][] res = { { 1920, 1088 }, { 3072, 1728 }, { 5120, 2880 } };
+	int[][] res = { { 1920, 1024 }, { 3072, 1728 }, { 5120, 2880 } };
 	
 	public NewGameLayer(MenuLayer ml)
 	{

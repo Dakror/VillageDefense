@@ -149,12 +149,12 @@ public class Catapult extends Struct
 	
 	public void setDownwards(boolean b)
 	{
-		attributes.set(Attribute.MINE_SPEED, b ? 0 : 1);
+		attributes.set(Attribute.MINE_SPEED, b ? Attribute.MINE_SPEED.getDefaultValue() : 1);
 	}
 	
 	public boolean isDownwards()
 	{
-		return attributes.get(Attribute.MINE_SPEED) == 0;
+		return attributes.get(Attribute.MINE_SPEED) == Attribute.MINE_SPEED.getDefaultValue();
 	}
 	
 	@Override

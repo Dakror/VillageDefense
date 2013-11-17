@@ -329,6 +329,22 @@ public class Game extends EventListener
 				break;
 			}
 		}
+		
+		for (Layer l : layers)
+		{
+			l.keyReleased(e);
+			if (l.isModal() && l.isEnabled()) break;
+		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		for (Layer l : layers)
+		{
+			l.keyPressed(e);
+			if (l.isModal() && l.isEnabled()) break;
+		}
 	}
 	
 	@Override

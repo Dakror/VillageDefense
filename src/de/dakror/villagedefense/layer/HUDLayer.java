@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class HUDLayer extends Layer
 	public static HUDLayer currentHudLayer;
 	
 	Resources rps;
+	boolean spaceDown;
 	
 	public HUDLayer()
 	{
@@ -125,7 +127,7 @@ public class HUDLayer extends Layer
 			
 			// -- top bar -- //
 			int total = Game.getWidth() / 2 - 150;
-			boolean hover = new Rectangle(0, 0, total + 48, 80).contains(Game.currentGame.mouse) && Game.currentGame.state == 0;
+			boolean hover = (new Rectangle(0, 0, total + 48, 80).contains(Game.currentGame.mouse) || spaceDown) && Game.currentGame.state == 0;
 			
 			Assistant.drawContainer(0, 0, Game.getWidth(), 80, false, false, g);
 			
@@ -298,5 +300,20 @@ public class HUDLayer extends Layer
 		{
 			SaveHandler.saveGame();
 		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		super.keyPressed(e);
+		spaceDown = e.getKeyCode() == KeyEvent.VK_SPACE;
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		super.keyReleased(e);
+		
+		spaceDown = false;
 	}
 }

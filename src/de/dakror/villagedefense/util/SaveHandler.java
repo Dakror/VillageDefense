@@ -47,9 +47,10 @@ public class SaveHandler
 			
 			JSONObject o = new JSONObject();
 			
+			o.put("version", CFG.VERSION);
 			o.put("created", Game.currentGame.worldCreated);
-			o.put("width", Game.world.chunks.length);
-			o.put("height", Game.world.chunks[0].length);
+			o.put("width", Game.world.width);
+			o.put("height", Game.world.height);
 			o.put("tile", new BASE64Encoder().encode(Compressor.compressRow(Game.world.getData())));
 			o.put("resources", Game.currentGame.resources.getData());
 			o.put("researches", Game.currentGame.researches);
@@ -81,8 +82,8 @@ public class SaveHandler
 		try
 		{
 			JSONObject o = new JSONObject(Compressor.decompressFile(f));
-			Game.world.init(o.getInt("width") * Chunk.SIZE * Tile.SIZE, o.getInt("height") * Chunk.SIZE * Tile.SIZE);
-			Game.world.setData(o.getInt("width"), o.getInt("height"), Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
+			Game.world.init(o.getInt("width"), o.getInt("height"));
+			Game.world.setData((int) Math.ceil(o.getInt("width") / (float) (Chunk.SIZE * Tile.SIZE)), (int) Math.ceil(o.getInt("height") / (float) (Chunk.SIZE * Tile.SIZE)), Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
 			Game.currentGame.resources = new Resources(o.getJSONObject("resources"));
 			
 			if (o.has("created")) Game.currentGame.worldCreated = o.getInt("created");

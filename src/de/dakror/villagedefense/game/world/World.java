@@ -61,6 +61,7 @@ public class World extends EventListener implements Drawable
 		this.height = height;
 		x = -(width - Game.getWidth()) / 2;
 		y = -(height - Game.getHeight()) / 2;
+		
 		chunks = new Chunk[(int) Math.ceil(width / (float) (Chunk.SIZE * Tile.SIZE))][(int) Math.ceil(height / (float) (Chunk.SIZE * Tile.SIZE))];
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
