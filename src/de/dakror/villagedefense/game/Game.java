@@ -181,7 +181,7 @@ public class Game extends EventListener
 	{
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
-		resources.set(Resource.BREAD, 500);
+		resources.set(Resource.BREAD, 250);
 		
 		// for (Resource r : Resource.values())
 		// resources.set(r, 10000);

@@ -334,9 +334,15 @@ public abstract class Entity implements Drawable
 		return Game.currentGame.resources.get(Resource.BREAD) == 0;
 	}
 	
+	public Vector getTile()
+	{
+		return new Vector(Assistant.round((int) x + bump.x + bump.width / 2, Tile.SIZE) / Tile.SIZE, Assistant.round((int) y + bump.y + bump.height / 2, Tile.SIZE) / Tile.SIZE);
+	}
+	
 	public byte getTileIdBelow()
 	{
-		return Game.world.getTileId(Assistant.round((int) x + bump.x + bump.width / 2, Tile.SIZE) / Tile.SIZE, Assistant.round((int) y + bump.y + bump.height / 2, Tile.SIZE) / Tile.SIZE);
+		Vector t = getTile();
+		return Game.world.getTileId((int) t.x, (int) t.y);
 	}
 	
 	// -- abstract event methods -- //
