@@ -15,7 +15,7 @@ public class Way extends Tile
 	
 	public Way()
 	{
-		super(3, "Weg", "way.png");
+		super(3, "Weg", "way.png", 0.6f);
 	}
 	
 	@Override

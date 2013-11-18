@@ -16,22 +16,24 @@ public class Tile
 	private static Tile[] tileList = new Tile[TILES];
 	
 	// -- Tile List -- //
-	public static Tile empty = new Tile(0, "Leer", "empty.png");
-	public static Tile grass = new Tile(1, "Gras", "grass.png");
-	public static Tile ground = new Tile(2, "Boden", "ground.png");
+	public static Tile empty = new Tile(0, "Leer", "empty.png", 0);
+	public static Tile grass = new Tile(1, "Gras", "grass.png", 1);
+	public static Tile ground = new Tile(2, "Boden", "ground.png", 1);
 	public static Tile way = new Way();
 	
 	// -- Class def -- //
 	protected String name = "Unnamed";
 	protected String tileset;
 	protected byte id;
+	public float G;
 	
-	public Tile(int id, String name, String tileset)
+	public Tile(int id, String name, String tileset, float G)
 	{
 		register(id);
 		
 		this.name = name;
 		this.tileset = tileset;
+		this.G = G;
 	}
 	
 	private void register(int id)
