@@ -36,6 +36,7 @@ import de.dakror.villagedefense.game.entity.struct.Sawmill;
 import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Smeltery;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.entity.struct.Way;
 import de.dakror.villagedefense.game.entity.struct.Windmill;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.world.World;
@@ -64,7 +65,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new House(0, 0), new Farm(0, 0), new Windmill(0, 0), new Bakery(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Barricade(0, 0) };
+	public static Struct[] buildableStructs = { new Way(0, 0), new House(0, 0), new Farm(0, 0), new Windmill(0, 0), new Bakery(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Barricade(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -372,7 +373,11 @@ public class Game extends EventListener
 			world.y = -y;
 		}
 		
-		if (e.getModifiers() == MouseEvent.BUTTON1_MASK && e.getY() > 80 && e.getY() < Game.getHeight() - 100) mouseDrag = e.getPoint();
+		
+		if (e.getModifiers() == MouseEvent.BUTTON1_MASK && e.getY() > 80 && e.getY() < Game.getHeight() - 100)
+		{
+			if (activeStruct == null) mouseDrag = e.getPoint();
+		}
 	}
 	
 	@Override

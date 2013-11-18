@@ -3,6 +3,7 @@ package de.dakror.villagedefense.layer;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Catapult;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.entity.struct.Way;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.BuildBar;
@@ -26,6 +28,7 @@ import de.dakror.villagedefense.util.Assistant;
 public class BuildStructLayer extends Layer
 {
 	public boolean canPlace;
+	Point drag;
 	
 	@Override
 	public void draw(Graphics2D g)
@@ -34,8 +37,8 @@ public class BuildStructLayer extends Layer
 		{
 			if (Game.currentGame.activeStruct != null)
 			{
-				Game.currentGame.activeStruct.setX(Assistant.round(Game.currentGame.mouse.x - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
-				Game.currentGame.activeStruct.setY(Assistant.round(Game.currentGame.mouse.y - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
+				Game.currentGame.activeStruct.setX(Assistant.round((drag == null ? Game.currentGame.mouse.x : drag.x) - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+				Game.currentGame.activeStruct.setY(Assistant.round((drag == null ? Game.currentGame.mouse.y : drag.y) - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 				Game.currentGame.activeStruct.setClicked(true);
 				
 				Rectangle bump = Game.currentGame.activeStruct.getBump(true);
@@ -55,6 +58,14 @@ public class BuildStructLayer extends Layer
 						if (Game.currentGame.activeStruct.canPlaceOnWay())
 						{
 							blocked = true;
+						}
+						
+						if (Game.currentGame.activeStruct instanceof Way)
+						{
+							if (Game.world.getTileId((int) Math.floor((i - Game.world.x) / Tile.SIZE), (int) Math.floor((j - Game.world.y) / Tile.SIZE)) == Tile.way.getId())
+							{
+								blocked = true;
+							}
 						}
 						
 						if (j == centerY + Tile.SIZE + Game.world.y || j == centerY + Game.world.y)
@@ -95,49 +106,75 @@ public class BuildStructLayer extends Layer
 	{}
 	
 	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+		super.mouseReleased(e);
+		drag = null;
+	}
+	
+	@Override
 	public void mousePressed(MouseEvent e)
 	{
 		super.mousePressed(e);
 		if (Game.currentGame.activeStruct != null && e.getButton() == 1)
 		{
-			if (canPlace && e.getY() > 80 && e.getY() < Game.getHeight() - 100)
+			build(e);
+		}
+		else Game.currentGame.activeStruct = null;
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e)
+	{
+		super.mouseDragged(e);
+		if (Game.currentGame.activeStruct != null && Game.currentGame.activeStruct.canDragBuild() && e.getModifiers() == MouseEvent.BUTTON1_MASK)
+		{
+			Game.currentGame.activeStruct.setX(Assistant.round(e.getX() - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+			Game.currentGame.activeStruct.setY(Assistant.round(e.getY() - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
+			drag = e.getPoint();
+			
+			build(e);
+		}
+	}
+	
+	public void build(MouseEvent e)
+	{
+		if (canPlace && e.getY() > 80 && e.getY() < Game.getHeight() - 100)
+		{
+			Game.currentGame.activeStruct.setClicked(false);
+			ArrayList<Resource> filled = Game.currentGame.activeStruct.getBuildingCosts().getFilled();
+			for (Resource r : filled)
 			{
-				Game.currentGame.activeStruct.setClicked(false);
-				ArrayList<Resource> filled = Game.currentGame.activeStruct.getBuildingCosts().getFilled();
-				for (Resource r : filled)
+				if (!r.isUsable()) continue;
+				Game.currentGame.resources.add(r, -Game.currentGame.activeStruct.getBuildingCosts().get(r));
+			}
+			
+			Game.currentGame.activeStruct.translate(-Game.world.x, -Game.world.y);
+			
+			Game.world.addEntity(Game.currentGame.activeStruct.clone(), false);
+			// Game.currentGame.placedStruct = true;
+			
+			for (Component c : ((BuildBar) HUDLayer.currentHudLayer.components.get(0)).buttons)
+			{
+				if (c instanceof BuildButton)
 				{
-					if (!r.isUsable()) continue;
-					Game.currentGame.resources.add(r, -Game.currentGame.activeStruct.getBuildingCosts().get(r));
-				}
-				
-				Game.currentGame.activeStruct.translate(-Game.world.x, -Game.world.y);
-				
-				Game.world.addEntity(Game.currentGame.activeStruct.clone(), false);
-				Game.currentGame.placedStruct = true;
-				
-				for (Component c : ((BuildBar) HUDLayer.currentHudLayer.components.get(0)).buttons)
-				{
-					if (c instanceof BuildButton)
+					BuildButton b = (BuildButton) c;
+					if (b.getStruct().getName().equals(Game.currentGame.activeStruct.getName()))
 					{
-						BuildButton b = (BuildButton) c;
-						if (b.getStruct().getName().equals(Game.currentGame.activeStruct.getName()))
+						c.update(0);
+						if (b.enabled)
 						{
-							c.update(0);
-							if (b.enabled)
-							{
-								Game.currentGame.activeStruct.setClicked(false);
-								Game.currentGame.activeStruct = (Struct) b.getStruct().clone();
-								
-								return;
-							}
+							Game.currentGame.activeStruct.setClicked(false);
+							Game.currentGame.activeStruct = (Struct) b.getStruct().clone();
+							
+							return;
 						}
 					}
 				}
 			}
-			else return;
+			
+			Game.currentGame.activeStruct = null;
 		}
-		
-		Game.currentGame.activeStruct = null;
 	}
 	
 	@Override

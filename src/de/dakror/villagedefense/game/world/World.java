@@ -25,7 +25,6 @@ import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.projectile.Projectile;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.EventListener;
 import de.dakror.villagedefense.util.Vector;
@@ -400,7 +399,7 @@ public class World extends EventListener implements Drawable
 		{
 			if (selectedEntity != null && selectedEntity instanceof Struct && ((Struct) selectedEntity).guiPoint != null && ((Struct) selectedEntity).components.size() > 0) return;
 			
-			setTileId(Assistant.round(e.getX(), Tile.SIZE) / Tile.SIZE, Assistant.round(e.getY(), Tile.SIZE) / Tile.SIZE, Tile.way.getId());
+			
 			
 			selectedEntity = null;
 			for (Entity entity : entities)

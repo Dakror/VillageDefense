@@ -40,6 +40,7 @@ public abstract class Struct extends Entity
 	protected int tx, ty;
 	protected boolean placeGround;
 	protected boolean canPlaceOnWay;
+	protected boolean canDragBuild;
 	protected StructPoints structPoints;
 	protected Resources buildingCosts;
 	protected BufferedImage image;
@@ -63,6 +64,7 @@ public abstract class Struct extends Entity
 		guiSize = new Dimension(250, 250);
 		working = true;
 		canHunger = false;
+		canDragBuild = false;
 	}
 	
 	@Override
@@ -449,6 +451,11 @@ public abstract class Struct extends Entity
 	public boolean isCanHunger()
 	{
 		return canHunger;
+	}
+	
+	public boolean canDragBuild()
+	{
+		return canDragBuild;
 	}
 	
 	protected abstract void onMinedUp();
