@@ -3,6 +3,8 @@ package de.dakror.villagedefense.game.entity.creature;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.game.world.Way;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -21,6 +23,15 @@ public class Villager extends Creature
 		
 		description = "Kann Rohstoffe sammeln und in Gebäuden arbeiten.";
 		canHunger = true;
+	}
+	
+	@Override
+	public void tick(int tick)
+	{
+		super.tick(tick);
+		
+		if (getTileIdBelow() == Tile.way.getId()) attributes.set(Attribute.SPEED, Way.speed);
+		else attributes.set(Attribute.SPEED, Attribute.SPEED.getDefaultValue());
 	}
 	
 	@Override

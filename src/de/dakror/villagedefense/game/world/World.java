@@ -25,6 +25,7 @@ import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.Tree;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.projectile.Projectile;
+import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.EventListener;
 import de.dakror.villagedefense.util.Vector;
@@ -78,6 +79,32 @@ public class World extends EventListener implements Drawable
 		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length) return;
 		
 		chunks[index.x][index.y].setTileId(x - index.x * Chunk.SIZE, y - index.y * Chunk.SIZE, d);
+		chunks[index.x][index.y].render();
+		try
+		{
+			chunks[index.x - 1][index.y].render();
+		}
+		catch (IndexOutOfBoundsException e)
+		{}
+		try
+		{
+			chunks[index.x + 1][index.y].render();
+		}
+		catch (IndexOutOfBoundsException e)
+		{}
+		try
+		{
+			chunks[index.x][index.y - 1].render();
+		}
+		catch (IndexOutOfBoundsException e)
+		{}
+		try
+		{
+			chunks[index.x][index.y + 1].render();
+		}
+		catch (IndexOutOfBoundsException e)
+		{}
+		
 	}
 	
 	public byte getTileId(int x, int y)
@@ -373,6 +400,8 @@ public class World extends EventListener implements Drawable
 		{
 			if (selectedEntity != null && selectedEntity instanceof Struct && ((Struct) selectedEntity).guiPoint != null && ((Struct) selectedEntity).components.size() > 0) return;
 			
+			setTileId(Assistant.round(e.getX(), Tile.SIZE) / Tile.SIZE, Assistant.round(e.getY(), Tile.SIZE) / Tile.SIZE, Tile.way.getId());
+			
 			selectedEntity = null;
 			for (Entity entity : entities)
 				entity.setClicked(false);
@@ -436,7 +465,7 @@ public class World extends EventListener implements Drawable
 		else
 		{
 			v.setTargetEntity(null);
-			v.setTarget(new Vector(targetX, targetY), true);
+			v.setTarget(new Vector(targetX - v.getBump(false).x - v.getBump(false).width / 2, targetY - v.getBump(false).y - v.getBump(false).height / 2), true);
 		}
 	}
 }

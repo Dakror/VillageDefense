@@ -1,7 +1,6 @@
 package de.dakror.villagedefense.game.world;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
@@ -43,28 +42,11 @@ public class Chunk
 		{
 			for (int j = 0; j < SIZE; j++)
 			{
-				int x = i * Tile.SIZE;
-				int y = j * Tile.SIZE;
-				
 				Tile tile = Tile.getTileForId(data[i][j]);
 				
 				if (tile.equals(Tile.empty)) continue;
 				
-				Point tp = tile.getTexturePos(this.x * Chunk.SIZE + i, this.y * Chunk.SIZE + j);
-				if (tp.x < 3) // convex
-				{
-					g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + Tile.SIZE, y + Tile.SIZE, tp.x * Tile.SIZE, tp.y * Tile.SIZE, tp.x * Tile.SIZE + Tile.SIZE, tp.y * Tile.SIZE + Tile.SIZE, null);
-				}
-				else
-				{
-					// absolute sizes, not Tile.SIZE, easier to read.
-					g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + Tile.SIZE, y + Tile.SIZE, 32, 64, 64, 96, null);
-					
-					if (tp.y == 0) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y, x + 16, y + 16, 64, 0, 80, 16, null);
-					if (tp.y == 1) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x + 16, y, x + 32, y + 16, 80, 0, 96, 16, null);
-					if (tp.y == 2) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x, y + 16, x + 16, y + 32, 64, 16, 80, 32, null);
-					if (tp.y == 3) g.drawImage(Game.getImage("tile/" + tile.getTileset()), x + 16, y + 16, x + 32, y + 32, 80, 16, 96, 32, null);
-				}
+				tile.drawTile(x, y, i, j, g);
 			}
 		}
 	}

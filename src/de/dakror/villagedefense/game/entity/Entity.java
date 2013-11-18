@@ -19,6 +19,7 @@ import de.dakror.villagedefense.settings.Attributes;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
+import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -331,6 +332,11 @@ public abstract class Entity implements Drawable
 		if (!canHunger) return false;
 		
 		return Game.currentGame.resources.get(Resource.BREAD) == 0;
+	}
+	
+	public byte getTileIdBelow()
+	{
+		return Game.world.getTileId(Assistant.round((int) x + bump.x + bump.width / 2, Tile.SIZE) / Tile.SIZE, Assistant.round((int) y + bump.y + bump.height / 2, Tile.SIZE) / Tile.SIZE);
 	}
 	
 	// -- abstract event methods -- //
