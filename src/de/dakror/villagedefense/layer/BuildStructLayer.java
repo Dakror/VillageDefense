@@ -37,8 +37,8 @@ public class BuildStructLayer extends Layer
 		{
 			if (Game.currentGame.activeStruct != null)
 			{
-				Game.currentGame.activeStruct.setX(Assistant.round((drag == null ? Game.currentGame.mouse.x : drag.x) - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
-				Game.currentGame.activeStruct.setY(Assistant.round((drag == null ? Game.currentGame.mouse.y : drag.y) - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
+				Game.currentGame.activeStruct.setX(Assistant.round((drag == null ? Game.currentGame.mouse.x - Tile.SIZE / 2 : drag.x - Tile.SIZE / 2) - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+				Game.currentGame.activeStruct.setY(Assistant.round((drag == null ? Game.currentGame.mouse.y - Tile.SIZE / 2 * 3 : drag.y - Tile.SIZE / 2 * 3) - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 				Game.currentGame.activeStruct.setClicked(true);
 				
 				Rectangle bump = Game.currentGame.activeStruct.getBump(true);
@@ -62,7 +62,7 @@ public class BuildStructLayer extends Layer
 						
 						if (Game.currentGame.activeStruct instanceof Way)
 						{
-							if (Game.world.getTileId((int) Math.floor((i - Game.world.x) / Tile.SIZE), (int) Math.floor((j - Game.world.y) / Tile.SIZE)) == Tile.way.getId())
+							if (Game.world.getTileId((int) Math.floor((i - Game.world.x) / Tile.SIZE), (int) Math.floor((j - Game.world.y) / Tile.SIZE)) != Tile.grass.getId())
 							{
 								blocked = true;
 							}
@@ -129,8 +129,8 @@ public class BuildStructLayer extends Layer
 		super.mouseDragged(e);
 		if (Game.currentGame.activeStruct != null && Game.currentGame.activeStruct.canDragBuild() && e.getModifiers() == MouseEvent.BUTTON1_MASK)
 		{
-			Game.currentGame.activeStruct.setX(Assistant.round(e.getX() - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
-			Game.currentGame.activeStruct.setY(Assistant.round(e.getY() - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
+			Game.currentGame.activeStruct.setX(Assistant.round(e.getX() - Tile.SIZE / 2 - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+			Game.currentGame.activeStruct.setY(Assistant.round(e.getY() - Tile.SIZE / 2 * 3 - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 			drag = e.getPoint();
 			
 			build(e);

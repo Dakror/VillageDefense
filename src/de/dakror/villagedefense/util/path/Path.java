@@ -44,8 +44,30 @@ public class Path
 		index++;
 	}
 	
+	public int getIndex()
+	{
+		return index;
+	}
+	
 	public boolean isPathComplete()
 	{
-		return index == nodes.size() - 1;
+		return index == nodes.size();
+	}
+	
+	public void mul(float sc)
+	{
+		for (Vector v : nodes)
+			v.mul(sc);
+	}
+	
+	public void translate(int x, int y)
+	{
+		for (Vector v : nodes)
+			v.add(new Vector(x, y));
+	}
+	
+	public void reset()
+	{
+		index = 0;
 	}
 }

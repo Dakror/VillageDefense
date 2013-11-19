@@ -19,4 +19,22 @@ public class Node
 		this.p = p;
 		this.t = t;
 	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof Node)
+		{
+			Node n = (Node) obj;
+			return t.equals(n.t);
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return t.toString();
+	}
 }

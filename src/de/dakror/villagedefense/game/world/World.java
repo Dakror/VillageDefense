@@ -183,6 +183,11 @@ public class World extends EventListener implements Drawable
 		for (Animation a : animations)
 			a.draw(g);
 		
+		// Color c = g.getColor();
+		// g.setColor(Color.darkGray);
+		// g.drawRect(Math.round((Game.currentGame.mouse.x - x - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Math.round((Game.currentGame.mouse.y - y - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+		// g.setColor(c);
+		
 		g.translate(-x, -y);
 	}
 	
@@ -294,6 +299,11 @@ public class World extends EventListener implements Drawable
 				chunks[i][j].render();
 	}
 	
+	public Vector getTile(Vector v)
+	{
+		return new Vector(Math.round((v.x - Tile.SIZE / 2) / Tile.SIZE), Math.round((v.y - Tile.SIZE / 2) / Tile.SIZE));
+	}
+	
 	public boolean addEntity(Entity e, boolean initial)
 	{
 		for (Entity entity : entities)
@@ -399,8 +409,6 @@ public class World extends EventListener implements Drawable
 		{
 			if (selectedEntity != null && selectedEntity instanceof Struct && ((Struct) selectedEntity).guiPoint != null && ((Struct) selectedEntity).components.size() > 0) return;
 			
-			
-			
 			selectedEntity = null;
 			for (Entity entity : entities)
 				entity.setClicked(false);
@@ -463,8 +471,10 @@ public class World extends EventListener implements Drawable
 		}
 		else
 		{
+			Vector trg = new Vector(targetX/* - v.getBump(false).x - v.getBump(false).width / 2 */, targetY/* - v.getBump(false).y - v.getBump(false).height / 2 */);
+			
 			v.setTargetEntity(null);
-			v.setTarget(new Vector(targetX - v.getBump(false).x - v.getBump(false).width / 2, targetY - v.getBump(false).y - v.getBump(false).height / 2), true);
+			v.setTarget(trg, true);
 		}
 	}
 }

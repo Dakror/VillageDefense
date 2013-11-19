@@ -11,11 +11,11 @@ import de.dakror.villagedefense.util.Assistant;
  */
 public class Way extends Tile
 {
-	public static final float speed = 3.5f;
+	public static final float speed = 3.2f;
 	
 	public Way()
 	{
-		super(3, "Weg", "way.png", 0.6f);
+		super(3, "Weg", "way.png", 0.4f);
 	}
 	
 	@Override

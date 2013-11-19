@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -41,6 +43,7 @@ public class AStar
 		{
 			if (openList.size() == 0)
 			{
+				CFG.p("ain't no way");
 				return null; // no way
 			}
 			
@@ -57,7 +60,18 @@ public class AStar
 			handleAdjacentTiles(activeNode);
 		}
 		
-		return null;
+		ArrayList<Node> path = new ArrayList<>();
+		Node node = activeNode;
+		path.add(node);
+		while (node.p != null)
+		{
+			path.add(node.p);
+			node = node.p;
+		}
+		
+		Collections.reverse(path);
+		
+		return toPath(path);
 	}
 	
 	private static void handleAdjacentTiles(Node node)
@@ -68,11 +82,33 @@ public class AStar
 		{
 			for (int j = 0; j < neighbors[0].length; j++)
 			{
-				if (i == 1 && j == 1 || neighbors[i][j] == Tile.empty.getId()) continue;
+				if (i == j || neighbors[i][j] == Tile.empty.getId() || (i == 0 && j == 2) || (i == 2 && j == 0)) continue;
 				
 				Vector tile = new Vector(node.t.x + i - 1, node.t.y + j - 1);
 				
-				openList.add(new Node(node.G + Tile.getTileForId(neighbors[i][j]).G, tile.getDistance(target), tile, node));
+				Node n = new Node(node.G + Tile.getTileForId(neighbors[i][j]).G, tile.getDistance(target), tile, node);
+				
+				if (closedList.contains(n)) continue;
+				
+				if (openList.contains(n) && openList.get(openList.indexOf(n)).G > n.G)
+				{
+					openList.get(openList.indexOf(n)).G = n.G;
+					openList.get(openList.indexOf(n)).p = node;
+				}
+				else if (!openList.contains(n))
+				{
+					boolean free = true;
+					for (Entity e : Game.world.entities)
+					{
+						if (e.getBump(true).intersects(tile.x * Tile.SIZE, tile.y * Tile.SIZE, Tile.SIZE, Tile.SIZE))
+						{
+							free = false;
+							break;
+						}
+					}
+					
+					if (free) openList.add(n);
+				}
 			}
 		}
 	}

@@ -16,6 +16,8 @@ import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.util.Vector;
+import de.dakror.villagedefense.util.path.AStar;
+import de.dakror.villagedefense.util.path.Path;
 
 /**
  * @author Dakror
@@ -37,6 +39,7 @@ public abstract class Creature extends Entity
 	protected int dir;
 	protected int frame;
 	protected Point spawnPoint;
+	public Path path;
 	
 	public Creature(int x, int y, String img)
 	{
@@ -73,12 +76,32 @@ public abstract class Creature extends Entity
 			targetEntity = null;
 		}
 		
-		move(tick);
+		if (path != null)
+		{
+			if (path.isPathComplete()) path = null;
+			else
+			{
+				if (target == null)
+				{
+					path.setNodeReached();
+					
+					if (path.isPathComplete())
+					{
+						path = null;
+						target = null;
+					}
+					else target = path.getNode().clone();
+				}
+				else if (target.x == -1337) // custom trigger
+				{
+					target = path.getNode().clone();
+				}
+			}
+		}
 		
+		move(tick);
 		// -- attacks -- //
-		if (targetEntity != null && //
-		target == null // not moving = at destination or standing still
-		)
+		if (targetEntity != null && target == null && (path == null || path.isPathComplete()))
 		{
 			if (hostile)
 			{
@@ -104,13 +127,15 @@ public abstract class Creature extends Entity
 		if (!frozen && attributes.get(Attribute.SPEED) > 0 && target != null)
 		{
 			Vector dif = getVelocityVector();
-			
-			float angle = Math.round(dif.getAngleOnXAxis());
-			if (angle <= 135 && angle >= 45) dir = 0;
-			else if (angle <= 45 && angle >= -45) dir = 2;
-			else if (angle <= -45 && angle >= -135) dir = 3;
-			else dir = 1;
-			
+			if (dif.getLength() > 0)
+			{
+				
+				float angle = Math.round(dif.getAngleOnXAxis());
+				if (angle <= 135 && angle >= 45) dir = 0;
+				else if (angle <= 45 && angle >= -45) dir = 2;
+				else if (angle <= -45 && angle >= -135) dir = 3;
+				else dir = 1;
+			}
 			if ((tick + randomOffset) % 10 == 0) frame++;
 			
 			setPos(getPos().add(dif));
@@ -122,6 +147,7 @@ public abstract class Creature extends Entity
 		try
 		{
 			Vector pos = getPos();
+			
 			Vector dif = target.clone().sub(pos);
 			
 			if (dif.getLength() < attributes.get(Attribute.SPEED))
@@ -146,8 +172,12 @@ public abstract class Creature extends Entity
 	
 	public void setTarget(Vector target, boolean user)
 	{
-		this.target = target;
 		targetByUser = user;
+		path = AStar.getPath(getTile(), Game.world.getTile(target));
+		
+		if (path == null) return;
+		this.target = new Vector(-1337, 0);
+		path.mul(Tile.SIZE);
 	}
 	
 	public void setTarget(Entity entity, boolean user)
@@ -190,7 +220,7 @@ public abstract class Creature extends Entity
 			
 			nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Attribute.ATTACK_RANGE));
 			
-			nearestPoint.y -= height * 0.6f;
+			// nearestPoint.y -= height * 0.6f;
 			
 			setTarget(nearestPoint, user);
 		}
