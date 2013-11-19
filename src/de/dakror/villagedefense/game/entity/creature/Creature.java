@@ -173,11 +173,15 @@ public abstract class Creature extends Entity
 	public void setTarget(Vector target, boolean user)
 	{
 		targetByUser = user;
-		path = AStar.getPath(getTile(), Game.world.getTile(target));
-		
-		if (path == null) return;
-		this.target = new Vector(-1337, 0);
-		path.mul(Tile.SIZE);
+		if (!hostile)
+		{
+			path = AStar.getPath(getTile(), Game.world.getTile(target));
+			
+			if (path == null) return;
+			this.target = new Vector(-1337, 0);
+			path.mul(Tile.SIZE);
+		}
+		else this.target = target;
 	}
 	
 	public void setTarget(Entity entity, boolean user)
