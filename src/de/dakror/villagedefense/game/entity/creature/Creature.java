@@ -254,7 +254,7 @@ public abstract class Creature extends Entity
 			{
 				boolean nearer = (closestBarricade == null) ? true : e.getPos().getDistance(getPos()) < closestBarricade.getPos().getDistance(getPos());
 				
-				boolean inDirection = (closestBarricade == null) ? true : spawnPoint.x < Game.getWidth() / 2 ? /* left side */e.getX() > x : /* right side */e.getX() < x;
+				boolean inDirection = (closestBarricade == null) ? true : spawnPoint.x < Game.world.width / 2 ? /* left side */e.getX() > x : /* right side */e.getX() < x;
 				
 				if (closestBarricade == null || (nearer && inDirection))
 				{

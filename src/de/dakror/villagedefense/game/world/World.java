@@ -320,8 +320,8 @@ public class World extends EventListener implements Drawable
 	
 	public void addEntity2(Entity e, boolean initial)
 	{
-		e.onSpawn(initial);
 		entities.add(e);
+		e.onSpawn(initial);
 		
 		render();
 	}

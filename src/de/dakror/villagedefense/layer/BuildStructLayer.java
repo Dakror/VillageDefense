@@ -139,6 +139,12 @@ public class BuildStructLayer extends Layer
 	
 	public void build(MouseEvent e)
 	{
+		if (Game.currentGame.state != 0)
+		{
+			Game.currentGame.activeStruct = null;
+			return;
+		}
+		
 		if (canPlace && e.getY() > 80 && e.getY() < Game.getHeight() - 100)
 		{
 			Game.currentGame.activeStruct.setClicked(false);
@@ -151,7 +157,7 @@ public class BuildStructLayer extends Layer
 			
 			Game.currentGame.activeStruct.translate(-Game.world.x, -Game.world.y);
 			
-			Game.world.addEntity(Game.currentGame.activeStruct.clone(), false);
+			Game.world.addEntity2(Game.currentGame.activeStruct.clone(), false);
 			// Game.currentGame.placedStruct = true;
 			
 			for (Component c : ((BuildBar) HUDLayer.currentHudLayer.components.get(0)).buttons)

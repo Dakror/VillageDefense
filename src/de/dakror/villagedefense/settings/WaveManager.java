@@ -116,7 +116,7 @@ public class WaveManager
 									
 									int x = left ? -leftLength * space : Game.world.width + rightLength * space;
 									Entity e = (Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, 0);
-									int y = Game.world.height / 2 - e.getHeight() / 2;
+									int y = Game.world.height / 2;
 									e.setY(y);
 									
 									Game.world.addEntity2(e, false);

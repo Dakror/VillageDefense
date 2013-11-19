@@ -53,7 +53,7 @@ public class UpdateThread extends Thread
 			for (Layer l : Game.currentGame.layers)
 				l.update(tick);
 			
-			if (tick % 30 == 0 && Game.currentGame.resources.get(Resource.BREAD) > 0)
+			if (tick % 30 == 0 && Game.currentGame.resources.get(Resource.BREAD) > 0 && Game.currentGame.state == 0)
 			{
 				Game.currentGame.resources.add(Resource.BREAD, -Game.hungerPerUnitPerSecond * Game.currentGame.resources.get(Resource.PEOPLE));
 			}

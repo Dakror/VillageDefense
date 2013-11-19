@@ -25,7 +25,7 @@ public class Farmer extends Creature
 		setHostile(false);
 		name = "Bauer";
 		
-		attributes.set(Attribute.ATTACK_SPEED, 30 * 45); // 45 second plant cooldown
+		attributes.set(Attribute.ATTACK_SPEED, 30 * 15); // 15 second plant cooldown
 		
 		range = 5 * Tile.SIZE; // 5 fields plant radius
 		

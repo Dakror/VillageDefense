@@ -2,7 +2,6 @@ package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
-import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
@@ -33,7 +32,7 @@ public class Zombie extends Creature
 		if (Math.random() <= 0.35) // 35% prob. spawning ghost
 		{
 			boolean left = Math.random() < 0.5;
-			Game.world.addEntity(new Ghost(left ? 0 : Game.world.width, Game.world.height / 2 - Tile.SIZE), false);
+			Game.world.addEntity(new Ghost(left ? 0 : Game.world.width, Game.world.height / 2), false);
 		}
 		super.onDeath();
 	}
