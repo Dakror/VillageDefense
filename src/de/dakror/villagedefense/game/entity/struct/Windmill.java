@@ -89,7 +89,7 @@ public class Windmill extends Struct
 		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WHEAT) >= attributes.get(Attribute.MINE_AMOUNT) && working)
 		{
 			Game.currentGame.resources.add(Resource.WHEAT, (int) -attributes.get(Attribute.MINE_AMOUNT));
-			Game.currentGame.resources.add(Resource.FLOUR, 3);
+			resources.add(Resource.FLOUR, 3);
 		}
 	}
 	

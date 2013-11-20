@@ -45,7 +45,6 @@ public class Tree extends Struct
 			name = "Baum";
 			description = "Ein Baum";
 		}
-		
 	}
 	
 	@Override

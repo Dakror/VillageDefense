@@ -55,7 +55,7 @@ public class CoalFactory extends Struct
 		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) >= attributes.get(Attribute.MINE_AMOUNT) && working)
 		{
 			Game.currentGame.resources.add(Resource.WOOD, (int) -attributes.get(Attribute.MINE_AMOUNT));
-			Game.currentGame.resources.add(Resource.COAL, 2);
+			resources.add(Resource.COAL, 2);
 		}
 	}
 	

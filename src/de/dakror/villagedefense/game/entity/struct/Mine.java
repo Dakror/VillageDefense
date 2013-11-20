@@ -52,8 +52,8 @@ public class Mine extends Struct
 		
 		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && working)
 		{
-			if (has(Researches.MINE_STONE)) Game.currentGame.resources.add(Resource.STONE, (int) attributes.get(Attribute.MINE_AMOUNT));
-			else if (has(Researches.MINE_IRON)) Game.currentGame.resources.add(Resource.IRONORE, (int) attributes.get(Attribute.MINE_AMOUNT));
+			if (has(Researches.MINE_STONE)) resources.add(Resource.STONE, (int) attributes.get(Attribute.MINE_AMOUNT));
+			else if (has(Researches.MINE_IRON)) resources.add(Resource.IRONORE, (int) attributes.get(Attribute.MINE_AMOUNT));
 		}
 	}
 	

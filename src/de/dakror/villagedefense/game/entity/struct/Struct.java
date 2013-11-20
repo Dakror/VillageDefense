@@ -80,8 +80,9 @@ public abstract class Struct extends Entity
 			g.draw(getAttackArea());
 			g.setColor(oldColor);
 		}
+		
 		// TODO: DEBUG
-		// for (Vector p : structPoints.attacks)
+		// for (Vector p : structPoints.entries)
 		// {
 		// Vector v = p.clone();
 		// v.mul(Tile.SIZE);
@@ -215,7 +216,7 @@ public abstract class Struct extends Entity
 		requestVillagersToCome(buildingCosts.get(Resource.PEOPLE));
 	}
 	
-	public void mineAllResources(int amount)
+	public void mineAllResources(int amount, Resources target)
 	{
 		if (resources.size() == 0) return;
 		
@@ -226,7 +227,7 @@ public abstract class Struct extends Entity
 			
 			int get = resources.get(r);
 			int newVal = get - amount > -1 ? get - amount : 0;
-			Game.currentGame.resources.add(r, get - newVal);
+			target.add(r, get - newVal);
 			resources.set(r, newVal);
 		}
 		

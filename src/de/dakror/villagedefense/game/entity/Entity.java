@@ -29,7 +29,7 @@ public abstract class Entity implements Drawable
 {
 	protected float x, y;
 	protected int width, height;
-	protected boolean hovered, clicked, dead;
+	protected boolean hovered, clicked, dead, massive;
 	protected String name;
 	protected Rectangle bump;
 	protected boolean canHunger;
@@ -54,6 +54,7 @@ public abstract class Entity implements Drawable
 		bump = new Rectangle();
 		attributes = new Attributes();
 		resources = new Resources();
+		massive = true;
 		
 		alpha = 1;
 	}
@@ -336,6 +337,11 @@ public abstract class Entity implements Drawable
 	public Vector getTile()
 	{
 		return Game.world.getTile(new Vector(x + (float) bump.getCenterX(), y + (float) bump.getCenterY()));
+	}
+	
+	public boolean isMassive()
+	{
+		return massive;
 	}
 	
 	public byte getTileIdBelow()

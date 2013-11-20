@@ -55,7 +55,9 @@ public class UpdateThread extends Thread
 			
 			if (tick % 30 == 0 && Game.currentGame.resources.get(Resource.BREAD) > 0 && Game.currentGame.state == 0)
 			{
-				Game.currentGame.resources.add(Resource.BREAD, -Game.hungerPerUnitPerSecond * Game.currentGame.resources.get(Resource.PEOPLE));
+				float amount = Game.hungerPerUnitPerSecond * Game.currentGame.resources.get(Resource.PEOPLE);
+				float sub = Game.currentGame.resources.get(Resource.BREAD) < amount ? Game.currentGame.resources.get(Resource.BREAD) : amount;
+				Game.currentGame.resources.add(Resource.BREAD, -sub);
 			}
 			
 			if (Game.world != null && Game.currentGame.state == 0) Game.world.update(tick);

@@ -4,6 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Forester;
 import de.dakror.villagedefense.game.entity.creature.Villager;
 import de.dakror.villagedefense.game.entity.creature.Woodsman;
@@ -35,10 +36,9 @@ public class House extends Struct
 		dead = true;
 		for (Entity e : Game.world.entities)
 		{
-			if (e instanceof Villager && e.alpha > 0)
+			if ((e instanceof Creature) && ((Creature) e).getOrigin().equals(this))
 			{
 				e.kill();
-				break;
 			}
 		}
 	}
@@ -48,7 +48,7 @@ public class House extends Struct
 	{
 		if (initial) return;
 		super.onSpawn(initial);
-		Game.world.addEntity2(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE), false);
+		Game.world.addEntity2(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE).setOrigin(this), false);
 	}
 	
 	@Override
@@ -77,12 +77,12 @@ public class House extends Struct
 			if (!inititial) y -= 5 * Tile.SIZE;
 			setBump(new Rectangle2D.Float(0.25f, 7f, 4.5f, 3f));
 			image = null;
-			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE), false);
+			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE).setOrigin(this), false);
 			canHunger = true;
 		}
 		else if (research == Researches.HOUSE_WOODSMAN)
 		{
-			Game.world.addEntity2(new Woodsman((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE), false);
+			Game.world.addEntity2(new Woodsman((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE).setOrigin(this), false);
 			canHunger = true;
 		}
 	}

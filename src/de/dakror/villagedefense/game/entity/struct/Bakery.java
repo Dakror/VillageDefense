@@ -61,7 +61,7 @@ public class Bakery extends Struct
 		{
 			Game.currentGame.resources.add(Resource.COAL, -2);
 			Game.currentGame.resources.add(Resource.FLOUR, -3);
-			Game.currentGame.resources.add(Resource.BREAD, 2);
+			resources.add(Resource.BREAD, 2);
 		}
 	}
 	

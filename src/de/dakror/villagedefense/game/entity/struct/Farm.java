@@ -35,7 +35,7 @@ public class Farm extends Struct
 	{
 		if (initial) return;
 		super.onSpawn(initial);
-		Game.world.addEntity2(new Farmer((int) x + 2 * Tile.SIZE, (int) y + 7 * Tile.SIZE), false);
+		Game.world.addEntity2(new Farmer((int) x + 2 * Tile.SIZE, (int) y + 7 * Tile.SIZE).setOrigin(this), false);
 	}
 	
 	@Override

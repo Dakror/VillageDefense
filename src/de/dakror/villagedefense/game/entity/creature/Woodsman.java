@@ -45,7 +45,7 @@ public class Woodsman extends Creature
 		{
 			if ((tick + randomOffset) % attributes.get(Attribute.MINE_SPEED) == 0 && targetEntity.getResources().size() > 0)
 			{
-				if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT));
+				if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT), Game.currentGame.resources); // TODO: woodsman resource storage 'n' stuff
 				frame++;
 			}
 			

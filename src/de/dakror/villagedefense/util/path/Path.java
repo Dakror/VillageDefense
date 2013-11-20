@@ -44,6 +44,16 @@ public class Path
 		index++;
 	}
 	
+	public float getLength()
+	{
+		float length = 0;
+		for (int i = 0; i < nodes.size() - 1; i++)
+		{
+			length += nodes.get(i + 1).getDistance(nodes.get(i));
+		}
+		return length;
+	}
+	
 	public int getIndex()
 	{
 		return index;

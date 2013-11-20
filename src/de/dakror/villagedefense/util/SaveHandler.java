@@ -67,7 +67,7 @@ public class SaveHandler
 			o.put("entities", entities);
 			
 			Compressor.compressFile(save, o.toString());
-			// Assistant.setFileContent(new File(save.getPath() + ".debug"), o.toString());
+			Assistant.setFileContent(new File(save.getPath() + ".debug"), o.toString());
 			Game.currentGame.state = 3;
 			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -98,8 +98,7 @@ public class SaveHandler
 			
 			JSONArray entities = o.getJSONArray("entities");
 			
-			HashMap<Integer, Creature> creaturesWithTargets = new HashMap<>();
-			
+			HashMap<Integer, Creature> creaturesWithCustomData = new HashMap<>();
 			for (int i = 0; i < entities.length(); i++)
 			{
 				JSONObject e = entities.getJSONObject(i);
@@ -113,9 +112,9 @@ public class SaveHandler
 					c.alpha = (float) e.getDouble("alpha");
 					c.setSpawnPoint(new Point(e.getInt("spawnX"), e.getInt("spawnY")));
 					
-					if (!e.isNull("targetX") || !e.isNull("targetEntity"))
+					if (!e.isNull("targetX") || !e.isNull("targetEntity") || !e.isNull("origin"))
 					{
-						creaturesWithTargets.put(i, c);
+						creaturesWithCustomData.put(i, c);
 						continue;
 					}
 				}
@@ -131,13 +130,13 @@ public class SaveHandler
 				Game.world.addEntity2(entity, true);
 			}
 			
-			// -- set creatures' targets
-			for (Iterator<Integer> iterator = creaturesWithTargets.keySet().iterator(); iterator.hasNext();)
+			// -- set creatures' custom data
+			for (Iterator<Integer> iterator = creaturesWithCustomData.keySet().iterator(); iterator.hasNext();)
 			{
 				int index = iterator.next();
 				JSONObject e = entities.getJSONObject(index);
 				
-				Entity entity = creaturesWithTargets.get(index);
+				Entity entity = creaturesWithCustomData.get(index);
 				
 				if (!e.isNull("targetEntity"))
 				{
@@ -156,6 +155,20 @@ public class SaveHandler
 				if (!e.isNull("targetX"))
 				{
 					((Creature) entity).setTarget(e.getInt("targetX"), e.getInt("targetY"), false);
+				}
+				if (!e.isNull("origin"))
+				{
+					JSONObject tE = e.getJSONObject("origin");
+					for (Entity e1 : Game.world.entities)
+					{
+						int x = (int) (e1 instanceof Creature ? e1.getX() : e1.getX() / Tile.SIZE);
+						int y = (int) (e1 instanceof Creature ? e1.getY() : e1.getY() / Tile.SIZE);
+						if (e1.getClass().getName().equals(tE.getString("class")) && tE.getInt("x") == x && tE.getInt("y") == y)
+						{
+							((Creature) entity).setOrigin(e1);
+							continue;
+						}
+					}
 				}
 				
 				Game.world.addEntity2(entity, true);

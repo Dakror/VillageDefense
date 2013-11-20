@@ -67,7 +67,7 @@ public class Sawmill extends Struct
 		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) > 0 && working)
 		{
 			Game.currentGame.resources.add(Resource.WOOD, (int) -attributes.get(Attribute.MINE_AMOUNT));
-			Game.currentGame.resources.add(Resource.PLANKS, (int) attributes.get(Attribute.MINE_AMOUNT) * 2);
+			resources.add(Resource.PLANKS, (int) attributes.get(Attribute.MINE_AMOUNT) * 2);
 		}
 	}
 	

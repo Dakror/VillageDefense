@@ -23,6 +23,7 @@ import de.dakror.villagedefense.game.entity.struct.Rock;
 import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.entity.struct.Tree;
+import de.dakror.villagedefense.game.entity.struct.Warehouse;
 import de.dakror.villagedefense.game.entity.struct.tower.ArrowTower;
 import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.util.Drawable;
@@ -251,6 +252,7 @@ public class World extends EventListener implements Drawable
 		
 		addEntity(new House(x - 7, y - 8), false);
 		addEntity(new School(x + 1, y - 12), false);
+		addEntity(new Warehouse(x - 2, y + 3), false);
 		
 		addEntity(new ArrowTower(x - 3, y), false);
 		addEntity(new ArrowTower(x - 3, y - 3), false);

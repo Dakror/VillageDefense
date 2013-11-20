@@ -40,6 +40,7 @@ public abstract class Creature extends Entity
 	protected int frame;
 	protected Point spawnPoint;
 	public Path path;
+	protected Entity origin;
 	
 	public Creature(int x, int y, String img)
 	{
@@ -54,6 +55,17 @@ public abstract class Creature extends Entity
 		
 		dir = 0;
 		frame = 0;
+	}
+	
+	public Entity setOrigin(Entity e)
+	{
+		origin = e;
+		return this;
+	}
+	
+	public Entity getOrigin()
+	{
+		return origin;
 	}
 	
 	@Override
@@ -210,27 +222,34 @@ public abstract class Creature extends Entity
 			
 			targetEntity = entity;
 			
-			Vector nearestPoint = null;
 			
-			ArrayList<Vector> points = hostile ? s.getStructPoints().attacks : s.getStructPoints().entries;
 			
-			if (points.size() == 0) points = s.getSurroundingTiles();
-			
-			Vector pos = getPos();
-			for (Vector p : points)
-			{
-				Vector v = p.clone();
-				v.mul(Tile.SIZE);
-				v.add(s.getPos());
-				if (nearestPoint == null || v.getDistance(pos) < nearestPoint.getDistance(pos)) nearestPoint = v;
-			}
-			
-			nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Attribute.ATTACK_RANGE));
-			
-			if (hostile) nearestPoint.y -= height * 0.6f;
-			
-			setTarget(nearestPoint, user);
+			setTarget(getTargetForStruct(s), user);
 		}
+	}
+	
+	public Vector getTargetForStruct(Struct s)
+	{
+		Vector nearestPoint = null;
+		
+		ArrayList<Vector> points = hostile ? s.getStructPoints().attacks : s.getStructPoints().entries;
+		
+		if (points.size() == 0) points = s.getSurroundingTiles();
+		
+		Vector pos = getPos();
+		for (Vector p : points)
+		{
+			Vector v = p.clone();
+			v.mul(Tile.SIZE);
+			v.add(s.getPos());
+			if (nearestPoint == null || v.getDistance(pos) < nearestPoint.getDistance(pos)) nearestPoint = v;
+		}
+		
+		nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Attribute.ATTACK_RANGE));
+		
+		if (hostile) nearestPoint.y -= height * 0.6f;
+		
+		return nearestPoint;
 	}
 	
 	public Vector getTarget()
@@ -333,6 +352,7 @@ public abstract class Creature extends Entity
 			o.put("targetX", target != null ? target.x : JSONObject.NULL);
 			o.put("targetY", target != null ? target.y : JSONObject.NULL);
 			o.put("targetEntity", targetEntity != null ? targetEntity.getData() : JSONObject.NULL);
+			o.put("origin", origin != null ? origin.getData() : JSONObject.NULL);
 			o.put("class", getClass().getName());
 			o.put("attributes", attributes.getData());
 			o.put("resources", resources.getData());

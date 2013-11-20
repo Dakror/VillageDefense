@@ -20,56 +20,63 @@ public class AStar
 	
 	public static Path getPath(Vector start, Vector t)
 	{
-		openList = new ArrayList<>();
-		closedList = new ArrayList<>();
-		
-		target = t;
-		
-		Comparator<Node> comparator = new Comparator<Node>()
+		try
 		{
-			@Override
-			public int compare(Node o1, Node o2)
+			openList = new ArrayList<>();
+			closedList = new ArrayList<>();
+			
+			target = t;
+			
+			Comparator<Node> comparator = new Comparator<Node>()
 			{
-				return Float.compare(o1.F, o2.F);
-			}
-		};
-		
-		openList.add(new Node(0, start.getDistance(target), start, null));
-		
-		Node activeNode = null;
-		
-		while (true)
-		{
-			if (openList.size() == 0)
+				@Override
+				public int compare(Node o1, Node o2)
+				{
+					return Float.compare(o1.F, o2.F);
+				}
+			};
+			
+			openList.add(new Node(0, start.getDistance(target), start, null));
+			
+			Node activeNode = null;
+			
+			while (true)
 			{
-				return null; // no way
+				if (openList.size() == 0)
+				{
+					return null; // no way
+				}
+				
+				Collections.sort(openList, comparator);
+				activeNode = openList.remove(0);
+				
+				closedList.add(activeNode);
+				
+				if (activeNode.H == 0)
+				{
+					break; // found way
+				}
+				
+				handleAdjacentTiles(activeNode);
 			}
 			
-			Collections.sort(openList, comparator);
-			activeNode = openList.remove(0);
-			
-			closedList.add(activeNode);
-			
-			if (activeNode.H == 0)
+			ArrayList<Node> path = new ArrayList<>();
+			Node node = activeNode;
+			path.add(node.clone());
+			while (node.p != null)
 			{
-				break; // found way
+				path.add(node.p.clone());
+				node = node.p;
 			}
 			
-			handleAdjacentTiles(activeNode);
+			Collections.reverse(path);
+			return toPath(path);
 		}
-		
-		ArrayList<Node> path = new ArrayList<>();
-		Node node = activeNode;
-		path.add(node.clone());
-		while (node.p != null)
+		catch (Exception e)
 		{
-			path.add(node.p.clone());
-			node = node.p;
+			e.printStackTrace();
+			return null;
 		}
-		
-		Collections.reverse(path);
-		
-		return toPath(path);
 	}
 	
 	private static void handleAdjacentTiles(Node node)
@@ -97,7 +104,7 @@ public class AStar
 					boolean free = true;
 					for (Entity e : Game.world.entities)
 					{
-						if (e.getBump(true).intersects(tile.x * Tile.SIZE, tile.y * Tile.SIZE, Tile.SIZE, Tile.SIZE))
+						if (e.getBump(true).intersects(tile.x * Tile.SIZE, tile.y * Tile.SIZE, Tile.SIZE, Tile.SIZE) && e.isMassive())
 						{
 							free = false;
 							break;

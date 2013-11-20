@@ -45,11 +45,11 @@ public class Forester extends Creature
 	{
 		super.tick(tick);
 		
-		if (target == null)
+		if (target == null && path == null)
 		{
 			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
 			{
-				if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity(new Tree(Assistant.round(Math.round(getPos().x), Tile.SIZE) / Tile.SIZE, Assistant.round(Math.round(getPos().y), Tile.SIZE) / Tile.SIZE, true), false);
+				if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity2(new Tree(Assistant.round(Math.round(getPos().x), Tile.SIZE) / Tile.SIZE, Assistant.round(Math.round(getPos().y), Tile.SIZE) / Tile.SIZE, true), false);
 				setTarget(lookupPlantTarget(), false);
 			}
 		}
@@ -64,7 +64,7 @@ public class Forester extends Creature
 		int y = Assistant.round(Math.round(spawnPoint.y + (float) Math.sin(rad) * hyp), Tile.SIZE);
 		int my = Assistant.round(Game.world.height / 2, Tile.SIZE);
 		
-		if (x < 0 || y < 100 || x >= Game.world.width || y >= Game.world.height - 120 || y == my || y == my - Tile.SIZE) return lookupPlantTarget();
+		if (x < 0 || y < 100 || x >= Game.world.width || y >= Game.world.height - 120 || y == my || y == my + Tile.SIZE) return lookupPlantTarget();
 		
 		if (Game.world.isFreeTile(x, y)) return new Vector(x, y);
 		else return lookupPlantTarget();

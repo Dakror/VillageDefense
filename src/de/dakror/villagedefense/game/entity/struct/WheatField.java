@@ -29,6 +29,8 @@ public class WheatField extends Struct
 		description = "Ein Weizenfeld.";
 		startTick = 0;
 		
+		massive = false;
+		
 		setBump(new Rectangle2D.Float(0.25f, 0.25f, 0.5f, 0.5f));
 		
 		structPoints.addEntries(new Vector(0.5f, 0.5f));
@@ -53,7 +55,7 @@ public class WheatField extends Struct
 				image = null;
 				if (ty == 8)
 				{
-					resources.set(Resource.WHEAT, 15);
+					resources.set(Resource.WHEAT, 5);
 				}
 			}
 		}
