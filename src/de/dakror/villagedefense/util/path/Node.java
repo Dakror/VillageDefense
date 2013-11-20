@@ -1,5 +1,8 @@
 package de.dakror.villagedefense.util.path;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -10,6 +13,7 @@ public class Node
 	public float F, G, H;
 	public Node p;
 	public Vector t;
+	public boolean inPath;
 	
 	public Node(float G, float H, Vector t, Node p)
 	{
@@ -30,6 +34,26 @@ public class Node
 		}
 		
 		return false;
+	}
+	
+	public void draw(int scale, Color c, Graphics2D g)
+	{
+		Color o = g.getColor();
+		g.setColor(c);
+		if (inPath) g.setColor(Color.red);
+		if (p != null)
+		{
+			g.drawLine((int) ((t.x + 0.5f) * scale), (int) ((t.y + 0.5f) * scale), (int) ((p.t.x + 0.5f) * scale), (int) ((p.t.y + 0.5f) * scale));
+		}
+		g.fillOval((int) ((t.x + 0.5f) * scale) - 5, (int) ((t.y + 0.5f) * scale) - 5, 10, 10);
+		g.setColor(o);
+	}
+	
+	@Override
+	public Node clone()
+	{
+		inPath = true;
+		return new Node(G, H, t.clone(), p != null ? p.clone() : null);
 	}
 	
 	@Override

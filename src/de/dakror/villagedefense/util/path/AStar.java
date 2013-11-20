@@ -7,7 +7,6 @@ import java.util.Comparator;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
-import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -15,8 +14,8 @@ import de.dakror.villagedefense.util.Vector;
  */
 public class AStar
 {
-	static ArrayList<Node> openList;
-	static ArrayList<Node> closedList;
+	public static ArrayList<Node> openList;
+	public static ArrayList<Node> closedList;
 	static Vector target;
 	
 	public static Path getPath(Vector start, Vector t)
@@ -43,29 +42,28 @@ public class AStar
 		{
 			if (openList.size() == 0)
 			{
-				CFG.p("ain't no way");
 				return null; // no way
 			}
 			
 			Collections.sort(openList, comparator);
 			activeNode = openList.remove(0);
 			
+			closedList.add(activeNode);
+			
 			if (activeNode.H == 0)
 			{
 				break; // found way
 			}
-			
-			closedList.add(activeNode);
 			
 			handleAdjacentTiles(activeNode);
 		}
 		
 		ArrayList<Node> path = new ArrayList<>();
 		Node node = activeNode;
-		path.add(node);
+		path.add(node.clone());
 		while (node.p != null)
 		{
-			path.add(node.p);
+			path.add(node.p.clone());
 			node = node.p;
 		}
 		
@@ -85,7 +83,6 @@ public class AStar
 				if (i == j || neighbors[i][j] == Tile.empty.getId() || (i == 0 && j == 2) || (i == 2 && j == 0)) continue;
 				
 				Vector tile = new Vector(node.t.x + i - 1, node.t.y + j - 1);
-				
 				Node n = new Node(node.G + Tile.getTileForId(neighbors[i][j]).G, tile.getDistance(target), tile, node);
 				
 				if (closedList.contains(n)) continue;
@@ -107,7 +104,7 @@ public class AStar
 						}
 					}
 					
-					if (free) openList.add(n);
+					if (free || n.H == 0) openList.add(n);
 				}
 			}
 		}

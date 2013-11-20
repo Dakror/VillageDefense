@@ -183,6 +183,27 @@ public class World extends EventListener implements Drawable
 		for (Animation a : animations)
 			a.draw(g);
 		
+		// try
+		// {
+		// if (AStar.openList != null)
+		// {
+		// for (Node n : AStar.openList)
+		// n.draw(Tile.SIZE, Color.white, g);
+		// for (Node n : AStar.closedList)
+		// n.draw(Tile.SIZE, Color.blue, g);
+		// }
+		// }
+		// catch (ConcurrentModificationException e)
+		// {}
+		//
+		// for (Entity e : entities)
+		// {
+		// if (e instanceof Creature)
+		// {
+		// if (((Creature) e).path != null) ((Creature) e).path.draw(g);
+		// }
+		// }
+		
 		// Color c = g.getColor();
 		// g.setColor(Color.darkGray);
 		// g.drawRect(Math.round((Game.currentGame.mouse.x - x - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Math.round((Game.currentGame.mouse.y - y - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Tile.SIZE, Tile.SIZE);

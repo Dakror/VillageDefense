@@ -100,6 +100,7 @@ public abstract class Creature extends Entity
 		}
 		
 		move(tick);
+		
 		// -- attacks -- //
 		if (targetEntity != null && target == null && (path == null || path.isPathComplete()))
 		{
@@ -178,8 +179,10 @@ public abstract class Creature extends Entity
 			path = AStar.getPath(getTile(), Game.world.getTile(target));
 			
 			if (path == null) return;
+			
 			this.target = new Vector(-1337, 0);
 			path.mul(Tile.SIZE);
+			path.translate(0, -bump.y + bump.height);
 		}
 		else this.target = target;
 	}
@@ -224,7 +227,7 @@ public abstract class Creature extends Entity
 			
 			nearestPoint.setLength(nearestPoint.getLength() - attributes.get(Attribute.ATTACK_RANGE));
 			
-			// nearestPoint.y -= height * 0.6f;
+			if (hostile) nearestPoint.y -= height * 0.6f;
 			
 			setTarget(nearestPoint, user);
 		}

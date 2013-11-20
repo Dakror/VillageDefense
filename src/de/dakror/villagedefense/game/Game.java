@@ -374,7 +374,7 @@ public class Game extends EventListener
 		}
 		
 		
-		if (e.getModifiers() == MouseEvent.BUTTON1_MASK && e.getY() > 80 && e.getY() < Game.getHeight() - 100)
+		if (e.getModifiers() == MouseEvent.BUTTON1_MASK/* && e.getY() > 80 && e.getY() < Game.getHeight() - 100 */)
 		{
 			if (activeStruct == null) mouseDrag = e.getPoint();
 		}
