@@ -184,10 +184,9 @@ public class Game extends EventListener
 		resources.set(Resource.GOLD, 1000);
 		resources.set(Resource.BREAD, 500);
 		
-		for (Resource r : Resource.values())
-			resources.set(r, 1000);
-		
-		resources.set(Resource.PEOPLE, 0);
+		// for (Resource r : Resource.values())
+		// resources.set(r, 1000);
+		// resources.set(Resource.PEOPLE, 0);
 		
 		Game.world.init(width, height);
 	}
@@ -506,7 +505,7 @@ public class Game extends EventListener
 		
 		score -= (world.core.getAttributes().get(Attribute.HEALTH_MAX) - world.core.getAttributes().get(Attribute.HEALTH)) * 10;
 		
-		score -= 2101;
+		score -= 2151;
 		
 		score = score < 0 ? 0 : score;
 		

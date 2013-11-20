@@ -52,7 +52,7 @@ public class WaveManager
 	public static int wave;
 	public static int nextWave; // int seconds
 	
-	public static final int waveTimer = 600000; // in seconds
+	public static final int waveTimer = 60; // in seconds
 	
 	public static EnumMap<Monster, Integer> monsters = new EnumMap<>(Monster.class);
 	
