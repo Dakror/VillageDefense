@@ -157,6 +157,16 @@ public class Resources
 		return s;
 	}
 	
+	public float getLength()
+	{
+		float length = 0;
+		
+		for (Resource r : res.keySet())
+			length += getF(r);
+		
+		return length;
+	}
+	
 	public ArrayList<Resource> getFilled()
 	{
 		ArrayList<Resource> res = new ArrayList<>();

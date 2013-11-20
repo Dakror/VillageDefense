@@ -38,6 +38,12 @@ public class Villager extends Creature
 		
 		if (getTileIdBelow() == Tile.way.getId()) attributes.set(Attribute.SPEED, Way.speed);
 		else attributes.set(Attribute.SPEED, Attribute.SPEED.getDefaultValue());
+		
+		if (target == null && targetEntity == null)
+		{
+			Struct t = getMostImportantStructToClear();
+			if (t != null) setTarget(t, true);
+		}
 	}
 	
 	@Override
@@ -104,8 +110,20 @@ public class Villager extends Creature
 		for (Entity e : Game.world.entities)
 		{
 			if (e instanceof Struct && ((Struct) e).isPlaceGround() && e.getResources().size() > 0)
-			{	
+			{
+				Path path = AStar.getPath(getTile(), Game.world.getTile(getTargetForStruct((Struct) e)));
+				if (path == null) continue;
 				
+				path.mul(Tile.SIZE);
+				path.translate(0, -bump.y + bump.height);
+				
+				float myF = path.getLength() - e.getResources().getLength();
+				
+				if (struct == null || myF < F)
+				{
+					F = myF;
+					struct = (Struct) e;
+				}
 			}
 		}
 		
