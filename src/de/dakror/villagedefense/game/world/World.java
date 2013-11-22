@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -156,7 +157,11 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void draw(Graphics2D g)
 	{
-		g.translate(x, y);
+		AffineTransform old = g.getTransform();
+		AffineTransform at = g.getTransform();
+		at.translate(x, y);
+		g.setTransform(at);
+		
 		Rectangle visible = new Rectangle(-x, -y, Game.getWidth(), Game.getHeight());
 		try
 		{
@@ -210,7 +215,7 @@ public class World extends EventListener implements Drawable
 		// g.drawRect(Math.round((Game.currentGame.mouse.x - x - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Math.round((Game.currentGame.mouse.y - y - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Tile.SIZE, Tile.SIZE);
 		// g.setColor(c);
 		
-		g.translate(-x, -y);
+		g.setTransform(old);
 	}
 	
 	public void sortEntities()
