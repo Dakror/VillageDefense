@@ -7,6 +7,7 @@ import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.animation.Animation;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
+import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -25,6 +26,7 @@ public class Rock extends Projectile
 		rotate = false;
 		this.radius = radius;
 		this.damage = damage;
+		canSetOnFire = true;
 	}
 	
 	@Override
@@ -36,7 +38,7 @@ public class Rock extends Projectile
 	@Override
 	protected void onImpact()
 	{
-		Game.world.addAnimation(new Animation(Math.round(getPos().x - radius), Math.round(getPos().y - radius), Math.round(radius * 2), 2, "rock_impact"));
+		Game.world.addAnimation(new Animation(Math.round(getPos().x - radius), Math.round(getPos().y - radius) - (onFire ? Tile.SIZE : 0), Math.round(radius * 2), 2, onFire ? "rock_impact_fire" : "rock_impact"));
 		Shape s = new Arc2D.Float(getPos().x - radius, getPos().y - radius, radius * 2, radius * 2, 0, 360, Arc2D.OPEN);
 		for (Entity e : Game.world.entities)
 		{

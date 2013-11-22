@@ -5,6 +5,9 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.entity.struct.Torch;
+import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -22,6 +25,9 @@ public abstract class Projectile implements Drawable
 	float angle;
 	boolean dead;
 	boolean rotate;
+	boolean canSetOnFire;
+	boolean onFire;
+	int frame;
 	
 	public Projectile(Vector pos, String image, float speed)
 	{
@@ -50,6 +56,8 @@ public abstract class Projectile implements Drawable
 		g.drawImage(image, (int) pos.x, (int) pos.y, Game.w);
 		
 		g.setTransform(old);
+		
+		if (canSetOnFire && onFire) Assistant.drawImage(Game.getImage("anim/fire.png"), (int) pos.x - 12, (int) pos.y - 12, 24, 24, 32 * frame, 0, 32, 29, g);
 	}
 	
 	public Projectile setRotate(boolean rotate)
@@ -64,12 +72,29 @@ public abstract class Projectile implements Drawable
 	{
 		target = getTargetVector();
 		
+		if (onFire && tick % 3 == 0) frame = (frame + 1) % 4;
+		
 		Vector dif = target.clone().sub(pos);
 		if (dif.getLength() > speed) dif.setLength(speed);
 		
 		angle = (float) Math.atan2(dif.y, dif.x);
 		
 		pos.add(dif);
+		
+		if (canSetOnFire && !onFire)
+		{
+			for (Entity e : Game.world.entities)
+			{
+				if (e instanceof Torch)
+				{
+					if (((Torch) e).getAttackArea().contains(pos.x, pos.y))
+					{
+						onFire = true;
+						break;
+					}
+				}
+			}
+		}
 		
 		if (pos.equals(target))
 		{

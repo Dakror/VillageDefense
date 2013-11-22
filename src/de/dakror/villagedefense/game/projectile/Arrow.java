@@ -18,6 +18,7 @@ public class Arrow extends Projectile
 		this.target = target.getCenter2();
 		this.damage = damage;
 		rotate = true;
+		canSetOnFire = false;
 	}
 	
 	@Override

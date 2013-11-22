@@ -36,6 +36,7 @@ import de.dakror.villagedefense.game.entity.struct.Sawmill;
 import de.dakror.villagedefense.game.entity.struct.School;
 import de.dakror.villagedefense.game.entity.struct.Smeltery;
 import de.dakror.villagedefense.game.entity.struct.Struct;
+import de.dakror.villagedefense.game.entity.struct.Torch;
 import de.dakror.villagedefense.game.entity.struct.Warehouse;
 import de.dakror.villagedefense.game.entity.struct.Way;
 import de.dakror.villagedefense.game.entity.struct.Windmill;
@@ -66,7 +67,7 @@ public class Game extends EventListener
 	public static Game currentGame;
 	public static JFrame w;
 	public static World world;
-	public static Struct[] buildableStructs = { new Way(0, 0), new House(0, 0), new Farm(0, 0), new Windmill(0, 0), new Bakery(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new Warehouse(0, 0), new Barricade(0, 0), new ArrowTower(0, 0), new Catapult(0, 0) };
+	public static Struct[] buildableStructs = { new Way(0, 0), new House(0, 0), new Farm(0, 0), new Windmill(0, 0), new Bakery(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new Warehouse(0, 0), new Barricade(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Torch(0, 0) };
 	
 	static HashMap<String, BufferedImage> imageCache = new HashMap<>();
 	
@@ -184,9 +185,9 @@ public class Game extends EventListener
 		resources.set(Resource.GOLD, 1000);
 		resources.set(Resource.BREAD, 500);
 		
-		// for (Resource r : Resource.values())
-		// resources.set(r, 1000);
-		// resources.set(Resource.PEOPLE, 0);
+		for (Resource r : Resource.values())
+			resources.set(r, 10000);
+		resources.set(Resource.PEOPLE, 0);
 		
 		Game.world.init(width, height);
 	}
