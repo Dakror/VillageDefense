@@ -22,7 +22,7 @@ public class House extends Struct
 		super(x, y, 5, 5);
 		tx = 0;
 		ty = 5;
-		setBump(new Rectangle2D.Float(0.25f, 2f, 4.5f, 3f));
+		setBump(new Rectangle2D.Float(0.25f, 2f, 4.5f, 3.1f));
 		placeGround = true;
 		name = "Haus";
 		description = "Bietet Platz für einen Einwohner.";
