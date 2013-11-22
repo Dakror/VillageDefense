@@ -17,7 +17,7 @@ public class CFG
 	public static final int TICK_TIMEOUT = 33;
 	
 	// -- UniVersion -- //
-	public static final int VERSION = 2013112021;
+	public static final int VERSION = 2013112221;
 	public static final int PHASE = 1;
 	
 	static long time = 0;

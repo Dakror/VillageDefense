@@ -106,7 +106,7 @@ public class AStar
 					boolean free = true;
 					for (Entity e : Game.world.entities)
 					{
-						if (e.getBump(true).intersects(tile.x * Tile.SIZE, tile.y * Tile.SIZE, Tile.SIZE, Tile.SIZE) && e.isMassive())
+						if (e.getBump(true).intersects(tile.x * Tile.SIZE + 8, tile.y * Tile.SIZE + 8, Tile.SIZE - 16, Tile.SIZE - 16) && e.isMassive())
 						{
 							free = false;
 							break;
