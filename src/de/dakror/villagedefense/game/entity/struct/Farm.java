@@ -27,7 +27,7 @@ public class Farm extends Struct
 		buildingCosts.set(Resource.WOOD, 50);
 		buildingCosts.set(Resource.STONE, 125);
 		
-		description = "Bietet Platz für einen Bauern, der Weizen anbaut.";
+		description = "Bietet Platz fÃ¼r einen Bauern, der Weizen anbaut.";
 	}
 	
 	@Override

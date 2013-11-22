@@ -15,11 +15,11 @@ public class Woodsman extends Creature
 	{
 		super(x, y, "forester");
 		setHostile(false);
-		name = "Holzf‰ller";
+		name = "Holzf√§ller";
 		attributes.set(Attribute.MINE_AMOUNT, 2);
 		attributes.set(Attribute.MINE_SPEED, 15);
 		
-		description = "F‰llt rasant B‰ume.";
+		description = "F√§llt rasant B√§ume.";
 		canHunger = true;
 	}
 	

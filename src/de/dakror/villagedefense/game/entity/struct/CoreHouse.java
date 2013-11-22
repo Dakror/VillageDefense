@@ -25,7 +25,7 @@ public class CoreHouse extends Struct
 		attributes.set(Attribute.HEALTH_MAX, 100);
 		placeGround = true;
 		description = "Deine Basis. Dien Monster wollen sie zerstören.";
-		name = "Basis-Geb�ude";
+		name = "Basis-Gebäude";
 	}
 	
 	@Override

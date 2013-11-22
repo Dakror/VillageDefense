@@ -26,7 +26,7 @@ public class ArrowTower extends Tower
 		
 		researchClass = Tower.class;
 		
-		description = "Schieﬂt mit Pfeilen auf Monster.";
+		description = "Schie√üt mit Pfeilen auf Monster.";
 	}
 	
 	@Override

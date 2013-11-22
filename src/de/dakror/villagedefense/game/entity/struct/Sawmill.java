@@ -19,7 +19,7 @@ public class Sawmill extends Struct
 	{
 		super(x, y, 4, 3);
 		
-		name = "Sägewerk";
+		name = "SÃ¤gewerk";
 		placeGround = true;
 		tx = 0;
 		ty = 13;
@@ -34,7 +34,7 @@ public class Sawmill extends Struct
 		attributes.set(Attribute.MINE_SPEED, 300);
 		attributes.set(Attribute.MINE_AMOUNT, 1); // use 1 get 2
 		
-		description = "Sägt Holz in Bretter.";
+		description = "SÃ¤gt Holz in Bretter.";
 		canHunger = true;
 	}
 	

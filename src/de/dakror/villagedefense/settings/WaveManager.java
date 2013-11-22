@@ -20,12 +20,12 @@ public class WaveManager
 {
 	public enum Monster
 	{
-		ZOMBIE("zombie", Zombie.class, "Zombie:Normalschneller Untoter. Fügt Gebäuden 5 Schaden hinzu. Hält 20 Schaden aus"),
-		GHOST("ghost", Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Hält 8 Schaden aus. Kann durch Barrikaden hindurchfliegen"),
-		SKELETON("skeleton", Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält 50 Schaden aus"),
-		TROLL("troll", Troll.class, "Troll:Schlurfender Monsterboss. Fügt Gebäuden 25 Schaden hinzu. Hält 500 Schaden aus"),
-		GOLEM("golem", Golem.class, "Golem:Normalschnelle Steingestalt. Fügt Gebäuden 20 Schaden hinzu. Hält 150 Schaden aus. Ist immun gegen Pfeile"),
-		TREE("treemonster", TreeMonster.class, "Monstereiche:Langsamer Monster-Baum.Fügt Gebäuden 18 Schaden hinzu. Hält 100 Schaden aus. Kann nur durch Feuer verletzt werden")
+		ZOMBIE("zombie", Zombie.class, "Zombie:Normalschneller Untoter. FÃ¼gt GebÃ¤uden 5 Schaden hinzu. HÃ¤lt 20 Schaden aus"),
+		GHOST("ghost", Ghost.class, "Geist:Schnelles Gespenst. FÃ¼gt GebÃ¤uden 10 Schaden hinzu. HÃ¤lt 8 Schaden aus. Kann durch Barrikaden hindurchfliegen"),
+		SKELETON("skeleton", Skeleton.class, "Skelett:Langsamerer Totenritter. FÃ¼gt GebÃ¤uden 10 Schaden hinzu. HÃ¤lt 50 Schaden aus"),
+		TROLL("troll", Troll.class, "Troll:Schlurfender Monsterboss. FÃ¼gt GebÃ¤uden 25 Schaden hinzu. HÃ¤lt 500 Schaden aus"),
+		GOLEM("golem", Golem.class, "Golem:Normalschnelle Steingestalt. FÃ¼gt GebÃ¤uden 20 Schaden hinzu. HÃ¤lt 150 Schaden aus. Ist immun gegen Pfeile"),
+		TREE("treemonster", TreeMonster.class, "Monstereiche:Langsamer Monster-Baum.FÃ¼gt GebÃ¤uden 18 Schaden hinzu. HÃ¤lt 100 Schaden aus. Kann nur durch Feuer verletzt werden")
 		
 		;
 		
