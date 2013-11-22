@@ -61,7 +61,7 @@ import de.dakror.villagedefense.util.EventListener;
 public class Game extends EventListener
 {
 	public static final float hungerPerUnitPerSecond = 0.005f;
-	public static final int forwardFactor = 25;
+	public static final int forwardFactor = 5;
 	
 	public static Game currentGame;
 	public static JFrame w;
