@@ -26,7 +26,7 @@ public class Farmer extends Creature
 		
 		attributes.set(Attribute.ATTACK_SPEED, 30 * 5); // 5 second plant cooldown
 		
-		range = 8 * Tile.SIZE; // 5 fields plant radius
+		range = 6 * Tile.SIZE; // 5 fields plant radius
 		
 		attributes.set(Attribute.MINE_AMOUNT, 1);
 		

@@ -37,7 +37,8 @@ import de.dakror.villagedefense.util.Vector;
  */
 public abstract class Struct extends Entity
 {
-	protected int tx, ty;
+	public int tx;
+	public int ty;
 	protected boolean placeGround;
 	protected boolean canPlaceOnWay;
 	protected boolean canDragBuild;
@@ -455,6 +456,8 @@ public abstract class Struct extends Entity
 		{
 			o.put("x", x / Tile.SIZE);
 			o.put("y", y / Tile.SIZE);
+			o.put("tx", tx);
+			o.put("ty", ty);
 			o.put("class", getClass().getName());
 			o.put("researches", researches);
 			o.put("attributes", attributes.getData());

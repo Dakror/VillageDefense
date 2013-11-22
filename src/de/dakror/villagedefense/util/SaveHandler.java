@@ -125,6 +125,9 @@ public class SaveHandler
 					((Struct) entity).clearResearches();
 					for (int j = 0; j < researches2.length(); j++)
 						((Struct) entity).add(Researches.valueOf(researches2.getString(j)));
+					
+					((Struct) entity).tx = e.getInt("tx");
+					((Struct) entity).ty = e.getInt("ty");
 				}
 				
 				Game.world.addEntity2(entity, true);
