@@ -234,7 +234,7 @@ public abstract class Struct extends Entity
 		if (resources.size() == 0) onMinedUp();
 	}
 	
-	public ArrayList<Vector> getSurroundingTiles()
+	public ArrayList<Vector> getSurroundingTiles(boolean onlyFree)
 	{
 		ArrayList<Vector> tiles = new ArrayList<>();
 		
@@ -254,11 +254,29 @@ public abstract class Struct extends Entity
 				if ((i == 0 || i == w + 1) && (j == 0 || j == h + 1)) continue;
 				if (i > 0 && j > 0 && i < w + 1 && j < h + 1) continue;
 				
-				tiles.add(new Vector(x + i - 1, y + j - 1));
+				if (!onlyFree || (onlyFree && Game.world.isFreeTile((x + i - 1) * Tile.SIZE, (y + j - 1) * Tile.SIZE))) tiles.add(new Vector(x + i - 1, y + j - 1));
 			}
 		}
 		
 		return tiles;
+	}
+	
+	public int getTargetedCarriers()
+	{
+		int count = 0;
+		
+		for (Entity e : Game.world.entities)
+		{
+			if (e instanceof Villager)
+			{
+				Villager v = (Villager) e;
+				if (v.getTargetEntity() == null || !v.isTargetingToCarry()) continue;
+				
+				if (v.getTargetEntity().equals(this)) count++;
+			}
+		}
+		
+		return count;
 	}
 	
 	public Resources getBuildingCosts()

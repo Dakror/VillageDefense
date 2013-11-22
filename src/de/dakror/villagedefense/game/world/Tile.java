@@ -17,8 +17,8 @@ public class Tile
 	
 	// -- Tile List -- //
 	public static Tile empty = new Tile(0, "Leer", "empty.png", 0);
-	public static Tile grass = new Tile(1, "Gras", "grass.png", 1);
-	public static Tile ground = new Tile(2, "Boden", "ground.png", 1);
+	public static Tile grass = new Tile(1, "Gras", "grass.png", 100);
+	public static Tile ground = new Tile(2, "Boden", "ground.png", 100);
 	public static Tile way = new Way();
 	
 	// -- Class def -- //

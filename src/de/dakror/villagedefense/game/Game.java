@@ -55,6 +55,7 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
 import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.EventListener;
+import de.dakror.villagedefense.util.ScreenManager;
 
 /**
  * @author Dakror
@@ -98,6 +99,8 @@ public class Game extends EventListener
 	public Resources resources;
 	public UpdateThread updateThread;
 	public ArrayList<Researches> researches = new ArrayList<>();
+	
+	ScreenManager sm;
 	
 	public Point mouse = new Point(0, 0);
 	public Point mouseDown, mouseDownWorld, mouseDrag;
@@ -176,6 +179,10 @@ public class Game extends EventListener
 			init();
 			return;
 		}
+		
+		// sm = new ScreenManager();
+		// sm.setFullScreen(w);
+		
 		updateThread = new UpdateThread();
 	}
 	
@@ -185,9 +192,9 @@ public class Game extends EventListener
 		resources.set(Resource.GOLD, 1000);
 		resources.set(Resource.BREAD, 500);
 		
-		for (Resource r : Resource.values())
-			resources.set(r, 10000);
-		resources.set(Resource.PEOPLE, 0);
+		// for (Resource r : Resource.values())
+		// resources.set(r, 10000);
+		// resources.set(Resource.PEOPLE, 0);
 		
 		Game.world.init(width, height);
 	}
@@ -199,15 +206,24 @@ public class Game extends EventListener
 		
 		if (!w.isVisible()) return;
 		
-		BufferStrategy s = w.getBufferStrategy();
+		BufferStrategy s = null;
 		Graphics2D g = null;
-		try
+		
+		if (sm == null)
 		{
-			g = (Graphics2D) s.getDrawGraphics();
+			try
+			{
+				s = w.getBufferStrategy();
+				g = (Graphics2D) s.getDrawGraphics();
+			}
+			catch (Exception e)
+			{
+				return;
+			}
 		}
-		catch (Exception e)
+		else
 		{
-			return;
+			g = sm.getGraphics();
 		}
 		
 		g.translate(w.getInsets().left, w.getInsets().top);
@@ -259,13 +275,21 @@ public class Game extends EventListener
 		g.setComposite(c1);
 		g.dispose();
 		
-		try
+		
+		if (sm == null)
 		{
-			if (!s.contentsLost()) s.show();
+			try
+			{
+				if (!s.contentsLost()) s.show();
+			}
+			catch (Exception e)
+			{
+				return;
+			}
 		}
-		catch (Exception e)
+		else
 		{
-			return;
+			sm.update();
 		}
 		
 		frames++;
@@ -326,11 +350,14 @@ public class Game extends EventListener
 		{
 			case KeyEvent.VK_F11:
 			{
-				w.dispose();
-				w.setUndecorated(!w.isUndecorated());
-				w.setVisible(true);
-				w.createBufferStrategy(2);
-				break;
+				if (sm == null)
+				{
+					w.dispose();
+					w.setUndecorated(!w.isUndecorated());
+					w.setVisible(true);
+					w.createBufferStrategy(2);
+					break;
+				}
 			}
 		}
 		
@@ -480,7 +507,7 @@ public class Game extends EventListener
 				if (v.getTargetEntity() != null && v.getTargetEntity() instanceof Struct)
 				{
 					Struct s = (Struct) v.getTargetEntity();
-					if (s.getBuildingCosts().get(Resource.PEOPLE) > 0) continue;
+					if (s.getBuildingCosts().get(Resource.PEOPLE) > 0 && !v.isTargetByUser()) continue;
 				}
 				
 				people++;

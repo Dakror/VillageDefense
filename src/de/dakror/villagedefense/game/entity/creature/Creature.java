@@ -232,7 +232,7 @@ public abstract class Creature extends Entity
 		
 		ArrayList<Vector> points = hostile ? s.getStructPoints().attacks : s.getStructPoints().entries;
 		
-		if (points.size() == 0) points = s.getSurroundingTiles();
+		if (points.size() == 0) points = s.getSurroundingTiles(false);
 		
 		Vector pos = getPos();
 		for (Vector p : points)

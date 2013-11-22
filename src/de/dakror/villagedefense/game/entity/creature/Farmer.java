@@ -16,7 +16,6 @@ import de.dakror.villagedefense.util.Vector;
 public class Farmer extends Creature
 {
 	int range;
-	Vector spawn;
 	
 	public Farmer(int x, int y)
 	{
@@ -27,10 +26,7 @@ public class Farmer extends Creature
 		
 		attributes.set(Attribute.ATTACK_SPEED, 30 * 5); // 5 second plant cooldown
 		
-		range = 5 * Tile.SIZE; // 5 fields plant radius
-		
-		spawn = new Vector(spawnPoint);
-		spawn.y -= 1 * Tile.SIZE;
+		range = 8 * Tile.SIZE; // 5 fields plant radius
 		
 		attributes.set(Attribute.MINE_AMOUNT, 1);
 		
@@ -61,7 +57,7 @@ public class Farmer extends Creature
 	{
 		for (Entity e : Game.world.entities)
 		{
-			if (e instanceof WheatField && e.getCenter().getDistance(spawn) <= range && ((WheatField) e).getPhase() == 3)
+			if (e instanceof WheatField && e.getCenter().getDistance(origin.getCenter2()) <= range && ((WheatField) e).getPhase() == 3)
 			{
 				return e;
 			}
@@ -75,8 +71,8 @@ public class Farmer extends Creature
 		float rad = (float) Math.toRadians(Math.random() * 360);
 		float hyp = (float) Math.random() * range - Tile.SIZE;
 		
-		int x = Assistant.round(Math.round(spawn.x + (float) Math.cos(rad) * hyp), Tile.SIZE);
-		int y = Assistant.round(Math.round(spawn.y + (float) Math.sin(rad) * hyp), Tile.SIZE);
+		int x = Assistant.round(Math.round(origin.getCenter2().x + (float) Math.cos(rad) * hyp), Tile.SIZE);
+		int y = Assistant.round(Math.round(origin.getCenter2().y + (float) Math.sin(rad) * hyp), Tile.SIZE);
 		int my = Assistant.round(Game.world.height / 2, Tile.SIZE);
 		
 		if (x < 0 || y < 100 || x >= Game.world.width || y >= Game.world.height - 120 || y == my || y == my + Tile.SIZE) return lookupPlantTarget();

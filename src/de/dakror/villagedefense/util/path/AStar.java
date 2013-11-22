@@ -7,6 +7,7 @@ import java.util.Comparator;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -32,6 +33,7 @@ public class AStar
 				@Override
 				public int compare(Node o1, Node o2)
 				{
+					if (o1 == null || o2 == null) CFG.p("nuuuuuuuuuuuuuuullllllllll");
 					return Float.compare(o1.F, o2.F);
 				}
 			};

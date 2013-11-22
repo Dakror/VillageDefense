@@ -430,7 +430,7 @@ public class World extends EventListener implements Drawable
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if (Game.currentGame.placedStruct) return;
+		if (Game.currentGame.placedStruct || Game.currentGame.activeStruct != null) return;
 		
 		e.translatePoint(-x, -y);
 		if (e.getButton() == MouseEvent.BUTTON1) // LMB

@@ -25,10 +25,10 @@ public class Villager extends Creature
 		name = "Einwohner";
 		attributes.set(Attribute.HEALTH, 15);
 		attributes.set(Attribute.HEALTH_MAX, 15);
-		attributes.set(Attribute.MINE_AMOUNT, 10); // transport capacity
+		attributes.set(Attribute.MINE_AMOUNT, 50); // transport capacity
 		
-		description = "Kann Rohstoffe sammeln und in Gebäuden arbeiten.";
-		canHunger = true;
+		description = "Kann Rohstoffe sammeln, transportieren und Gebäuden arbeiten.";
+		canHunger = false;
 	}
 	
 	@Override
@@ -39,11 +39,17 @@ public class Villager extends Creature
 		if (getTileIdBelow() == Tile.way.getId()) attributes.set(Attribute.SPEED, Way.speed);
 		else attributes.set(Attribute.SPEED, Attribute.SPEED.getDefaultValue());
 		
-		if (target == null && targetEntity == null)
+		if (target == null && targetEntity == null && path == null)
 		{
 			Struct t = getMostImportantStructToClear();
 			if (t != null) setTarget(t, true);
 		}
+	}
+	
+	public boolean isTargetingToCarry()
+	{
+		if (targetEntity == null) return false;
+		return targetByUser && targetEntity instanceof Struct && targetEntity.getResources().size() > 0;
 	}
 	
 	@Override
@@ -74,20 +80,26 @@ public class Villager extends Creature
 			{
 				alpha = 0;
 			}
-			else if ((tick + randomOffset) % targetEntity.getAttributes().get(Attribute.MINE_SPEED) == 0 && targetEntity.getResources().size() > 0)
+			else if (targetEntity.getResources().size() > 0)
 			{
 				if (!((Struct) targetEntity).isPlaceGround())
 				{
 					if (targetEntity instanceof WheatField) return false; // can't mine those
-					
-					if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources(1, Game.currentGame.resources);
+					if ((tick + randomOffset) % targetEntity.getAttributes().get(Attribute.MINE_SPEED) == 0)
+					{
+						if (frame % 2 == 0)
+						{
+							((Struct) targetEntity).mineAllResources(1, Game.currentGame.resources);
+						}
+						frame++;
+					}
 				}
 				else
 				{
 					((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT), resources);
 					setTarget(getNearestWarehouse(), false);
 				}
-				frame++;
+				
 			}
 			else if (targetEntity instanceof Warehouse)
 			{
@@ -96,7 +108,6 @@ public class Villager extends Creature
 				frame++;
 				targetEntity = null;
 			}
-			
 			return true;
 		}
 		return false;
@@ -111,14 +122,19 @@ public class Villager extends Creature
 		{
 			if (e instanceof Struct && ((Struct) e).isPlaceGround() && e.getResources().size() > 0)
 			{
-				Path path = AStar.getPath(getTile(), Game.world.getTile(getTargetForStruct((Struct) e)));
+				Struct s = (Struct) e;
+				
+				Path path = AStar.getPath(getTile(), Game.world.getTile(getTargetForStruct(s)));
 				if (path == null) continue;
 				
 				path.mul(Tile.SIZE);
 				path.translate(0, -bump.y + bump.height);
 				
-				float myF = path.getLength() - e.getResources().getLength();
+				if (s.getTargetedCarriers() * attributes.get(Attribute.MINE_AMOUNT) >= e.getResources().getLength()) continue;
 				
+				
+				float myF = path.getLength() - (float) Math.pow(e.getResources().getLength(), 2) + (s.getTargetedCarriers() * attributes.get(Attribute.MINE_AMOUNT));
+				// CFG.p(e.getClass(), myF);
 				if (struct == null || myF < F)
 				{
 					F = myF;
@@ -126,6 +142,8 @@ public class Villager extends Creature
 				}
 			}
 		}
+		
+		// if (struct != null) CFG.p(struct.getClass());
 		
 		return struct;
 	}

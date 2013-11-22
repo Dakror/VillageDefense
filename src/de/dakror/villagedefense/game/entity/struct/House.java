@@ -33,14 +33,15 @@ public class House extends Struct
 	@Override
 	protected void onDeath()
 	{
-		dead = true;
 		for (Entity e : Game.world.entities)
 		{
-			if ((e instanceof Creature) && ((Creature) e).getOrigin().equals(this))
+			
+			if ((e instanceof Creature) && ((Creature) e).getOrigin() != null && ((Creature) e).getOrigin().equals(this))
 			{
 				e.kill();
 			}
 		}
+		dead = true;
 	}
 	
 	@Override
