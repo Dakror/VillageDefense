@@ -29,7 +29,7 @@ public class Windmill extends Struct
 		ty = 30;
 		placeGround = true;
 		
-		name = "WindmÃ¼hle";
+		name = "Windmühle";
 		setBump(new Rectangle2D.Float(1.2f, 7, 4.7f, 3));
 		
 		attributes.set(Attribute.MINE_SPEED, 200);

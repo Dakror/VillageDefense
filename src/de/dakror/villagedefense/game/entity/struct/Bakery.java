@@ -21,7 +21,7 @@ public class Bakery extends Struct
 		tx = 5;
 		ty = 23;
 		placeGround = true;
-		name = "BÃ¤ckerei";
+		name = "Bäckerei";
 		
 		description = "Backt aus Mehl Brote.";
 		

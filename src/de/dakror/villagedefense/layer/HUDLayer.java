@@ -203,6 +203,7 @@ public class HUDLayer extends Layer
 			g.drawImage(Game.getImage("icon/pause.png"), Game.getWidth() - 75, 5, 70, 70, Game.w);
 			
 			drawComponents(g);
+			
 			// -- monster tooltip -- //
 			if (selectedMonster != -1)
 			{
@@ -220,13 +221,18 @@ public class HUDLayer extends Layer
 				width += 32;
 				int height = 64 + text.split("\\. ").length * 30;
 				
-				Assistant.drawShadow(Game.currentGame.mouse.x + 12, Game.currentGame.mouse.y + 24, width, height, g);
-				Assistant.drawOutline(Game.currentGame.mouse.x + 12, Game.currentGame.mouse.y + 24, width, height, false, g);
+				int x1 = Game.currentGame.mouse.x;
+				int y1 = Game.currentGame.mouse.y;
 				
-				Assistant.drawHorizontallyCenteredString(name, Game.currentGame.mouse.x + 12, width, Game.currentGame.mouse.y + 24 + 40, g, 30);
+				if (x1 + width + 20 > Game.getWidth()) x1 -= (x1 + width + 20) - Game.getWidth();
+				
+				Assistant.drawShadow(x1 + 12, y1 + 24, width, height, g);
+				Assistant.drawOutline(x1 + 12, y1 + 24, width, height, false, g);
+				
+				Assistant.drawHorizontallyCenteredString(name, x1 + 12, width, y1 + 24 + 40, g, 30);
 				for (int i = 0; i < lines.length; i++)
 				{
-					Assistant.drawString(lines[i] + ".", Game.currentGame.mouse.x + 25, Game.currentGame.mouse.y + 24 + 70 + i * 30, g, 24);
+					Assistant.drawString(lines[i] + ".", x1 + 25, y1 + 24 + 70 + i * 30, g, 24);
 				}
 			}
 			

@@ -26,12 +26,6 @@ public class Skeleton extends Creature
 	}
 	
 	@Override
-	public void onDeath()
-	{
-		super.onDeath();
-	}
-	
-	@Override
 	protected boolean onArrivalAtEntity(int tick)
 	{
 		return false;

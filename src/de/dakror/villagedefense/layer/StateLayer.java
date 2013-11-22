@@ -35,7 +35,7 @@ public class StateLayer extends Layer
 			Assistant.drawHorizontallyCenteredString(Game.currentGame.state != 3 ? "Punktestand: " + Game.currentGame.getPlayerScore() : "Mit Klicken fortsetzen", Game.getWidth(), Game.getHeight() / 2 + 100, g, 60);
 			if (Game.currentGame.state != 3 && Game.currentGame.getPlayerScore() > 0 && UniVersion.compareToOnline() == 0)
 			{
-				Assistant.drawHorizontallyCenteredString("Mit Klicken ins HauptmenÃ¼", Game.getWidth(), Game.getHeight() / 2 + 200, g, 60);
+				Assistant.drawHorizontallyCenteredString("Mit Klicken ins Hauptmenü", Game.getWidth(), Game.getHeight() / 2 + 200, g, 60);
 				Assistant.drawContainer(Game.getWidth() / 4 * 3, Game.getHeight() / 2 - 50, 200, 200, true, new Rectangle(Game.getWidth() / 4 * 3, Game.getHeight() / 2 - 50, 200, 200).contains(Game.currentGame.mouse), g);
 				g.drawImage(Game.getImage("icon/ebook.png"), Game.getWidth() / 4 * 3 + 20, Game.getHeight() / 2 - 30, 160, 160, Game.w);
 				if (Game.currentGame.scoreSent) Assistant.drawShadow(Game.getWidth() / 4 * 3 - 10, Game.getHeight() / 2 - 60, 220, 220, g);
@@ -77,7 +77,7 @@ public class StateLayer extends Layer
 		
 		if (new Rectangle(5, 5, 70, 70).contains(Game.currentGame.mouse) && Game.currentGame.state == 3) // back
 		{
-			if (JOptionPane.showConfirmDialog(Game.w, "Bist du sicher, dass du zum HauptmenÃ¼ zurÃ¼ckkehren willst?\nJeglicher ungespeicherter Fortschritt geht verloren!", "Sicher?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+			if (JOptionPane.showConfirmDialog(Game.w, "Bist du sicher, dass du zum Hauptmenü zurückkehren willst?\nJeglicher ungespeicherter Fortschritt geht verloren!", "Sicher?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
 			{
 				Game.currentGame.state = 3;
 				Game.currentGame.addLayer(new MenuLayer());

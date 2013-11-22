@@ -222,8 +222,6 @@ public abstract class Creature extends Entity
 			
 			targetEntity = entity;
 			
-			
-			
 			setTarget(getTargetForStruct(s), user);
 		}
 	}

@@ -59,6 +59,8 @@ public class BuildButton extends Button
 	{
 		int w = g.getFontMetrics(g.getFont().deriveFont(30f)).stringWidth(struct.getName()) + 32;
 		
+		if (x + w + 30 > Game.getWidth()) x -= (x + w + 30) - Game.getWidth();
+		
 		int min = 170;
 		
 		w = w > min ? w : min;
@@ -85,7 +87,7 @@ public class BuildButton extends Button
 		
 		if (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue())
 		{
-			Assistant.drawLabelWithIcon(x + 16, y - height + 48, 24, new Point(11, 1), (int) struct.getAttributes().get(Attribute.HEALTH_MAX) + "", 30, g);
+			Assistant.drawLabelWithIcon(x + 16, y - height + 48, 24, new Point(1, 0), (int) struct.getAttributes().get(Attribute.HEALTH_MAX) + "", 30, g);
 			y1 += 26;
 		}
 		

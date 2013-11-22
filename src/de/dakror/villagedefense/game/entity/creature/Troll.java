@@ -15,12 +15,13 @@ public class Troll extends Creature
 		super(x, y, "troll");
 		
 		name = "Troll";
-		setHostile(true);
 		attributes.set(Attribute.HEALTH, 500);
 		attributes.set(Attribute.HEALTH_MAX, 500);
 		attributes.set(Attribute.DAMAGE_STRUCT, 25);
 		attributes.set(Attribute.SPEED, 0.6f);
 		attributes.set(Attribute.ATTACK_RANGE, Tile.SIZE);
+		
+		setHostile(true);
 		
 		resources.set(Resource.GOLD, 150);
 		

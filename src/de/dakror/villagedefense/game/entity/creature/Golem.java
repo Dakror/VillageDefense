@@ -15,12 +15,12 @@ public class Golem extends Creature
 	{
 		super(x, y, "golem");
 		
-		setHostile(true);
-		
 		attributes.set(Attribute.DAMAGE_STRUCT, 20);
 		attributes.set(Attribute.HEALTH, 150);
 		attributes.set(Attribute.HEALTH_MAX, 150);
 		attributes.set(Attribute.ATTACK_RANGE, Tile.SIZE);
+		
+		setHostile(true);
 		
 		name = "Golem";
 		

@@ -27,7 +27,7 @@ public class Villager extends Creature
 		attributes.set(Attribute.HEALTH_MAX, 15);
 		attributes.set(Attribute.MINE_AMOUNT, 10); // transport capacity
 		
-		description = "Kann Rohstoffe sammeln und in Geb√§uden arbeiten.";
+		description = "Kann Rohstoffe sammeln und in Geb‰uden arbeiten.";
 		canHunger = true;
 	}
 	

@@ -5,6 +5,12 @@ import java.util.EnumMap;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
+import de.dakror.villagedefense.game.entity.creature.Ghost;
+import de.dakror.villagedefense.game.entity.creature.Golem;
+import de.dakror.villagedefense.game.entity.creature.Skeleton;
+import de.dakror.villagedefense.game.entity.creature.TreeMonster;
+import de.dakror.villagedefense.game.entity.creature.Troll;
+import de.dakror.villagedefense.game.entity.creature.Zombie;
 import de.dakror.villagedefense.game.world.Tile;
 
 /**
@@ -14,11 +20,12 @@ public class WaveManager
 {
 	public enum Monster
 	{
-		ZOMBIE("zombie", de.dakror.villagedefense.game.entity.creature.Zombie.class, "Zombie:Normalschneller Untoter. FÃ¼gt GebÃ¤uden 5 Schaden hinzu. HÃ¤lt 20 Schaden aus"),
-		GHOST("ghost", de.dakror.villagedefense.game.entity.creature.Ghost.class, "Geist:Schnelles Gespenst. FÃ¼gt GebÃ¤uden 10 Schaden hinzu. HÃ¤lt 8 Schaden aus. Kann durch Barrikaden hindurchfliegen"),
-		SKELETON("skeleton", de.dakror.villagedefense.game.entity.creature.Skeleton.class, "Skelett:Langsamerer Totenritter. FÃ¼gt GebÃ¤uden 10 Schaden hinzu. HÃ¤lt 50 Schaden aus"),
-		TROLL("troll", de.dakror.villagedefense.game.entity.creature.Troll.class, "Troll:Schlurfender Monsterboss. FÃ¼gt GebÃ¤uden 25 Schaden hinzu. HÃ¤lt 500 Schaden aus"),
-		GOLEM("golem", de.dakror.villagedefense.game.entity.creature.Golem.class, "Golem:Normalschnelle Steingestalt. FÃ¼gt GebÃ¤uden 20 Schaden hinzu. HÃ¤lt 150 Schaden aus. Ist immun gegen Pfeile"),
+		ZOMBIE("zombie", Zombie.class, "Zombie:Normalschneller Untoter. Fügt Gebäuden 5 Schaden hinzu. Hält 20 Schaden aus"),
+		GHOST("ghost", Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Hält 8 Schaden aus. Kann durch Barrikaden hindurchfliegen"),
+		SKELETON("skeleton", Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält 50 Schaden aus"),
+		TROLL("troll", Troll.class, "Troll:Schlurfender Monsterboss. Fügt Gebäuden 25 Schaden hinzu. Hält 500 Schaden aus"),
+		GOLEM("golem", Golem.class, "Golem:Normalschnelle Steingestalt. Fügt Gebäuden 20 Schaden hinzu. Hält 150 Schaden aus. Ist immun gegen Pfeile"),
+		TREE("treemonster", TreeMonster.class, "Monstereiche:Langsamer Monster-Baum.Fügt Gebäuden 18 Schaden hinzu. Hält 100 Schaden aus. Kann nur durch Feuer verletzt werden")
 		
 		;
 		
@@ -70,7 +77,7 @@ public class WaveManager
 		wave++;
 		
 		/*
-		 * either parabola: 0.075 * waveÂ² + 3
+		 * either parabola: 0.075 * wave*wave + 3
 		 * or line: 2 * wave + 3
 		 */
 		if (wave < 30) monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 1));
@@ -116,7 +123,7 @@ public class WaveManager
 									
 									int x = left ? -leftLength * space : Game.world.width + rightLength * space;
 									Entity e = (Entity) monster.getCreatureClass().getConstructor(int.class, int.class).newInstance(x, 0);
-									int y = Game.world.height / 2;
+									int y = Game.world.height / 2 - e.getBump(false).y + e.getBump(false).height;
 									e.setY(y);
 									
 									Game.world.addEntity2(e, false);
