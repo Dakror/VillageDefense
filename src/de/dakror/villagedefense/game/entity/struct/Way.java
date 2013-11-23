@@ -23,7 +23,6 @@ public class Way extends Struct
 		name = "Weg";
 		
 		buildingCosts.set(Resource.GOLD, 5);
-		canDragBuild = true;
 		
 		description = "Weg, auf dem Einwohner und Träger schneller laufen.";
 		setBump(new Rectangle2D.Float(0, 0, 1, 1));

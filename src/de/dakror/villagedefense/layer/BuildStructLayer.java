@@ -127,7 +127,7 @@ public class BuildStructLayer extends Layer
 	public void mouseDragged(MouseEvent e)
 	{
 		super.mouseDragged(e);
-		if (Game.currentGame.activeStruct != null && Game.currentGame.activeStruct.canDragBuild() && e.getModifiers() == MouseEvent.BUTTON1_MASK)
+		if (Game.currentGame.activeStruct != null && e.getModifiers() == MouseEvent.BUTTON1_MASK)
 		{
 			Game.currentGame.activeStruct.setX(Assistant.round(e.getX() - Tile.SIZE / 2 - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
 			Game.currentGame.activeStruct.setY(Assistant.round(e.getY() - Tile.SIZE / 2 * 3 - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));

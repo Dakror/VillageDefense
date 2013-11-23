@@ -374,7 +374,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.keyPressed(e);
-			if (l.isModal() && l.isEnabled()) break;
+			if (l.isModal() && l.isEnabled()) return;
 		}
 	}
 	
@@ -386,7 +386,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mouseDragged(e);
-			if (l.isModal() && l.isEnabled()) break;
+			if (l.isModal() && l.isEnabled()) return;
 		}
 		
 		if ((world.width > getWidth() || world.height > getHeight()) && mouseDown != null && e.getModifiers() == MouseEvent.BUTTON2_MASK)
@@ -419,7 +419,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mouseMoved(e);
-			if (l.isModal() && l.isEnabled()) break;
+			if (l.isModal() && l.isEnabled()) return;
 		}
 		
 		if (state == 0)
@@ -443,7 +443,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mouseReleased(e);
-			if (l.isModal() && l.isEnabled()) break;
+			if (l.isModal() && l.isEnabled()) return;
 		}
 		
 		if (mouseDown != null && mouseDrag != null)
@@ -472,7 +472,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mousePressed(e);
-			if (l.isModal() && l.isEnabled()) break;
+			if (l.isModal() && l.isEnabled()) return;
 		}
 		
 		if (state == 0) world.mousePressed(e);
@@ -486,7 +486,7 @@ public class Game extends EventListener
 		for (Layer l : layers)
 		{
 			l.mouseWheelMoved(e);
-			if (l.isModal() && l.isEnabled()) break;
+			if (l.isModal() && l.isEnabled()) return;
 		}
 	}
 	
