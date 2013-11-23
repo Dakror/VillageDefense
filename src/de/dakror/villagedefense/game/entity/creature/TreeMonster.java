@@ -1,13 +1,13 @@
 package de.dakror.villagedefense.game.entity.creature;
 
 import de.dakror.villagedefense.game.entity.Entity;
+import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
 public class TreeMonster extends Creature
 {
-	
 	public TreeMonster(int x, int y)
 	{
 		super(x, y, "treemonster");
@@ -40,4 +40,15 @@ public class TreeMonster extends Creature
 		return new TreeMonster((int) x, (int) y);
 	}
 	
+	@Override
+	public void dealDamage(int amount, Object source)
+	{
+		if (source instanceof Projectile)
+		{
+			Projectile p = (Projectile) source;
+			if (!p.isOnFire()) return;
+		}
+		
+		super.dealDamage(amount, source);
+	}
 }

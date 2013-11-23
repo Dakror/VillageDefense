@@ -160,12 +160,12 @@ public class Game extends EventListener
 		addLayer(new StateLayer());
 		addLayer(new MenuLayer());
 		
+		WaveManager.init();
 		for (Researches r : Researches.values())
 		{
 			if (r.getCosts(false).size() == 0) researches.add(r);
 		}
 		
-		WaveManager.init();
 		w.setVisible(true);
 		w.getContentPane().setIgnoreRepaint(true);
 		try
@@ -193,7 +193,7 @@ public class Game extends EventListener
 		resources.set(Resource.BREAD, 500);
 		
 		// for (Resource r : Resource.values())
-		// resources.set(r, 1000);
+		// resources.set(r, 10000);
 		// resources.set(Resource.PEOPLE, 0);
 		
 		Game.world.init(width, height);

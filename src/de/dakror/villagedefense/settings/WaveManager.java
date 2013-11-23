@@ -25,7 +25,7 @@ public class WaveManager
 		SKELETON("skeleton", Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält 50 Schaden aus"),
 		TROLL("troll", Troll.class, "Troll:Schlurfender Monsterboss. Fügt Gebäuden 25 Schaden hinzu. Hält 500 Schaden aus"),
 		GOLEM("golem", Golem.class, "Golem:Normalschnelle Steingestalt. Fügt Gebäuden 20 Schaden hinzu. Hält 150 Schaden aus. Ist immun gegen Pfeile"),
-		TREE("treemonster", TreeMonster.class, "Monstereiche:Langsamer Monster-Baum.Fügt Gebäuden 18 Schaden hinzu. Hält 100 Schaden aus. Kann nur durch Feuer verletzt werden")
+		TREE("treemonster", TreeMonster.class, "Monstereiche:Langsamer Monster-Baum. Fügt Gebäuden 18 Schaden hinzu. Hält 100 Schaden aus. Kann nur durch Feuer verletzt werden")
 		
 		;
 		
@@ -56,7 +56,7 @@ public class WaveManager
 		}
 	}
 	
-	public static int wave;
+	public static int wave = 0;
 	public static int nextWave; // int seconds
 	
 	public static final int waveTimer = 60; // in seconds
@@ -65,7 +65,6 @@ public class WaveManager
 	
 	public static void init()
 	{
-		wave = 0;
 		generateNextWave();
 	}
 	
@@ -83,7 +82,8 @@ public class WaveManager
 		if (wave < 30) monsters.put(Monster.ZOMBIE, Math.round(2 * wave + 1));
 		else monsters.put(Monster.GOLEM, Math.round(wave - 29));
 		
-		if (wave >= 5) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 5 - (wave > 30 ? 30 : 0)));
+		if (wave >= 5 && wave < 40) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 5 - (wave > 30 ? 30 : 0)));
+		else if (wave > 40) monsters.put(Monster.TREE, Math.round(1.25f * wave - 5 - 40));
 		
 		if (wave % 10 == 0 && wave > 2)
 		{

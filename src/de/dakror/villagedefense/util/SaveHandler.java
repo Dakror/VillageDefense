@@ -93,8 +93,10 @@ public class SaveHandler
 			for (int i = 0; i < researches.length(); i++)
 				Game.currentGame.researches.add(Researches.valueOf(researches.getString(i)));
 			
-			WaveManager.wave = o.getInt("wave");
+			WaveManager.wave = o.getInt("wave") - 1;
 			WaveManager.nextWave = o.getInt("time");
+			
+			WaveManager.init();
 			
 			JSONArray entities = o.getJSONArray("entities");
 			

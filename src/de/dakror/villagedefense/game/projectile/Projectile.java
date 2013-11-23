@@ -112,6 +112,11 @@ public abstract class Projectile implements Drawable
 		return dead;
 	}
 	
+	public boolean isOnFire()
+	{
+		return onFire;
+	}
+	
 	public Vector getPos()
 	{
 		return pos;
