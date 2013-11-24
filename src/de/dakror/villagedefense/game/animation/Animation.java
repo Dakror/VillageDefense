@@ -3,8 +3,8 @@ package de.dakror.villagedefense.game.animation;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Drawable;
 
 /**
@@ -40,7 +40,7 @@ public class Animation implements Drawable
 	{
 		if (dead) return;
 		
-		Assistant.drawImage(image, x, y, size, size, frame * 192, 0, 192, 192, g);
+		Helper.drawImage(image, x, y, size, size, frame * 192, 0, 192, 192, g);
 	}
 	
 	@Override

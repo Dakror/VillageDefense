@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
@@ -13,7 +14,6 @@ import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -49,7 +49,7 @@ public class Windmill extends Struct
 	{
 		float angle = tick / 25f;
 		
-		Assistant.drawImage(Game.getImage("structs.png"), (int) x, (int) y, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
+		Helper.drawImage(Game.getImage("structs.png"), (int) x, (int) y, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
 		
 		AffineTransform old = g.getTransform();
 		AffineTransform at = g.getTransform();
@@ -73,7 +73,7 @@ public class Windmill extends Struct
 	{
 		BufferedImage bi = new BufferedImage(288, height + 85, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) bi.getGraphics();
-		Assistant.drawImage2(Game.getImage("structs.png"), (288 - width) / 2, 85, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
+		Helper.drawImage2(Game.getImage("structs.png"), (288 - width) / 2, 85, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
 		g.drawImage(Game.getImage("creature/windmill.png"), 0, 0, null);
 		
 		return bi;

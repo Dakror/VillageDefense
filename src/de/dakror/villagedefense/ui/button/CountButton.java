@@ -3,9 +3,9 @@ package de.dakror.villagedefense.ui.button;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import de.dakror.gamesetup.ui.Component;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.ui.ClickEvent;
-import de.dakror.villagedefense.ui.Component;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -51,7 +51,7 @@ public class CountButton extends Component
 	public void draw(Graphics2D g)
 	{
 		minus.draw(g);
-		Assistant.drawHorizontallyCenteredString(value + "", x, width, y + 25, g, 25);
+		Helper.drawHorizontallyCenteredString(value + "", x, width, y + 25, g, 25);
 		plus.draw(g);
 	}
 	

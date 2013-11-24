@@ -1,5 +1,6 @@
 package de.dakror.villagedefense.game.entity.creature;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Struct;
@@ -7,7 +8,6 @@ import de.dakror.villagedefense.game.entity.struct.WheatField;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -71,9 +71,9 @@ public class Farmer extends Creature
 		float rad = (float) Math.toRadians(Math.random() * 360);
 		float hyp = (float) Math.random() * range - Tile.SIZE;
 		
-		int x = Assistant.round(Math.round(origin.getCenter2().x + (float) Math.cos(rad) * hyp), Tile.SIZE);
-		int y = Assistant.round(Math.round(origin.getCenter2().y + (float) Math.sin(rad) * hyp), Tile.SIZE);
-		int my = Assistant.round(Game.world.height / 2, Tile.SIZE);
+		int x = Helper.round(Math.round(origin.getCenter2().x + (float) Math.cos(rad) * hyp), Tile.SIZE);
+		int y = Helper.round(Math.round(origin.getCenter2().y + (float) Math.sin(rad) * hyp), Tile.SIZE);
+		int my = Helper.round(Game.world.height / 2, Tile.SIZE);
 		
 		if (x < 0 || y < 100 || x >= Game.world.width || y >= Game.world.height - 120 || y == my || y == my + Tile.SIZE) return lookupPlantTarget();
 		

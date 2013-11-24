@@ -3,14 +3,14 @@ package de.dakror.villagedefense.game.entity.struct;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import de.dakror.gamesetup.ui.Component;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
-import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.ui.button.ResearchButton;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -54,8 +54,8 @@ public class School extends Struct
 		if (components.size() == 0) initGUI();
 		try
 		{
-			Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
-			Assistant.drawHorizontallyCenteredString("Wissenschaft", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
+			Helper.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
+			Helper.drawHorizontallyCenteredString("Wissenschaft", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
 			
 			drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
 			for (Component c : components)

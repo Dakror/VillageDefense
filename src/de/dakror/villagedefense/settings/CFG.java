@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
-import de.dakror.villagedefense.util.Assistant;
+import de.dakror.gamesetup.util.Helper;
 
 /**
  * @author Dakror
@@ -17,7 +17,7 @@ public class CFG
 	public static final int TICK_TIMEOUT = 33;
 	
 	// -- UniVersion -- //
-	public static final int VERSION = 2013112413;
+	public static final int VERSION = 2013112415;
 	public static final int PHASE = 3;
 	
 	static long time = 0;
@@ -40,11 +40,11 @@ public class CFG
 				
 				us.createNewFile();
 				
-				Assistant.setFileContent(us, USERNAME);
+				Helper.setFileContent(us, USERNAME);
 			}
 			else
 			{
-				USERNAME = Assistant.getFileContent(us);
+				USERNAME = Helper.getFileContent(us);
 			}
 		}
 		catch (IOException e)

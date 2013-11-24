@@ -4,11 +4,12 @@ import java.io.File;
 
 import javax.swing.UIManager;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.reporter.Reporter;
 import de.dakror.universion.UniVersion;
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.UpdateThread;
 import de.dakror.villagedefense.settings.CFG;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -25,16 +26,19 @@ public class VillageDefense
 		{
 			e.printStackTrace();
 		}
-		UniVersion.offline = !Assistant.isInternetReachable();
+		UniVersion.offline = !Helper.isInternetReachable();
 		
 		UniVersion.init(VillageDefense.class, CFG.VERSION, CFG.PHASE);
 		if (!UniVersion.offline) Reporter.init(new File(CFG.DIR, "log"));
 		
 		new Game();
+		Game.currentFrame.init("Village Defense");
+		Game.currentFrame.setFullscreen();
+		Game.currentFrame.updater = new UpdateThread();
 		
 		CFG.init();
 		
 		while (true)
-			Game.currentGame.draw();
+			Game.currentFrame.main();
 	}
 }

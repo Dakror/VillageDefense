@@ -6,11 +6,12 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
+import de.dakror.gamesetup.layer.Layer;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.universion.UniVersion;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.ui.ClickEvent;
 import de.dakror.villagedefense.ui.button.MenuButton;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -25,16 +26,16 @@ public class MenuLayer extends Layer
 	@Override
 	public void draw(Graphics2D g)
 	{
-		g.drawImage(Game.getImage("gui/menu/menuBG.png"), 0, 0, Game.getWidth(), Game.getHeight(), Game.w);
-		Assistant.drawImageCenteredRelativeScaled(Game.getImage("gui/menu/menuFG.png"), 80, 1920, 1080, Game.getWidth(), Game.getHeight(), g);
+		g.drawImage(Game.getImage("menu/menuBG.png"), 0, 0, Game.getWidth(), Game.getHeight(), Game.w);
+		Helper.drawImageCenteredRelativeScaled(Game.getImage("menu/menuFG.png"), 80, 1920, 1080, Game.getWidth(), Game.getHeight(), g);
 		
 		int size = 60;
 		int size2 = size - 20;
 		
-		Assistant.drawContainer(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size, false, new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(Game.currentGame.mouse), g);
+		Helper.drawContainer(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size, false, new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(Game.currentGame.mouse), g);
 		g.drawImage(Game.getImage("icon/help.png"), Game.getWidth() - size, Game.getHeight() - size, size2, size2, Game.w);
 		
-		Assistant.drawString(UniVersion.prettyVersion(), 10, Game.getHeight() - 10, g, 24);
+		Helper.drawString(UniVersion.prettyVersion(), 10, Game.getHeight() - 10, g, 24);
 		
 		drawComponents(g);
 	}

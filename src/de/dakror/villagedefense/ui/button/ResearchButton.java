@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.settings.Researches;
@@ -80,15 +81,15 @@ public class ResearchButton extends Button
 	@Override
 	public void draw(Graphics2D g)
 	{
-		if (state == 2 || contains) Assistant.drawContainer(x - 8, y - 8, width + 16, height + 16, false, state == 2 || contains, true, g);
-		else Assistant.drawOutline(x - 8, y - 8, width + 16, height + 16, false, g);
+		if (state == 2 || contains) Helper.drawContainer(x - 8, y - 8, width + 16, height + 16, false, state == 2 || contains, true, g);
+		else Helper.drawOutline(x - 8, y - 8, width + 16, height + 16, false, g);
 		
-		Assistant.drawImage(Game.getImage("researches.png"), x, y, width, height, research.getTexturePoint().x * tSize, research.getTexturePoint().y * tSize, tSize, tSize, g);
+		Helper.drawImage(Game.getImage("researches.png"), x, y, width, height, research.getTexturePoint().x * tSize, research.getTexturePoint().y * tSize, tSize, tSize, g);
 		
 		if (!enabled && !contains)
 		{
-			if (state == 2) Assistant.drawShadow(x - 14, y - 14, width + 28, height + 28, g);
-			else Assistant.drawShadow(x - 4, y - 4, width + 8, height + 8, g);
+			if (state == 2) Helper.drawShadow(x - 14, y - 14, width + 28, height + 28, g);
+			else Helper.drawShadow(x - 4, y - 4, width + 8, height + 8, g);
 		}
 	}
 	
@@ -112,16 +113,16 @@ public class ResearchButton extends Button
 		}
 		
 		int height = 64 + (costs.size() + (hasPreq ? 2 : 1)) * 26;
-		Assistant.drawShadow(x, y - height, w, height, g);
-		Assistant.drawOutline(x, y - height, w, height, false, g);
+		Helper.drawShadow(x, y - height, w, height, g);
+		Helper.drawOutline(x, y - height, w, height, false, g);
 		
-		Assistant.drawHorizontallyCenteredString(research.getName(), x, w, y - height + 40, g, 30);
+		Helper.drawHorizontallyCenteredString(research.getName(), x, w, y - height + 40, g, 30);
 		
 		int y1 = y - height + 80;
 		
 		// -- costs -- //
 		y1 -= 12;
-		Assistant.drawString((costs.size() == 0 ? "Keine " : "") + "Kosten", x + 20, y1, g, 24);
+		Helper.drawString((costs.size() == 0 ? "Keine " : "") + "Kosten", x + 20, y1, g, 24);
 		y1 += 8;
 		for (int i = 0; i < costs.size(); i++)
 		{
@@ -142,7 +143,7 @@ public class ResearchButton extends Button
 		if (hasPreq)
 		{
 			y1 += 20;
-			Assistant.drawHorizontallyCenteredString("Bedingungen", x + 70, 0, y1, g, 24);
+			Helper.drawHorizontallyCenteredString("Bedingungen", x + 70, 0, y1, g, 24);
 			y1 += 6;
 			
 			for (int i = 0; i < costs.size(); i++)

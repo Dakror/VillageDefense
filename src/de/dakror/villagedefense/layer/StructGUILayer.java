@@ -3,6 +3,7 @@ package de.dakror.villagedefense.layer;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import de.dakror.gamesetup.layer.Layer;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 

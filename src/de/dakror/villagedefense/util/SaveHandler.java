@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
@@ -67,7 +68,7 @@ public class SaveHandler
 			o.put("entities", entities);
 			
 			Compressor.compressFile(save, o.toString());
-			Assistant.setFileContent(new File(save.getPath() + ".debug"), o.toString());
+			Helper.setFileContent(new File(save.getPath() + ".debug"), o.toString());
 			Game.currentGame.state = 3;
 			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -231,7 +232,7 @@ public class SaveHandler
 		try
 		{
 			f.createNewFile();
-			Assistant.setFileContent(f, Assistant.getFileContent(f) + worldCreated + "\r\n");
+			Helper.setFileContent(f, Helper.getFileContent(f) + worldCreated + "\r\n");
 		}
 		catch (Exception e)
 		{
@@ -249,7 +250,7 @@ public class SaveHandler
 				return;
 			}
 			
-			String response = Assistant.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + CFG.USERNAME + "&SCORE=" + Game.currentGame.getPlayerScore()));
+			String response = Helper.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + CFG.USERNAME + "&SCORE=" + Game.currentGame.getPlayerScore()));
 			if (!response.equals("false"))
 			{
 				JOptionPane.showMessageDialog(null, "Dein Punktestand wurde erfolgreich in der Bestenliste platziert.", "Platzieren erfolgreich!", JOptionPane.INFORMATION_MESSAGE);

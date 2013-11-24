@@ -3,8 +3,8 @@ package de.dakror.villagedefense.ui.button;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import de.dakror.gamesetup.ui.Component;
 import de.dakror.villagedefense.ui.ClickEvent;
-import de.dakror.villagedefense.ui.Component;
 
 /**
  * @author Dakror

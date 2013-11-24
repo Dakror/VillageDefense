@@ -2,6 +2,7 @@ package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.geom.Rectangle2D;
 
+import de.dakror.gamesetup.ui.Component;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
@@ -10,7 +11,6 @@ import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.ClickEvent;
-import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.ui.button.ResearchButton;
 
 /**

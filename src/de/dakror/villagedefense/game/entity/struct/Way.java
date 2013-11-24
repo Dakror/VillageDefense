@@ -2,12 +2,12 @@ package de.dakror.villagedefense.game.entity.struct;
 
 import java.awt.geom.Rectangle2D;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -31,7 +31,7 @@ public class Way extends Struct
 	@Override
 	public void onSpawn(boolean initial)
 	{
-		if (!initial) Game.world.setTileId(Assistant.round((int) x, Tile.SIZE) / Tile.SIZE, Assistant.round((int) y, Tile.SIZE) / Tile.SIZE, Tile.way.getId());
+		if (!initial) Game.world.setTileId(Helper.round((int) x, Tile.SIZE) / Tile.SIZE, Helper.round((int) y, Tile.SIZE) / Tile.SIZE, Tile.way.getId());
 		dead = true;
 	}
 	

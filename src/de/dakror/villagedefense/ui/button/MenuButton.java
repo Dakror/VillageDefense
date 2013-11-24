@@ -6,8 +6,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -32,17 +32,17 @@ public class MenuButton extends Button
 	@Override
 	public void draw(Graphics2D g)
 	{
-		Image img = Game.getImage("gui/menu/" + image + ".png");
+		Image img = Game.getImage("menu/" + image + ".png");
 		int height = 100;
 		int width = (height * img.getWidth(null)) / img.getHeight(null);
-		Dimension s = Assistant.getRelativeScaled(new Dimension(width, height), new Dimension(1920, 1080), new Dimension(Game.getWidth(), Game.getHeight()));
+		Dimension s = Helper.getRelativeScaled(new Dimension(width, height), new Dimension(1920, 1080), new Dimension(Game.getWidth(), Game.getHeight()));
 		this.width = s.width;
 		this.height = s.height;
 		x = (Game.getWidth() - this.width) / 2;
 		y = Game.getHeight() / 5 * 2 + y1 * (s.height + 20);
 		Composite c = g.getComposite();
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-		Assistant.drawImageCenteredRelativeScaled(img, y, width, height, 1920, 1080, Game.getWidth(), Game.getHeight(), g);
+		Helper.drawImageCenteredRelativeScaled(img, y, width, height, 1920, 1080, Game.getWidth(), Game.getHeight(), g);
 		g.setComposite(c);
 	}
 	

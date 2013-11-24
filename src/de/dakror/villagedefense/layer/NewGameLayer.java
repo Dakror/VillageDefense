@@ -4,9 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import de.dakror.gamesetup.layer.Layer;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.settings.WaveManager;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -30,16 +31,16 @@ public class NewGameLayer extends Layer
 	@Override
 	public void draw(Graphics2D g)
 	{
-		Assistant.drawContainer(Game.getWidth() / 8 * 3 - 20, Game.getHeight() / 4, Game.getWidth() / 4 + 40, h, true, false, g);
-		Assistant.drawHorizontallyCenteredString("Neues Spiel", Game.getWidth(), Game.getHeight() / 4 + 70, g, 70);
+		Helper.drawContainer(Game.getWidth() / 8 * 3 - 20, Game.getHeight() / 4, Game.getWidth() / 4 + 40, h, true, false, g);
+		Helper.drawHorizontallyCenteredString("Neues Spiel", Game.getWidth(), Game.getHeight() / 4 + 70, g, 70);
 		
 		for (int i = 0; i < sizes.length; i++)
 		{
 			Rectangle r = new Rectangle(Game.getWidth() / 8 * 3, Game.getHeight() / 4 + 100 + height * i, Game.getWidth() / 4, height - 10);
 			
-			Assistant.drawShadow(r.x, r.y, r.width, r.height, g);
-			Assistant.drawOutline(r.x, r.y, r.width, r.height, r.contains(Game.currentGame.mouse), g);
-			Assistant.drawHorizontallyCenteredString(sizes[i], Game.getWidth(), r.y + 50, g, 35);
+			Helper.drawShadow(r.x, r.y, r.width, r.height, g);
+			Helper.drawOutline(r.x, r.y, r.width, r.height, r.contains(Game.currentGame.mouse), g);
+			Helper.drawHorizontallyCenteredString(sizes[i], Game.getWidth(), r.y + 50, g, 35);
 		}
 	}
 	

@@ -5,12 +5,12 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -39,7 +39,7 @@ public class Torch extends Struct
 	@Override
 	public void draw(Graphics2D g)
 	{
-		Assistant.drawImage(Game.getImage("creature/torch.png"), (int) x, (int) y, width, height, (frame % 4) * 32, 0, 32, 64, g);
+		Helper.drawImage(Game.getImage("creature/torch.png"), (int) x, (int) y, width, height, (frame % 4) * 32, 0, 32, 64, g);
 	}
 	
 	@Override

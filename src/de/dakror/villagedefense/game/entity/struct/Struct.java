@@ -16,6 +16,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.dakror.gamesetup.ui.Component;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
@@ -26,9 +28,7 @@ import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.StructPoints;
-import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.ui.button.ResearchButton;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.TowerTargetComparator;
 import de.dakror.villagedefense.util.Vector;
 
@@ -131,8 +131,8 @@ public abstract class Struct extends Entity
 		if (components.size() < Researches.values(researchClass).length) initUpgrades();
 		try
 		{
-			Assistant.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
-			Assistant.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
+			Helper.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
+			Helper.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
 			
 			drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
 			for (Component c : components)

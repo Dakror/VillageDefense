@@ -2,8 +2,8 @@ package de.dakror.villagedefense.ui.button;
 
 import java.awt.Graphics2D;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -25,8 +25,8 @@ public class TextButton extends Button
 	@Override
 	public void draw(Graphics2D g)
 	{
-		Assistant.drawImage(Game.getImage("gui/gui.png"), x, y, width, height, tx, ty + (78) * state, tw, th, g);
-		Assistant.drawHorizontallyCenteredString(text, x, width, y + size, g, size);
+		Helper.drawImage(Game.getImage("gui/gui.png"), x, y, width, height, tx, ty + (78) * state, tw, th, g);
+		Helper.drawHorizontallyCenteredString(text, x, width, y + size, g, size);
 	}
 	
 	@Override

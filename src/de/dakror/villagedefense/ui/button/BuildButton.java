@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
@@ -36,21 +37,21 @@ public class BuildButton extends Button
 			}
 		});
 		struct = s;
-		scale = Assistant.scaleTo(new Dimension(struct.getWidth(), struct.getHeight()), new Dimension(width, height));
+		scale = Helper.scaleTo(new Dimension(struct.getWidth(), struct.getHeight()), new Dimension(width, height));
 	}
 	
 	@Override
 	public void draw(Graphics2D g)
 	{
-		if (state == 2) Assistant.drawContainer(x - 10, y - 16, width + 20, height + 32, false, true, g);
-		else Assistant.drawOutline(x - 10, y - 10, width + 20, height + 20, false, g);
+		if (state == 2) Helper.drawContainer(x - 10, y - 16, width + 20, height + 32, false, true, g);
+		else Helper.drawOutline(x - 10, y - 10, width + 20, height + 20, false, g);
 		
 		g.drawImage(struct.getImage(), x + (SIZE - scale.width) / 2, y + (SIZE - scale.height) / 2, scale.width, scale.height, Game.w);
 		
 		if (!enabled)
 		{
-			if (state == 2) Assistant.drawShadow(x - 20, y - 26, width + 40, height + 52, g);
-			else Assistant.drawShadow(x - 10, y - 10, width + 20, height + 20, g);
+			if (state == 2) Helper.drawShadow(x - 20, y - 26, width + 40, height + 52, g);
+			else Helper.drawShadow(x - 10, y - 10, width + 20, height + 20, g);
 		}
 	}
 	
@@ -76,12 +77,12 @@ public class BuildButton extends Button
 			}
 		}
 		
-		int infoHeight = 26 + (struct.getResourcesPerSecond().size() + Assistant.getLineCount(struct.description, w - 20, g, 24)) * 24 - 12;
+		int infoHeight = 26 + (struct.getResourcesPerSecond().size() + Helper.getLineCount(struct.description, w - 20, g, 24)) * 24 - 12;
 		int height = 64 + (struct.getBuildingCosts().size() + (hasPreq ? 3 : 2) - (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue() ? 0 : 1)) * 26 + infoHeight;
-		Assistant.drawShadow(x, y - height, w, height, g);
-		Assistant.drawOutline(x, y - height, w, height, false, g);
+		Helper.drawShadow(x, y - height, w, height, g);
+		Helper.drawOutline(x, y - height, w, height, false, g);
 		
-		Assistant.drawHorizontallyCenteredString(struct.getName(), x, w, y - height + 40, g, 30);
+		Helper.drawHorizontallyCenteredString(struct.getName(), x, w, y - height + 40, g, 30);
 		
 		int y1 = y - height + 80;
 		
@@ -93,7 +94,7 @@ public class BuildButton extends Button
 		
 		// -- costs -- //
 		y1 -= 12;
-		Assistant.drawString((filled.size() == 0 ? "Keine " : "") + "Baukosten", x + 10, y1, g, 24);
+		Helper.drawString((filled.size() == 0 ? "Keine " : "") + "Baukosten", x + 10, y1, g, 24);
 		y1 += 8;
 		for (int i = 0; i < struct.getBuildingCosts().size(); i++)
 		{
@@ -114,7 +115,7 @@ public class BuildButton extends Button
 		if (hasPreq)
 		{
 			y1 += 20;
-			Assistant.drawString("Bedingungen", x + 10, y1, g, 24);
+			Helper.drawString("Bedingungen", x + 10, y1, g, 24);
 			y1 += 6;
 			
 			for (int i = 0; i < struct.getBuildingCosts().size(); i++)
@@ -134,11 +135,11 @@ public class BuildButton extends Button
 		
 		// -- info -- //
 		y1 += 20;
-		Assistant.drawString("Details", x + 10, y1, g, 24);
+		Helper.drawString("Details", x + 10, y1, g, 24);
 		y1 += 26;
 		
-		Assistant.drawStringWrapped(struct.description, x + 10, y1, w - 20, g, 24);
-		y1 += Assistant.getLineCount(struct.description, w - 20, g, 24) * 24 - 30;
+		Helper.drawStringWrapped(struct.description, x + 10, y1, w - 20, g, 24);
+		y1 += Helper.getLineCount(struct.description, w - 20, g, 24) * 24 - 30;
 		
 		Resources res = struct.getResourcesPerSecond();
 		ArrayList<Resource> fll = res.getFilled();

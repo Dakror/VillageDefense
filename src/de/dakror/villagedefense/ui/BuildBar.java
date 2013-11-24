@@ -6,9 +6,10 @@ import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import de.dakror.gamesetup.ui.Component;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.ui.button.BuildButton;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -38,7 +39,7 @@ public class BuildBar extends Component
 	@Override
 	public void draw(Graphics2D g)
 	{
-		Assistant.drawContainer(0, Game.getHeight() - 100, Game.getWidth(), 100, false, false, g);
+		Helper.drawContainer(0, Game.getHeight() - 100, Game.getWidth(), 100, false, false, g);
 		
 		Shape o = g.getClip();
 		g.setClip(10, Game.getHeight() - 100, Game.getWidth() - 20, 100);

@@ -3,8 +3,8 @@ package de.dakror.villagedefense.game.world;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -67,6 +67,6 @@ public class Way extends Tile
 		
 		Point tp = getTexturePos(cx * Chunk.SIZE + i, cy * Chunk.SIZE + j);
 		
-		Assistant.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, tp.x * SIZE, tp.y * SIZE, SIZE, SIZE, g);
+		Helper.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, tp.x * SIZE, tp.y * SIZE, SIZE, SIZE, g);
 	}
 }

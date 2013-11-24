@@ -1,75 +1,41 @@
 package de.dakror.villagedefense.game;
 
-import de.dakror.villagedefense.layer.Layer;
-import de.dakror.villagedefense.settings.CFG;
+import de.dakror.gamesetup.Updater;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.settings.WaveManager;
 
 /**
  * @author Dakror
  */
-public class UpdateThread extends Thread
+public class UpdateThread extends Updater
 {
-	public int tick, ticks;
-	long time, time2;
-	
-	public int speed = 1;
-	
-	public boolean closeRequested = false;
+	long time2 = 0;
 	
 	public UpdateThread()
 	{
-		setPriority(Thread.MAX_PRIORITY);
-		start();
+		super();
 	}
 	
 	@Override
-	public void run()
+	public void update()
 	{
-		tick = 0;
-		time = time2 = System.currentTimeMillis();
-		while (!closeRequested)
+		if (time2 == 0) time2 = System.currentTimeMillis();
+		
+		if (System.currentTimeMillis() - time2 > 1000 / speed && Game.currentGame.state == 0)
 		{
-			if (tick == Integer.MAX_VALUE) tick = 0;
-			
-			if (System.currentTimeMillis() - time2 > 1000 / speed && Game.currentGame.state == 0)
-			{
-				if (WaveManager.nextWave > 0) WaveManager.nextWave--;
-				time2 = System.currentTimeMillis();
-			}
-			
-			WaveManager.update();
-			
-			if (Game.currentGame.fade == true)
-			{
-				if (Game.currentGame.alpha != Game.currentGame.fadeTo)
-				{
-					float dif = Game.currentGame.fadeTo - Game.currentGame.alpha;
-					Game.currentGame.alpha += dif > 0 ? (dif > Game.currentGame.speed ? Game.currentGame.speed : dif) : (dif < -Game.currentGame.speed ? -Game.currentGame.speed : dif);
-				}
-				else Game.currentGame.fade = false;
-			}
-			
-			for (Layer l : Game.currentGame.layers)
-				l.update(tick);
-			
-			if (tick % 30 == 0 && Game.currentGame.resources.get(Resource.BREAD) > 0 && Game.currentGame.state == 0)
-			{
-				float amount = Game.hungerPerUnitPerSecond * Game.currentGame.resources.get(Resource.PEOPLE);
-				float sub = Game.currentGame.resources.get(Resource.BREAD) < amount ? Game.currentGame.resources.get(Resource.BREAD) : amount;
-				Game.currentGame.resources.add(Resource.BREAD, -sub);
-			}
-			
-			if (Game.world != null && Game.currentGame.state == 0) Game.world.update(tick);
-			
-			try
-			{
-				tick++;
-				ticks++;
-				Thread.sleep(Math.round(CFG.TICK_TIMEOUT / (float) speed));
-			}
-			catch (InterruptedException e)
-			{}
+			if (WaveManager.nextWave > 0) WaveManager.nextWave--;
+			time2 = System.currentTimeMillis();
 		}
+		
+		WaveManager.update();
+		
+		if (tick % 30 == 0 && Game.currentGame.resources.get(Resource.BREAD) > 0 && Game.currentGame.state == 0)
+		{
+			float amount = Game.hungerPerUnitPerSecond * Game.currentGame.resources.get(Resource.PEOPLE);
+			float sub = Game.currentGame.resources.get(Resource.BREAD) < amount ? Game.currentGame.resources.get(Resource.BREAD) : amount;
+			Game.currentGame.resources.add(Resource.BREAD, -sub);
+		}
+		
+		if (Game.world != null && Game.currentGame.state == 0) Game.world.update(tick);
 	}
 }

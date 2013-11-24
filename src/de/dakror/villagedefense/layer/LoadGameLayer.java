@@ -9,8 +9,9 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import de.dakror.gamesetup.layer.Layer;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.SaveHandler;
 
 /**
@@ -45,21 +46,21 @@ public class LoadGameLayer extends Layer
 	@Override
 	public void draw(Graphics2D g)
 	{
-		Assistant.drawContainer(Game.getWidth() / 8, Game.getHeight() / 8, Game.getWidth() / 8 * 6, Game.getHeight() / 8 * 6, true, false, g);
-		Assistant.drawHorizontallyCenteredString("Spiel laden", Game.getWidth(), Game.getHeight() / 8 + 70, g, 70);
+		Helper.drawContainer(Game.getWidth() / 8, Game.getHeight() / 8, Game.getWidth() / 8 * 6, Game.getHeight() / 8 * 6, true, false, g);
+		Helper.drawHorizontallyCenteredString("Spiel laden", Game.getWidth(), Game.getHeight() / 8 + 70, g, 70);
 		
 		Shape c = g.getClip();
 		
-		h = Assistant.round(Game.getHeight() / 8 * 6 - 140, height);
+		h = Helper.round(Game.getHeight() / 8 * 6 - 140, height);
 		g.setClip(new Rectangle(Game.getWidth() / 8 + 20, Game.getHeight() / 8 + 120, Game.getWidth() / 8 * 6 - 40, h));
 		
 		for (int i = 0; i < saves.length; i++)
 		{
 			Rectangle r = new Rectangle(Game.getWidth() / 4 + 100, Game.getHeight() / 8 + 120 + height * i + y, Game.getWidth() / 2 - 200, height - 10);
 			File f = saves[i];
-			Assistant.drawShadow(r.x, r.y, r.width, r.height, g);
-			Assistant.drawOutline(r.x, r.y, r.width, r.height, r.contains(Game.currentGame.mouse), g);
-			Assistant.drawHorizontallyCenteredString(f.getName().replace(".save", ""), Game.getWidth(), r.y + 50, g, 35);
+			Helper.drawShadow(r.x, r.y, r.width, r.height, g);
+			Helper.drawOutline(r.x, r.y, r.width, r.height, r.contains(Game.currentGame.mouse), g);
+			Helper.drawHorizontallyCenteredString(f.getName().replace(".save", ""), Game.getWidth(), r.y + 50, g, 35);
 		}
 		
 		g.setClip(c);
@@ -84,7 +85,7 @@ public class LoadGameLayer extends Layer
 		}
 		else if (new Rectangle(Game.getWidth() / 4 + 100, Game.getHeight() / 8 + 120, Game.getWidth() / 2 - 200, h).contains(e.getPoint()))
 		{
-			int eY = Assistant.round(e.getY() - Game.getHeight() / 8 + 120 - y, height) / height - 3;
+			int eY = Helper.round(e.getY() - Game.getHeight() / 8 + 120 - y, height) / height - 3;
 			
 			if (eY < saves.length)
 			{

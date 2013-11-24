@@ -4,10 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Torch;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Drawable;
 import de.dakror.villagedefense.util.Vector;
 
@@ -57,7 +57,7 @@ public abstract class Projectile implements Drawable
 		
 		g.setTransform(old);
 		
-		if (canSetOnFire && onFire) Assistant.drawImage(Game.getImage("anim/fire.png"), (int) pos.x - 12, (int) pos.y - 12, 24, 24, 32 * frame, 0, 32, 29, g);
+		if (canSetOnFire && onFire) Helper.drawImage(Game.getImage("anim/fire.png"), (int) pos.x - 12, (int) pos.y - 12, 24, 24, 32 * frame, 0, 32, 29, g);
 	}
 	
 	public Projectile setRotate(boolean rotate)

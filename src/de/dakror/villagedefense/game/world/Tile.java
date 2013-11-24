@@ -3,8 +3,8 @@ package de.dakror.villagedefense.game.world;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -92,17 +92,17 @@ public class Tile
 		Point tp = getTexturePos(cx * Chunk.SIZE + i, cy * Chunk.SIZE + j);
 		if (tp.x < 3) // convex
 		{
-			Assistant.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, tp.x * SIZE, tp.y * SIZE, SIZE, SIZE, g);
+			Helper.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, tp.x * SIZE, tp.y * SIZE, SIZE, SIZE, g);
 		}
 		else
 		{
 			// absolute sizes, not SIZE, easier to read.
-			Assistant.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, 32, 64, 32, 32, g);
+			Helper.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, 32, 64, 32, 32, g);
 			
-			if (tp.y == 0) Assistant.drawImage(Game.getImage("tile/" + getTileset()), x, y, 16, 16, 64, 0, 16, 16, g);
-			if (tp.y == 1) Assistant.drawImage(Game.getImage("tile/" + getTileset()), x + 16, y, 16, 16, 80, 0, 16, 16, g);
-			if (tp.y == 2) Assistant.drawImage(Game.getImage("tile/" + getTileset()), x, y + 16, 16, 16, 64, 16, 16, 16, g);
-			if (tp.y == 3) Assistant.drawImage(Game.getImage("tile/" + getTileset()), x + 16, y + 16, 16, 16, 80, 16, 16, 16, g);
+			if (tp.y == 0) Helper.drawImage(Game.getImage("tile/" + getTileset()), x, y, 16, 16, 64, 0, 16, 16, g);
+			if (tp.y == 1) Helper.drawImage(Game.getImage("tile/" + getTileset()), x + 16, y, 16, 16, 80, 0, 16, 16, g);
+			if (tp.y == 2) Helper.drawImage(Game.getImage("tile/" + getTileset()), x, y + 16, 16, 16, 64, 16, 16, 16, g);
+			if (tp.y == 3) Helper.drawImage(Game.getImage("tile/" + getTileset()), x + 16, y + 16, 16, 16, 80, 16, 16, 16, g);
 		}
 	}
 	

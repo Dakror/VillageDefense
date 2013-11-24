@@ -10,6 +10,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
+import de.dakror.gamesetup.layer.Layer;
+import de.dakror.gamesetup.ui.Component;
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Catapult;
@@ -18,9 +21,7 @@ import de.dakror.villagedefense.game.entity.struct.Way;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.BuildBar;
-import de.dakror.villagedefense.ui.Component;
 import de.dakror.villagedefense.ui.button.BuildButton;
-import de.dakror.villagedefense.util.Assistant;
 
 /**
  * @author Dakror
@@ -37,8 +38,8 @@ public class BuildStructLayer extends Layer
 		{
 			if (Game.currentGame.activeStruct != null)
 			{
-				Game.currentGame.activeStruct.setX(Assistant.round((drag == null ? Game.currentGame.mouse.x - Tile.SIZE / 2 : drag.x - Tile.SIZE / 2) - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
-				Game.currentGame.activeStruct.setY(Assistant.round((drag == null ? Game.currentGame.mouse.y - Tile.SIZE / 2 * 3 : drag.y - Tile.SIZE / 2 * 3) - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
+				Game.currentGame.activeStruct.setX(Helper.round((drag == null ? Game.currentGame.mouse.x - Tile.SIZE / 2 : drag.x - Tile.SIZE / 2) - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+				Game.currentGame.activeStruct.setY(Helper.round((drag == null ? Game.currentGame.mouse.y - Tile.SIZE / 2 * 3 : drag.y - Tile.SIZE / 2 * 3) - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 				Game.currentGame.activeStruct.setClicked(true);
 				
 				Rectangle bump = Game.currentGame.activeStruct.getBump(true);
@@ -47,11 +48,11 @@ public class BuildStructLayer extends Layer
 				
 				canPlace = true;
 				
-				int centerY = Assistant.round(Math.round(Game.world.height / 2f), Tile.SIZE);
+				int centerY = Helper.round(Math.round(Game.world.height / 2f), Tile.SIZE);
 				
-				for (int i = Assistant.round(bump.x, Tile.SIZE) + Game.world.x % Tile.SIZE; i < bump.x + bump.width + Game.world.x % Tile.SIZE; i += Tile.SIZE)
+				for (int i = Helper.round(bump.x, Tile.SIZE) + Game.world.x % Tile.SIZE; i < bump.x + bump.width + Game.world.x % Tile.SIZE; i += Tile.SIZE)
 				{
-					for (int j = Assistant.round(bump.y, Tile.SIZE) + Game.world.y % Tile.SIZE; j < bump.y + bump.height + Game.world.y % Tile.SIZE; j += Tile.SIZE)
+					for (int j = Helper.round(bump.y, Tile.SIZE) + Game.world.y % Tile.SIZE; j < bump.y + bump.height + Game.world.y % Tile.SIZE; j += Tile.SIZE)
 					{
 						boolean blocked = false;
 						
@@ -129,8 +130,8 @@ public class BuildStructLayer extends Layer
 		super.mouseDragged(e);
 		if (Game.currentGame.activeStruct != null && e.getModifiers() == MouseEvent.BUTTON1_MASK)
 		{
-			Game.currentGame.activeStruct.setX(Assistant.round(e.getX() - Tile.SIZE / 2 - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
-			Game.currentGame.activeStruct.setY(Assistant.round(e.getY() - Tile.SIZE / 2 * 3 - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
+			Game.currentGame.activeStruct.setX(Helper.round(e.getX() - Tile.SIZE / 2 - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+			Game.currentGame.activeStruct.setY(Helper.round(e.getY() - Tile.SIZE / 2 * 3 - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 			drag = e.getPoint();
 			
 			build(e);

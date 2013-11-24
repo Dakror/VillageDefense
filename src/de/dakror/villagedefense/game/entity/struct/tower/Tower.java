@@ -7,6 +7,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.struct.Struct;
@@ -15,7 +16,6 @@ import de.dakror.villagedefense.game.projectile.Projectile;
 import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -97,12 +97,12 @@ public abstract class Tower extends Struct
 		
 		if (spheres == 1)
 		{
-			Assistant.drawImage(Game.getImage("structs.png"), 0, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
+			Helper.drawImage(Game.getImage("structs.png"), 0, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
 		}
 		else if (spheres == 2)
 		{
-			Assistant.drawImage(Game.getImage("structs.png"), -6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
-			Assistant.drawImage(Game.getImage("structs.png"), 6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
+			Helper.drawImage(Game.getImage("structs.png"), -6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
+			Helper.drawImage(Game.getImage("structs.png"), 6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
 		}
 		return image;
 	}

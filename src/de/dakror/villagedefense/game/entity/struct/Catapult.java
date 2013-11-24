@@ -7,6 +7,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
@@ -16,7 +17,6 @@ import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources.Resource;
-import de.dakror.villagedefense.util.Assistant;
 import de.dakror.villagedefense.util.Vector;
 
 /**
@@ -58,7 +58,7 @@ public class Catapult extends Struct
 		if (shooting) y += 64;
 		if (!isDownwards()) y += 64 * 2;
 		
-		Assistant.drawImage(Game.getImage("creature/catapult.png"), (int) x, (int) this.y + Tile.SIZE / 4 * 3, width, height, frame * 64, y, 64, 64, g);
+		Helper.drawImage(Game.getImage("creature/catapult.png"), (int) x, (int) this.y + Tile.SIZE / 4 * 3, width, height, frame * 64, y, 64, 64, g);
 		
 		if (hovered || clicked)
 		{
