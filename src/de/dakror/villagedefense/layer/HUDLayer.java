@@ -202,7 +202,7 @@ public class HUDLayer extends Layer
 			if (!new Rectangle(Game.getWidth() - 75, 5, 70, 70).contains(Game.currentGame.mouse)) Helper.drawContainer(Game.getWidth() - 75, 5, 70, 70, false, false, g);
 			else Helper.drawContainer(Game.getWidth() - 80, 0, 80, 80, false, true, g);
 			
-			g.drawImage(Game.getImage("icon/pause.png"), Game.getWidth() - 75, 5, 70, 70, Game.w);
+			g.drawImage(Game.getImage("gui/pause.png"), Game.getWidth() - 75, 5, 70, 70, Game.w);
 			
 			drawComponents(g);
 			
