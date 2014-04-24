@@ -1,5 +1,6 @@
 Village-Defense
 ===============
+[![Build Status](https://travis-ci.org/Dakror/VillageDefense.svg?branch=master)](https://travis-ci.org/Dakror/VillageDefense)
 
 A mix between the Settlers and towerdefense in 2.5D
 
