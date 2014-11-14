@@ -12,10 +12,8 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class CoreHouse extends Struct
-{
-	public CoreHouse(int x, int y)
-	{
+public class CoreHouse extends Struct {
+	public CoreHouse(int x, int y) {
 		super(x, y, 3, 5);
 		tx = 5;
 		ty = 0;
@@ -29,26 +27,21 @@ public class CoreHouse extends Struct
 	}
 	
 	@Override
-	protected void onDeath()
-	{
+	protected void onDeath() {
 		Game.currentGame.setState(2); // game lost
 	}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new CoreHouse((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 }

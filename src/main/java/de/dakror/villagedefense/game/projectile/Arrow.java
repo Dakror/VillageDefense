@@ -6,13 +6,11 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class Arrow extends Projectile
-{
+public class Arrow extends Projectile {
 	Entity targetEntity;
 	int damage;
 	
-	public Arrow(Vector pos, Entity target, float speed, int damage)
-	{
+	public Arrow(Vector pos, Entity target, float speed, int damage) {
 		super(pos, "arrow", speed);
 		targetEntity = target;
 		this.target = target.getCenter2();
@@ -22,14 +20,12 @@ public class Arrow extends Projectile
 	}
 	
 	@Override
-	protected void onImpact()
-	{
+	protected void onImpact() {
 		targetEntity.dealDamage(damage, this);
 	}
 	
 	@Override
-	protected Vector getTargetVector()
-	{
+	protected Vector getTargetVector() {
 		return targetEntity.getCenter2();
 	}
 }

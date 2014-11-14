@@ -22,13 +22,11 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class Catapult extends Struct
-{
+public class Catapult extends Struct {
 	int frame;
 	boolean shooting;
 	
-	public Catapult(int x, int y)
-	{
+	public Catapult(int x, int y) {
 		super(x, y, 2, 2);
 		shooting = false;
 		frame = 0;
@@ -52,16 +50,14 @@ public class Catapult extends Struct
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		int y = 0;
 		if (shooting) y += 64;
 		if (!isDownwards()) y += 64 * 2;
 		
 		Helper.drawImage(Game.getImage("creature/catapult.png"), (int) x, (int) this.y + Tile.SIZE / 4 * 3, width, height, frame * 64, y, 64, 64, g);
 		
-		if (hovered || clicked)
-		{
+		if (hovered || clicked) {
 			Color oldColor = g.getColor();
 			g.setColor(Color.darkGray);
 			
@@ -71,24 +67,20 @@ public class Catapult extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
-		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
-		{
+		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0) {
 			shoot(0);
 		}
 	}
 	
 	@Override
-	public Projectile getProjectile(Entity target)
-	{
+	public Projectile getProjectile(Entity target) {
 		float rockSpeed = 6f;
 		Vector targetVector = target.getCenter2();
 		
-		if (target instanceof Creature)
-		{
+		if (target instanceof Creature) {
 			// -- pre aim -- //
 			
 			Creature c = (Creature) target;
@@ -114,50 +106,41 @@ public class Catapult extends Struct
 	}
 	
 	@Override
-	protected BufferedImage createImage()
-	{
+	protected BufferedImage createImage() {
 		return Game.getImage("creature/catapult.png").getSubimage(0, 0, 64, 64); // default image
 	}
 	
 	@Override
-	public Shape getAttackArea()
-	{
+	public Shape getAttackArea() {
 		int rad = (int) attributes.get(Attribute.ATTACK_RANGE);
 		Vector c = getCenter();
 		return new Arc2D.Float(c.x - rad, c.y - rad, rad * 2, rad * 2, isDownwards() ? -120 : 60, 60, Arc2D.PIE);
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		Catapult c = new Catapult((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 		c.setDownwards(isDownwards());
 		return c;
 	}
 	
-	public void setDownwards(boolean b)
-	{
+	public void setDownwards(boolean b) {
 		attributes.set(Attribute.MINE_SPEED, b ? Attribute.MINE_SPEED.getDefaultValue() : 1);
 	}
 	
-	public boolean isDownwards()
-	{
+	public boolean isDownwards() {
 		return attributes.get(Attribute.MINE_SPEED) == Attribute.MINE_SPEED.getDefaultValue();
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 }

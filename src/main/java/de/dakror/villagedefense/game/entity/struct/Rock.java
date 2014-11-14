@@ -10,10 +10,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Rock extends Struct
-{
-	public Rock(int x, int y)
-	{
+public class Rock extends Struct {
+	public Rock(int x, int y) {
 		super(x, y, 1, 1);
 		tx = 7;
 		ty = 6;
@@ -25,28 +23,23 @@ public class Rock extends Struct
 	}
 	
 	@Override
-	protected void onDeath()
-	{
+	protected void onDeath() {
 		dead = true;
 	}
 	
 	@Override
-	protected void onMinedUp()
-	{
+	protected void onMinedUp() {
 		onDeath();
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Rock((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 }

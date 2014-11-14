@@ -15,10 +15,8 @@ import de.dakror.villagedefense.ui.button.ResearchButton;
 /**
  * @author Dakror
  */
-public class School extends Struct
-{
-	public School(int x, int y)
-	{
+public class School extends Struct {
+	public School(int x, int y) {
 		super(x, y, 6, 8);
 		
 		name = "Schule";
@@ -35,33 +33,26 @@ public class School extends Struct
 	}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new School((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 	
 	@Override
-	public void drawGUI(Graphics2D g)
-	{
+	public void drawGUI(Graphics2D g) {
 		if (components.size() == 0) initGUI();
-		try
-		{
+		try {
 			Helper.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
 			Helper.drawHorizontallyCenteredString("Wissenschaft", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
 			
 			drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
-			for (Component c : components)
-			{
-				if ((c instanceof ResearchButton))
-				{
+			for (Component c : components) {
+				if ((c instanceof ResearchButton)) {
 					ResearchButton n = (ResearchButton) c;
 					if (n.state != 2) continue;
 					
@@ -69,14 +60,11 @@ public class School extends Struct
 					break;
 				}
 			}
-		}
-		catch (NullPointerException e)
-		{}
+		} catch (NullPointerException e) {}
 	}
 	
 	@Override
-	public void initGUI()
-	{
+	public void initGUI() {
 		int width = guiSize.width - 20;
 		
 		int size = 32;
@@ -85,10 +73,8 @@ public class School extends Struct
 		int proRow = width / (size + gap);
 		
 		int i = 0;
-		for (Researches research : Researches.values())
-		{
-			if (research.getCosts(false).size() > 0)
-			{
+		for (Researches research : Researches.values()) {
+			if (research.getCosts(false).size() > 0) {
 				components.add(new ResearchButton(20 + ((i % proRow) * (size + gap)), 55 + ((i / proRow) * (size + gap)), research, Game.currentGame.researches));
 				i++;
 			}
@@ -96,6 +82,5 @@ public class School extends Struct
 	}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 }

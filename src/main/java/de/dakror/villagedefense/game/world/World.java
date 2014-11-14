@@ -34,8 +34,7 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class World extends EventListener implements Drawable
-{
+public class World extends EventListener implements Drawable {
 	public int x, y, width, height;
 	
 	public Chunk[][] chunks;
@@ -48,13 +47,11 @@ public class World extends EventListener implements Drawable
 	public CopyOnWriteArrayList<Projectile> projectiles = new CopyOnWriteArrayList<>();
 	public CopyOnWriteArrayList<Animation> animations = new CopyOnWriteArrayList<>();
 	
-	public World()
-	{
+	public World() {
 		x = y = 0;
 	}
 	
-	public void init(int width, int height)
-	{
+	public void init(int width, int height) {
 		entities.clear();
 		animations.clear();
 		projectiles.clear();
@@ -73,43 +70,29 @@ public class World extends EventListener implements Drawable
 		render();
 	}
 	
-	public void setTileId(int x, int y, byte d)
-	{
+	public void setTileId(int x, int y, byte d) {
 		Point index = getChunk(x, y);
 		
 		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length) return;
 		
 		chunks[index.x][index.y].setTileId(x - index.x * Chunk.SIZE, y - index.y * Chunk.SIZE, d);
 		chunks[index.x][index.y].render();
-		try
-		{
+		try {
 			chunks[index.x - 1][index.y].render();
-		}
-		catch (IndexOutOfBoundsException e)
-		{}
-		try
-		{
+		} catch (IndexOutOfBoundsException e) {}
+		try {
 			chunks[index.x + 1][index.y].render();
-		}
-		catch (IndexOutOfBoundsException e)
-		{}
-		try
-		{
+		} catch (IndexOutOfBoundsException e) {}
+		try {
 			chunks[index.x][index.y - 1].render();
-		}
-		catch (IndexOutOfBoundsException e)
-		{}
-		try
-		{
+		} catch (IndexOutOfBoundsException e) {}
+		try {
 			chunks[index.x][index.y + 1].render();
-		}
-		catch (IndexOutOfBoundsException e)
-		{}
+		} catch (IndexOutOfBoundsException e) {}
 		
 	}
 	
-	public byte getTileId(int x, int y)
-	{
+	public byte getTileId(int x, int y) {
 		Point index = getChunk(x, y);
 		
 		if (index.x < 0 || index.y < 0 || index.x >= chunks.length || index.y >= chunks[index.x].length) return Tile.empty.getId();
@@ -136,50 +119,39 @@ public class World extends EventListener implements Drawable
 	 *         </tr>
 	 *         </table>
 	 */
-	public byte[][] getNeighbors(int x, int y)
-	{
+	public byte[][] getNeighbors(int x, int y) {
 		byte[][] data = new byte[3][3];
-		for (int i = -1; i < 2; i++)
-		{
-			for (int j = -1; j < 2; j++)
-			{
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
 				data[i + 1][j + 1] = getTileId(x + i, y + j);
 			}
 		}
 		return data;
 	}
 	
-	public Point getChunk(int x, int y)
-	{
+	public Point getChunk(int x, int y) {
 		return new Point((int) Math.floor(x / (float) Chunk.SIZE), (int) Math.floor(y / (float) Chunk.SIZE));
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		AffineTransform old = g.getTransform();
 		AffineTransform at = g.getTransform();
 		at.translate(x, y);
 		g.setTransform(at);
 		
 		Rectangle visible = new Rectangle(-x, -y, Game.getWidth(), Game.getHeight());
-		try
-		{
-			for (int i = 0; i < chunks.length; i++)
-			{
-				for (int j = 0; j < chunks[0].length; j++)
-				{
+		try {
+			for (int i = 0; i < chunks.length; i++) {
+				for (int j = 0; j < chunks[0].length; j++) {
 					if (new Rectangle(i * Chunk.SIZE * Tile.SIZE, j * Chunk.SIZE * Tile.SIZE, Chunk.SIZE * Tile.SIZE, Chunk.SIZE * Tile.SIZE).intersects(visible)) chunks[i][j].draw(g);
 				}
 			}
-		}
-		catch (NullPointerException e)
-		{
+		} catch (NullPointerException e) {
 			return;
 		}
 		
-		for (Entity e : entities)
-		{
+		for (Entity e : entities) {
 			if (e.getArea(false).intersects(visible)) e.drawEntity(g);
 		}
 		
@@ -212,42 +184,35 @@ public class World extends EventListener implements Drawable
 		
 		// Color c = g.getColor();
 		// g.setColor(Color.darkGray);
-		// g.drawRect(Math.round((Game.currentGame.mouse.x - x - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Math.round((Game.currentGame.mouse.y - y - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+		// g.drawRect(Math.round((Game.currentGame.mouse.x - x - Tile.SIZE / 2) / (float) Tile.SIZE) * Tile.SIZE, Math.round((Game.currentGame.mouse.y - y - Tile.SIZE / 2) / (float) Tile.SIZE) *
+		// Tile.SIZE, Tile.SIZE, Tile.SIZE);
 		// g.setColor(c);
 		
 		g.setTransform(old);
 	}
 	
-	public void sortEntities()
-	{
+	public void sortEntities() {
 		@SuppressWarnings("unchecked")
 		ArrayList<Entity> sorted = new ArrayList<>((List<Entity>) entities.clone());
-		try
-		{
-			Collections.sort(sorted, new Comparator<Entity>()
-			{
+		try {
+			Collections.sort(sorted, new Comparator<Entity>() {
 				@Override
-				public int compare(Entity o1, Entity o2)
-				{
+				public int compare(Entity o1, Entity o2) {
 					float dif = (o1.getY() + o1.getHeight()) - (o2.getY() + o2.getHeight());
 					if (dif < 0) return -1;
 					else if (dif > 0) return 1;
 					return 0;
 				}
 			});
-		}
-		catch (IllegalArgumentException e)
-		{}
+		} catch (IllegalArgumentException e) {}
 		entities = new CopyOnWriteArrayList<>(sorted);
 	}
 	
-	public void generate()
-	{
+	public void generate() {
 		int x = (int) Math.floor(width / 2f / Tile.SIZE);
 		int y = (int) Math.floor(height / 2f / Tile.SIZE);
 		
-		for (int i = 0; i < width / Tile.SIZE; i++)
-		{
+		for (int i = 0; i < width / Tile.SIZE; i++) {
 			setTileId(i, y, Tile.ground.getId());
 			setTileId(i, y + 1, Tile.ground.getId());
 		}
@@ -267,8 +232,7 @@ public class World extends EventListener implements Drawable
 		int heightMalus = 3;
 		
 		int rocks = (int) (Math.random() * 10) + 10;
-		for (int i = 0; i < rocks; i++)
-		{
+		for (int i = 0; i < rocks; i++) {
 			int x1 = (int) (Math.random() * width / Tile.SIZE);
 			if ((width / Tile.SIZE) - x1 < 4) continue;
 			
@@ -278,8 +242,7 @@ public class World extends EventListener implements Drawable
 		}
 		
 		int trees = (int) (Math.random() * 10) + 10;
-		for (int i = 0; i < trees; i++)
-		{
+		for (int i = 0; i < trees; i++) {
 			int x1 = (int) (Math.random() * width / Tile.SIZE);
 			if ((width / Tile.SIZE) - x1 < 4) continue;
 			
@@ -290,52 +253,43 @@ public class World extends EventListener implements Drawable
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		sortEntities();
 		
 		@SuppressWarnings("unchecked")
 		List<Entity> sorted = (List<Entity>) entities.clone();
 		Collections.reverse(sorted);
-		for (Entity entity : sorted)
-		{
+		for (Entity entity : sorted) {
 			entity.update(tick);
-			if (entity.isDead())
-			{
+			if (entity.isDead()) {
 				if (entity.equals(selectedEntity)) selectedEntity = null;
 				entities.remove(entity);
 			}
 		}
 		
-		for (Projectile p : projectiles)
-		{
+		for (Projectile p : projectiles) {
 			p.update(tick);
 			if (p.isDead()) projectiles.remove(p);
 		}
 		
-		for (Animation a : animations)
-		{
+		for (Animation a : animations) {
 			a.update(tick);
 			if (a.isDead()) animations.remove(a);
 		}
 	}
 	
-	public void render()
-	{
+	public void render() {
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j].render();
 	}
 	
-	public Vector getTile(Vector v)
-	{
+	public Vector getTile(Vector v) {
 		return new Vector(Math.round((v.x - Tile.SIZE / 2) / Tile.SIZE), Math.round((v.y - Tile.SIZE / 2) / Tile.SIZE));
 	}
 	
-	public boolean addEntity(Entity e, boolean initial)
-	{
-		for (Entity entity : entities)
-		{
+	public boolean addEntity(Entity e, boolean initial) {
+		for (Entity entity : entities) {
 			if (e.getBump(true).intersects(entity.getBump(true))) return false;
 		}
 		entities.add(e);
@@ -346,65 +300,51 @@ public class World extends EventListener implements Drawable
 		return true;
 	}
 	
-	public boolean isFreeTile(int x, int y)
-	{
-		for (Entity entity : entities)
-		{
+	public boolean isFreeTile(int x, int y) {
+		for (Entity entity : entities) {
 			if (entity.getBump(true).intersects(new Rectangle(x, y, Tile.SIZE, Tile.SIZE))) return false;
 		}
 		
 		return true;
 	}
 	
-	public void addEntity2(Entity e, boolean initial)
-	{
+	public void addEntity2(Entity e, boolean initial) {
 		entities.add(e);
 		e.onSpawn(initial);
 		
 		render();
 	}
 	
-	public void addProjectile(Projectile p)
-	{
+	public void addProjectile(Projectile p) {
 		projectiles.add(p);
 	}
 	
-	public void addAnimation(Animation a)
-	{
+	public void addAnimation(Animation a) {
 		animations.add(a);
 	}
 	
-	public byte[] getData()
-	{
+	public byte[] getData() {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try
-		{
-			for (Chunk[] c1 : chunks)
-			{
-				for (Chunk c : c1)
-				{
+		try {
+			for (Chunk[] c1 : chunks) {
+				for (Chunk c : c1) {
 					baos.write(c.getData());
 				}
 			}
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return baos.toByteArray();
 	}
 	
-	public void setData(int width, int height, byte[] data)
-	{
+	public void setData(int width, int height, byte[] data) {
 		entities.clear();
 		projectiles.clear();
 		animations.clear();
 		
 		chunks = new Chunk[width][height];
-		for (int i = 0; i < width; i++)
-		{
-			for (int j = 0; j < height; j++)
-			{
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				chunks[i][j] = new Chunk(i, j);
 				
 				int len = Chunk.SIZE * Chunk.SIZE;
@@ -416,8 +356,7 @@ public class World extends EventListener implements Drawable
 	}
 	
 	@Override
-	public void mouseMoved(MouseEvent e)
-	{
+	public void mouseMoved(MouseEvent e) {
 		e.translatePoint(-x, -y);
 		for (Entity entity : entities)
 			entity.setHovered(false);
@@ -428,8 +367,7 @@ public class World extends EventListener implements Drawable
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		if (Game.currentGame.placedStruct || Game.currentGame.activeStruct != null) return;
 		
 		e.translatePoint(-x, -y);
@@ -440,47 +378,36 @@ public class World extends EventListener implements Drawable
 			selectedEntity = null;
 			for (Entity entity : entities)
 				entity.setClicked(false);
-			for (Entity entity : entities)
-			{
-				if (entity.mousePressed(e))
-				{
+			for (Entity entity : entities) {
+				if (entity.mousePressed(e)) {
 					selectedEntity = entity;
 					break;
 				}
 			}
-		}
-		else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Villager)
-		{
+		} else if (e.getButton() == MouseEvent.BUTTON3 && selectedEntity != null && selectedEntity instanceof Villager) {
 			Entity target = null;
-			for (Entity entity : entities)
-			{
-				if (entity.mousePressed(e))
-				{
+			for (Entity entity : entities) {
+				if (entity.mousePressed(e)) {
 					target = entity;
 					break;
 				}
 			}
 			
 			setVillagerTarget((Villager) selectedEntity, e.getX(), e.getY(), target);
-		}
-		else if (e.getButton() == MouseEvent.BUTTON3) // after Drag
+		} else if (e.getButton() == MouseEvent.BUTTON3) // after Drag
 		{
 			Entity target = null;
-			for (Entity entity : entities)
-			{
+			for (Entity entity : entities) {
 				if (entity.isClicked() && entity instanceof Villager) continue;
 				
-				if (entity.mousePressed(e))
-				{
+				if (entity.mousePressed(e)) {
 					target = entity;
 					break;
 				}
 			}
 			
-			for (Entity entity : entities)
-			{
-				if (entity.isClicked() && entity instanceof Villager)
-				{
+			for (Entity entity : entities) {
+				if (entity.isClicked() && entity instanceof Villager) {
 					setVillagerTarget((Villager) entity, e.getX(), e.getY(), target);
 				}
 			}
@@ -489,16 +416,12 @@ public class World extends EventListener implements Drawable
 		e.translatePoint(x, y);
 	}
 	
-	public void setVillagerTarget(Villager v, int targetX, int targetY, Entity target)
-	{
+	public void setVillagerTarget(Villager v, int targetX, int targetY, Entity target) {
 		if (!v.isTargetByUser() && v.getTarget() != null) return;
 		
-		if (target != null)
-		{
+		if (target != null) {
 			v.setTarget(target, true);
-		}
-		else
-		{
+		} else {
 			Vector trg = new Vector(targetX/* - v.getBump(false).x - v.getBump(false).width / 2 */, targetY/* - v.getBump(false).y - v.getBump(false).height / 2 */);
 			
 			v.setTargetEntity(null);

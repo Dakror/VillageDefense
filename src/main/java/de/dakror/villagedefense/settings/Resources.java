@@ -11,10 +11,8 @@ import org.json.JSONObject;
 /**
  * @author Dakror
  */
-public class Resources
-{
-	public enum Resource
-	{
+public class Resources {
+	public enum Resource {
 		GOLD("Gold", 2, 2, 1, true),
 		PEOPLE("Einwohner", 0, 0, 0, false),
 		WOOD("Holz", 3, 0, 4, true),
@@ -35,8 +33,7 @@ public class Resources
 		private boolean usable;
 		private int iconX, iconY, goldValue;
 		
-		private Resource(String name, int iconX, int iconY, int goldValue, boolean usable)
-		{
+		private Resource(String name, int iconX, int iconY, int goldValue, boolean usable) {
 			this.name = name;
 			this.iconX = iconX;
 			this.iconY = iconY;
@@ -44,33 +41,27 @@ public class Resources
 			this.usable = usable;
 		}
 		
-		public String getName()
-		{
+		public String getName() {
 			return name;
 		}
 		
-		public int getIconX()
-		{
+		public int getIconX() {
 			return iconX;
 		}
 		
-		public int getIconY()
-		{
+		public int getIconY() {
 			return iconY;
 		}
 		
-		public int getGoldValue()
-		{
+		public int getGoldValue() {
 			return goldValue;
 		}
 		
-		public boolean isUsable()
-		{
+		public boolean isUsable() {
 			return usable;
 		}
 		
-		public static Resource[] usable()
-		{
+		public static Resource[] usable() {
 			ArrayList<Resource> res = new ArrayList<>();
 			
 			for (Resource r : values())
@@ -79,8 +70,7 @@ public class Resources
 			return res.toArray(new Resource[] {});
 		}
 		
-		public static Resource[] usableNoGold()
-		{
+		public static Resource[] usableNoGold() {
 			ArrayList<Resource> res = new ArrayList<>();
 			
 			for (Resource r : values())
@@ -92,63 +82,52 @@ public class Resources
 	
 	HashMap<Resource, Float> res = new HashMap<>();
 	
-	public Resources()
-	{
+	public Resources() {
 		for (Resource t : Resource.values())
 			res.put(t, 0f);
 	}
 	
-	public Resources(JSONObject data) throws JSONException
-	{
+	public Resources(JSONObject data) throws JSONException {
 		this();
 		
 		JSONArray names = data.names();
-		for (int i = 0; i < data.length(); i++)
-		{
+		for (int i = 0; i < data.length(); i++) {
 			res.put(Resource.valueOf(names.getString(i)), (float) data.getDouble(names.getString(i)));
 		}
 	}
 	
-	public int get(Resource t)
-	{
+	public int get(Resource t) {
 		return (int) (float) res.get(t);
 	}
 	
-	public float getF(Resource t)
-	{
+	public float getF(Resource t) {
 		return res.get(t);
 	}
 	
-	public Resources set(Resource t, int value)
-	{
+	public Resources set(Resource t, int value) {
 		return set(t, (float) value);
 	}
 	
-	public Resources set(Resource t, float value)
-	{
+	public Resources set(Resource t, float value) {
 		res.put(t, value);
 		
 		return this;
 	}
 	
-	public void add(Resource t, int value)
-	{
+	public void add(Resource t, int value) {
 		add(t, (float) value);
 	}
 	
-	public void add(Resource t, float value)
-	{
+	public void add(Resource t, float value) {
 		res.put(t, getF(t) + value);
 	}
 	
-	public void add(Resources r)
-	{
+	public void add(Resources r) {
 		for (Resource s : r.getFilled())
 			add(s, r.getF(s));
 	}
 	
-	public int size()
-	{
+	public int size() {
 		int s = 0;
 		
 		for (Resource r : res.keySet())
@@ -157,8 +136,7 @@ public class Resources
 		return s;
 	}
 	
-	public float getLength()
-	{
+	public float getLength() {
 		float length = 0;
 		
 		for (Resource r : res.keySet())
@@ -167,8 +145,7 @@ public class Resources
 		return length;
 	}
 	
-	public ArrayList<Resource> getFilled()
-	{
+	public ArrayList<Resource> getFilled() {
 		ArrayList<Resource> res = new ArrayList<>();
 		
 		for (Resource r : Resource.values())
@@ -177,25 +154,19 @@ public class Resources
 		return res;
 	}
 	
-	public JSONObject getData()
-	{
+	public JSONObject getData() {
 		JSONObject o = new JSONObject();
-		try
-		{
-			for (Resource r : Resource.values())
-			{
+		try {
+			for (Resource r : Resource.values()) {
 				o.put(r.name(), getF(r));
 			}
-		}
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return o;
 	}
 	
-	public static Resources mul(Resources res, int f)
-	{
+	public static Resources mul(Resources res, int f) {
 		Resources result = new Resources();
 		for (Resource r : res.getFilled())
 			result.set(r, res.get(r) * f);

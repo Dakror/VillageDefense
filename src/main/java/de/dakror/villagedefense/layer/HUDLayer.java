@@ -28,42 +28,35 @@ import de.dakror.villagedefense.util.SaveHandler;
 /**
  * @author Dakror
  */
-public class HUDLayer extends Layer
-{
+public class HUDLayer extends Layer {
 	public static HUDLayer currentHudLayer;
 	
 	Resources rps;
 	boolean spaceDown;
 	
-	public HUDLayer()
-	{
+	public HUDLayer() {
 		super();
 		
 		currentHudLayer = this;
 	}
 	
 	@Override
-	public void init()
-	{
+	public void init() {
 		rps = new Resources();
 		components.add(new BuildBar());
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
-		try
-		{
+	public void draw(Graphics2D g) {
+		try {
 			// -- wave monster faces -- //
 			int selectedMonster = -1;
-			if (WaveManager.monsters.size() > 0)
-			{
+			if (WaveManager.monsters.size() > 0) {
 				int cSize = 70;
 				ArrayList<Monster> keys = new ArrayList<>(WaveManager.monsters.keySet());
 				if (keys.contains(Monster.ZOMBIE)) keys.add(Monster.GHOST);
 				
-				for (int i = 0; i < keys.size(); i++)
-				{
+				for (int i = 0; i < keys.size(); i++) {
 					Monster m = keys.get(i);
 					
 					int x = Game.getWidth() / 2 + 200 + i * cSize;
@@ -80,11 +73,9 @@ public class HUDLayer extends Layer
 			
 			// -- selected entity stuff -- //
 			Helper.drawContainer(Game.getWidth() / 2 - 175, 70, 350, 60, false, false, g);
-			if (Game.world.selectedEntity != null)
-			{
+			if (Game.world.selectedEntity != null) {
 				Helper.drawHorizontallyCenteredString(Game.world.selectedEntity.getName(), Game.getWidth(), 111, g, 40);
-				if (Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue())
-				{
+				if (Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue()) {
 					Helper.drawProgressBar(Game.getWidth() / 2 - 179, 111, 358, Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH) / Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
 					Color oldColor = g.getColor();
 					g.setColor(Color.white);
@@ -92,21 +83,17 @@ public class HUDLayer extends Layer
 					g.setColor(oldColor);
 				}
 				
-				if (Game.world.selectedEntity.getResources().size() > 0)
-				{
+				if (Game.world.selectedEntity.getResources().size() > 0) {
 					ArrayList<Resource> resources = Game.world.selectedEntity.getResources().getFilled();
 					Helper.drawShadow(0, 80, 160, resources.size() * 24 + 40, g);
-					for (int i = 0; i < resources.size(); i++)
-					{
+					for (int i = 0; i < resources.size(); i++) {
 						Assistant.drawResource(Game.world.selectedEntity.getResources(), resources.get(i), 16, 100 + i * 24, 26, 30, g);
 					}
 				}
 				
-				if (Game.world.selectedEntity instanceof Struct)
-				{
+				if (Game.world.selectedEntity instanceof Struct) {
 					Struct s = (Struct) Game.world.selectedEntity;
-					if (!(s instanceof Tree) && !(s instanceof Rock))
-					{
+					if (!(s instanceof Tree) && !(s instanceof Rock)) {
 						Helper.drawShadow(Game.getWidth() / 2 - 260, 72, 70, 70, g);
 						
 						if (new Rectangle(Game.getWidth() / 2 - 260, 72, 70, 70).contains(Game.currentGame.mouse)) Helper.drawContainer(Game.getWidth() / 2 - 260, 72, 70, 70, false, false, g);
@@ -115,8 +102,7 @@ public class HUDLayer extends Layer
 						g.drawImage(Game.getImage("icon/bomb.png"), Game.getWidth() / 2 - 250, 82, 50, 50, Game.w);
 					}
 					
-					if (s.getResourcesPerSecond().size() > 0 || !s.isWorking())
-					{
+					if (s.getResourcesPerSecond().size() > 0 || !s.isWorking()) {
 						Helper.drawShadow(Game.getWidth() / 2 - 330, 72, 70, 70, g);
 						
 						if (new Rectangle(Game.getWidth() / 2 - 330, 72, 70, 70).contains(Game.currentGame.mouse)) Helper.drawContainer(Game.getWidth() / 2 - 330, 72, 70, 70, s.isWorking(), false, g);
@@ -135,14 +121,12 @@ public class HUDLayer extends Layer
 			
 			int w = 300;
 			
-			if (hover)
-			{
+			if (hover) {
 				Helper.drawShadow(0, 0, w, Resource.values().length * 30 + 20, g);
 				Helper.drawOutline(0, 0, w, Resource.values().length * 30 + 20, false, g);
 			}
 			
-			for (int i = 0; i < Resource.values().length; i++)
-			{
+			for (int i = 0; i < Resource.values().length; i++) {
 				Resource r = Resource.values()[i];
 				float dif = Math.round(rps.getF(r) * 100) / 100f;
 				
@@ -153,13 +137,10 @@ public class HUDLayer extends Layer
 				
 				if (!hover && y > 70) continue;
 				
-				if (r == Resource.PEOPLE)
-				{
+				if (r == Resource.PEOPLE) {
 					int free = Game.currentGame.getPeople();
 					Assistant.drawLabelWithIcon(25, y, 30, new Point(r.getIconX(), r.getIconY()), (free != Game.currentGame.resources.get(r) ? Game.currentGame.getPeople() + " / " : "") + Game.currentGame.resources.get(r) + delta, 30, g);
-				}
-				else
-				{
+				} else {
 					Assistant.drawLabelWithIcon(25, y, 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + delta, 30, g);
 				}
 			}
@@ -207,15 +188,13 @@ public class HUDLayer extends Layer
 			drawComponents(g);
 			
 			// -- monster tooltip -- //
-			if (selectedMonster != -1)
-			{
+			if (selectedMonster != -1) {
 				String text = Monster.values()[selectedMonster].getDescription();
 				String name = text.substring(0, text.indexOf(":"));
 				text = text.substring(text.indexOf(":") + 1);
 				String[] lines = text.split("\\. ");
 				int width = 0;
-				for (String s : lines)
-				{
+				for (String s : lines) {
 					int myW = g.getFontMetrics(g.getFont().deriveFont(24f)).stringWidth(s);
 					if (myW > width) width = myW;
 				}
@@ -232,32 +211,25 @@ public class HUDLayer extends Layer
 				Helper.drawOutline(x1 + 12, y1 + 24, width, height, false, g);
 				
 				Helper.drawHorizontallyCenteredString(name, x1 + 12, width, y1 + 24 + 40, g, 30);
-				for (int i = 0; i < lines.length; i++)
-				{
+				for (int i = 0; i < lines.length; i++) {
 					Helper.drawString(lines[i] + ".", x1 + 25, y1 + 24 + 70 + i * 30, g, 24);
 				}
 			}
 			
 			// -- UI components -- //
 			drawComponents(g);
-		}
-		catch (NullPointerException e)
-		{}
-		catch (Exception e)
-		{
+		} catch (NullPointerException e) {} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		updateComponents(tick);
 		
 		rps = new Resources();
 		
-		for (Entity e : Game.world.entities)
-		{
+		for (Entity e : Game.world.entities) {
 			if (e instanceof Struct && !e.isHungry()) rps.add(((Struct) e).getResourcesPerSecond());
 		}
 		
@@ -265,34 +237,28 @@ public class HUDLayer extends Layer
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		super.mousePressed(e);
-		if (Game.currentGame.state == 0)
-		{
-			if (new Rectangle(Game.getWidth() / 2 + 100, 30, 60, 60).contains(e.getPoint()))
-			{
+		if (Game.currentGame.state == 0) {
+			if (new Rectangle(Game.getWidth() / 2 + 100, 30, 60, 60).contains(e.getPoint())) {
 				Game.currentGame.updater.ticks = 0;
 				Game.currentGame.frames = 0;
 				Game.currentGame.start = System.currentTimeMillis();
 				Game.currentGame.updater.speed = Game.currentGame.updater.speed == 1 ? Game.forwardFactor : 1;
 			}
 			
-			if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct)
-			{
+			if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct) {
 				if (new Rectangle(Game.getWidth() / 2 - 260, 72, 70, 70).contains(e.getPoint())) // destroy
 				{
 					Resources res = ((Struct) Game.world.selectedEntity).getBuildingCosts();
 					
-					for (Resource r : res.getFilled())
-					{
+					for (Resource r : res.getFilled()) {
 						if (r.isUsable()) Game.currentGame.resources.add(r, Math.round(res.get(r) / 4f)); // give 25% back
 					}
 					
 					Game.world.selectedEntity.kill();
 					Game.currentGame.killedCoreHouse = true; // hack to prevent StateLayer from funk around
-				}
-				else if (new Rectangle(Game.getWidth() / 2 - 330, 72, 70, 70).contains(e.getPoint())) // change working state
+				} else if (new Rectangle(Game.getWidth() / 2 - 330, 72, 70, 70).contains(e.getPoint())) // change working state
 				{
 					((Struct) Game.world.selectedEntity).setWorking(!((Struct) Game.world.selectedEntity).isWorking());
 				}
@@ -301,8 +267,7 @@ public class HUDLayer extends Layer
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		super.mouseReleased(e);
 		if (new Rectangle(Game.getWidth() - 155, 5, 70, 70).contains(e.getPoint()) && WaveManager.nextWave != 0) // save
 		{
@@ -311,15 +276,13 @@ public class HUDLayer extends Layer
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent e)
-	{
+	public void keyPressed(KeyEvent e) {
 		super.keyPressed(e);
 		spaceDown = e.getKeyCode() == KeyEvent.VK_SPACE;
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent e)
-	{
+	public void keyReleased(KeyEvent e) {
 		super.keyReleased(e);
 		
 		spaceDown = false;

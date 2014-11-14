@@ -12,16 +12,14 @@ import de.dakror.villagedefense.settings.WaveManager;
 /**
  * @author Dakror
  */
-public class NewGameLayer extends Layer
-{
+public class NewGameLayer extends Layer {
 	MenuLayer ml;
 	int height = 90;
 	int h;
 	String[] sizes = { "Normal", "Groß", "Riesig" };
 	int[][] res = { { 1920, 1024 }, { 3072, 1728 }, { 5120, 2880 } };
 	
-	public NewGameLayer(MenuLayer ml)
-	{
+	public NewGameLayer(MenuLayer ml) {
 		this.ml = ml;
 		modal = true;
 		ml.setEnabled(false);
@@ -29,13 +27,11 @@ public class NewGameLayer extends Layer
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		Helper.drawContainer(Game.getWidth() / 8 * 3 - 20, Game.getHeight() / 4, Game.getWidth() / 4 + 40, h, true, false, g);
 		Helper.drawHorizontallyCenteredString("Neues Spiel", Game.getWidth(), Game.getHeight() / 4 + 70, g, 70);
 		
-		for (int i = 0; i < sizes.length; i++)
-		{
+		for (int i = 0; i < sizes.length; i++) {
 			Rectangle r = new Rectangle(Game.getWidth() / 8 * 3, Game.getHeight() / 4 + 100 + height * i, Game.getWidth() / 4, height - 10);
 			
 			Helper.drawShadow(r.x, r.y, r.width, r.height, g);
@@ -45,36 +41,29 @@ public class NewGameLayer extends Layer
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		h = Game.getHeight() / 2 > 400 ? Game.getHeight() / 2 : 400;
 	}
 	
 	@Override
-	public void init()
-	{}
+	public void init() {}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		super.mousePressed(e);
-		if (!new Rectangle(Game.getWidth() / 8 * 3 - 20, Game.getHeight() / 4, Game.getWidth() / 4 + 40, h).contains(e.getPoint()))
-		{
+		if (!new Rectangle(Game.getWidth() / 8 * 3 - 20, Game.getHeight() / 4, Game.getWidth() / 4 + 40, h).contains(e.getPoint())) {
 			ml.setEnabled(true);
 			Game.currentGame.layers.remove(this);
 		}
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		super.mouseReleased(e);
 		
-		for (int i = 0; i < sizes.length; i++)
-		{
+		for (int i = 0; i < sizes.length; i++) {
 			Rectangle r = new Rectangle(Game.getWidth() / 8 * 3, Game.getHeight() / 4 + 100 + height * i, Game.getWidth() / 4, height - 10);
-			if (r.contains(e.getPoint()))
-			{
+			if (r.contains(e.getPoint())) {
 				Game.currentGame.skipDraw = true;
 				Game.currentGame.startGame(res[i][0], res[i][1]);
 				Game.currentGame.state = 3;

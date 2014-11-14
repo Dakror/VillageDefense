@@ -8,10 +8,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Ghost extends Creature
-{
-	public Ghost(int x, int y)
-	{
+public class Ghost extends Creature {
+	public Ghost(int x, int y) {
 		super(x, y, "ghost");
 		
 		name = "Geist";
@@ -27,20 +25,17 @@ public class Ghost extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
+	protected boolean onArrivalAtEntity(int tick) {
 		return false;
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Ghost((int) x, (int) y);
 	}
 	
 	@Override
-	public void lookupTargetEntity()
-	{
+	public void lookupTargetEntity() {
 		setTarget(Game.world.core, false);
 	}
 }

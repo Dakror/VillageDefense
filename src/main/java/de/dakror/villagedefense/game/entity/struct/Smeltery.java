@@ -13,10 +13,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Smeltery extends Struct
-{
-	public Smeltery(int x, int y)
-	{
+public class Smeltery extends Struct {
+	public Smeltery(int x, int y) {
 		super(x, y, 7, 7);
 		tx = 0;
 		ty = 16;
@@ -38,12 +36,10 @@ public class Smeltery extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.IRONORE) >= 3 && Game.currentGame.resources.get(Resource.COAL) >= 4 && working)
-		{
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.IRONORE) >= 3 && Game.currentGame.resources.get(Resource.COAL) >= 4 && working) {
 			Game.currentGame.resources.add(Resource.IRONORE, -3);
 			Game.currentGame.resources.add(Resource.COAL, -4);
 			resources.add(Resource.IRONINGOT, (int) attributes.get(Attribute.MINE_AMOUNT));
@@ -51,8 +47,7 @@ public class Smeltery extends Struct
 	}
 	
 	@Override
-	public Resources getResourcesPerSecond()
-	{
+	public Resources getResourcesPerSecond() {
 		Resources res = new Resources();
 		
 		if (!working) return res;
@@ -65,25 +60,20 @@ public class Smeltery extends Struct
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Smeltery((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 	
 }

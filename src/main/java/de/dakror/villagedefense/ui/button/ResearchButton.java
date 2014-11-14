@@ -13,28 +13,22 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 import de.dakror.villagedefense.ui.ClickEvent;
 import de.dakror.villagedefense.util.Assistant;
 
-public class ResearchButton extends Button
-{
+public class ResearchButton extends Button {
 	public static final int tSize = 48;
 	
 	public Researches research;
 	boolean contains;
 	boolean discount;
 	
-	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool)
-	{
+	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool) {
 		super(x, y, 32, 32);
 		
-		addClickEvent(new ClickEvent()
-		{
+		addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
-				if (!pool.contains(research))
-				{
+			public void trigger() {
+				if (!pool.contains(research)) {
 					ArrayList<Resource> filled = research.getCosts(discount).getFilled();
-					for (Resource r : filled)
-					{
+					for (Resource r : filled) {
 						if (!r.isUsable()) continue;
 						Game.currentGame.resources.add(r, -research.getCosts(discount).get(r));
 					}
@@ -49,20 +43,15 @@ public class ResearchButton extends Button
 		contains = pool.contains(research);
 	}
 	
-	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool, final Struct struct)
-	{
+	public ResearchButton(int x, int y, final Researches research, final ArrayList<Researches> pool, final Struct struct) {
 		super(x, y, 32, 32);
 		
-		addClickEvent(new ClickEvent()
-		{
+		addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
-				if (!pool.contains(research))
-				{
+			public void trigger() {
+				if (!pool.contains(research)) {
 					ArrayList<Resource> filled = research.getCosts(discount).getFilled();
-					for (Resource r : filled)
-					{
+					for (Resource r : filled) {
 						if (!r.isUsable()) continue;
 						Game.currentGame.resources.add(r, -research.getCosts(discount).get(r));
 					}
@@ -79,23 +68,20 @@ public class ResearchButton extends Button
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		if (state == 2 || contains) Helper.drawContainer(x - 8, y - 8, width + 16, height + 16, false, state == 2 || contains, true, g);
 		else Helper.drawOutline(x - 8, y - 8, width + 16, height + 16, false, g);
 		
 		Helper.drawImage(Game.getImage("researches.png"), x, y, width, height, research.getTexturePoint().x * tSize, research.getTexturePoint().y * tSize, tSize, tSize, g);
 		
-		if (!enabled && !contains)
-		{
+		if (!enabled && !contains) {
 			if (state == 2) Helper.drawShadow(x - 14, y - 14, width + 28, height + 28, g);
 			else Helper.drawShadow(x - 4, y - 4, width + 8, height + 8, g);
 		}
 	}
 	
 	@Override
-	public void drawTooltip(int x, int y, Graphics2D g)
-	{
+	public void drawTooltip(int x, int y, Graphics2D g) {
 		int w = g.getFontMetrics(g.getFont().deriveFont(30f)).stringWidth(research.getName()) + 32;
 		w = w > 150 ? w : 150;
 		
@@ -103,10 +89,8 @@ public class ResearchButton extends Button
 		
 		ArrayList<Resource> filled = costs.getFilled();
 		boolean hasPreq = false;
-		for (Resource r : filled)
-		{
-			if (!r.isUsable())
-			{
+		for (Resource r : filled) {
+			if (!r.isUsable()) {
 				hasPreq = true;
 				break;
 			}
@@ -124,10 +108,8 @@ public class ResearchButton extends Button
 		y1 -= 12;
 		Helper.drawString((costs.size() == 0 ? "Keine " : "") + "Kosten", x + 20, y1, g, 24);
 		y1 += 8;
-		for (int i = 0; i < costs.size(); i++)
-		{
-			if (!filled.get(i).isUsable())
-			{
+		for (int i = 0; i < costs.size(); i++) {
+			if (!filled.get(i).isUsable()) {
 				hasPreq = true;
 				continue;
 			}
@@ -140,14 +122,12 @@ public class ResearchButton extends Button
 		}
 		
 		// -- prerequisites -- //
-		if (hasPreq)
-		{
+		if (hasPreq) {
 			y1 += 20;
 			Helper.drawHorizontallyCenteredString("Bedingungen", x + 70, 0, y1, g, 24);
 			y1 += 6;
 			
-			for (int i = 0; i < costs.size(); i++)
-			{
+			for (int i = 0; i < costs.size(); i++) {
 				Resource res = filled.get(i);
 				if (res.isUsable()) continue;
 				Color oldColor = g.getColor();
@@ -163,13 +143,10 @@ public class ResearchButton extends Button
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		ArrayList<Resource> filled = research.getCosts(discount).getFilled();
-		for (Resource r : filled)
-		{
-			if ((r == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < research.getCosts(discount).get(r))
-			{
+		for (Resource r : filled) {
+			if ((r == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < research.getCosts(discount).get(r)) {
 				enabled = false;
 				return;
 			}
@@ -177,8 +154,7 @@ public class ResearchButton extends Button
 		enabled = true;
 	}
 	
-	public void setContains(boolean b)
-	{
+	public void setContains(boolean b) {
 		contains = b;
 	}
 }

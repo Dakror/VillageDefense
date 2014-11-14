@@ -8,10 +8,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class ArrowTower extends Tower
-{
-	public ArrowTower(int x, int y)
-	{
+public class ArrowTower extends Tower {
+	public ArrowTower(int x, int y) {
 		super(x, y);
 		
 		name = "Pfeil-Turm";
@@ -30,8 +28,7 @@ public class ArrowTower extends Tower
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new ArrowTower((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 }

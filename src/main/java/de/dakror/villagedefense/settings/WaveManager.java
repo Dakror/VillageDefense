@@ -16,10 +16,8 @@ import de.dakror.villagedefense.game.world.Tile;
 /**
  * @author Dakror
  */
-public class WaveManager
-{
-	public enum Monster
-	{
+public class WaveManager {
+	public enum Monster {
 		ZOMBIE("zombie", Zombie.class, "Zombie:Normalschneller Untoter. Fügt Gebäuden 5 Schaden hinzu. Hält 20 Schaden aus"),
 		GHOST("ghost", Ghost.class, "Geist:Schnelles Gespenst. Fügt Gebäuden 10 Schaden hinzu. Hält 8 Schaden aus. Kann durch Barrikaden hindurchfliegen"),
 		SKELETON("skeleton", Skeleton.class, "Skelett:Langsamerer Totenritter. Fügt Gebäuden 10 Schaden hinzu. Hält 50 Schaden aus"),
@@ -33,25 +31,21 @@ public class WaveManager
 		private final Class<?> creatureClass;
 		private final String description;
 		
-		private Monster(String image, Class<?> creatureClass, String desc)
-		{
+		private Monster(String image, Class<?> creatureClass, String desc) {
 			this.image = image;
 			this.creatureClass = creatureClass;
 			description = desc;
 		}
 		
-		public String getImage()
-		{
+		public String getImage() {
 			return image;
 		}
 		
-		public String getDescription()
-		{
+		public String getDescription() {
 			return description;
 		}
 		
-		public Class<?> getCreatureClass()
-		{
+		public Class<?> getCreatureClass() {
 			return creatureClass;
 		}
 	}
@@ -63,13 +57,11 @@ public class WaveManager
 	
 	public static EnumMap<Monster, Integer> monsters = new EnumMap<>(Monster.class);
 	
-	public static void init()
-	{
+	public static void init() {
 		generateNextWave();
 	}
 	
-	static void generateNextWave()
-	{
+	static void generateNextWave() {
 		Game.world.core.dealDamage(-5, null);
 		monsters.clear();
 		
@@ -85,8 +77,7 @@ public class WaveManager
 		if (wave >= 5 && wave < 40) monsters.put(Monster.SKELETON, Math.round(1.25f * wave - 5 - (wave > 30 ? 30 : 0)));
 		else if (wave > 40) monsters.put(Monster.TREE, Math.round(1.25f * wave - 5 - 40));
 		
-		if (wave % 10 == 0 && wave > 2)
-		{
+		if (wave % 10 == 0 && wave > 2) {
 			monsters.clear();
 			monsters.put(Monster.TROLL, wave / 10);
 		}
@@ -94,17 +85,12 @@ public class WaveManager
 		nextWave = waveTimer;
 	}
 	
-	public static void update()
-	{
-		if (nextWave <= 0)
-		{
-			if (monsters.size() > 0)
-			{
-				new Thread()
-				{
+	public static void update() {
+		if (nextWave <= 0) {
+			if (monsters.size() > 0) {
+				new Thread() {
 					@Override
-					public void run()
-					{
+					public void run() {
 						EnumMap<Monster, Integer> monsters = WaveManager.monsters.clone();
 						WaveManager.monsters.clear();
 						int leftLength = 0;
@@ -113,12 +99,9 @@ public class WaveManager
 						int space = Tile.SIZE * 2 - wave;
 						space = space < Tile.SIZE ? Tile.SIZE : space;
 						
-						for (Monster monster : monsters.keySet())
-						{
-							for (int i = 0; i < monsters.get(monster); i++)
-							{
-								try
-								{
+						for (Monster monster : monsters.keySet()) {
+							for (int i = 0; i < monsters.get(monster); i++) {
+								try {
 									boolean left = Math.random() < 0.5;
 									
 									int x = left ? -leftLength * space : Game.world.width + rightLength * space;
@@ -130,9 +113,7 @@ public class WaveManager
 									
 									if (left) leftLength++;
 									else rightLength++;
-								}
-								catch (Exception e1)
-								{
+								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
 							}
@@ -142,18 +123,14 @@ public class WaveManager
 						}
 					}
 				}.start();
-			}
-			else
-			{
+			} else {
 				if (stageClear()) generateNextWave();
 			}
 		}
 	}
 	
-	public static boolean stageClear()
-	{
-		for (Entity e : Game.world.entities)
-		{
+	public static boolean stageClear() {
+		for (Entity e : Game.world.entities) {
 			if (e instanceof Creature && ((Creature) e).isHostile()) return false;
 		}
 		

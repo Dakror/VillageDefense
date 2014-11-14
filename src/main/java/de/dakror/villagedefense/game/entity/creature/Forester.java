@@ -12,10 +12,8 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class Forester extends Creature
-{
-	public Forester(int x, int y)
-	{
+public class Forester extends Creature {
+	public Forester(int x, int y) {
 		super(x, y, "forester");
 		setHostile(false);
 		name = "Förster";
@@ -28,35 +26,29 @@ public class Forester extends Creature
 	}
 	
 	@Override
-	public void onSpawn(boolean initial)
-	{
+	public void onSpawn(boolean initial) {
 		Game.currentGame.resources.add(Resource.PEOPLE, 1);
 	}
 	
 	@Override
-	public void onDeath()
-	{
+	public void onDeath() {
 		super.onDeath();
 		Game.currentGame.resources.add(Resource.PEOPLE, -1);
 	}
 	
 	@Override
-	public void tick(int tick)
-	{
+	public void tick(int tick) {
 		super.tick(tick);
 		
-		if (target == null && path == null)
-		{
-			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
-			{
+		if (target == null && path == null) {
+			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0) {
 				if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity2(new Tree(Helper.round(Math.round(getPos().x), Tile.SIZE) / Tile.SIZE, Helper.round(Math.round(getPos().y), Tile.SIZE) / Tile.SIZE, true), false);
 				setTarget(lookupPlantTarget(), false);
 			}
 		}
 	}
 	
-	public Vector lookupPlantTarget()
-	{
+	public Vector lookupPlantTarget() {
 		float rad = (float) Math.toRadians(Math.random() * 360);
 		float hyp = (float) Math.random() * attributes.get(Attribute.ATTACK_RANGE);
 		
@@ -71,14 +63,12 @@ public class Forester extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
+	protected boolean onArrivalAtEntity(int tick) {
 		return false;
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Forester((int) x, (int) y);
 	}
 }

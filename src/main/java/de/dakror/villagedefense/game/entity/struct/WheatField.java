@@ -12,12 +12,10 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class WheatField extends Struct
-{
+public class WheatField extends Struct {
 	int startTick;
 	
-	public WheatField(int x, int y)
-	{
+	public WheatField(int x, int y) {
 		super(x, y, 1, 1);
 		
 		tx = 5;
@@ -37,24 +35,19 @@ public class WheatField extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
-		if (startTick == 0)
-		{
+		if (startTick == 0) {
 			startTick = tick;
 			return;
 		}
 		
 		
-		if ((tick - startTick) % attributes.get(Attribute.ATTACK_SPEED) / 4 == 0)
-		{
-			if (ty != 8)
-			{
+		if ((tick - startTick) % attributes.get(Attribute.ATTACK_SPEED) / 4 == 0) {
+			if (ty != 8) {
 				ty++;
 				image = null;
-				if (ty == 8)
-				{
+				if (ty == 8) {
 					resources.set(Resource.WHEAT, 5);
 				}
 			}
@@ -62,33 +55,27 @@ public class WheatField extends Struct
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{
+	protected void onMinedUp() {
 		onDeath();
 	}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean initial)
-	{}
+	public void onUpgrade(Researches research, boolean initial) {}
 	
-	public int getPhase()
-	{
+	public int getPhase() {
 		return ty - 5;
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new WheatField((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{
+	protected void onDeath() {
 		dead = true;
 	}
 }

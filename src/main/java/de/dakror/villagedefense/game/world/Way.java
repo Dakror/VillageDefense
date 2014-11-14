@@ -9,18 +9,15 @@ import de.dakror.villagedefense.game.Game;
 /**
  * @author Dakror
  */
-public class Way extends Tile
-{
+public class Way extends Tile {
 	public static final float speed = 3.2f;
 	
-	public Way()
-	{
+	public Way() {
 		super(3, "Weg", "way.png", 5);
 	}
 	
 	@Override
-	public Point getTexturePos(int x, int y)
-	{
+	public Point getTexturePos(int x, int y) {
 		byte[][] n = Game.world.getNeighbors(x, y);
 		
 		if (n[0][1] != id && n[1][0] != id && n[2][1] != id && n[1][2] != id) return new Point(0, 0); // none adjacent
@@ -31,15 +28,12 @@ public class Way extends Tile
 		if (n[1][0] == id) c++;
 		if (n[1][2] == id) c++;
 		
-		if (c == 1)
-		{
+		if (c == 1) {
 			if (n[0][1] == id) return new Point(1, 3); // l
 			if (n[1][0] == id) return new Point(0, 4); // t
 			if (n[2][1] == id) return new Point(0, 3); // r
 			if (n[1][2] == id) return new Point(1, 4); // b
-		}
-		else if (c == 2)
-		{
+		} else if (c == 2) {
 			if (n[0][1] == id && n[2][1] == id) return new Point(2, 0); // l - r
 			if (n[1][0] == id && n[1][2] == id) return new Point(2, 1); // t - b
 			
@@ -47,9 +41,7 @@ public class Way extends Tile
 			if (n[0][1] == id && n[1][2] == id) return new Point(1, 1); // l - b
 			if (n[2][1] == id && n[1][0] == id) return new Point(0, 2); // r - t
 			if (n[0][1] == id && n[1][0] == id) return new Point(1, 2); // l - t
-		}
-		else if (c == 3)
-		{
+		} else if (c == 3) {
 			if (n[1][0] != id) return new Point(2, 2);
 			if (n[1][2] != id) return new Point(2, 3);
 			if (n[0][1] != id) return new Point(2, 4);
@@ -60,8 +52,7 @@ public class Way extends Tile
 	}
 	
 	@Override
-	public void drawTile(int cx, int cy, int i, int j, Graphics2D g)
-	{
+	public void drawTile(int cx, int cy, int i, int j, Graphics2D g) {
 		int x = i * Tile.SIZE;
 		int y = j * Tile.SIZE;
 		

@@ -12,10 +12,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Way extends Struct
-{
-	public Way(int x, int y)
-	{
+public class Way extends Struct {
+	public Way(int x, int y) {
 		super(x, y, 1, 1);
 		tx = 6;
 		ty = 7;
@@ -29,32 +27,26 @@ public class Way extends Struct
 	}
 	
 	@Override
-	public void onSpawn(boolean initial)
-	{
+	public void onSpawn(boolean initial) {
 		if (!initial) Game.world.setTileId(Helper.round((int) x, Tile.SIZE) / Tile.SIZE, Helper.round((int) y, Tile.SIZE) / Tile.SIZE, Tile.way.getId());
 		dead = true;
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean initial)
-	{}
+	public void onUpgrade(Researches research, boolean initial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Way((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 	
 }

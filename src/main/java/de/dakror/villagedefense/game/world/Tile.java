@@ -9,8 +9,7 @@ import de.dakror.villagedefense.game.Game;
 /**
  * @author Dakror
  */
-public class Tile
-{
+public class Tile {
 	public static final int SIZE = 32;
 	public static final int TILES = 256;
 	private static Tile[] tileList = new Tile[TILES];
@@ -27,8 +26,7 @@ public class Tile
 	protected byte id;
 	public float G;
 	
-	public Tile(int id, String name, String tileset, float G)
-	{
+	public Tile(int id, String name, String tileset, float G) {
 		register(id);
 		
 		this.name = name;
@@ -36,19 +34,16 @@ public class Tile
 		this.G = G;
 	}
 	
-	private void register(int id)
-	{
+	private void register(int id) {
 		if (tileList[id] == null) tileList[id] = this;
 		this.id = (byte) (id - 128);
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
-	public String getTileset()
-	{
+	public String getTileset() {
 		return tileset;
 	}
 	
@@ -66,8 +61,7 @@ public class Tile
 	 *         </li>
 	 *         </ul>
 	 */
-	public Point getTexturePos(int x, int y)
-	{
+	public Point getTexturePos(int x, int y) {
 		Point p = new Point(1, 2);
 		
 		byte[][] n = Game.world.getNeighbors(x, y);
@@ -85,17 +79,14 @@ public class Tile
 		return p;
 	}
 	
-	public void drawTile(int cx, int cy, int i, int j, Graphics2D g)
-	{
+	public void drawTile(int cx, int cy, int i, int j, Graphics2D g) {
 		int x = i * SIZE;
 		int y = j * SIZE;
 		Point tp = getTexturePos(cx * Chunk.SIZE + i, cy * Chunk.SIZE + j);
 		if (tp.x < 3) // convex
 		{
 			Helper.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, tp.x * SIZE, tp.y * SIZE, SIZE, SIZE, g);
-		}
-		else
-		{
+		} else {
 			// absolute sizes, not SIZE, easier to read.
 			Helper.drawImage(Game.getImage("tile/" + getTileset()), x, y, SIZE, SIZE, 32, 64, 32, 32, g);
 			
@@ -106,18 +97,15 @@ public class Tile
 		}
 	}
 	
-	public byte getId()
-	{
+	public byte getId() {
 		return id;
 	}
 	
-	public static Tile getTileForId(byte id)
-	{
+	public static Tile getTileForId(byte id) {
 		return tileList[id + 128];
 	}
 	
-	public static Tile getTileForId(int id)
-	{
+	public static Tile getTileForId(int id) {
 		return tileList[id];
 	}
 }

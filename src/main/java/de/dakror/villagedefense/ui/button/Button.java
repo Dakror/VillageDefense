@@ -9,33 +9,27 @@ import de.dakror.villagedefense.ui.ClickEvent;
 /**
  * @author Dakror
  */
-public abstract class Button extends Component
-{
+public abstract class Button extends Component {
 	ArrayList<ClickEvent> events;
 	
-	public Button(int x, int y, int width, int height)
-	{
+	public Button(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		events = new ArrayList<>();
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
-		if (contains(e.getX(), e.getY()) && enabled)
-		{
+	public void mouseReleased(MouseEvent e) {
+		if (contains(e.getX(), e.getY()) && enabled) {
 			triggerEvents();
 			state = 0;
 		}
 	}
 	
-	public void addClickEvent(ClickEvent e)
-	{
+	public void addClickEvent(ClickEvent e) {
 		events.add(e);
 	}
 	
-	public void triggerEvents()
-	{
+	public void triggerEvents() {
 		for (ClickEvent e1 : events)
 			e1.trigger();
 	}

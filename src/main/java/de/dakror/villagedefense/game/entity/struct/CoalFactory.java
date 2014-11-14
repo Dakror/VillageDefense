@@ -13,10 +13,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class CoalFactory extends Struct
-{
-	public CoalFactory(int x, int y)
-	{
+public class CoalFactory extends Struct {
+	public CoalFactory(int x, int y) {
 		super(x, y, 6, 7);
 		tx = 8;
 		ty = 13;
@@ -35,8 +33,7 @@ public class CoalFactory extends Struct
 	}
 	
 	@Override
-	public Resources getResourcesPerSecond()
-	{
+	public Resources getResourcesPerSecond() {
 		Resources res = new Resources();
 		
 		if (!working) return res;
@@ -48,36 +45,29 @@ public class CoalFactory extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) >= attributes.get(Attribute.MINE_AMOUNT) && working)
-		{
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) >= attributes.get(Attribute.MINE_AMOUNT) && working) {
 			Game.currentGame.resources.add(Resource.WOOD, (int) -attributes.get(Attribute.MINE_AMOUNT));
 			resources.add(Resource.COAL, 2);
 		}
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new CoalFactory((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 }

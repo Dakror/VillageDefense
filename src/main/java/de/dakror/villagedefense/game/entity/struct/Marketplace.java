@@ -17,10 +17,8 @@ import de.dakror.villagedefense.util.Assistant;
 /**
  * @author Dakror
  */
-public class Marketplace extends Struct
-{
-	public Marketplace(int x, int y)
-	{
+public class Marketplace extends Struct {
+	public Marketplace(int x, int y) {
 		super(x, y, 5, 5);
 		tx = 8;
 		ty = 8;
@@ -39,32 +37,27 @@ public class Marketplace extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
 		if (components.size() == 0) return;
 		
 		Resource[] res = Resource.usableNoGold();
-		for (int i = 0; i < res.length; i++)
-		{
+		for (int i = 0; i < res.length; i++) {
 			((CountButton) components.get(i)).max = Game.currentGame.resources.get(res[i]);
 		}
 	}
 	
 	@Override
-	public void drawGUI(Graphics2D g)
-	{
+	public void drawGUI(Graphics2D g) {
 		if (components.size() == 0) initGUI();
-		try
-		{
+		try {
 			Helper.drawContainer(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height, false, false, g);
 			Helper.drawHorizontallyCenteredString("Verkauf", guiPoint.x - guiSize.width / 2, guiSize.width, guiPoint.y - guiSize.height / 2 + 40, g, 40);
 			
 			Resource[] res = Resource.usableNoGold();
 			int sum = 0;
-			for (int i = 0; i < res.length; i++)
-			{
+			for (int i = 0; i < res.length; i++) {
 				CountButton cb = (CountButton) components.get(i);
 				sum += cb.value * res[i].getGoldValue();
 				
@@ -76,45 +69,35 @@ public class Marketplace extends Struct
 			Assistant.drawResource(Game.currentGame.resources, Resource.GOLD, sum, guiPoint.x, guiPoint.y + guiSize.height / 2 - 85, 30, 30, g);
 			
 			drawComponents(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, g);
-		}
-		catch (Exception e)
-		{}
+		} catch (Exception e) {}
 	}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Marketplace((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 	
 	@Override
-	public void initGUI()
-	{
+	public void initGUI() {
 		components.clear();
 		
 		Resource[] res = Resource.usableNoGold();
-		for (int i = 0; i < res.length; i++)
-		{
+		for (int i = 0; i < res.length; i++) {
 			components.add(new CountButton(guiSize.width / 2 + 35, 60 + 30 * i, 100, 0, 99, 1, 0));
 		}
 		TextButton sell = new TextButton((guiSize.width - 230) / 2, guiSize.height - 60, 230, "Verkaufen", 30);
-		sell.addClickEvent(new ClickEvent()
-		{
+		sell.addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
+			public void trigger() {
 				int sum = 0;
 				Resource[] res = Resource.usableNoGold();
-				for (int i = 0; i < res.length; i++)
-				{
+				for (int i = 0; i < res.length; i++) {
 					CountButton cb = (CountButton) components.get(i);
 					sum += cb.value * res[i].getGoldValue();
 					Game.currentGame.resources.add(res[i], -cb.value);
@@ -129,6 +112,5 @@ public class Marketplace extends Struct
 	}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 }

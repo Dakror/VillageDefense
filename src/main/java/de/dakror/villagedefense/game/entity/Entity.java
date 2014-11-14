@@ -25,8 +25,7 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public abstract class Entity implements Drawable
-{
+public abstract class Entity implements Drawable {
 	protected float x, y;
 	protected int width, height;
 	protected boolean hovered, clicked, dead, massive;
@@ -44,8 +43,7 @@ public abstract class Entity implements Drawable
 	
 	public float alpha;
 	
-	public Entity(int x, int y, int width, int height)
-	{
+	public Entity(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -59,60 +57,48 @@ public abstract class Entity implements Drawable
 		alpha = 1;
 	}
 	
-	public void drawBump(Graphics2D g, boolean above)
-	{
+	public void drawBump(Graphics2D g, boolean above) {
 		if (bump == null || (!hovered && !clicked)) return;
 		
 		Color oldColor = g.getColor();
 		g.setColor(clicked ? Color.black : Color.darkGray);
-		if (above)
-		{
+		if (above) {
 			g.drawLine((int) x + bump.x, (int) y + bump.y, (int) x + bump.x, (int) y + bump.y + bump.height); // left
 			g.drawLine((int) x + bump.x, (int) y + bump.y + bump.height, (int) x + bump.x + bump.width, (int) y + bump.y + bump.height); // bottom
 			g.drawLine((int) x + bump.x + bump.width, (int) y + bump.y, (int) x + bump.x + bump.width, (int) y + bump.y + bump.height); // right
-		}
-		else
-		{
+		} else {
 			g.drawLine((int) x + bump.x, (int) y + bump.y, (int) x + bump.x + bump.width, (int) y + bump.y); // top
 		}
 		g.setColor(oldColor);
 	}
 	
-	public float getX()
-	{
+	public float getX() {
 		return x;
 	}
 	
-	public void setX(float x)
-	{
+	public void setX(float x) {
 		this.x = x;
 	}
 	
-	public float getY()
-	{
+	public float getY() {
 		return y;
 	}
 	
-	public void setY(float y)
-	{
+	public void setY(float y) {
 		this.y = y;
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		this.tick = tick;
 		
-		if (alpha > 0)
-		{
+		if (alpha > 0) {
 			alpha = 1;
 			
-			for (Entity e : Game.world.entities)
-			{
+			for (Entity e : Game.world.entities) {
 				if (e.equals(this)) continue;
 				
-				if (intersects(e) && e.alpha == 1 && e.y + e.height < y + height)
-				{
+				if (intersects(e) && e.alpha == 1 && e.y + e.height < y + height) {
 					alpha = 0.6f;
 					break;
 				}
@@ -130,8 +116,7 @@ public abstract class Entity implements Drawable
 		if (!isHungry()) tick(tick);
 	}
 	
-	public void drawEntity(Graphics2D g)
-	{
+	public void drawEntity(Graphics2D g) {
 		if (alpha == 0) return;
 		
 		drawBump(g, false);
@@ -141,12 +126,9 @@ public abstract class Entity implements Drawable
 		g.setComposite(c);
 		
 		
-		if (isHungry())
-		{
+		if (isHungry()) {
 			g.drawImage(Game.getImage("icon/hunger.png"), (int) x, (int) (y - Tile.SIZE - Math.cos(tick / 10f) * Tile.SIZE / 4), 32, 32, Game.w);
-		}
-		else if (this instanceof Struct && !((Struct) this).isWorking())
-		{
+		} else if (this instanceof Struct && !((Struct) this).isWorking()) {
 			g.drawImage(Game.getImage("icon/sleep.png"), (int) (x + width * 0.75f), (int) (y - Tile.SIZE - Math.cos(tick / 10f) * Tile.SIZE / 4), 32, 32, Game.w);
 		}
 		
@@ -158,62 +140,51 @@ public abstract class Entity implements Drawable
 	@Override
 	public abstract Entity clone();
 	
-	public int getWidth()
-	{
+	public int getWidth() {
 		return width;
 	}
 	
-	public void setWidth(int width)
-	{
+	public void setWidth(int width) {
 		this.width = width;
 	}
 	
-	public int getHeight()
-	{
+	public int getHeight() {
 		return height;
 	}
 	
-	public void setHeight(int height)
-	{
+	public void setHeight(int height) {
 		this.height = height;
 	}
 	
-	public void translate(int x, int y)
-	{
+	public void translate(int x, int y) {
 		this.x += x;
 		this.y += y;
 	}
 	
-	public Rectangle getBump(boolean includePos)
-	{
+	public Rectangle getBump(boolean includePos) {
 		if (!includePos) return bump;
-		else
-		{
+		else {
 			Rectangle rect = (Rectangle) bump.clone();
 			rect.translate((int) x, (int) y);
 			return rect;
 		}
 	}
 	
-	public void setBump(Rectangle r)
-	{
+	public void setBump(Rectangle r) {
 		bump = r;
 	}
 	
-	public boolean contains(float x, float y)
-	{
+	public boolean contains(float x, float y) {
 		return x >= this.x && y >= this.y && x <= this.x + width && y <= this.y + height;
 	}
 	
-	public boolean mouseMoved(MouseEvent e)
-	{
+	public boolean mouseMoved(MouseEvent e) {
 		if (alpha == 0) return false;
 		
 		return hovered = contains(e.getX(), e.getY());
 	}
 	
-	public boolean mousePressed(MouseEvent e)
-	{
+	public boolean mousePressed(MouseEvent e) {
 		if (alpha == 0) return false;
 		
 		if (alpha != 1 && this instanceof Struct) return clicked = getBump(true).contains(e.getPoint());
@@ -221,81 +192,66 @@ public abstract class Entity implements Drawable
 		return clicked = contains(e.getX(), e.getY());
 	}
 	
-	public void mouseReleased(MouseEvent e)
-	{}
+	public void mouseReleased(MouseEvent e) {}
 	
-	public boolean intersects(Entity o)
-	{
+	public boolean intersects(Entity o) {
 		return getArea(false).intersects(o.getArea(false));
 	}
 	
-	public Rectangle getArea(boolean world)
-	{
+	public Rectangle getArea(boolean world) {
 		return new Rectangle((int) x + (world ? Game.world.x : 0), (int) y + (world ? Game.world.y : 0), width, height);
 	}
 	
-	public void setClicked(boolean b)
-	{
+	public void setClicked(boolean b) {
 		clicked = b;
 	}
 	
-	public boolean isClicked()
-	{
+	public boolean isClicked() {
 		return clicked;
 	}
 	
-	public void setHovered(boolean b)
-	{
+	public void setHovered(boolean b) {
 		hovered = b;
 	}
 	
-	public Vector getPos()
-	{
+	public Vector getPos() {
 		return new Vector(x, y);
 	}
 	
-	public Vector getCenter()
-	{
+	public Vector getCenter() {
 		Vector v = getPos();
 		v.add(new Vector((float) bump.getCenterX(), (float) bump.getCenterY()));
 		return v;
 	}
 	
-	public Vector getCenter2()
-	{
+	public Vector getCenter2() {
 		Vector v = getPos();
 		v.add(new Vector(width / 2, height / 2));
 		return v;
 	}
 	
-	public void setPos(Vector v)
-	{
+	public void setPos(Vector v) {
 		x = v.x;
 		y = v.y;
 	}
 	
-	public Attributes getAttributes()
-	{
+	public Attributes getAttributes() {
 		return attributes;
 	}
 	
-	public void setAttributes(Attributes attributes)
-	{
+	public void setAttributes(Attributes attributes) {
 		this.attributes = attributes;
 	}
 	
-	public Resources getResources()
-	{
+	public Resources getResources() {
 		return resources;
 	}
 	
-	public void setResources(Resources resources)
-	{
+	public void setResources(Resources resources) {
 		this.resources = resources;
 	}
 	
-	public void dealDamage(int amount, Object source)
-	{
+	public void dealDamage(int amount, Object source) {
 		int newVal = (int) (attributes.get(Attribute.HEALTH) - amount);
 		
 		if (newVal < 0) newVal = 0;
@@ -304,48 +260,40 @@ public abstract class Entity implements Drawable
 		attributes.set(Attribute.HEALTH, newVal);
 	}
 	
-	public boolean isDead()
-	{
+	public boolean isDead() {
 		return dead;
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
-	public void addTargetedProjectile(Projectile p)
-	{
+	public void addTargetedProjectile(Projectile p) {
 		targetedProjectiles.add(p);
 	}
 	
-	public void kill()
-	{
+	public void kill() {
 		dead = true;
 		onDeath();
 	}
 	
 	public abstract JSONObject getData();
 	
-	public boolean isHungry()
-	{
+	public boolean isHungry() {
 		if (!canHunger) return false;
 		
 		return Game.currentGame.resources.get(Resource.BREAD) == 0;
 	}
 	
-	public Vector getTile()
-	{
+	public Vector getTile() {
 		return Game.world.getTile(new Vector(x + (float) bump.getCenterX(), y + (float) bump.getCenterY()));
 	}
 	
-	public boolean isMassive()
-	{
+	public boolean isMassive() {
 		return massive;
 	}
 	
-	public byte getTileIdBelow()
-	{
+	public byte getTileIdBelow() {
 		Vector t = getTile();
 		return Game.world.getTileId((int) t.x, (int) t.y);
 	}

@@ -16,10 +16,8 @@ import de.dakror.villagedefense.ui.button.ResearchButton;
 /**
  * @author Dakror
  */
-public class Mine extends Struct
-{
-	public Mine(int x, int y)
-	{
+public class Mine extends Struct {
+	public Mine(int x, int y) {
 		super(x, y, 2, 3);
 		tx = 0;
 		ty = 10;
@@ -42,24 +40,20 @@ public class Mine extends Struct
 	}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && working)
-		{
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && working) {
 			if (has(Researches.MINE_STONE)) resources.add(Resource.STONE, (int) attributes.get(Attribute.MINE_AMOUNT));
 			else if (has(Researches.MINE_IRON)) resources.add(Resource.IRONORE, (int) attributes.get(Attribute.MINE_AMOUNT));
 		}
 	}
 	
 	@Override
-	public Resources getResourcesPerSecond()
-	{
+	public Resources getResourcesPerSecond() {
 		Resources res = new Resources();
 		
 		if (!working) return res;
@@ -71,34 +65,26 @@ public class Mine extends Struct
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Mine((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	public void initUpgrades()
-	{
+	public void initUpgrades() {
 		super.initUpgrades();
 		
-		for (Component c : components)
-		{
-			if (c instanceof ResearchButton)
-			{
+		for (Component c : components) {
+			if (c instanceof ResearchButton) {
 				final ResearchButton rb = (ResearchButton) c;
-				rb.addClickEvent(new ClickEvent()
-				{
+				rb.addClickEvent(new ClickEvent() {
 					@Override
-					public void trigger()
-					{
+					public void trigger() {
 						researches.remove(Researches.MINE_STONE);
 						researches.remove(Researches.MINE_IRON);
 						
@@ -114,6 +100,5 @@ public class Mine extends Struct
 	}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 }

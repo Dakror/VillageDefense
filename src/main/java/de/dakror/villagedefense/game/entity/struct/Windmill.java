@@ -18,12 +18,10 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Windmill extends Struct
-{
+public class Windmill extends Struct {
 	int tick;
 	
-	public Windmill(int x, int y)
-	{
+	public Windmill(int x, int y) {
 		super(x, y, 7, 10);
 		tx = 7;
 		ty = 30;
@@ -45,8 +43,7 @@ public class Windmill extends Struct
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		float angle = tick / 25f;
 		
 		Helper.drawImage(Game.getImage("structs.png"), (int) x, (int) y, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
@@ -58,8 +55,7 @@ public class Windmill extends Struct
 		g.drawImage(Game.getImage("creature/windmill.png"), (int) x - 32, (int) y - 85, Game.w);
 		g.setTransform(old);
 		
-		if (getAttackArea().getBounds().width > 0 && (clicked || hovered))
-		{
+		if (getAttackArea().getBounds().width > 0 && (clicked || hovered)) {
 			Color oldColor = g.getColor();
 			g.setColor(Color.darkGray);
 			
@@ -69,8 +65,7 @@ public class Windmill extends Struct
 	}
 	
 	@Override
-	protected BufferedImage createImage()
-	{
+	protected BufferedImage createImage() {
 		BufferedImage bi = new BufferedImage(288, height + 85, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) bi.getGraphics();
 		Helper.drawImage2(Game.getImage("structs.png"), (288 - width) / 2, 85, width, height, tx * Tile.SIZE, ty * Tile.SIZE, width, height, g);
@@ -80,22 +75,19 @@ public class Windmill extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
 		if (working) this.tick++;
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WHEAT) >= attributes.get(Attribute.MINE_AMOUNT) && working)
-		{
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WHEAT) >= attributes.get(Attribute.MINE_AMOUNT) && working) {
 			Game.currentGame.resources.add(Resource.WHEAT, (int) -attributes.get(Attribute.MINE_AMOUNT));
 			resources.add(Resource.FLOUR, 3);
 		}
 	}
 	
 	@Override
-	public Resources getResourcesPerSecond()
-	{
+	public Resources getResourcesPerSecond() {
 		Resources res = new Resources();
 		
 		if (!working) return res;
@@ -107,24 +99,19 @@ public class Windmill extends Struct
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean initial)
-	{}
+	public void onUpgrade(Researches research, boolean initial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Windmill((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 }

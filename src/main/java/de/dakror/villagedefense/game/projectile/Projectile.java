@@ -15,8 +15,7 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public abstract class Projectile implements Drawable
-{
+public abstract class Projectile implements Drawable {
 	Vector pos;
 	Vector target;
 	Image image;
@@ -29,8 +28,7 @@ public abstract class Projectile implements Drawable
 	boolean onFire;
 	int frame;
 	
-	public Projectile(Vector pos, String image, float speed)
-	{
+	public Projectile(Vector pos, String image, float speed) {
 		this.pos = pos;
 		this.image = Game.getImage("particle/" + image + ".png");
 		imgName = image;
@@ -41,13 +39,11 @@ public abstract class Projectile implements Drawable
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		if (dead) return;
 		
 		AffineTransform old = g.getTransform();
-		if (rotate)
-		{
+		if (rotate) {
 			AffineTransform at = g.getTransform();
 			at.rotate(angle, pos.x, pos.y);
 			g.setTransform(at);
@@ -60,16 +56,14 @@ public abstract class Projectile implements Drawable
 		if (canSetOnFire && onFire) Helper.drawImage(Game.getImage("anim/fire.png"), (int) pos.x - 12, (int) pos.y - 12, 24, 24, 32 * frame, 0, 32, 29, g);
 	}
 	
-	public Projectile setRotate(boolean rotate)
-	{
+	public Projectile setRotate(boolean rotate) {
 		this.rotate = rotate;
 		
 		return this;
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		target = getTargetVector();
 		
 		if (onFire && tick % 3 == 0) frame = (frame + 1) % 4;
@@ -81,14 +75,10 @@ public abstract class Projectile implements Drawable
 		
 		pos.add(dif);
 		
-		if (canSetOnFire && !onFire)
-		{
-			for (Entity e : Game.world.entities)
-			{
-				if (e instanceof Torch)
-				{
-					if (((Torch) e).getAttackArea().contains(pos.x, pos.y))
-					{
+		if (canSetOnFire && !onFire) {
+			for (Entity e : Game.world.entities) {
+				if (e instanceof Torch) {
+					if (((Torch) e).getAttackArea().contains(pos.x, pos.y)) {
 						onFire = true;
 						break;
 					}
@@ -96,8 +86,7 @@ public abstract class Projectile implements Drawable
 			}
 		}
 		
-		if (pos.equals(target))
-		{
+		if (pos.equals(target)) {
 			onImpact();
 			dead = true;
 		}
@@ -107,43 +96,35 @@ public abstract class Projectile implements Drawable
 	
 	protected abstract void onImpact();
 	
-	public boolean isDead()
-	{
+	public boolean isDead() {
 		return dead;
 	}
 	
-	public boolean isOnFire()
-	{
+	public boolean isOnFire() {
 		return onFire;
 	}
 	
-	public Vector getPos()
-	{
+	public Vector getPos() {
 		return pos;
 	}
 	
-	public Vector getTarget()
-	{
+	public Vector getTarget() {
 		return target;
 	}
 	
-	public Image getImage()
-	{
+	public Image getImage() {
 		return image;
 	}
 	
-	public String getImageName()
-	{
+	public String getImageName() {
 		return imgName;
 	}
 	
-	public float getSpeed()
-	{
+	public float getSpeed() {
 		return speed;
 	}
 	
-	public float getAngle()
-	{
+	public float getAngle() {
 		return angle;
 	}
 }

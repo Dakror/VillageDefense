@@ -15,12 +15,10 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Torch extends Struct
-{
+public class Torch extends Struct {
 	int frame;
 	
-	public Torch(int x, int y)
-	{
+	public Torch(int x, int y) {
 		super(x, y, 1, 2);
 		
 		frame = 0;
@@ -37,51 +35,42 @@ public class Torch extends Struct
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		Helper.drawImage(Game.getImage("creature/torch.png"), (int) x, (int) y, width, height, (frame % 4) * 32, 0, 32, 64, g);
 	}
 	
 	@Override
-	protected BufferedImage createImage()
-	{
+	protected BufferedImage createImage() {
 		return Game.getImage("creature/torch.png").getSubimage(0, 0, 32, 64); // default image
 	}
 	
 	@Override
-	public Shape getAttackArea()
-	{
+	public Shape getAttackArea() {
 		return new Rectangle2D.Float(x, 1.f * Tile.SIZE + y, Tile.SIZE, 0.6f * Tile.SIZE);
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
 		if (tick % 3 == 0) frame = (frame + 1) % 4;
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean initial)
-	{}
+	public void onUpgrade(Researches research, boolean initial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Torch((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 	
 }

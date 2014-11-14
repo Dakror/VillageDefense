@@ -7,11 +7,9 @@ import de.dakror.villagedefense.game.entity.creature.Creature;
 /**
  * @author Dakror
  */
-public class TowerTargetComparator implements Comparator<Creature>
-{
+public class TowerTargetComparator implements Comparator<Creature> {
 	@Override
-	public int compare(Creature o1, Creature o2)
-	{
+	public int compare(Creature o1, Creature o2) {
 		float distance1 = o1.getTarget2().getDistance(o1.getPos());
 		float distance2 = o2.getTarget2().getDistance(o2.getPos());
 		

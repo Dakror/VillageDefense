@@ -15,10 +15,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class House extends Struct
-{
-	public House(int x, int y)
-	{
+public class House extends Struct {
+	public House(int x, int y) {
 		super(x, y, 5, 5);
 		tx = 0;
 		ty = 5;
@@ -31,13 +29,10 @@ public class House extends Struct
 	}
 	
 	@Override
-	protected void onDeath()
-	{
-		for (Entity e : Game.world.entities)
-		{
+	protected void onDeath() {
+		for (Entity e : Game.world.entities) {
 			
-			if ((e instanceof Creature) && ((Creature) e).getOrigin() != null && ((Creature) e).getOrigin().equals(this))
-			{
+			if ((e instanceof Creature) && ((Creature) e).getOrigin() != null && ((Creature) e).getOrigin().equals(this)) {
 				e.kill();
 			}
 		}
@@ -45,32 +40,26 @@ public class House extends Struct
 	}
 	
 	@Override
-	public void onSpawn(boolean initial)
-	{
+	public void onSpawn(boolean initial) {
 		if (initial) return;
 		super.onSpawn(initial);
 		Game.world.addEntity2(new Villager((int) x + 2 * Tile.SIZE, (int) y + 4 * Tile.SIZE).setOrigin(this), false);
 	}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new House((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{
-		if (research == Researches.HOUSE_FORESTER)
-		{
+	public void onUpgrade(Researches research, boolean inititial) {
+		if (research == Researches.HOUSE_FORESTER) {
 			ty = 23;
 			tx = 0;
 			width = 5 * Tile.SIZE;
@@ -80,9 +69,7 @@ public class House extends Struct
 			image = null;
 			Game.world.addEntity2(new Forester((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE).setOrigin(this), false);
 			canHunger = true;
-		}
-		else if (research == Researches.HOUSE_WOODSMAN)
-		{
+		} else if (research == Researches.HOUSE_WOODSMAN) {
 			Game.world.addEntity2(new Woodsman((int) x + 2 * Tile.SIZE, (int) y + height - Tile.SIZE).setOrigin(this), false);
 			canHunger = true;
 		}

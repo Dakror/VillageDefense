@@ -37,12 +37,9 @@ import de.dakror.villagedefense.settings.WaveManager;
 /**
  * @author Dakror
  */
-public class SaveHandler
-{
-	public static void saveGame()
-	{
-		try
-		{
+public class SaveHandler {
+	public static void saveGame() {
+		try {
 			File save = new File(CFG.DIR, "saves/" + new SimpleDateFormat("'Spielstand' dd.MM.yyyy HH-mm-ss").format(new Date()) + ".save");
 			save.createNewFile();
 			
@@ -59,8 +56,7 @@ public class SaveHandler
 			o.put("time", WaveManager.nextWave);
 			
 			JSONArray entities = new JSONArray();
-			for (Entity e : Game.world.entities)
-			{
+			for (Entity e : Game.world.entities) {
 				if ((e instanceof Forester) || (e instanceof Woodsman)) continue; // don't save them, because they get spawned by the house upgrades
 				
 				entities.put(e.getData());
@@ -71,17 +67,13 @@ public class SaveHandler
 			Helper.setFileContent(new File(save.getPath() + ".debug"), o.toString());
 			Game.currentGame.state = 3;
 			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static void loadSave(File f)
-	{
-		try
-		{
+	public static void loadSave(File f) {
+		try {
 			JSONObject o = new JSONObject(Compressor.decompressFile(f));
 			Game.world.init(o.getInt("width"), o.getInt("height"));
 			Game.world.setData((int) Math.ceil(o.getInt("width") / (float) (Chunk.SIZE * Tile.SIZE)), (int) Math.ceil(o.getInt("height") / (float) (Chunk.SIZE * Tile.SIZE)), Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
@@ -102,27 +94,22 @@ public class SaveHandler
 			JSONArray entities = o.getJSONArray("entities");
 			
 			HashMap<Integer, Creature> creaturesWithCustomData = new HashMap<>();
-			for (int i = 0; i < entities.length(); i++)
-			{
+			for (int i = 0; i < entities.length(); i++) {
 				JSONObject e = entities.getJSONObject(i);
 				Entity entity = (Entity) Class.forName(e.getString("class")).getConstructor(int.class, int.class).newInstance(e.getInt("x"), e.getInt("y"));
 				entity.setAttributes(new Attributes(e.getJSONObject("attributes")));
 				entity.setResources(new Resources(e.getJSONObject("resources")));
 				
-				if (entity instanceof Creature)
-				{
+				if (entity instanceof Creature) {
 					Creature c = (Creature) entity;
 					c.alpha = (float) e.getDouble("alpha");
 					c.setSpawnPoint(new Point(e.getInt("spawnX"), e.getInt("spawnY")));
 					
-					if (!e.isNull("targetX") || !e.isNull("targetEntity") || !e.isNull("origin"))
-					{
+					if (!e.isNull("targetX") || !e.isNull("targetEntity") || !e.isNull("origin")) {
 						creaturesWithCustomData.put(i, c);
 						continue;
 					}
-				}
-				else if (entity instanceof Struct)
-				{
+				} else if (entity instanceof Struct) {
 					JSONArray researches2 = e.getJSONArray("researches");
 					
 					((Struct) entity).clearResearches();
@@ -137,40 +124,32 @@ public class SaveHandler
 			}
 			
 			// -- set creatures' custom data
-			for (Iterator<Integer> iterator = creaturesWithCustomData.keySet().iterator(); iterator.hasNext();)
-			{
+			for (Iterator<Integer> iterator = creaturesWithCustomData.keySet().iterator(); iterator.hasNext();) {
 				int index = iterator.next();
 				JSONObject e = entities.getJSONObject(index);
 				
 				Entity entity = creaturesWithCustomData.get(index);
 				
-				if (!e.isNull("targetEntity"))
-				{
+				if (!e.isNull("targetEntity")) {
 					JSONObject tE = e.getJSONObject("targetEntity");
-					for (Entity e1 : Game.world.entities)
-					{
+					for (Entity e1 : Game.world.entities) {
 						int x = (int) (e1 instanceof Creature ? e1.getX() : e1.getX() / Tile.SIZE);
 						int y = (int) (e1 instanceof Creature ? e1.getY() : e1.getY() / Tile.SIZE);
-						if (e1.getClass().getName().equals(tE.getString("class")) && tE.getInt("x") == x && tE.getInt("y") == y)
-						{
+						if (e1.getClass().getName().equals(tE.getString("class")) && tE.getInt("x") == x && tE.getInt("y") == y) {
 							((Creature) entity).setTarget(e1, false);
 							continue;
 						}
 					}
 				}
-				if (!e.isNull("targetX"))
-				{
+				if (!e.isNull("targetX")) {
 					((Creature) entity).setTarget(e.getInt("targetX"), e.getInt("targetY"), false);
 				}
-				if (!e.isNull("origin"))
-				{
+				if (!e.isNull("origin")) {
 					JSONObject tE = e.getJSONObject("origin");
-					for (Entity e1 : Game.world.entities)
-					{
+					for (Entity e1 : Game.world.entities) {
 						int x = (int) (e1 instanceof Creature ? e1.getX() : e1.getX() / Tile.SIZE);
 						int y = (int) (e1 instanceof Creature ? e1.getY() : e1.getY() / Tile.SIZE);
-						if (e1.getClass().getName().equals(tE.getString("class")) && tE.getInt("x") == x && tE.getInt("y") == y)
-						{
+						if (e1.getClass().getName().equals(tE.getString("class")) && tE.getInt("x") == x && tE.getInt("y") == y) {
 							((Creature) entity).setOrigin(e1);
 							continue;
 						}
@@ -181,86 +160,64 @@ public class SaveHandler
 			}
 			
 			Game.currentGame.state = 3;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static File[] getSaves()
-	{
-		return new File(CFG.DIR, "saves").listFiles(new FileFilter()
-		{
+	public static File[] getSaves() {
+		return new File(CFG.DIR, "saves").listFiles(new FileFilter() {
 			@Override
-			public boolean accept(File pathname)
-			{
+			public boolean accept(File pathname) {
 				return pathname.getName().endsWith(".save");
 			}
 		});
 	}
 	
-	public static boolean isWorldScorePosted(int worldCreated) throws Exception
-	{
+	public static boolean isWorldScorePosted(int worldCreated) throws Exception {
 		File f = new File(CFG.DIR, "scores");
-		try
-		{
+		try {
 			if (!f.exists()) return false;
 			
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = "";
-			while ((line = br.readLine()) != null)
-			{
-				if (Integer.parseInt(line) == worldCreated)
-				{
+			while ((line = br.readLine()) != null) {
+				if (Integer.parseInt(line) == worldCreated) {
 					br.close();
 					return true;
 				}
 			}
 			br.close();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 	
-	public static void addWorldScorePosted(int worldCreated)
-	{
+	public static void addWorldScorePosted(int worldCreated) {
 		File f = new File(CFG.DIR, "scores");
-		try
-		{
+		try {
 			f.createNewFile();
 			Helper.setFileContent(f, Helper.getFileContent(f) + worldCreated + "\r\n");
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static void sendScore()
-	{
-		try
-		{
-			if (isWorldScorePosted(Game.currentGame.worldCreated))
-			{
+	public static void sendScore() {
+		try {
+			if (isWorldScorePosted(Game.currentGame.worldCreated)) {
 				JOptionPane.showMessageDialog(null, "Du hast deinen Punktestand auf dieser Karte bereits in der Bestenliste platziert!", "Bereits platziert!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			String response = Helper.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + CFG.USERNAME + "&SCORE=" + Game.currentGame.getPlayerScore()));
-			if (!response.equals("false"))
-			{
+			if (!response.equals("false")) {
 				JOptionPane.showMessageDialog(null, "Dein Punktestand wurde erfolgreich in der Bestenliste platziert.", "Platzieren erfolgreich!", JOptionPane.INFORMATION_MESSAGE);
 				addWorldScorePosted(Game.currentGame.worldCreated);
 				Game.currentGame.scoreSent = true;
-			}
-			else JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
-		}
-		catch (Exception e1)
-		{
+			} else JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
+		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!\nMöglicherweise bist du nicht mit dem Internet verbunden.", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
 		}
 	}

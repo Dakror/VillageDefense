@@ -49,8 +49,7 @@ import de.dakror.villagedefense.settings.WaveManager;
 /**
  * @author Dakror
  */
-public class Game extends GameFrame
-{
+public class Game extends GameFrame {
 	public static final float hungerPerUnitPerSecond = 0.005f;
 	public static final int forwardFactor = 5;
 	
@@ -85,14 +84,12 @@ public class Game extends GameFrame
 	public boolean killedCoreHouse;
 	public boolean placedStruct;
 	
-	public Game()
-	{
+	public Game() {
 		currentGame = this;
 	}
 	
 	@Override
-	public void initGame()
-	{
+	public void initGame() {
 		started = false;
 		debug = false;
 		scoreSent = false;
@@ -121,27 +118,22 @@ public class Game extends GameFrame
 		addLayer(new MenuLayer());
 		
 		WaveManager.init();
-		for (Researches r : Researches.values())
-		{
+		for (Researches r : Researches.values()) {
 			if (r.getCosts(false).size() == 0) researches.add(r);
 		}
 		
 		w.setVisible(true);
 		w.getContentPane().setIgnoreRepaint(true);
-		try
-		{
+		try {
 			w.setFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/MorrisRomanBlack.ttf")));
 			w.createBufferStrategy(2);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			w.dispose();
 			return;
 		}
 	}
 	
-	public void startGame(int width, int height)
-	{
+	public void startGame(int width, int height) {
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
 		resources.set(Resource.BREAD, 500);
@@ -154,13 +146,11 @@ public class Game extends GameFrame
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		if (!skipDraw) world.draw(g);
 		else skipDraw = false;
 		
-		if (mouseDown != null && mouseDrag != null)
-		{
+		if (mouseDown != null && mouseDrag != null) {
 			Rectangle r = getDragRectangle();
 			
 			Composite c = g.getComposite();
@@ -186,15 +176,13 @@ public class Game extends GameFrame
 		g.setColor(oldColor);
 		g.setFont(oldFont);
 		
-		if (!started)
-		{
+		if (!started) {
 			state = 3;
 			started = true;
 		}
 	}
 	
-	public Rectangle getDragRectangle()
-	{
+	public Rectangle getDragRectangle() {
 		if (mouseDown == null || mouseDrag == null) return new Rectangle();
 		
 		int x = mouseDown.x < mouseDrag.x ? mouseDown.x : mouseDrag.x;
@@ -205,14 +193,11 @@ public class Game extends GameFrame
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent e)
-	{
+	public void keyReleased(KeyEvent e) {
 		super.keyReleased(e);
 		
-		switch (e.getKeyCode())
-		{
-			case KeyEvent.VK_F11:
-			{
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_F11: {
 				if (w.isUndecorated()) setWindowed();
 				else setFullscreen();
 			}
@@ -220,22 +205,18 @@ public class Game extends GameFrame
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		for (Layer l : layers)
-		{
+	public void keyPressed(KeyEvent e) {
+		for (Layer l : layers) {
 			l.keyPressed(e);
 			if (l.isModal() && l.isEnabled()) return;
 		}
 	}
 	
 	@Override
-	public void mouseDragged(MouseEvent e)
-	{
+	public void mouseDragged(MouseEvent e) {
 		super.mouseDragged(e);
 		
-		if ((world.width > getWidth() || world.height > getHeight()) && mouseDown != null && e.getModifiers() == MouseEvent.BUTTON2_MASK)
-		{
+		if ((world.width > getWidth() || world.height > getHeight()) && mouseDown != null && e.getModifiers() == MouseEvent.BUTTON2_MASK) {
 			int x = mouseDown.x - e.getX() - mouseDownWorld.x;
 			int y = mouseDown.y - e.getY() - mouseDownWorld.y;
 			
@@ -249,19 +230,16 @@ public class Game extends GameFrame
 		}
 		
 		
-		if (e.getModifiers() == MouseEvent.BUTTON1_MASK/* && e.getY() > 80 && e.getY() < Game.getHeight() - 100 */)
-		{
+		if (e.getModifiers() == MouseEvent.BUTTON1_MASK/* && e.getY() > 80 && e.getY() < Game.getHeight() - 100 */) {
 			if (activeStruct == null) mouseDrag = e.getPoint();
 		}
 	}
 	
 	@Override
-	public void mouseMoved(MouseEvent e)
-	{
+	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
 		
-		if (state == 0)
-		{
+		if (state == 0) {
 			world.mouseMoved(e);
 			
 			if (world.selectedEntity != null && world.selectedEntity instanceof Struct && ((Struct) world.selectedEntity).guiPoint != null) world.selectedEntity.mouseMoved(e);
@@ -269,8 +247,7 @@ public class Game extends GameFrame
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		super.mouseReleased(e);
 		
 		// mouseDownWorld = null;
@@ -278,12 +255,10 @@ public class Game extends GameFrame
 		
 		placedStruct = false;
 		
-		if (mouseDown != null && mouseDrag != null)
-		{
+		if (mouseDown != null && mouseDrag != null) {
 			
 			Rectangle r = getDragRectangle();
-			for (Entity e1 : world.entities)
-			{
+			for (Entity e1 : world.entities) {
 				if (e1 instanceof Villager && e1.getArea(true).intersects(r) && e1.alpha > 0) e1.setClicked(true);
 			}
 		}
@@ -294,8 +269,7 @@ public class Game extends GameFrame
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		super.mousePressed(e);
 		
 		mouseDown = e.getPoint();
@@ -304,22 +278,17 @@ public class Game extends GameFrame
 		if (state == 0) world.mousePressed(e);
 	}
 	
-	public void setState(int state)
-	{
+	public void setState(int state) {
 		this.state = state;
 	}
 	
-	public int getPeople()
-	{
+	public int getPeople() {
 		int people = 0;
 		
-		for (Entity e : world.entities)
-		{
-			if (e instanceof Villager && e.alpha > 0)
-			{
+		for (Entity e : world.entities) {
+			if (e instanceof Villager && e.alpha > 0) {
 				Villager v = (Villager) e;
-				if (v.getTargetEntity() != null && v.getTargetEntity() instanceof Struct)
-				{
+				if (v.getTargetEntity() != null && v.getTargetEntity() instanceof Struct) {
 					Struct s = (Struct) v.getTargetEntity();
 					if (s.getBuildingCosts().get(Resource.PEOPLE) > 0 && !v.isTargetByUser()) continue;
 				}
@@ -331,15 +300,13 @@ public class Game extends GameFrame
 		return people;
 	}
 	
-	public int getPlayerScore()
-	{
+	public int getPlayerScore() {
 		int score = 0;
 		
 		for (Resource r : resources.getFilled())
 			score += resources.get(r);
 		
-		for (Entity e : world.entities)
-		{
+		for (Entity e : world.entities) {
 			if (e instanceof Struct && e.getResources().size() == 0) score += 50;
 		}
 		
@@ -354,11 +321,9 @@ public class Game extends GameFrame
 		return score;
 	}
 	
-	public Researches[] getResearches(Class<?> targetClass)
-	{
+	public Researches[] getResearches(Class<?> targetClass) {
 		ArrayList<Researches> res = new ArrayList<>();
-		for (Researches r : researches)
-		{
+		for (Researches r : researches) {
 			if (r.isTarget(targetClass)) res.add(r);
 		}
 		

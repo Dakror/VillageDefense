@@ -9,10 +9,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Golem extends Creature
-{
-	public Golem(int x, int y)
-	{
+public class Golem extends Creature {
+	public Golem(int x, int y) {
 		super(x, y, "golem");
 		
 		attributes.set(Attribute.DAMAGE_STRUCT, 20);
@@ -30,16 +28,13 @@ public class Golem extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
+	protected boolean onArrivalAtEntity(int tick) {
 		return false;
 	}
 	
 	@Override
-	public void dealDamage(int amount, Object source)
-	{
-		if (source instanceof Projectile)
-		{
+	public void dealDamage(int amount, Object source) {
+		if (source instanceof Projectile) {
 			Projectile p = (Projectile) source;
 			if (p.getImageName().equals("arrow")) return;
 		}
@@ -48,8 +43,7 @@ public class Golem extends Creature
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Golem((int) x, (int) y);
 	}
 }

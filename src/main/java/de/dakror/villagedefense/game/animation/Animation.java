@@ -10,8 +10,7 @@ import de.dakror.villagedefense.util.Drawable;
 /**
  * @author Dakror
  */
-public class Animation implements Drawable
-{
+public class Animation implements Drawable {
 	boolean dead;
 	int x;
 	int y;
@@ -22,8 +21,7 @@ public class Animation implements Drawable
 	String imgName;
 	Image image;
 	
-	public Animation(int x, int y, int size, int speed, String anim)
-	{
+	public Animation(int x, int y, int size, int speed, String anim) {
 		this.x = x;
 		this.y = y;
 		this.size = size;
@@ -36,29 +34,25 @@ public class Animation implements Drawable
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		if (dead) return;
 		
 		Helper.drawImage(image, x, y, size, size, frame * 192, 0, 192, 192, g);
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		if (startFrame == 0) startFrame = tick;
 		
 		if (dead) return;
 		
-		if ((tick - startFrame) > 0 && (tick - startFrame) % speed == 0)
-		{
+		if ((tick - startFrame) > 0 && (tick - startFrame) % speed == 0) {
 			if (frame * 192 >= image.getWidth(null)) dead = true;
 			else frame++;
 		}
 	}
 	
-	public boolean isDead()
-	{
+	public boolean isDead() {
 		return dead;
 	}
 }

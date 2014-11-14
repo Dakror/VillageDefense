@@ -8,10 +8,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Zombie extends Creature
-{
-	public Zombie(int x, int y)
-	{
+public class Zombie extends Creature {
+	public Zombie(int x, int y) {
 		super(x, y, "zombie");
 		
 		setHostile(true);
@@ -27,8 +25,7 @@ public class Zombie extends Creature
 	}
 	
 	@Override
-	public void onDeath()
-	{
+	public void onDeath() {
 		if (Math.random() <= 0.35) // 35% prob. spawning ghost
 		{
 			boolean left = Math.random() < 0.5;
@@ -38,14 +35,12 @@ public class Zombie extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
+	protected boolean onArrivalAtEntity(int tick) {
 		return false;
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Zombie((int) x, (int) y);
 	}
 }

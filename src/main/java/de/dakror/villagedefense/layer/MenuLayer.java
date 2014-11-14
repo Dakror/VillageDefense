@@ -16,16 +16,13 @@ import de.dakror.villagedefense.ui.button.MenuButton;
 /**
  * @author Dakror
  */
-public class MenuLayer extends Layer
-{
-	public MenuLayer()
-	{
+public class MenuLayer extends Layer {
+	public MenuLayer() {
 		modal = true;
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		g.drawImage(Game.getImage("menu/menuBG.png"), 0, 0, Game.getWidth(), Game.getHeight(), Game.w);
 		Helper.drawImageCenteredRelativeScaled(Game.getImage("menu/menuFG.png"), 80, 1920, 1080, Game.getWidth(), Game.getHeight(), g);
 		
@@ -41,10 +38,8 @@ public class MenuLayer extends Layer
 	}
 	
 	@Override
-	public void update(int tick)
-	{
-		if (Game.currentGame.alpha == 1)
-		{
+	public void update(int tick) {
+		if (Game.currentGame.alpha == 1) {
 			Game.currentGame.layers.remove(Game.currentGame.layers.size() - 1);
 			Game.currentGame.fadeTo(0, 0.05f);
 			return;
@@ -54,36 +49,29 @@ public class MenuLayer extends Layer
 	}
 	
 	@Override
-	public void init()
-	{
+	public void init() {
 		MenuButton start = new MenuButton("newGame", 0);
-		start.addClickEvent(new ClickEvent()
-		{
+		start.addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
+			public void trigger() {
 				Game.currentGame.addLayer(new NewGameLayer(MenuLayer.this));
 			}
 		});
 		components.add(start);
 		
 		MenuButton load = new MenuButton("loadGame", 1);
-		load.addClickEvent(new ClickEvent()
-		{
+		load.addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
+			public void trigger() {
 				Game.currentGame.addLayer(new LoadGameLayer(MenuLayer.this));
 			}
 		});
 		components.add(load);
 		
 		MenuButton quit = new MenuButton("quit", 2);
-		quit.addClickEvent(new ClickEvent()
-		{
+		quit.addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
+			public void trigger() {
 				System.exit(0);
 			}
 		});
@@ -91,19 +79,14 @@ public class MenuLayer extends Layer
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		super.mousePressed(e);
 		
 		int size = 60;
-		if (new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(e.getPoint()))
-		{
-			try
-			{
+		if (new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(e.getPoint())) {
+			try {
 				Desktop.getDesktop().browse(new URI("https://github.com/Dakror/Village-Defense/wiki"));
-			}
-			catch (Exception e1)
-			{
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}

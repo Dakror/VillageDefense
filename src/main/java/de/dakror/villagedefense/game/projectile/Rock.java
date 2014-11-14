@@ -13,14 +13,12 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class Rock extends Projectile
-{
+public class Rock extends Projectile {
 	Vector t;
 	int damage;
 	int radius;
 	
-	public Rock(Vector pos, Vector target, float speed, int damage, int radius)
-	{
+	public Rock(Vector pos, Vector target, float speed, int damage, int radius) {
 		super(pos, "rock", speed);
 		t = target;
 		rotate = false;
@@ -30,20 +28,16 @@ public class Rock extends Projectile
 	}
 	
 	@Override
-	protected Vector getTargetVector()
-	{
+	protected Vector getTargetVector() {
 		return t;
 	}
 	
 	@Override
-	protected void onImpact()
-	{
+	protected void onImpact() {
 		Game.world.addAnimation(new Animation(Math.round(getPos().x - radius), Math.round(getPos().y - radius) - (onFire ? Tile.SIZE : 0), Math.round(radius * 2), 2, onFire ? "rock_impact_fire" : "rock_impact"));
 		Shape s = new Arc2D.Float(getPos().x - radius, getPos().y - radius, radius * 2, radius * 2, 0, 360, Arc2D.OPEN);
-		for (Entity e : Game.world.entities)
-		{
-			if (e instanceof Creature)
-			{
+		for (Entity e : Game.world.entities) {
+			if (e instanceof Creature) {
 				Creature c = (Creature) e;
 				if (c.isHostile() && s.intersects(c.getBump(true))) c.dealDamage(damage, this);
 			}

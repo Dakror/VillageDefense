@@ -13,10 +13,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Sawmill extends Struct
-{
-	public Sawmill(int x, int y)
-	{
+public class Sawmill extends Struct {
+	public Sawmill(int x, int y) {
 		super(x, y, 4, 3);
 		
 		name = "Sägewerk";
@@ -39,8 +37,7 @@ public class Sawmill extends Struct
 	}
 	
 	@Override
-	public Resources getResourcesPerSecond()
-	{
+	public Resources getResourcesPerSecond() {
 		Resources res = new Resources();
 		
 		if (!working) return res;
@@ -52,36 +49,29 @@ public class Sawmill extends Struct
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) > 0 && working)
-		{
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.WOOD) > 0 && working) {
 			Game.currentGame.resources.add(Resource.WOOD, (int) -attributes.get(Attribute.MINE_AMOUNT));
 			resources.add(Resource.PLANKS, (int) attributes.get(Attribute.MINE_AMOUNT) * 2);
 		}
 	}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{}
+	public void onUpgrade(Researches research, boolean inititial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Sawmill((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 }

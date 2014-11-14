@@ -11,8 +11,7 @@ import de.dakror.gamesetup.util.Helper;
 /**
  * @author Dakror
  */
-public class CFG
-{
+public class CFG {
 	public static final File DIR = new File(System.getProperty("user.home") + "/.dakror/VillageDefense");
 	public static final int TICK_TIMEOUT = 33;
 	
@@ -24,16 +23,13 @@ public class CFG
 	
 	public static String USERNAME;
 	
-	public static void init()
-	{
-		try
-		{
+	public static void init() {
+		try {
 			DIR.mkdirs();
 			new File(DIR, "saves").mkdir();
 			
 			File us = new File(DIR, "username");
-			if (!us.exists() || us.length() == 0)
-			{
+			if (!us.exists() || us.length() == 0) {
 				USERNAME = JOptionPane.showInputDialog("Bitte gib deinen Benutzernamen an.");
 				
 				if (USERNAME == null) System.exit(0);
@@ -41,31 +37,24 @@ public class CFG
 				us.createNewFile();
 				
 				Helper.setFileContent(us, USERNAME);
-			}
-			else
-			{
+			} else {
 				USERNAME = Helper.getFileContent(us);
 			}
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	// -- debug profiling -- //
-	public static void u()
-	{
+	public static void u() {
 		if (time == 0) time = System.currentTimeMillis();
-		else
-		{
+		else {
 			p(System.currentTimeMillis() - time);
 			time = 0;
 		}
 	}
 	
-	public static void p(Object... p)
-	{
+	public static void p(Object... p) {
 		if (p.length == 1) System.out.println(p[0]);
 		else System.out.println(Arrays.toString(p));
 	}

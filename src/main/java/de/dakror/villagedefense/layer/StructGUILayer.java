@@ -10,30 +10,22 @@ import de.dakror.villagedefense.game.entity.struct.Struct;
 /**
  * @author Dakror
  */
-public class StructGUILayer extends Layer
-{
+public class StructGUILayer extends Layer {
 	@Override
-	public void draw(Graphics2D g)
-	{
-		try
-		{
+	public void draw(Graphics2D g) {
+		try {
 			if (Game.world.selectedEntity != null && Game.world.selectedEntity instanceof Struct && ((Struct) Game.world.selectedEntity).guiPoint != null) ((Struct) Game.world.selectedEntity).drawGUI(g);
-		}
-		catch (NullPointerException e)
-		{}
+		} catch (NullPointerException e) {}
 	}
 	
 	@Override
-	public void update(int tick)
-	{}
+	public void update(int tick) {}
 	
 	@Override
-	public void init()
-	{}
+	public void init() {}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		super.mousePressed(e);
 		
 		if (Game.currentGame.placedStruct) return;

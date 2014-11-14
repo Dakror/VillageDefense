@@ -10,10 +10,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Warehouse extends Struct
-{
-	public Warehouse(int x, int y)
-	{
+public class Warehouse extends Struct {
+	public Warehouse(int x, int y) {
 		super(x, y, 6, 5);
 		tx = 0;
 		ty = 33;
@@ -29,24 +27,19 @@ public class Warehouse extends Struct
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean initial)
-	{}
+	public void onUpgrade(Researches research, boolean initial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Warehouse((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 }

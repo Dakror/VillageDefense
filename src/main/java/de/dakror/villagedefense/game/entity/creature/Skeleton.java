@@ -7,10 +7,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Skeleton extends Creature
-{
-	public Skeleton(int x, int y)
-	{
+public class Skeleton extends Creature {
+	public Skeleton(int x, int y) {
 		super(x, y, "skeleton");
 		
 		name = "Skelett";
@@ -26,14 +24,12 @@ public class Skeleton extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
+	protected boolean onArrivalAtEntity(int tick) {
 		return false;
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Skeleton((int) x, (int) y);
 	}
 }

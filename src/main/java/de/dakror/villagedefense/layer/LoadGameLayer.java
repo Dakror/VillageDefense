@@ -17,26 +17,22 @@ import de.dakror.villagedefense.util.SaveHandler;
 /**
  * @author Dakror
  */
-public class LoadGameLayer extends Layer
-{
+public class LoadGameLayer extends Layer {
 	MenuLayer ml;
 	File[] saves;
 	int y;
 	int height = 90;
 	int h;
 	
-	public LoadGameLayer(MenuLayer ml)
-	{
+	public LoadGameLayer(MenuLayer ml) {
 		super();
 		this.ml = ml;
 		modal = true;
 		ml.setEnabled(false);
 		saves = SaveHandler.getSaves();
-		Arrays.sort(saves, new Comparator<File>()
-		{
+		Arrays.sort(saves, new Comparator<File>() {
 			@Override
-			public int compare(File o1, File o2)
-			{
+			public int compare(File o1, File o2) {
 				return o2.getName().compareTo(o1.getName());
 			}
 		});
@@ -44,8 +40,7 @@ public class LoadGameLayer extends Layer
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		Helper.drawContainer(Game.getWidth() / 8, Game.getHeight() / 8, Game.getWidth() / 8 * 6, Game.getHeight() / 8 * 6, true, false, g);
 		Helper.drawHorizontallyCenteredString("Spiel laden", Game.getWidth(), Game.getHeight() / 8 + 70, g, 70);
 		
@@ -54,8 +49,7 @@ public class LoadGameLayer extends Layer
 		h = Helper.round(Game.getHeight() / 8 * 6 - 140, height);
 		g.setClip(new Rectangle(Game.getWidth() / 8 + 20, Game.getHeight() / 8 + 120, Game.getWidth() / 8 * 6 - 40, h));
 		
-		for (int i = 0; i < saves.length; i++)
-		{
+		for (int i = 0; i < saves.length; i++) {
 			Rectangle r = new Rectangle(Game.getWidth() / 4 + 100, Game.getHeight() / 8 + 120 + height * i + y, Game.getWidth() / 2 - 200, height - 10);
 			File f = saves[i];
 			Helper.drawShadow(r.x, r.y, r.width, r.height, g);
@@ -67,28 +61,21 @@ public class LoadGameLayer extends Layer
 	}
 	
 	@Override
-	public void update(int tick)
-	{}
+	public void update(int tick) {}
 	
 	@Override
-	public void init()
-	{}
+	public void init() {}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		super.mousePressed(e);
-		if (!new Rectangle(Game.getWidth() / 8, Game.getHeight() / 8, Game.getWidth() / 8 * 6, Game.getHeight() / 8 * 6).contains(e.getPoint()))
-		{
+		if (!new Rectangle(Game.getWidth() / 8, Game.getHeight() / 8, Game.getWidth() / 8 * 6, Game.getHeight() / 8 * 6).contains(e.getPoint())) {
 			ml.setEnabled(true);
 			Game.currentGame.layers.remove(this);
-		}
-		else if (new Rectangle(Game.getWidth() / 4 + 100, Game.getHeight() / 8 + 120, Game.getWidth() / 2 - 200, h).contains(e.getPoint()))
-		{
+		} else if (new Rectangle(Game.getWidth() / 4 + 100, Game.getHeight() / 8 + 120, Game.getWidth() / 2 - 200, h).contains(e.getPoint())) {
 			int eY = Helper.round(e.getY() - Game.getHeight() / 8 + 120 - y, height) / height - 3;
 			
-			if (eY < saves.length)
-			{
+			if (eY < saves.length) {
 				SaveHandler.loadSave(saves[eY]);
 				Game.currentGame.fadeTo(1, 0.05f);
 				
@@ -99,8 +86,7 @@ public class LoadGameLayer extends Layer
 	}
 	
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e)
-	{
+	public void mouseWheelMoved(MouseWheelEvent e) {
 		super.mouseWheelMoved(e);
 		int dif = saves.length * height - h;
 		

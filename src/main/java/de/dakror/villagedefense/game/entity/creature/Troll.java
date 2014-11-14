@@ -8,10 +8,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Troll extends Creature
-{
-	public Troll(int x, int y)
-	{
+public class Troll extends Creature {
+	public Troll(int x, int y) {
 		super(x, y, "troll");
 		
 		name = "Troll";
@@ -29,14 +27,12 @@ public class Troll extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
+	protected boolean onArrivalAtEntity(int tick) {
 		return false;
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Troll((int) x, (int) y);
 	}
 }

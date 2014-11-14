@@ -9,15 +9,13 @@ import org.json.JSONObject;
 /**
  * @author Dakror
  */
-public class Attributes
-{
+public class Attributes {
 	/**
 	 * Attributes about speed are expressed as ticks
 	 * 
 	 * @author Dakror
 	 */
-	public enum Attribute
-	{
+	public enum Attribute {
 		ATTACK_RANGE(0),
 		ATTACK_SPEED(25),
 		DAMAGE_CREATURE(0),
@@ -32,56 +30,47 @@ public class Attributes
 		
 		private float defaultValue;
 		
-		private Attribute(float defaultValue)
-		{
+		private Attribute(float defaultValue) {
 			this.defaultValue = defaultValue;
 		}
 		
-		public float getDefaultValue()
-		{
+		public float getDefaultValue() {
 			return defaultValue;
 		}
 	}
 	
 	HashMap<Attribute, Float> attr = new HashMap<>();
 	
-	public Attributes()
-	{
+	public Attributes() {
 		for (Attribute t : Attribute.values())
 			attr.put(t, t.getDefaultValue());
 	}
 	
-	public Attributes(JSONObject data) throws JSONException
-	{
+	public Attributes(JSONObject data) throws JSONException {
 		this();
 		
 		JSONArray names = data.names();
-		for (int i = 0; i < data.length(); i++)
-		{
+		for (int i = 0; i < data.length(); i++) {
 			attr.put(Attribute.valueOf(names.getString(i)), (float) data.getDouble(names.getString(i)));
 		}
 	}
 	
-	public float get(Attribute t)
-	{
+	public float get(Attribute t) {
 		return attr.get(t);
 	}
 	
-	public Attributes set(Attribute t, float value)
-	{
+	public Attributes set(Attribute t, float value) {
 		attr.put(t, value);
 		return this;
 	}
 	
-	public Attributes add(Attribute t, float value)
-	{
+	public Attributes add(Attribute t, float value) {
 		attr.put(t, get(t) + value);
 		
 		return this;
 	}
 	
-	public int size()
-	{
+	public int size() {
 		int s = 0;
 		
 		for (Attribute r : attr.keySet())
@@ -90,24 +79,19 @@ public class Attributes
 		return s;
 	}
 	
-	public JSONObject getData()
-	{
+	public JSONObject getData() {
 		JSONObject o = new JSONObject();
-		try
-		{
+		try {
 			for (Attribute a : Attribute.values())
 				o.put(a.name(), get(a));
-		}
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return o;
 	}
 	
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return attr.toString();
 	}
 }

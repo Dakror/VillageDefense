@@ -13,12 +13,10 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class Farmer extends Creature
-{
+public class Farmer extends Creature {
 	int range;
 	
-	public Farmer(int x, int y)
-	{
+	public Farmer(int x, int y) {
 		super(x, y, "farmer");
 		
 		setHostile(false);
@@ -34,31 +32,23 @@ public class Farmer extends Creature
 	}
 	
 	@Override
-	public void tick(int tick)
-	{
+	public void tick(int tick) {
 		super.tick(tick);
 		
-		if (target == null && targetEntity == null && path == null)
-		{
-			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
-			{
+		if (target == null && targetEntity == null && path == null) {
+			if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0) {
 				
 				if (!getPos().equals(new Vector(spawnPoint))) Game.world.addEntity2(new WheatField(Math.round(getPos().x / Tile.SIZE), Math.round(getPos().y / Tile.SIZE) + 1), false);
 				setTarget(lookupPlantTarget(), false);
-			}
-			else
-			{
+			} else {
 				setTarget(lookupHarvestTarget(), false);
 			}
 		}
 	}
 	
-	public Entity lookupHarvestTarget()
-	{
-		for (Entity e : Game.world.entities)
-		{
-			if (e instanceof WheatField && e.getCenter().getDistance(origin.getCenter2()) <= range && ((WheatField) e).getPhase() == 3)
-			{
+	public Entity lookupHarvestTarget() {
+		for (Entity e : Game.world.entities) {
+			if (e instanceof WheatField && e.getCenter().getDistance(origin.getCenter2()) <= range && ((WheatField) e).getPhase() == 3) {
 				return e;
 			}
 		}
@@ -66,8 +56,7 @@ public class Farmer extends Creature
 		return null;
 	}
 	
-	public Vector lookupPlantTarget()
-	{
+	public Vector lookupPlantTarget() {
 		float rad = (float) Math.toRadians(Math.random() * 360);
 		float hyp = (float) Math.random() * range - Tile.SIZE;
 		
@@ -82,25 +71,20 @@ public class Farmer extends Creature
 	}
 	
 	@Override
-	public void onSpawn(boolean initial)
-	{
+	public void onSpawn(boolean initial) {
 		Game.currentGame.resources.add(Resource.PEOPLE, 1);
 	}
 	
 	@Override
-	public void onDeath()
-	{
+	public void onDeath() {
 		super.onDeath();
 		Game.currentGame.resources.add(Resource.PEOPLE, -1);
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
-		if (targetEntity instanceof WheatField)
-		{
-			if ((tick + randomOffset) % targetEntity.getAttributes().get(Attribute.MINE_SPEED) == 0 && targetEntity.getResources().size() > 0)
-			{
+	protected boolean onArrivalAtEntity(int tick) {
+		if (targetEntity instanceof WheatField) {
+			if ((tick + randomOffset) % targetEntity.getAttributes().get(Attribute.MINE_SPEED) == 0 && targetEntity.getResources().size() > 0) {
 				if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT), origin.getResources());
 				frame++;
 			}
@@ -110,8 +94,7 @@ public class Farmer extends Creature
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Farmer((int) x, (int) y);
 	}
 }

@@ -35,8 +35,7 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public abstract class Struct extends Entity
-{
+public abstract class Struct extends Entity {
 	public int tx;
 	public int ty;
 	protected boolean placeGround;
@@ -51,8 +50,7 @@ public abstract class Struct extends Entity
 	protected Class<?> researchClass;
 	protected boolean working;
 	
-	public Struct(int x, int y, int width, int height)
-	{
+	public Struct(int x, int y, int width, int height) {
 		super(x * Tile.SIZE, y * Tile.SIZE, width * Tile.SIZE, height * Tile.SIZE);
 		
 		structPoints = new StructPoints();
@@ -67,12 +65,10 @@ public abstract class Struct extends Entity
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		g.drawImage(getImage(), (int) x, (int) y, Game.w);
 		
-		if (getAttackArea().getBounds().width > 0 && (clicked || hovered))
-		{
+		if (getAttackArea().getBounds().width > 0 && (clicked || hovered)) {
 			Color oldColor = g.getColor();
 			g.setColor(Color.darkGray);
 			
@@ -95,14 +91,12 @@ public abstract class Struct extends Entity
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		for (Component c : components)
 			c.update(tick);
 	}
 	
-	protected void drawComponents(int x, int y, Graphics2D g)
-	{
+	protected void drawComponents(int x, int y, Graphics2D g) {
 		g.translate(x, y);
 		
 		for (Component c : components)
@@ -113,32 +107,26 @@ public abstract class Struct extends Entity
 	
 	public abstract void initGUI();
 	
-	public void destroyGUI()
-	{
+	public void destroyGUI() {
 		guiPoint = null;
 		components.clear();
 	}
 	
-	public void drawGUI(Graphics2D g)
-	{
+	public void drawGUI(Graphics2D g) {
 		drawUpgrades(g);
 	}
 	
-	public void drawUpgrades(Graphics2D g)
-	{
+	public void drawUpgrades(Graphics2D g) {
 		if (Game.currentGame.getResearches(researchClass).length == 0) return;
 		
 		if (components.size() < Researches.values(researchClass).length) initUpgrades();
-		try
-		{
+		try {
 			Helper.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
 			Helper.drawHorizontallyCenteredString("Verbesserungen", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
 			
 			drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
-			for (Component c : components)
-			{
-				if ((c instanceof ResearchButton))
-				{
+			for (Component c : components) {
+				if ((c instanceof ResearchButton)) {
 					ResearchButton n = (ResearchButton) c;
 					if (n.state != 2) continue;
 					
@@ -146,13 +134,10 @@ public abstract class Struct extends Entity
 					break;
 				}
 			}
-		}
-		catch (NullPointerException e)
-		{}
+		} catch (NullPointerException e) {}
 	}
 	
-	public void initUpgrades()
-	{
+	public void initUpgrades() {
 		int width = guiSize.width - 20;
 		
 		int size = 32;
@@ -163,24 +148,20 @@ public abstract class Struct extends Entity
 		Researches[] res = Researches.values(researchClass);
 		
 		int index = 0;
-		for (int i = 0; i < res.length; i++)
-		{
+		for (int i = 0; i < res.length; i++) {
 			Researches research = res[i];
-			if (Game.currentGame.researches.contains(research))
-			{
+			if (Game.currentGame.researches.contains(research)) {
 				components.add(new ResearchButton(20 + ((index % proRow) * (size + gap)), 55 + ((index / proRow) * (size + gap)), research, researches, this));
 				index++;
 			}
 		}
 	}
 	
-	public void setBump(Rectangle2D r)
-	{
+	public void setBump(Rectangle2D r) {
 		super.setBump(new Rectangle((int) Math.round(r.getX() * Tile.SIZE), (int) Math.round(r.getY() * Tile.SIZE), (int) Math.round(r.getWidth() * Tile.SIZE), (int) Math.round(r.getHeight() * Tile.SIZE)));
 	}
 	
-	public void placeGround()
-	{
+	public void placeGround() {
 		if (!placeGround) return;
 		
 		int x = (int) Math.round(bump.getX() / Tile.SIZE) - 1;
@@ -188,40 +169,33 @@ public abstract class Struct extends Entity
 		int width = (int) Math.round(bump.getWidth() / Tile.SIZE) + 2;
 		int height = (int) Math.round(bump.getHeight() / Tile.SIZE) + 2;
 		
-		for (int i = 0; i < width; i++)
-		{
-			for (int j = 0; j < height; j++)
-			{
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
 				Game.world.setTileId((int) this.x / Tile.SIZE + x + i, (int) this.y / Tile.SIZE + y + j, Tile.ground.getId());
 			}
 		}
 	}
 	
-	public boolean isPlaceGround()
-	{
+	public boolean isPlaceGround() {
 		return placeGround;
 	}
 	
-	public StructPoints getStructPoints()
-	{
+	public StructPoints getStructPoints() {
 		return structPoints;
 	}
 	
 	@Override
-	public void onSpawn(boolean initial)
-	{
+	public void onSpawn(boolean initial) {
 		if (initial) return;
 		placeGround();
 		requestVillagersToCome(buildingCosts.get(Resource.PEOPLE));
 	}
 	
-	public void mineAllResources(int amount, Resources target)
-	{
+	public void mineAllResources(int amount, Resources target) {
 		if (resources.size() == 0) return;
 		
 		ArrayList<Resource> filled = resources.getFilled();
-		for (Resource r : filled)
-		{
+		for (Resource r : filled) {
 			if (!r.isUsable()) continue;
 			
 			int get = resources.get(r);
@@ -233,8 +207,7 @@ public abstract class Struct extends Entity
 		if (resources.size() == 0) onMinedUp();
 	}
 	
-	public ArrayList<Vector> getSurroundingTiles(boolean onlyFree)
-	{
+	public ArrayList<Vector> getSurroundingTiles(boolean onlyFree) {
 		ArrayList<Vector> tiles = new ArrayList<>();
 		
 		// -- bump rectangle -- //
@@ -246,10 +219,8 @@ public abstract class Struct extends Entity
 		w = w == 0 ? 1 : w;
 		h = h == 0 ? 1 : h;
 		
-		for (int i = 0; i < w + 2; i++)
-		{
-			for (int j = 0; j < h + 2; j++)
-			{
+		for (int i = 0; i < w + 2; i++) {
+			for (int j = 0; j < h + 2; j++) {
 				if ((i == 0 || i == w + 1) && (j == 0 || j == h + 1)) continue;
 				if (i > 0 && j > 0 && i < w + 1 && j < h + 1) continue;
 				
@@ -260,14 +231,11 @@ public abstract class Struct extends Entity
 		return tiles;
 	}
 	
-	public int getTargetedCarriers()
-	{
+	public int getTargetedCarriers() {
 		int count = 0;
 		
-		for (Entity e : Game.world.entities)
-		{
-			if (e instanceof Villager)
-			{
+		for (Entity e : Game.world.entities) {
+			if (e instanceof Villager) {
 				Villager v = (Villager) e;
 				if (v.getTargetEntity() == null || !v.isTargetingToCarry()) continue;
 				
@@ -278,34 +246,28 @@ public abstract class Struct extends Entity
 		return count;
 	}
 	
-	public Resources getBuildingCosts()
-	{
+	public Resources getBuildingCosts() {
 		return buildingCosts;
 	}
 	
-	public BufferedImage getImage()
-	{
+	public BufferedImage getImage() {
 		if (image != null) return image;
 		image = createImage();
 		return image;
 	}
 	
-	protected BufferedImage createImage()
-	{
+	protected BufferedImage createImage() {
 		return Game.getImage("structs.png").getSubimage(tx * Tile.SIZE, ty * Tile.SIZE, width, height);
 	}
 	
-	public boolean requestVillagersToCome(int amount)
-	{
+	public boolean requestVillagersToCome(int amount) {
 		if (Game.currentGame.resources.get(Resource.PEOPLE) < amount || amount == 0) return false;
 		
 		int count = 0;
-		for (Entity e : Game.world.entities)
-		{
+		for (Entity e : Game.world.entities) {
 			if (count == amount) break;
 			
-			if (e instanceof Villager && e.alpha > 0)
-			{
+			if (e instanceof Villager && e.alpha > 0) {
 				Villager v = (Villager) e;
 				v.setTarget(this, false);
 				count++;
@@ -315,14 +277,12 @@ public abstract class Struct extends Entity
 		return true;
 	}
 	
-	public boolean canPlaceOnWay()
-	{
+	public boolean canPlaceOnWay() {
 		return canPlaceOnWay;
 	}
 	
 	@Override
-	public boolean mousePressed(MouseEvent e)
-	{
+	public boolean mousePressed(MouseEvent e) {
 		if (guiPoint != null && guiSize != null) e.translatePoint(-(guiPoint.x - guiSize.width / 2), -(guiPoint.y - guiSize.height / 2));
 		
 		for (Component c : components)
@@ -332,19 +292,15 @@ public abstract class Struct extends Entity
 		
 		boolean pressed = super.mousePressed(e);
 		
-		if (pressed && guiPoint == null && guiSize != null)
-		{
+		if (pressed && guiPoint == null && guiSize != null) {
 			guiPoint = e.getPoint();
 			guiPoint.translate(Game.world.x, Game.world.y);
 			if (guiPoint.x - guiSize.width / 2 < 0) guiPoint.x = guiSize.width / 2;
 			if (guiPoint.y - guiSize.height / 2 < 0) guiPoint.y = guiSize.height / 2;
 			if (guiPoint.x + guiSize.width / 2 > Game.getWidth()) guiPoint.x = Game.getWidth() - guiSize.width / 2;
 			if (guiPoint.y + guiSize.height / 2 > Game.getHeight()) guiPoint.y = Game.getHeight() - guiSize.height / 2;
-		}
-		else
-		{
-			if (guiPoint != null && guiSize != null && !new Rectangle(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height).contains(e.getPoint()))
-			{
+		} else {
+			if (guiPoint != null && guiSize != null && !new Rectangle(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height).contains(e.getPoint())) {
 				destroyGUI();
 			}
 		}
@@ -353,8 +309,7 @@ public abstract class Struct extends Entity
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		if (guiPoint != null && guiSize != null) e.translatePoint(-(guiPoint.x - guiSize.width / 2), -(guiPoint.y - guiSize.height / 2));
 		
 		for (Component c : components)
@@ -364,8 +319,7 @@ public abstract class Struct extends Entity
 	}
 	
 	@Override
-	public boolean mouseMoved(MouseEvent e)
-	{
+	public boolean mouseMoved(MouseEvent e) {
 		if (guiPoint != null && guiSize != null) e.translatePoint(-(guiPoint.x - guiSize.width / 2), -(guiPoint.y - guiSize.height / 2));
 		
 		for (Component c : components)
@@ -376,42 +330,34 @@ public abstract class Struct extends Entity
 		return super.mouseMoved(e);
 	}
 	
-	public boolean has(Researches res)
-	{
+	public boolean has(Researches res) {
 		return researches.contains(res);
 	}
 	
-	public void add(Researches res)
-	{
+	public void add(Researches res) {
 		researches.add(res);
 		onUpgrade(res, true);
 	}
 	
-	public void clearResearches()
-	{
+	public void clearResearches() {
 		researches.clear();
 	}
 	
-	public Resources getResourcesPerSecond()
-	{
+	public Resources getResourcesPerSecond() {
 		return new Resources();
 	}
 	
-	public Shape getAttackArea()
-	{
+	public Shape getAttackArea() {
 		return new Rectangle();
 	}
 	
-	public Projectile getProjectile(Entity target)
-	{
+	public Projectile getProjectile(Entity target) {
 		return null;
 	}
 	
-	protected ArrayList<Creature> getTargetableCreatures()
-	{
+	protected ArrayList<Creature> getTargetableCreatures() {
 		ArrayList<Creature> targetable = new ArrayList<>();
-		for (Entity e : Game.world.entities)
-		{
+		for (Entity e : Game.world.entities) {
 			if (!(e instanceof Creature)) continue;
 			
 			Creature c = (Creature) e;
@@ -425,18 +371,15 @@ public abstract class Struct extends Entity
 		return targetable;
 	}
 	
-	public boolean isWorking()
-	{
+	public boolean isWorking() {
 		return working;
 	}
 	
-	public void setWorking(boolean working)
-	{
+	public void setWorking(boolean working) {
 		this.working = working;
 	}
 	
-	public void shoot(int targetIndex)
-	{
+	public void shoot(int targetIndex) {
 		ArrayList<Creature> t = getTargetableCreatures();
 		
 		if (t.size() == 0) return;
@@ -447,11 +390,9 @@ public abstract class Struct extends Entity
 	}
 	
 	@Override
-	public JSONObject getData()
-	{
+	public JSONObject getData() {
 		JSONObject o = new JSONObject();
-		try
-		{
+		try {
 			o.put("x", x / Tile.SIZE);
 			o.put("y", y / Tile.SIZE);
 			o.put("tx", tx);
@@ -460,16 +401,13 @@ public abstract class Struct extends Entity
 			o.put("researches", researches);
 			o.put("attributes", attributes.getData());
 			o.put("resources", resources.getData());
-		}
-		catch (JSONException e)
-		{
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return o;
 	}
 	
-	public boolean isCanHunger()
-	{
+	public boolean isCanHunger() {
 		return canHunger;
 	}
 	

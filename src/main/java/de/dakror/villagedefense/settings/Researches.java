@@ -10,8 +10,7 @@ import de.dakror.villagedefense.game.entity.struct.Mine;
 import de.dakror.villagedefense.game.entity.struct.tower.Tower;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
-public enum Researches
-{
+public enum Researches {
 	TOWER_DOUBLESHOT("Pfeil-Turm Doppelschuss", new Resources().set(Resource.GOLD, 750).set(Resource.WOOD, 250), new Point(0, 0), 10, Tower.class),
 	HOUSE_FORESTER("Forsthaus", new Resources().set(Resource.GOLD, 300).set(Resource.WOOD, 100), new Point(1, 0), 2, House.class),
 	HOUSE_WOODSMAN("Holzfäller", new Resources().set(Resource.GOLD, 450).set(Resource.IRONINGOT, 4), new Point(2, 0), 2, House.class),
@@ -29,8 +28,7 @@ public enum Researches
 	 */
 	private float buyDiscount;
 	
-	private Researches(String name, Resources costs, Point texturePoint, float buyDiscount, Class<?>... targetClasses)
-	{
+	private Researches(String name, Resources costs, Point texturePoint, float buyDiscount, Class<?>... targetClasses) {
 		this.name = name;
 		this.costs = costs;
 		this.texturePoint = texturePoint;
@@ -38,13 +36,11 @@ public enum Researches
 		this.buyDiscount = buyDiscount;
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
-	public Resources getCosts(boolean discounted)
-	{
+	public Resources getCosts(boolean discounted) {
 		if (!discounted) return costs;
 		
 		if (buyDiscount == -1) return new Resources();
@@ -55,26 +51,21 @@ public enum Researches
 		return r;
 	}
 	
-	public Point getTexturePoint()
-	{
+	public Point getTexturePoint() {
 		return texturePoint;
 	}
 	
-	public boolean isTarget(Class<?> targetClass)
-	{
+	public boolean isTarget(Class<?> targetClass) {
 		return targetClasses.contains(targetClass);
 	}
 	
-	public float getBuyDiscount()
-	{
+	public float getBuyDiscount() {
 		return buyDiscount;
 	}
 	
-	public static Researches[] values(Class<?> targetClass)
-	{
+	public static Researches[] values(Class<?> targetClass) {
 		ArrayList<Researches> res = new ArrayList<>();
-		for (Researches r : values())
-		{
+		for (Researches r : values()) {
 			if (r.isTarget(targetClass)) res.add(r);
 		}
 		

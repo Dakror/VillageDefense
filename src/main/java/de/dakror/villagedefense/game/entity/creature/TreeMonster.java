@@ -6,10 +6,8 @@ import de.dakror.villagedefense.game.world.Tile;
 import de.dakror.villagedefense.settings.Attributes.Attribute;
 import de.dakror.villagedefense.settings.Resources.Resource;
 
-public class TreeMonster extends Creature
-{
-	public TreeMonster(int x, int y)
-	{
+public class TreeMonster extends Creature {
+	public TreeMonster(int x, int y) {
 		super(x, y, "treemonster");
 		
 		name = "Schatteneiche";
@@ -29,22 +27,18 @@ public class TreeMonster extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
+	protected boolean onArrivalAtEntity(int tick) {
 		return false;
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new TreeMonster((int) x, (int) y);
 	}
 	
 	@Override
-	public void dealDamage(int amount, Object source)
-	{
-		if (source instanceof Projectile)
-		{
+	public void dealDamage(int amount, Object source) {
+		if (source instanceof Projectile) {
 			Projectile p = (Projectile) source;
 			if (!p.isOnFire()) return;
 		}

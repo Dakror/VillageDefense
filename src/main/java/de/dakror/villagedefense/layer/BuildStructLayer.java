@@ -26,18 +26,14 @@ import de.dakror.villagedefense.ui.button.BuildButton;
 /**
  * @author Dakror
  */
-public class BuildStructLayer extends Layer
-{
+public class BuildStructLayer extends Layer {
 	public boolean canPlace;
 	Point drag;
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
-		try
-		{
-			if (Game.currentGame.activeStruct != null)
-			{
+	public void draw(Graphics2D g) {
+		try {
+			if (Game.currentGame.activeStruct != null) {
 				Game.currentGame.activeStruct.setX(Helper.round((drag == null ? Game.currentGame.mouse.x - Tile.SIZE / 2 : drag.x - Tile.SIZE / 2) - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
 				Game.currentGame.activeStruct.setY(Helper.round((drag == null ? Game.currentGame.mouse.y - Tile.SIZE / 2 * 3 : drag.y - Tile.SIZE / 2 * 3) - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 				Game.currentGame.activeStruct.setClicked(true);
@@ -50,34 +46,26 @@ public class BuildStructLayer extends Layer
 				
 				int centerY = Helper.round(Math.round(Game.world.height / 2f), Tile.SIZE);
 				
-				for (int i = Helper.round(bump.x, Tile.SIZE) + Game.world.x % Tile.SIZE; i < bump.x + bump.width + Game.world.x % Tile.SIZE; i += Tile.SIZE)
-				{
-					for (int j = Helper.round(bump.y, Tile.SIZE) + Game.world.y % Tile.SIZE; j < bump.y + bump.height + Game.world.y % Tile.SIZE; j += Tile.SIZE)
-					{
+				for (int i = Helper.round(bump.x, Tile.SIZE) + Game.world.x % Tile.SIZE; i < bump.x + bump.width + Game.world.x % Tile.SIZE; i += Tile.SIZE) {
+					for (int j = Helper.round(bump.y, Tile.SIZE) + Game.world.y % Tile.SIZE; j < bump.y + bump.height + Game.world.y % Tile.SIZE; j += Tile.SIZE) {
 						boolean blocked = false;
 						
-						if (Game.currentGame.activeStruct.canPlaceOnWay())
-						{
+						if (Game.currentGame.activeStruct.canPlaceOnWay()) {
 							blocked = true;
 						}
 						
-						if (Game.currentGame.activeStruct instanceof Way)
-						{
-							if (Game.world.getTileId((int) Math.floor((i - Game.world.x) / Tile.SIZE), (int) Math.floor((j - Game.world.y) / Tile.SIZE)) != Tile.grass.getId())
-							{
+						if (Game.currentGame.activeStruct instanceof Way) {
+							if (Game.world.getTileId((int) Math.floor((i - Game.world.x) / Tile.SIZE), (int) Math.floor((j - Game.world.y) / Tile.SIZE)) != Tile.grass.getId()) {
 								blocked = true;
 							}
 						}
 						
-						if (j == centerY + Tile.SIZE + Game.world.y || j == centerY + Game.world.y)
-						{
+						if (j == centerY + Tile.SIZE + Game.world.y || j == centerY + Game.world.y) {
 							blocked = !Game.currentGame.activeStruct.canPlaceOnWay();
 						}
 						
-						for (Entity e : Game.world.entities)
-						{
-							if (e.getBump(true).intersects(i - Game.world.x, j - Game.world.y, Tile.SIZE, Tile.SIZE))
-							{
+						for (Entity e : Game.world.entities) {
+							if (e.getBump(true).intersects(i - Game.world.x, j - Game.world.y, Tile.SIZE, Tile.SIZE)) {
 								blocked = true;
 								break;
 							}
@@ -93,43 +81,33 @@ public class BuildStructLayer extends Layer
 				if (Game.currentGame.activeStruct != null) Game.currentGame.activeStruct.draw(g);
 				g.setComposite(oldComposite);
 			}
-		}
-		catch (NullPointerException e)
-		{}
+		} catch (NullPointerException e) {}
 	}
 	
 	@Override
-	public void update(int tick)
-	{}
+	public void update(int tick) {}
 	
 	@Override
-	public void init()
-	{}
+	public void init() {}
 	
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		super.mouseReleased(e);
 		drag = null;
 	}
 	
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		super.mousePressed(e);
-		if (Game.currentGame.activeStruct != null && e.getButton() == 1)
-		{
+		if (Game.currentGame.activeStruct != null && e.getButton() == 1) {
 			build(e);
-		}
-		else Game.currentGame.activeStruct = null;
+		} else Game.currentGame.activeStruct = null;
 	}
 	
 	@Override
-	public void mouseDragged(MouseEvent e)
-	{
+	public void mouseDragged(MouseEvent e) {
 		super.mouseDragged(e);
-		if (Game.currentGame.activeStruct != null && e.getModifiers() == MouseEvent.BUTTON1_MASK)
-		{
+		if (Game.currentGame.activeStruct != null && e.getModifiers() == MouseEvent.BUTTON1_MASK) {
 			Game.currentGame.activeStruct.setX(Helper.round(e.getX() - Tile.SIZE / 2 - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
 			Game.currentGame.activeStruct.setY(Helper.round(e.getY() - Tile.SIZE / 2 * 3 - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 			drag = e.getPoint();
@@ -138,20 +116,16 @@ public class BuildStructLayer extends Layer
 		}
 	}
 	
-	public void build(MouseEvent e)
-	{
-		if (Game.currentGame.state != 0)
-		{
+	public void build(MouseEvent e) {
+		if (Game.currentGame.state != 0) {
 			Game.currentGame.activeStruct = null;
 			return;
 		}
 		
-		if (canPlace && e.getY() > 80 && e.getY() < Game.getHeight() - 100)
-		{
+		if (canPlace && e.getY() > 80 && e.getY() < Game.getHeight() - 100) {
 			Game.currentGame.activeStruct.setClicked(false);
 			ArrayList<Resource> filled = Game.currentGame.activeStruct.getBuildingCosts().getFilled();
-			for (Resource r : filled)
-			{
+			for (Resource r : filled) {
 				if (!r.isUsable()) continue;
 				Game.currentGame.resources.add(r, -Game.currentGame.activeStruct.getBuildingCosts().get(r));
 			}
@@ -161,16 +135,12 @@ public class BuildStructLayer extends Layer
 			Game.world.addEntity2(Game.currentGame.activeStruct.clone(), false);
 			// Game.currentGame.placedStruct = true;
 			
-			for (Component c : ((BuildBar) HUDLayer.currentHudLayer.components.get(0)).buttons)
-			{
-				if (c instanceof BuildButton)
-				{
+			for (Component c : ((BuildBar) HUDLayer.currentHudLayer.components.get(0)).buttons) {
+				if (c instanceof BuildButton) {
 					BuildButton b = (BuildButton) c;
-					if (b.getStruct().getName().equals(Game.currentGame.activeStruct.getName()))
-					{
+					if (b.getStruct().getName().equals(Game.currentGame.activeStruct.getName())) {
 						c.update(0);
-						if (b.enabled)
-						{
+						if (b.enabled) {
 							Game.currentGame.activeStruct.setClicked(false);
 							Game.currentGame.activeStruct = (Struct) b.getStruct().clone();
 							
@@ -185,14 +155,11 @@ public class BuildStructLayer extends Layer
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent e)
-	{
+	public void keyReleased(KeyEvent e) {
 		super.keyReleased(e);
 		
-		switch (e.getKeyCode())
-		{
-			case KeyEvent.VK_ESCAPE:
-			{
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_ESCAPE: {
 				Game.currentGame.activeStruct = null;
 				break;
 			}
@@ -200,11 +167,9 @@ public class BuildStructLayer extends Layer
 	}
 	
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e)
-	{
+	public void mouseWheelMoved(MouseWheelEvent e) {
 		super.mouseWheelMoved(e);
-		if (Game.currentGame.activeStruct instanceof Catapult)
-		{
+		if (Game.currentGame.activeStruct instanceof Catapult) {
 			Catapult c = (Catapult) Game.currentGame.activeStruct;
 			c.setDownwards(e.getWheelRotation() == 1);
 		}

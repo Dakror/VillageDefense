@@ -9,10 +9,8 @@ import de.dakror.villagedefense.settings.Attributes.Attribute;
 /**
  * @author Dakror
  */
-public class Woodsman extends Creature
-{
-	public Woodsman(int x, int y)
-	{
+public class Woodsman extends Creature {
+	public Woodsman(int x, int y) {
 		super(x, y, "forester");
 		setHostile(false);
 		name = "Holzfäller";
@@ -24,13 +22,10 @@ public class Woodsman extends Creature
 	}
 	
 	@Override
-	public void lookupTargetEntity()
-	{
+	public void lookupTargetEntity() {
 		Entity nearest = null;
-		for (Entity e : Game.world.entities)
-		{
-			if (e instanceof Tree && ((Tree) e).isGrown())
-			{
+		for (Entity e : Game.world.entities) {
+			if (e instanceof Tree && ((Tree) e).isGrown()) {
 				if (nearest == null || e.getCenter2().getDistance(getCenter2()) < nearest.getCenter2().getDistance(getCenter2())) nearest = e;
 			}
 		}
@@ -39,12 +34,9 @@ public class Woodsman extends Creature
 	}
 	
 	@Override
-	protected boolean onArrivalAtEntity(int tick)
-	{
-		if (targetEntity instanceof Tree)
-		{
-			if ((tick + randomOffset) % attributes.get(Attribute.MINE_SPEED) == 0 && targetEntity.getResources().size() > 0)
-			{
+	protected boolean onArrivalAtEntity(int tick) {
+		if (targetEntity instanceof Tree) {
+			if ((tick + randomOffset) % attributes.get(Attribute.MINE_SPEED) == 0 && targetEntity.getResources().size() > 0) {
 				if (frame % 2 == 0) ((Struct) targetEntity).mineAllResources((int) attributes.get(Attribute.MINE_AMOUNT), Game.currentGame.resources); // TODO: woodsman resource storage 'n' stuff
 				frame++;
 			}
@@ -55,8 +47,7 @@ public class Woodsman extends Creature
 	}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Woodsman((int) x, (int) y);
 	}
 }

@@ -12,16 +12,14 @@ import de.dakror.villagedefense.game.Game;
 /**
  * @author Dakror
  */
-public class MenuButton extends Button
-{
+public class MenuButton extends Button {
 	String image;
 	int y1;
 	Dimension size;
 	float alpha;
 	float speed = 0.075f;
 	
-	public MenuButton(String image, int y)
-	{
+	public MenuButton(String image, int y) {
 		super(0, 0, 0, 100);
 		this.image = image;
 		y1 = y;
@@ -30,8 +28,7 @@ public class MenuButton extends Button
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		Image img = Game.getImage("menu/" + image + ".png");
 		int height = 100;
 		int width = (height * img.getWidth(null)) / img.getHeight(null);
@@ -47,14 +44,10 @@ public class MenuButton extends Button
 	}
 	
 	@Override
-	public void update(int tick)
-	{
-		if (state == 2 || state == 1)
-		{
+	public void update(int tick) {
+		if (state == 2 || state == 1) {
 			alpha += speed;
-		}
-		else if (alpha > 0.3f + speed)
-		{
+		} else if (alpha > 0.3f + speed) {
 			alpha -= speed;
 		}
 		

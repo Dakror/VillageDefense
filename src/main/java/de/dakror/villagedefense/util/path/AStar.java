@@ -13,26 +13,21 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public class AStar
-{
+public class AStar {
 	public static ArrayList<Node> openList;
 	public static ArrayList<Node> closedList;
 	static Vector target;
 	
-	public static Path getPath(Vector start, Vector t)
-	{
-		try
-		{
+	public static Path getPath(Vector start, Vector t) {
+		try {
 			openList = new ArrayList<>();
 			closedList = new ArrayList<>();
 			
 			target = t;
 			
-			Comparator<Node> comparator = new Comparator<Node>()
-			{
+			Comparator<Node> comparator = new Comparator<Node>() {
 				@Override
-				public int compare(Node o1, Node o2)
-				{
+				public int compare(Node o1, Node o2) {
 					if (o1 == null || o2 == null) CFG.p("nuuuuuuuuuuuuuuullllllllll");
 					return Float.compare(o1.F, o2.F);
 				}
@@ -42,10 +37,8 @@ public class AStar
 			
 			Node activeNode = null;
 			
-			while (true)
-			{
-				if (openList.size() == 0)
-				{
+			while (true) {
+				if (openList.size() == 0) {
 					return null; // no way
 				}
 				
@@ -54,8 +47,7 @@ public class AStar
 				
 				closedList.add(activeNode);
 				
-				if (activeNode.H == 0)
-				{
+				if (activeNode.H == 0) {
 					break; // found way
 				}
 				
@@ -65,30 +57,24 @@ public class AStar
 			ArrayList<Node> path = new ArrayList<>();
 			Node node = activeNode;
 			path.add(node.clone());
-			while (node.p != null)
-			{
+			while (node.p != null) {
 				path.add(node.p.clone());
 				node = node.p;
 			}
 			
 			Collections.reverse(path);
 			return toPath(path);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 	
-	private static void handleAdjacentTiles(Node node)
-	{
+	private static void handleAdjacentTiles(Node node) {
 		byte[][] neighbors = Game.world.getNeighbors((int) node.t.x, (int) node.t.y);
 		
-		for (int i = 0; i < neighbors.length; i++)
-		{
-			for (int j = 0; j < neighbors[0].length; j++)
-			{
+		for (int i = 0; i < neighbors.length; i++) {
+			for (int j = 0; j < neighbors[0].length; j++) {
 				if (i == j || neighbors[i][j] == Tile.empty.getId() || (i == 0 && j == 2) || (i == 2 && j == 0)) continue;
 				
 				Vector tile = new Vector(node.t.x + i - 1, node.t.y + j - 1);
@@ -96,18 +82,13 @@ public class AStar
 				
 				if (closedList.contains(n)) continue;
 				
-				if (openList.contains(n) && openList.get(openList.indexOf(n)).G > n.G)
-				{
+				if (openList.contains(n) && openList.get(openList.indexOf(n)).G > n.G) {
 					openList.get(openList.indexOf(n)).G = n.G;
 					openList.get(openList.indexOf(n)).p = node;
-				}
-				else if (!openList.contains(n))
-				{
+				} else if (!openList.contains(n)) {
 					boolean free = true;
-					for (Entity e : Game.world.entities)
-					{
-						if (e.getBump(true).intersects(tile.x * Tile.SIZE + 8, tile.y * Tile.SIZE + 8, Tile.SIZE - 16, Tile.SIZE - 16) && e.isMassive())
-						{
+					for (Entity e : Game.world.entities) {
+						if (e.getBump(true).intersects(tile.x * Tile.SIZE + 8, tile.y * Tile.SIZE + 8, Tile.SIZE - 16, Tile.SIZE - 16) && e.isMassive()) {
 							free = false;
 							break;
 						}
@@ -119,8 +100,7 @@ public class AStar
 		}
 	}
 	
-	public static Path toPath(ArrayList<Node> list)
-	{
+	public static Path toPath(ArrayList<Node> list) {
 		Path p = new Path();
 		
 		for (Node n : list)

@@ -18,21 +18,17 @@ import de.dakror.villagedefense.util.Assistant;
 /**
  * @author Dakror
  */
-public class BuildButton extends Button
-{
+public class BuildButton extends Button {
 	public static final int SIZE = 68;
 	
 	Struct struct;
 	Dimension scale;
 	
-	public BuildButton(int x, int y, final Struct s)
-	{
+	public BuildButton(int x, int y, final Struct s) {
 		super(x, y, SIZE, SIZE);
-		addClickEvent(new ClickEvent()
-		{
+		addClickEvent(new ClickEvent() {
 			@Override
-			public void trigger()
-			{
+			public void trigger() {
 				Game.currentGame.activeStruct = (Struct) s.clone();
 			}
 		});
@@ -41,23 +37,20 @@ public class BuildButton extends Button
 	}
 	
 	@Override
-	public void draw(Graphics2D g)
-	{
+	public void draw(Graphics2D g) {
 		if (state == 2) Helper.drawContainer(x - 10, y - 16, width + 20, height + 32, false, true, g);
 		else Helper.drawOutline(x - 10, y - 10, width + 20, height + 20, false, g);
 		
 		g.drawImage(struct.getImage(), x + (SIZE - scale.width) / 2, y + (SIZE - scale.height) / 2, scale.width, scale.height, Game.w);
 		
-		if (!enabled)
-		{
+		if (!enabled) {
 			if (state == 2) Helper.drawShadow(x - 20, y - 26, width + 40, height + 52, g);
 			else Helper.drawShadow(x - 10, y - 10, width + 20, height + 20, g);
 		}
 	}
 	
 	@Override
-	public void drawTooltip(int x, int y, Graphics2D g)
-	{
+	public void drawTooltip(int x, int y, Graphics2D g) {
 		int w = g.getFontMetrics(g.getFont().deriveFont(30f)).stringWidth(struct.getName()) + 32;
 		
 		if (x + w + 30 > Game.getWidth()) x -= (x + w + 30) - Game.getWidth();
@@ -68,10 +61,8 @@ public class BuildButton extends Button
 		
 		ArrayList<Resource> filled = struct.getBuildingCosts().getFilled();
 		boolean hasPreq = false;
-		for (Resource r : filled)
-		{
-			if (!r.isUsable())
-			{
+		for (Resource r : filled) {
+			if (!r.isUsable()) {
 				hasPreq = true;
 				break;
 			}
@@ -86,8 +77,7 @@ public class BuildButton extends Button
 		
 		int y1 = y - height + 80;
 		
-		if (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue())
-		{
+		if (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue()) {
 			Assistant.drawLabelWithIcon(x + 16, y - height + 48, 24, new Point(1, 0), (int) struct.getAttributes().get(Attribute.HEALTH_MAX) + "", 30, g);
 			y1 += 26;
 		}
@@ -96,10 +86,8 @@ public class BuildButton extends Button
 		y1 -= 12;
 		Helper.drawString((filled.size() == 0 ? "Keine " : "") + "Baukosten", x + 10, y1, g, 24);
 		y1 += 8;
-		for (int i = 0; i < struct.getBuildingCosts().size(); i++)
-		{
-			if (!filled.get(i).isUsable())
-			{
+		for (int i = 0; i < struct.getBuildingCosts().size(); i++) {
+			if (!filled.get(i).isUsable()) {
 				hasPreq = true;
 				continue;
 			}
@@ -112,14 +100,12 @@ public class BuildButton extends Button
 		}
 		
 		// -- prerequisites -- //
-		if (hasPreq)
-		{
+		if (hasPreq) {
 			y1 += 20;
 			Helper.drawString("Bedingungen", x + 10, y1, g, 24);
 			y1 += 6;
 			
-			for (int i = 0; i < struct.getBuildingCosts().size(); i++)
-			{
+			for (int i = 0; i < struct.getBuildingCosts().size(); i++) {
 				Resource res = filled.get(i);
 				if (res.isUsable()) continue;
 				Color oldColor = g.getColor();
@@ -144,8 +130,7 @@ public class BuildButton extends Button
 		Resources res = struct.getResourcesPerSecond();
 		ArrayList<Resource> fll = res.getFilled();
 		
-		for (int i = 0; i < res.size(); i++)
-		{
+		for (int i = 0; i < res.size(); i++) {
 			float r = Math.round(res.getF(fll.get(i)) * 100) / 100f;
 			Assistant.drawLabelWithIcon(x + 16, y1, 24, new Point(fll.get(i).getIconX(), fll.get(i).getIconY()), (r > 0 ? "+" : "") + r + "/s", 30, g);
 			y1 += 26;
@@ -153,13 +138,10 @@ public class BuildButton extends Button
 	}
 	
 	@Override
-	public void update(int tick)
-	{
+	public void update(int tick) {
 		ArrayList<Resource> filled = struct.getBuildingCosts().getFilled();
-		for (Resource r : filled)
-		{
-			if ((r == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < struct.getBuildingCosts().get(r))
-			{
+		for (Resource r : filled) {
+			if ((r == Resource.PEOPLE ? Game.currentGame.getPeople() : Game.currentGame.resources.get(r)) < struct.getBuildingCosts().get(r)) {
 				enabled = false;
 				return;
 			}
@@ -168,8 +150,7 @@ public class BuildButton extends Button
 		enabled = true;
 	}
 	
-	public Struct getStruct()
-	{
+	public Struct getStruct() {
 		return struct;
 	}
 }

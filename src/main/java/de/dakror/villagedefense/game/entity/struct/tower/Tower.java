@@ -21,8 +21,7 @@ import de.dakror.villagedefense.util.Vector;
 /**
  * @author Dakror
  */
-public abstract class Tower extends Struct
-{
+public abstract class Tower extends Struct {
 	/**
 	 * -1 = none<br>
 	 * 0 = red<br>
@@ -33,8 +32,7 @@ public abstract class Tower extends Struct
 	protected int color;
 	protected int spheres;
 	
-	public Tower(int x, int y)
-	{
+	public Tower(int x, int y) {
 		super(x, y, 1, 3);
 		
 		tx = 3;
@@ -47,16 +45,13 @@ public abstract class Tower extends Struct
 	}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
-		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0)
-		{
+		if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0) {
 			shoot(0);
 			
 			if (has(Researches.TOWER_DOUBLESHOT)) shoot(1);
@@ -64,30 +59,25 @@ public abstract class Tower extends Struct
 	}
 	
 	@Override
-	public Projectile getProjectile(Entity target)
-	{
+	public Projectile getProjectile(Entity target) {
 		return new Arrow(getCenter(), target, 10f, (int) attributes.get(Attribute.DAMAGE_CREATURE));
 	}
 	
 	@Override
-	public Shape getAttackArea()
-	{
+	public Shape getAttackArea() {
 		int rad = (int) attributes.get(Attribute.ATTACK_RANGE);
 		Vector c = getCenter();
 		return new Arc2D.Float(c.x - rad, c.y - rad, rad * 2, rad * 2, 0, 360, Arc2D.OPEN);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected BufferedImage createImage()
-	{
+	protected BufferedImage createImage() {
 		BufferedImage tower = super.createImage();
 		BufferedImage image = new BufferedImage(Tile.SIZE, 3 * Tile.SIZE, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) image.getGraphics();
@@ -95,12 +85,9 @@ public abstract class Tower extends Struct
 		
 		Point spheresP = new Point(13, 8);
 		
-		if (spheres == 1)
-		{
+		if (spheres == 1) {
 			Helper.drawImage(Game.getImage("structs.png"), 0, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
-		}
-		else if (spheres == 2)
-		{
+		} else if (spheres == 2) {
 			Helper.drawImage(Game.getImage("structs.png"), -6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
 			Helper.drawImage(Game.getImage("structs.png"), 6, Tile.SIZE - 8, Tile.SIZE, Tile.SIZE, spheresP.x * Tile.SIZE, (spheresP.y + color) * Tile.SIZE, Tile.SIZE, Tile.SIZE, g);
 		}
@@ -108,10 +95,8 @@ public abstract class Tower extends Struct
 	}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean inititial)
-	{
-		if (research == Researches.TOWER_DOUBLESHOT)
-		{
+	public void onUpgrade(Researches research, boolean inititial) {
+		if (research == Researches.TOWER_DOUBLESHOT) {
 			image = null;
 			spheres = 2;
 		}

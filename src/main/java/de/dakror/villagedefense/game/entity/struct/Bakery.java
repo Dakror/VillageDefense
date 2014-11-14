@@ -13,10 +13,8 @@ import de.dakror.villagedefense.settings.Resources.Resource;
 /**
  * @author Dakror
  */
-public class Bakery extends Struct
-{
-	public Bakery(int x, int y)
-	{
+public class Bakery extends Struct {
+	public Bakery(int x, int y) {
 		super(x, y, 4, 7);
 		tx = 5;
 		ty = 23;
@@ -39,8 +37,7 @@ public class Bakery extends Struct
 	}
 	
 	@Override
-	public Resources getResourcesPerSecond()
-	{
+	public Resources getResourcesPerSecond() {
 		Resources res = new Resources();
 		
 		if (!working) return res;
@@ -53,12 +50,10 @@ public class Bakery extends Struct
 	}
 	
 	@Override
-	protected void tick(int tick)
-	{
+	protected void tick(int tick) {
 		super.tick(tick);
 		
-		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.COAL) >= 2 && Game.currentGame.resources.get(Resource.FLOUR) >= 3 && working)
-		{
+		if (tick % attributes.get(Attribute.MINE_SPEED) == 0 && Game.currentGame.resources.get(Resource.COAL) >= 2 && Game.currentGame.resources.get(Resource.FLOUR) >= 3 && working) {
 			Game.currentGame.resources.add(Resource.COAL, -2);
 			Game.currentGame.resources.add(Resource.FLOUR, -3);
 			resources.add(Resource.BREAD, 2);
@@ -66,24 +61,19 @@ public class Bakery extends Struct
 	}
 	
 	@Override
-	public void initGUI()
-	{}
+	public void initGUI() {}
 	
 	@Override
-	protected void onMinedUp()
-	{}
+	protected void onMinedUp() {}
 	
 	@Override
-	public void onUpgrade(Researches research, boolean initial)
-	{}
+	public void onUpgrade(Researches research, boolean initial) {}
 	
 	@Override
-	public Entity clone()
-	{
+	public Entity clone() {
 		return new Bakery((int) x / Tile.SIZE, (int) y / Tile.SIZE);
 	}
 	
 	@Override
-	protected void onDeath()
-	{}
+	protected void onDeath() {}
 }
