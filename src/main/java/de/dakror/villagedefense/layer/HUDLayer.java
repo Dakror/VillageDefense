@@ -76,10 +76,12 @@ public class HUDLayer extends Layer {
 			if (Game.world.selectedEntity != null) {
 				Helper.drawHorizontallyCenteredString(Game.world.selectedEntity.getName(), Game.getWidth(), 111, g, 40);
 				if (Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX) > Attribute.HEALTH_MAX.getDefaultValue()) {
-					Helper.drawProgressBar(Game.getWidth() / 2 - 179, 111, 358, Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH) / Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
+					Helper.drawProgressBar(Game.getWidth() / 2 - 179, 111, 358, Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH)
+							/ Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), "ff3232", g);
 					Color oldColor = g.getColor();
 					g.setColor(Color.white);
-					Helper.drawHorizontallyCenteredString((int) Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / " + (int) Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), Game.getWidth(), 126, g, 15);
+					Helper.drawHorizontallyCenteredString((int) Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH) + " / "
+							+ (int) Game.world.selectedEntity.getAttributes().get(Attribute.HEALTH_MAX), Game.getWidth(), 126, g, 15);
 					g.setColor(oldColor);
 				}
 				
@@ -105,7 +107,8 @@ public class HUDLayer extends Layer {
 					if (s.getResourcesPerSecond().size() > 0 || !s.isWorking()) {
 						Helper.drawShadow(Game.getWidth() / 2 - 330, 72, 70, 70, g);
 						
-						if (new Rectangle(Game.getWidth() / 2 - 330, 72, 70, 70).contains(Game.currentGame.mouse)) Helper.drawContainer(Game.getWidth() / 2 - 330, 72, 70, 70, s.isWorking(), false, g);
+						if (new Rectangle(Game.getWidth() / 2 - 330, 72, 70, 70).contains(Game.currentGame.mouse)) Helper.drawContainer(Game.getWidth() / 2 - 330, 72, 70, 70, s.isWorking(),
+																																																														false, g);
 						else Helper.drawOutline(Game.getWidth() / 2 - 330, 72, 70, 70, s.isWorking(), g);
 						
 						g.drawImage(Game.getImage("icon/working.png"), Game.getWidth() / 2 - 320, 82, 50, 50, Game.w);
@@ -139,7 +142,8 @@ public class HUDLayer extends Layer {
 				
 				if (r == Resource.PEOPLE) {
 					int free = Game.currentGame.getPeople();
-					Assistant.drawLabelWithIcon(25, y, 30, new Point(r.getIconX(), r.getIconY()), (free != Game.currentGame.resources.get(r) ? Game.currentGame.getPeople() + " / " : "") + Game.currentGame.resources.get(r) + delta, 30, g);
+					Assistant.drawLabelWithIcon(25, y, 30, new Point(r.getIconX(), r.getIconY()), (free != Game.currentGame.resources.get(r) ? Game.currentGame.getPeople() + " / " : "")
+							+ Game.currentGame.resources.get(r) + delta, 30, g);
 				} else {
 					Assistant.drawLabelWithIcon(25, y, 30, new Point(r.getIconX(), r.getIconY()), Game.currentGame.resources.get(r) + delta, 30, g);
 				}

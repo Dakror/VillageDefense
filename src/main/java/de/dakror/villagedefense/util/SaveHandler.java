@@ -58,7 +58,7 @@ public class SaveHandler {
 			JSONArray entities = new JSONArray();
 			for (Entity e : Game.world.entities) {
 				if ((e instanceof Forester) || (e instanceof Woodsman)) continue; // don't save them, because they get spawned by the house upgrades
-				
+					
 				entities.put(e.getData());
 			}
 			o.put("entities", entities);
@@ -76,7 +76,8 @@ public class SaveHandler {
 		try {
 			JSONObject o = new JSONObject(Compressor.decompressFile(f));
 			Game.world.init(o.getInt("width"), o.getInt("height"));
-			Game.world.setData((int) Math.ceil(o.getInt("width") / (float) (Chunk.SIZE * Tile.SIZE)), (int) Math.ceil(o.getInt("height") / (float) (Chunk.SIZE * Tile.SIZE)), Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
+			Game.world.setData(	(int) Math.ceil(o.getInt("width") / (float) (Chunk.SIZE * Tile.SIZE)), (int) Math.ceil(o.getInt("height") / (float) (Chunk.SIZE * Tile.SIZE)),
+													Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
 			Game.currentGame.resources = new Resources(o.getJSONObject("resources"));
 			
 			if (o.has("created")) Game.currentGame.worldCreated = o.getInt("created");
@@ -218,7 +219,8 @@ public class SaveHandler {
 				Game.currentGame.scoreSent = true;
 			} else JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!\nMöglicherweise bist du nicht mit dem Internet verbunden.", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!\nMöglicherweise bist du nicht mit dem Internet verbunden.",
+																		"Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

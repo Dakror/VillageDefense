@@ -158,7 +158,8 @@ public abstract class Struct extends Entity {
 	}
 	
 	public void setBump(Rectangle2D r) {
-		super.setBump(new Rectangle((int) Math.round(r.getX() * Tile.SIZE), (int) Math.round(r.getY() * Tile.SIZE), (int) Math.round(r.getWidth() * Tile.SIZE), (int) Math.round(r.getHeight() * Tile.SIZE)));
+		super.setBump(new Rectangle((int) Math.round(r.getX() * Tile.SIZE), (int) Math.round(r.getY() * Tile.SIZE), (int) Math.round(r.getWidth() * Tile.SIZE),
+																(int) Math.round(r.getHeight() * Tile.SIZE)));
 	}
 	
 	public void placeGround() {
@@ -300,7 +301,8 @@ public abstract class Struct extends Entity {
 			if (guiPoint.x + guiSize.width / 2 > Game.getWidth()) guiPoint.x = Game.getWidth() - guiSize.width / 2;
 			if (guiPoint.y + guiSize.height / 2 > Game.getHeight()) guiPoint.y = Game.getHeight() - guiSize.height / 2;
 		} else {
-			if (guiPoint != null && guiSize != null && !new Rectangle(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height).contains(e.getPoint())) {
+			if (guiPoint != null && guiSize != null
+					&& !new Rectangle(guiPoint.x - guiSize.width / 2, guiPoint.y - guiSize.height / 2, guiSize.width, guiSize.height).contains(e.getPoint())) {
 				destroyGUI();
 			}
 		}

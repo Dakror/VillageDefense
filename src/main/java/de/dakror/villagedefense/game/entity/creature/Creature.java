@@ -104,7 +104,8 @@ public abstract class Creature extends Entity {
 		if (targetEntity != null && target == null && (path == null || path.isPathComplete())) {
 			if (hostile) {
 				if ((tick + randomOffset) % attributes.get(Attribute.ATTACK_SPEED) == 0) {
-					if (frame % 2 == 0) targetEntity.dealDamage((int) (targetEntity instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)), this);
+					if (frame % 2 == 0)
+						targetEntity.dealDamage((int) (targetEntity instanceof Struct ? attributes.get(Attribute.DAMAGE_STRUCT) : attributes.get(Attribute.DAMAGE_CREATURE)), this);
 					frame++;
 				}
 			} else if (!onArrivalAtEntity(tick)) frame = 0;
