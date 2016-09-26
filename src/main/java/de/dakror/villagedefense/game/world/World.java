@@ -82,7 +82,7 @@ public class World extends EventListener implements Drawable {
 		for (int i = 0; i < chunks.length; i++)
 			for (int j = 0; j < chunks[0].length; j++)
 				chunks[i][j] = new Chunk(i, j);
-		
+			
 		generate();
 		render();
 	}

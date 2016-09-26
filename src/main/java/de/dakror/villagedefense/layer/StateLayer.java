@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import de.dakror.gamesetup.layer.Layer;
 import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
+import de.dakror.villagedefense.game.UpdateThread;
 import de.dakror.villagedefense.util.SaveHandler;
 
 /**
@@ -45,16 +46,15 @@ public class StateLayer extends Layer {
 			g.setColor(Color.white);
 			g.setComposite(composite);
 			
-			Helper.drawHorizontallyCenteredString(Game.currentGame.state == 1 ? "Gewonnen!" : (Game.currentGame.state == 2) ? "Niederlage!" : "Spiel pausiert", Game.getWidth(),
-																						Game.getHeight() / 2, g, 100);
-			Helper.drawHorizontallyCenteredString(Game.currentGame.state != 3 ? "Punktestand: " + Game.currentGame.getPlayerScore() : "Mit Klicken fortsetzen", Game.getWidth(),
-																						Game.getHeight() / 2 + 100, g, 60);
-			if (Game.currentGame.state != 3 && Game.currentGame.getPlayerScore() > 0) {
+			Helper.drawHorizontallyCenteredString(Game.currentGame.state == 1 ? "Gewonnen!" : (Game.currentGame.state == 2) ? "Niederlage!" : "Spiel pausiert", Game.getWidth(), Game.getHeight() / 2, g, 100);
+			Helper.drawHorizontallyCenteredString(Game.currentGame.state != 3 ? "Punktestand: " + Game.currentGame.getPlayerScore() : "Mit Klicken fortsetzen", Game.getWidth(), Game.getHeight() / 2 + 100, g, 60);
+			if (Game.currentGame.state != 3) {
 				Helper.drawHorizontallyCenteredString("Mit Klicken ins Hauptmenü", Game.getWidth(), Game.getHeight() / 2 + 200, g, 60);
-				Helper.drawContainer(	Game.getWidth() / 4 * 3, Game.getHeight() / 2 - 50, 200, 200, true,
-															new Rectangle(Game.getWidth() / 4 * 3, Game.getHeight() / 2 - 50, 200, 200).contains(Game.currentGame.mouse), g);
-				g.drawImage(Game.getImage("icon/ebook.png"), Game.getWidth() / 4 * 3 + 20, Game.getHeight() / 2 - 30, 160, 160, Game.w);
-				if (Game.currentGame.scoreSent) Helper.drawShadow(Game.getWidth() / 4 * 3 - 10, Game.getHeight() / 2 - 60, 220, 220, g);
+				if (Game.currentGame.getPlayerScore() > 0) {
+					Helper.drawContainer(Game.getWidth() / 4 * 3, Game.getHeight() / 2 - 50, 200, 200, true, new Rectangle(Game.getWidth() / 4 * 3, Game.getHeight() / 2 - 50, 200, 200).contains(Game.currentGame.mouse), g);
+					g.drawImage(Game.getImage("icon/ebook.png"), Game.getWidth() / 4 * 3 + 20, Game.getHeight() / 2 - 30, 160, 160, Game.w);
+					if (Game.currentGame.scoreSent) Helper.drawShadow(Game.getWidth() / 4 * 3 - 10, Game.getHeight() / 2 - 60, 220, 220, g);
+				}
 			}
 			if (Game.currentGame.state == 3) {
 				if (!new Rectangle(5, 5, 70, 70).contains(Game.currentGame.mouse)) Helper.drawContainer(5, 5, 70, 70, false, false, g);
@@ -88,8 +88,7 @@ public class StateLayer extends Layer {
 		
 		if (new Rectangle(5, 5, 70, 70).contains(Game.currentGame.mouse) && Game.currentGame.state == 3) // back
 		{
-			if (JOptionPane.showConfirmDialog(Game.w, "Bist du sicher, dass du zum Hauptmenü zurückkehren willst?\nJeglicher ungespeicherter Fortschritt geht verloren!", "Sicher?",
-																				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(Game.w, "Bist du sicher, dass du zum Hauptmenü zurückkehren willst?\nJeglicher ungespeicherter Fortschritt geht verloren!", "Sicher?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				Game.currentGame.state = 3;
 				Game.currentGame.addLayer(new MenuLayer());
 			}
@@ -107,6 +106,8 @@ public class StateLayer extends Layer {
 				Game.currentGame.updater.closeRequested = true;
 				Game.w.dispose();
 				Game.currentFrame.init("Village Defense");
+				Game.currentFrame.setFullscreen();
+				Game.currentFrame.updater = new UpdateThread();
 			}
 		}
 	}

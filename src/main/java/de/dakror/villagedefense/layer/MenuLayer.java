@@ -23,7 +23,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
-import de.dakror.dakrorbin.DakrorBin;
 import de.dakror.gamesetup.layer.Layer;
 import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
@@ -46,11 +45,10 @@ public class MenuLayer extends Layer {
 		int size = 60;
 		int size2 = size - 20;
 		
-		Helper.drawContainer(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size, false, new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10,
-																																																											size, size).contains(Game.currentGame.mouse), g);
+		Helper.drawContainer(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size, false, new Rectangle(Game.getWidth() - size - 10, Game.getHeight() - size - 10, size, size).contains(Game.currentGame.mouse), g);
 		g.drawImage(Game.getImage("icon/help.png"), Game.getWidth() - size, Game.getHeight() - size, size2, size2, Game.w);
 		
-		Helper.drawString("Version " + DakrorBin.buildDate, 10, Game.getHeight() - 10, g, 24);
+		//		Helper.drawString("Version " + DakrorBin.buildDate, 10, Game.getHeight() - 10, g, 24);
 		
 		drawComponents(g);
 	}

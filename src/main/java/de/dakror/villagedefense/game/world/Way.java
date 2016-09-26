@@ -38,7 +38,7 @@ public class Way extends Tile {
 		byte[][] n = Game.world.getNeighbors(x, y);
 		
 		if (n[0][1] != id && n[1][0] != id && n[2][1] != id && n[1][2] != id) return new Point(0, 0); // none adjacent
-			
+		
 		int c = 0;
 		if (n[0][1] == id) c++;
 		if (n[2][1] == id) c++;
@@ -53,7 +53,7 @@ public class Way extends Tile {
 		} else if (c == 2) {
 			if (n[0][1] == id && n[2][1] == id) return new Point(2, 0); // l - r
 			if (n[1][0] == id && n[1][2] == id) return new Point(2, 1); // t - b
-				
+			
 			if (n[2][1] == id && n[1][2] == id) return new Point(0, 1); // r - b
 			if (n[0][1] == id && n[1][2] == id) return new Point(1, 1); // l - b
 			if (n[2][1] == id && n[1][0] == id) return new Point(0, 2); // r - t

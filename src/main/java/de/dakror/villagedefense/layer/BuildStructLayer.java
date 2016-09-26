@@ -51,12 +51,8 @@ public class BuildStructLayer extends Layer {
 	public void draw(Graphics2D g) {
 		try {
 			if (Game.currentGame.activeStruct != null) {
-				Game.currentGame.activeStruct.setX(Helper.round((drag == null ? Game.currentGame.mouse.x - Tile.SIZE / 2 : drag.x - Tile.SIZE / 2)
-																														- Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE)
-						+ (Game.world.x % Tile.SIZE));
-				Game.currentGame.activeStruct.setY(Helper.round((drag == null ? Game.currentGame.mouse.y - Tile.SIZE / 2 * 3 : drag.y - Tile.SIZE / 2 * 3)
-																														- Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE)
-						+ (Game.world.y % Tile.SIZE));
+				Game.currentGame.activeStruct.setX(Helper.round((drag == null ? Game.currentGame.mouse.x - Tile.SIZE / 2 : drag.x - Tile.SIZE / 2) - Game.currentGame.activeStruct.getBump(false).x, Tile.SIZE) + (Game.world.x % Tile.SIZE));
+				Game.currentGame.activeStruct.setY(Helper.round((drag == null ? Game.currentGame.mouse.y - Tile.SIZE / 2 * 3 : drag.y - Tile.SIZE / 2 * 3) - Game.currentGame.activeStruct.getBump(false).y, Tile.SIZE) + (Game.world.y % Tile.SIZE));
 				Game.currentGame.activeStruct.setClicked(true);
 				
 				Rectangle bump = Game.currentGame.activeStruct.getBump(true);

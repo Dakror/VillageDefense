@@ -86,8 +86,7 @@ public class BuildButton extends Button {
 		}
 		
 		int infoHeight = 26 + (struct.getResourcesPerSecond().size() + Helper.getLineCount(struct.description, w - 20, g, 24)) * 24 - 12;
-		int height = 64 + (struct.getBuildingCosts().size() + (hasPreq ? 3 : 2) - (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue() ? 0 : 1)) * 26
-				+ infoHeight;
+		int height = 64 + (struct.getBuildingCosts().size() + (hasPreq ? 3 : 2) - (struct.getAttributes().get(Attribute.HEALTH) > Attribute.HEALTH.getDefaultValue() ? 0 : 1)) * 26 + infoHeight;
 		Helper.drawShadow(x, y - height, w, height, g);
 		Helper.drawOutline(x, y - height, w, height, false, g);
 		

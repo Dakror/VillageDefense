@@ -22,7 +22,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,8 +36,6 @@ import javax.swing.JOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 import de.dakror.gamesetup.util.Helper;
 import de.dakror.villagedefense.game.Game;
 import de.dakror.villagedefense.game.entity.Entity;
@@ -50,6 +50,8 @@ import de.dakror.villagedefense.settings.CFG;
 import de.dakror.villagedefense.settings.Researches;
 import de.dakror.villagedefense.settings.Resources;
 import de.dakror.villagedefense.settings.WaveManager;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 /**
  * @author Dakror
@@ -75,13 +77,13 @@ public class SaveHandler {
 			JSONArray entities = new JSONArray();
 			for (Entity e : Game.world.entities) {
 				if ((e instanceof Forester) || (e instanceof Woodsman)) continue; // don't save them, because they get spawned by the house upgrades
-					
+				
 				entities.put(e.getData());
 			}
 			o.put("entities", entities);
 			
 			Compressor.compressFile(save, o.toString());
-			Helper.setFileContent(new File(save.getPath() + ".debug"), o.toString());
+			//			Helper.setFileContenþt(new File(save.getPath() + ".debug"), o.toString());
 			Game.currentGame.state = 3;
 			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
@@ -93,8 +95,7 @@ public class SaveHandler {
 		try {
 			JSONObject o = new JSONObject(Compressor.decompressFile(f));
 			Game.world.init(o.getInt("width"), o.getInt("height"));
-			Game.world.setData(	(int) Math.ceil(o.getInt("width") / (float) (Chunk.SIZE * Tile.SIZE)), (int) Math.ceil(o.getInt("height") / (float) (Chunk.SIZE * Tile.SIZE)),
-													Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
+			Game.world.setData((int) Math.ceil(o.getInt("width") / (float) (Chunk.SIZE * Tile.SIZE)), (int) Math.ceil(o.getInt("height") / (float) (Chunk.SIZE * Tile.SIZE)), Compressor.decompressRow(new BASE64Decoder().decodeBuffer(o.getString("tile"))));
 			Game.currentGame.resources = new Resources(o.getJSONObject("resources"));
 			
 			if (o.has("created")) Game.currentGame.worldCreated = o.getInt("created");
@@ -229,15 +230,25 @@ public class SaveHandler {
 				return;
 			}
 			
-			String response = Helper.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + CFG.USERNAME + "&SCORE=" + Game.currentGame.getPlayerScore()));
+			String response = Helper.getURLContent(new URL("http://dakror.de/villagedefense/api/scores.php?USERNAME=" + urlencode(CFG.USERNAME) + "&SCORE=" + Game.currentGame.getPlayerScore()));
+			System.out.println(response);
 			if (!response.equals("false")) {
 				JOptionPane.showMessageDialog(null, "Dein Punktestand wurde erfolgreich in der Bestenliste platziert.", "Platzieren erfolgreich!", JOptionPane.INFORMATION_MESSAGE);
 				addWorldScorePosted(Game.currentGame.worldCreated);
 				Game.currentGame.scoreSent = true;
 			} else JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!\nMöglicherweise bist du nicht mit dem Internet verbunden.",
-																		"Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Dein Punktestand konnte nicht in der Bestenliste platziert werden!\nMöglicherweise bist du nicht mit dem Internet verbunden.", "Platzieren fehlgeschlagen!", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public static String urlencode(String s) {
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

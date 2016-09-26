@@ -72,9 +72,7 @@ public class Game extends GameFrame {
 	
 	public static Game currentGame;
 	public static World world;
-	public static Struct[] buildableStructs = { new Way(0, 0), new House(0, 0), new Farm(0, 0), new Windmill(0, 0), new Bakery(0, 0), new Mine(0, 0), new Sawmill(0, 0),
-			new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new Warehouse(0, 0), new Barricade(0, 0), new ArrowTower(0, 0), new Catapult(0, 0),
-			new Torch(0, 0) };
+	public static Struct[] buildableStructs = { new Way(0, 0), new House(0, 0), new Farm(0, 0), new Windmill(0, 0), new Bakery(0, 0), new Mine(0, 0), new Sawmill(0, 0), new CoalFactory(0, 0), new Smeltery(0, 0), new Marketplace(0, 0), new School(0, 0), new Warehouse(0, 0), new Barricade(0, 0), new ArrowTower(0, 0), new Catapult(0, 0), new Torch(0, 0) };
 	
 	public int worldCreated; // in seconds
 	

@@ -29,17 +29,27 @@ import de.dakror.villagedefense.ui.ClickEvent;
 public abstract class Button extends Component {
 	ArrayList<ClickEvent> events;
 	
+	boolean pressed = false;
+	
 	public Button(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		events = new ArrayList<>();
 	}
 	
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		if (contains(e.getX(), e.getY()) && enabled) {
+			pressed = true;
+		}
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (contains(e.getX(), e.getY()) && enabled && pressed) {
 			triggerEvents();
 			state = 0;
 		}
+		pressed = false;
 	}
 	
 	public void addClickEvent(ClickEvent e) {
