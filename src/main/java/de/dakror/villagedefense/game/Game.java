@@ -184,14 +184,14 @@ public class Game extends GameFrame {
 		drawLayers(g);
 		
 		// TODO: DEBUG
-		Color oldColor = g.getColor();
-		Font oldFont = g.getFont();
-		g.setColor(Color.green);
-		g.setFont(new Font("Arial", Font.PLAIN, 18));
-		g.drawString(getFPS() + " FPS", 0, 14);
-		g.drawString(getUPS() + " UPS", 100, 14);
-		g.setColor(oldColor);
-		g.setFont(oldFont);
+		//		Color oldColor = g.getColor();
+		//		Font oldFont = g.getFont();
+		//		g.setColor(Color.green);
+		//		g.setFont(new Font("Arial", Font.PLAIN, 18));
+		//		g.drawString(getFPS() + " FPS", 0, 14);
+		//		g.drawString(getUPS() + " UPS", 100, 14);
+		//		g.setColor(oldColor);
+		//		g.setFont(oldFont);
 		
 		if (!started) {
 			state = 3;

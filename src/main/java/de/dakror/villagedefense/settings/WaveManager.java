@@ -75,6 +75,9 @@ public class WaveManager {
 	public static EnumMap<Monster, Integer> monsters = new EnumMap<>(Monster.class);
 	
 	public static void init() {
+		wave = 0;
+		nextWave = waveTimer;
+		monsters.clear();
 		generateNextWave();
 	}
 	
