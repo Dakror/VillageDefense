@@ -64,18 +64,7 @@
 			<zipgroupfileset dir="libs" excludes="META-INF/*.SF" includes="**/*.jar" />
 		</jar>
 
-		<signjar jar="${project.name}.jar" keystore="http://dakror.de/bin/dakrorKeystore.jks" alias="dakror"
-			storepass="dakrorKeystore" />
-
-		<echo message="starting FTP file upload" />
-		<java classname="de.dakror.dakrorbin.Uploader">
-			<arg value="${project.name}" />
-			<classpath>
-				<pathelement location="bin/Uploader.jar" />
-				<pathelement path="${java.class.path}" />
-			</classpath>
-		</java>
-
-		<delete dir="bin" />
+		<signjar jar="${project.name}.jar" keystore="C:\Users\Dakror\dakror-release.keystore" alias="dakror_release"
+			storepass="SwipeRace#7" />
 	</target>
 </project>
