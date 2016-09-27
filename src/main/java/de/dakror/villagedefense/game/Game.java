@@ -97,6 +97,8 @@ public class Game extends GameFrame {
 	
 	public Struct activeStruct;
 	
+	final float step = 24;
+	
 	// -- layer hacks -- //
 	public boolean killedCoreHouse;
 	public boolean placedStruct;
@@ -226,6 +228,26 @@ public class Game extends GameFrame {
 		for (Layer l : layers) {
 			l.keyPressed(e);
 			if (l.isModal() && l.isEnabled()) return;
+		}
+		
+		
+		if ((world.width > getWidth() || world.height > getHeight()) && e.getKeyCode() >= 37 && e.getKeyCode() <= 40) {
+			int x = world.x;
+			int y = world.y;
+			
+			if (e.getKeyCode() == 37) x += step;
+			if (e.getKeyCode() == 39) x -= step;
+			if (e.getKeyCode() == 38) y += step;
+			if (e.getKeyCode() == 40) y -= step;
+			
+			if (x > 0) x = 0;
+			if (y > 0) y = 0;
+			if (x < getWidth() - world.width) x = getWidth() - world.width;
+			if (y > 0) y = 0;
+			if (y < getHeight() - world.height) y = getHeight() - world.height;
+			
+			world.x = x;
+			world.y = y;
 		}
 	}
 	
