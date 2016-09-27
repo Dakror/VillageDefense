@@ -136,6 +136,7 @@ public class Game extends GameFrame {
 		addLayer(new StateLayer());
 		addLayer(new MenuLayer());
 		
+		WaveManager.reset();
 		WaveManager.init();
 		for (Researches r : Researches.values()) {
 			if (r.getCosts(false).size() == 0) researches.add(r);

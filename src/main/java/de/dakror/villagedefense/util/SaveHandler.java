@@ -83,7 +83,7 @@ public class SaveHandler {
 			o.put("entities", entities);
 			
 			Compressor.compressFile(save, o.toString());
-			//			Helper.setFileContenþt(new File(save.getPath() + ".debug"), o.toString());
+			//			Helper.setFileContent(new File(save.getPath() + ".debug"), o.toString());
 			Game.currentGame.state = 3;
 			JOptionPane.showMessageDialog(Game.w, "Spielstand erfolgreich gespeichert.", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e) {
