@@ -157,11 +157,6 @@ public class Game extends GameFrame {
 		resources = new Resources();
 		resources.set(Resource.GOLD, 1000);
 		resources.set(Resource.BREAD, 500);
-		
-		// for (Resource r : Resource.values())
-		// resources.set(r, 10000);
-		// resources.set(Resource.PEOPLE, 0);
-		
 		Game.world.init(width, height);
 	}
 	
