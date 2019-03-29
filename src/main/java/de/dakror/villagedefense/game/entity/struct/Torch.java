@@ -40,9 +40,9 @@ public class Torch extends Struct {
 		
 		frame = 0;
 		
-		name = "Fackel";
+		name = "Torch";
 		
-		description = "Entzündet hindurch fliegende Projektile.";
+		description = "Ignites projectiles that fly through.";
 		
 		buildingCosts.set(Resource.GOLD, 25);
 		buildingCosts.set(Resource.IRONINGOT, 10);
