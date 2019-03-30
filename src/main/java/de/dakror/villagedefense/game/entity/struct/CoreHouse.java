@@ -40,7 +40,6 @@ public class CoreHouse extends Struct {
         placeGround = true;
         description = "Your base. The monsters want to destroy it.";
         name = "Base";
-        canHunger = true;
     }
 
     @Override

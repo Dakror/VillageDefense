@@ -41,6 +41,7 @@ import de.dakror.villagedefense.game.entity.Entity;
 import de.dakror.villagedefense.game.entity.creature.Creature;
 import de.dakror.villagedefense.game.entity.creature.Forester;
 import de.dakror.villagedefense.game.entity.creature.Woodsman;
+import de.dakror.villagedefense.game.entity.struct.CoreHouse;
 import de.dakror.villagedefense.game.entity.struct.Struct;
 import de.dakror.villagedefense.game.world.Chunk;
 import de.dakror.villagedefense.game.world.Tile;
@@ -136,6 +137,10 @@ public class SaveHandler {
 
                     ((Struct) entity).tx = e.getInt("tx");
                     ((Struct) entity).ty = e.getInt("ty");
+                }
+
+                if (entity instanceof CoreHouse) {
+                    Game.world.core = (Struct) entity;
                 }
 
                 Game.world.addEntity2(entity, true);

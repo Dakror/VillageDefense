@@ -47,7 +47,7 @@ public class Marketplace extends Struct {
         buildingCosts.set(Resource.WOOD, 80);
         buildingCosts.set(Resource.STONE, 150);
         buildingCosts.set(Resource.PEOPLE, 1);
-        canHunger = true;
+
         guiSize.height = 250 - 90 + Resource.usable().length * 30;
         guiSize.width = 300;
     }
