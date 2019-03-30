@@ -109,7 +109,7 @@ public class Game extends GameFrame {
     @Override
     public void initGame() {
         started = false;
-        debug = false;
+        debug = true;
         scoreSent = false;
         killedCoreHouse = false;
         frames = 0;

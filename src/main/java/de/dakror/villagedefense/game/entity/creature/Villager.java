@@ -36,7 +36,7 @@ public class Villager extends Creature {
     public Villager(int x, int y) {
         super(x, y, "villager" + (int) Math.round(Math.random()));
         setHostile(false);
-        name = "Village";
+        name = "Villager";
         attributes.set(Attribute.HEALTH, 15);
         attributes.set(Attribute.HEALTH_MAX, 15);
         attributes.set(Attribute.MINE_AMOUNT, 50); // transport capacity
@@ -110,12 +110,14 @@ public class Villager extends Creature {
     }
 
     public Struct getMostImportantStructToClear() {
-        Struct struct = null;
+        /*Struct struct = null;
         float F = 0;
-
+        */
         for (Entity e : Game.world.entities) {
             if (e instanceof Struct && ((Struct) e).isPlaceGround() && e.getResources().size() > 0) {
                 Struct s = (Struct) e;
+
+                if (s.getTargetedCarriers() * attributes.get(Attribute.MINE_AMOUNT) >= e.getResources().getLength()) continue;
 
                 Path path = AStar.getPath(getTile(), Game.world.getTile(getTargetForStruct(s)));
                 if (path == null) continue;
@@ -123,20 +125,21 @@ public class Villager extends Creature {
                 path.mul(Tile.SIZE);
                 path.translate(0, -bump.y + bump.height);
 
-                if (s.getTargetedCarriers() * attributes.get(Attribute.MINE_AMOUNT) >= e.getResources().getLength()) continue;
-
-                float myF = path.getLength() - (float) Math.pow(e.getResources().getLength(), 2) + (s.getTargetedCarriers() * attributes.get(Attribute.MINE_AMOUNT));
+                return s;
+                /*float myF = path.getLength() - (float) Math.pow(e.getResources().getLength(), 2) + (s.getTargetedCarriers() * attributes.get(Attribute.MINE_AMOUNT));
                 // CFG.p(e.getClass(), myF);
                 if (struct == null || myF < F) {
                     F = myF;
                     struct = (Struct) e;
-                }
+                }*/
             }
         }
 
+        return null;
+
         // if (struct != null) CFG.p(struct.getClass());
 
-        return struct;
+        // return struct;
     }
 
     public Struct getNearestWarehouse() {
