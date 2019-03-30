@@ -101,7 +101,7 @@ public class Tree extends Struct {
         ty = 5;
         x += 2 * Tile.SIZE;
         y += 4 * Tile.SIZE;
-        name = "Baumstumpf";
+        name = "Treestump";
         image = null;
         setBump(new Rectangle2D.Float(0, 0.3f, 1, 0.6f));
         attributes.set(Attribute.MINE_SPEED, 500);
@@ -119,7 +119,7 @@ public class Tree extends Struct {
         setBump(new Rectangle2D.Float(2, 4.3f, 1, 0.6f));
         placeGround = false;
         resources.set(Resource.WOOD, 100);
-        name = "Baum";
+        name = "Tree";
     }
 
     public boolean isGrown() {
