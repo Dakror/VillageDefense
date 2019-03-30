@@ -64,7 +64,7 @@ public class School extends Struct {
         if (components.size() == 0) initGUI();
         try {
             Helper.drawContainer(guiPoint.x - 125, guiPoint.y - 125, 250, 250, false, false, g);
-            Helper.drawHorizontallyCenteredString("Wissenschaft", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
+            Helper.drawHorizontallyCenteredString("Science", guiPoint.x - 125, 250, guiPoint.y - 85, g, 40);
 
             drawComponents(guiPoint.x - 125, guiPoint.y - 125, g);
             for (Component c : components) {
