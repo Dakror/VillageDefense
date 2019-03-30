@@ -45,6 +45,7 @@ public class CoalFactory extends Struct {
         buildingCosts.set(Resource.STONE, 225);
         buildingCosts.set(Resource.PEOPLE, 2);
 
+        canHunger = true;
         description = "Creates charcoal from wood.";
     }
 

@@ -49,6 +49,7 @@ public class Bakery extends Struct {
         attributes.set(Attribute.MINE_SPEED, 100);
         attributes.set(Attribute.MINE_AMOUNT, 2); // use 2 coal + 3 flour -> 2 bread
 
+        canHunger = true;
         setBump(new Rectangle2D.Float(0, 3, 3.1f, 4));
     }
 

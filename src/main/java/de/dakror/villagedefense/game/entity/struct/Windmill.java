@@ -54,7 +54,7 @@ public class Windmill extends Struct {
         buildingCosts.set(Resource.PLANKS, 200);
         buildingCosts.set(Resource.STONE, 85);
         buildingCosts.set(Resource.PEOPLE, 1);
-
+        canHunger = true;
         description = "Mills wheat to flour.";
     }
 

@@ -40,7 +40,7 @@ public class Farm extends Struct {
         buildingCosts.set(Resource.GOLD, 175);
         buildingCosts.set(Resource.WOOD, 50);
         buildingCosts.set(Resource.STONE, 125);
-
+        canHunger = true;
         description = "Inhabited by a farmer who plants wheat.";
     }
 

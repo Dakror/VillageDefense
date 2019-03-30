@@ -66,7 +66,7 @@ import de.dakror.villagedefense.settings.WaveManager;
  * @author Dakror
  */
 public class Game extends GameFrame {
-    public static final float hungerPerUnitPerSecond = 0.05f;
+    public static final float hungerPerUnitPerSecond = 0.001f;
     public static final int forwardFactor = 5;
 
     public static Game currentGame;
@@ -156,6 +156,7 @@ public class Game extends GameFrame {
         resources = new Resources();
         resources.set(Resource.GOLD, 1000);
         resources.set(Resource.BREAD, 500);
+        researches.clear();
         Game.world.init(width, height);
     }
 

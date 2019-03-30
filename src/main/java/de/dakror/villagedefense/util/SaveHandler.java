@@ -232,7 +232,7 @@ public class SaveHandler {
             String response = Helper.getURLContent(new URL("https://dakror.de/villagedefense/api/scores.php?USERNAME=" + urlencode(CFG.USERNAME) + "&SCORE=" + Game.currentGame.getPlayerScore()));
             System.out.println(response);
             if (!response.equals("false")) {
-                JOptionPane.showMessageDialog(null, "Your score has been place on the leaderboard successfully.", "Placement successful!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Your score has been placed on the leaderboard successfully.", "Placement successful!", JOptionPane.INFORMATION_MESSAGE);
                 addWorldScorePosted(Game.currentGame.worldCreated);
                 Game.currentGame.scoreSent = true;
             } else JOptionPane.showMessageDialog(null, "Your score could not be placed on the leaderboard!", "Placement failed!", JOptionPane.ERROR_MESSAGE);
