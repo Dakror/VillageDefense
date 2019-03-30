@@ -89,7 +89,7 @@ public class WaveManager {
 
         wave++;
 
-        Game.currentGame.resources.add(Resource.GOLD, 10 * wave);
+        Game.currentGame.resources.add(Resource.GOLD, (int) (10 * Math.sqrt(wave)));
 
         /*
          * either parabola: 0.075 * wave*wave + 3
