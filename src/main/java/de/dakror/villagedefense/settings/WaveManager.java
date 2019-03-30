@@ -28,6 +28,7 @@ import de.dakror.villagedefense.game.entity.creature.TreeMonster;
 import de.dakror.villagedefense.game.entity.creature.Troll;
 import de.dakror.villagedefense.game.entity.creature.Zombie;
 import de.dakror.villagedefense.game.world.Tile;
+import de.dakror.villagedefense.settings.Resources.Resource;
 
 /**
  * @author Dakror
@@ -87,6 +88,8 @@ public class WaveManager {
         monsters.clear();
 
         wave++;
+
+        Game.currentGame.resources.add(Resource.GOLD, 10 * wave);
 
         /*
          * either parabola: 0.075 * wave*wave + 3
